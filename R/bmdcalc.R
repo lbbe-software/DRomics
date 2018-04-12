@@ -56,7 +56,7 @@ bmdcalc <- function(f, z = 1, x = 10)
   # Checks
   if (!inherits(f, "drcfit"))
     stop("Use only with 'drcfit' objects, created with the function drcfit")
-
+  
   dfitall <- f$fitres
   nselect <- length(dfitall$irow)
   dosemax <- max(f$omicdata$dose) 
@@ -161,7 +161,7 @@ bmdcalc <- function(f, z = 1, x = 10)
   dcalc$BMDsd[dcalc$BMDsd > dosemax] <- NA
   
   reslist <- list(res = as.data.frame(cbind(dfitall,
-                            data.frame(BMD.zSD = dcalc$BMDsd, BMD.xfold = dcalc$BMDp))), 
+                                            data.frame(BMD.zSD = dcalc$BMDsd, BMD.xfold = dcalc$BMDp))), 
                   z = z, x = x, omicdata = f$omicdata) 
   
   return(structure(reslist, class = "bmdcalc"))
@@ -173,14 +173,14 @@ print.bmdcalc <- function(x, ...)
 {
   if (!inherits(x, "bmdcalc"))
     stop("Use only with 'bmdcalc' objects")
-
+  
   # count of cases where BMD cannot be reached 
   # being outside the range of response values defined by the model
   nNaN.BMD.zSD <- sum(is.nan(x$res$BMD.zSD))
   nNaN.BMD.xfold <- sum(is.nan(x$res$BMD.xfold))
   if ((nNaN.BMD.zSD > 0) |  (nNaN.BMD.xfold > 0))
     cat(nNaN.BMD.xfold,"BMD-xfold values and ", nNaN.BMD.zSD,
-    " BMD_zSD values are not defined 
+        " BMD_zSD values are not defined 
         (coded NaN as the BMR stands outside the range of response values 
     defined by the model).\n")
   
@@ -189,10 +189,10 @@ print.bmdcalc <- function(x, ...)
   nNA.BMD.xfold <- sum(is.na(x$res$BMD.xfold))
   if ((nNA.BMD.zSD > 0) |  (nNA.BMD.xfold > 0))
     cat(nNA.BMD.xfold,"BMD-xfold values and ", nNA.BMD.zSD,
-    " BMD_zSD values could not be calculated 
+        " BMD_zSD values could not be calculated 
         (coded NA as the BMR stands within the range of response values defined by the model 
         but outside the range of tested doses).\n")
-
+  
   if ((nNA.BMD.zSD = 0) &  (nNA.BMD.xfold = 0) & (nNaN.BMD.zSD = 0) &  (nNaN.BMD.xfold = 0))
     cat("BMD-xfold and BMD-SD values could be calculated on all the curves
         (the BMR always stands within the range of response values defined by the model
@@ -200,64 +200,64 @@ print.bmdcalc <- function(x, ...)
 }
 
 plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"), 
-            plottype = c("ecdf", "hist", "density"), bytypology = FALSE, 
-            hist.bins = 30, ...) 
+                         plottype = c("ecdf", "hist", "density"), bytypology = FALSE, 
+                         hist.bins = 30, ...) 
 {
   if (!inherits(x, "bmdcalc"))
     stop("Use only with 'bmdcalc' objects")
- BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
- plottype <- match.arg(plottype, c("ecdf", "hist", "density"))  
- 
- # que faire des NA et NaN (enlever, les représenter en données censurées ?)
-
+  BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
+  plottype <- match.arg(plottype, c("ecdf", "hist", "density"))  
+  
+  # que faire des NA et NaN (enlever, les représenter en données censurées ?)
+  
   if (BMDtype == "zSD")
- {
+  {
     dwithNANaN <- data.frame(BMD = x$res$BMD.zSD, typology = x$res$typology)
- } else
- {
-   dwithNANaN <- data.frame(BMD = x$res$BMD.xfold, typology = x$res$typology)
- }
- 
- # Remove NA and NaN values if needed
- d <- dwithNANaN[!is.na(dwithNANaN$BMD) & !is.nan(dwithNANaN$BMD), ]
- nremoved <- nrow(dwithNANaN) - nrow(d)
- if (nremoved > 0)
-   warning(nremoved," BMD coded NA or NaN were removed before plotting")
-
- if (bytypology) # distribution of BMDs by typology of curves
+  } else
+  {
+    dwithNANaN <- data.frame(BMD = x$res$BMD.xfold, typology = x$res$typology)
+  }
+  
+  # Remove NA and NaN values if needed
+  d <- dwithNANaN[!is.na(dwithNANaN$BMD) & !is.nan(dwithNANaN$BMD), ]
+  nremoved <- nrow(dwithNANaN) - nrow(d)
+  if (nremoved > 0)
+    warning(nremoved," BMD coded NA or NaN were removed before plotting")
+  
+  if (bytypology) # distribution of BMDs by typology of curves
   {
     if (plottype == "hist") 
     {
       g <- ggplot(data = d, mapping = aes(x = BMD, fill = typology)) +
-          geom_histogram(bins = hist.bins) + facet_wrap(~ typology)
+        geom_histogram(bins = hist.bins) + facet_wrap(~ typology)
     } else
-    if (plottype == "density") 
-    {
-      g <- ggplot(data = d, mapping = aes(x = BMD, fill = typology)) + 
-        geom_density() + facet_wrap(~ typology)
-    } else
-    if (plottype == "ecdf") 
-    {
-      g <- ggplot(data = d, mapping = aes(x = BMD, col = typology)) +
-          stat_ecdf(geom = "step") + facet_wrap(~ typology) + ylab("ECDF")
-    }      
+      if (plottype == "density") 
+      {
+        g <- ggplot(data = d, mapping = aes(x = BMD, fill = typology)) + 
+          geom_density() + facet_wrap(~ typology)
+      } else
+        if (plottype == "ecdf") 
+        {
+          g <- ggplot(data = d, mapping = aes(x = BMD, col = typology)) +
+            stat_ecdf(geom = "step") + facet_wrap(~ typology) + ylab("ECDF")
+        }      
   }  else
   { # global distribution of BMDs
     if (plottype == "hist") 
     {
-       g <- ggplot(data = d, mapping = aes(x = BMD)) +
-         geom_histogram(bins = hist.bins) 
-    } else
-    if (plottype == "density") 
-    {
-      g <- ggplot(data = d, mapping = aes(x = BMD)) + geom_density(fill = I("grey"))
-    } else
-    if (plottype == "ecdf") 
-    {
       g <- ggplot(data = d, mapping = aes(x = BMD)) +
-               stat_ecdf(geom = "step") + ylab("ECDF")
-    }      
+        geom_histogram(bins = hist.bins) 
+    } else
+      if (plottype == "density") 
+      {
+        g <- ggplot(data = d, mapping = aes(x = BMD)) + geom_density(fill = I("grey"))
+      } else
+        if (plottype == "ecdf") 
+        {
+          g <- ggplot(data = d, mapping = aes(x = BMD)) +
+            stat_ecdf(geom = "step") + ylab("ECDF")
+        }      
   } 
- return(g)
+  return(g)
 }
 

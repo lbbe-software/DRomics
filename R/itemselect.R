@@ -43,15 +43,15 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
     doseranks2 <- doseranks*doseranks
     design4lmFit <- model.matrix(~ doseranks + doseranks2)
   } else
-  if (select.method == "linear")
-  {
-    design4lmFit <- model.matrix(~ doseranks)
-  } else
-  if (select.method == "ANOVA")
-  {
-    fdose <- as.factor(dose)
-    design4lmFit <- model.matrix(~ fdose)
-  } 
+    if (select.method == "linear")
+    {
+      design4lmFit <- model.matrix(~ doseranks)
+    } else
+      if (select.method == "ANOVA")
+      {
+        fdose <- as.factor(dose)
+        design4lmFit <- model.matrix(~ fdose)
+      } 
   
   # Selection using limma    
   fit <- lmFit(data, design4lmFit)
@@ -80,14 +80,14 @@ print.itemselect <- function(x, ...)
   {
     cat("Number of selected items using an ANOVA type test with an FDR of ",x$FDR,": ", length(x$selectindex),"\n")
   } else
-  if (x$select.method == "linear")
-  {
-    cat("Number of selected items using a linear trend test with an FDR of ",x$FDR,": ", length(x$selectindex),"\n")
-  } else
-  if (x$select.method == "quadratic")
-  {
-    cat("Number of selected items using a quadratic trend test with an FDR of ",x$FDR,": ", length(x$selectindex),"\n")
-  } 
+    if (x$select.method == "linear")
+    {
+      cat("Number of selected items using a linear trend test with an FDR of ",x$FDR,": ", length(x$selectindex),"\n")
+    } else
+      if (x$select.method == "quadratic")
+      {
+        cat("Number of selected items using a quadratic trend test with an FDR of ",x$FDR,": ", length(x$selectindex),"\n")
+      } 
   
   if (length(x$selectindex) > 20) 
   {

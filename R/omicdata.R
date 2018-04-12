@@ -40,7 +40,7 @@ omicdata <- function(file, check = TRUE,
   nrowd <- nrow(d)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
-
+  
   if (check)
   {
     # check that doses and responses are numeric
@@ -49,13 +49,13 @@ omicdata <- function(file, check = TRUE,
            dose in the firt line and the numeric response of each item in the other
            lines.")
   }
-
+  
   # Normalization using limma
   norm.method <- match.arg(norm.method, c("none", "cyclicloess", "quantile", "scale"))
   if(norm.method == "cyclicloess")
     cat("Just wait, the normalization using cyclicloess may take a few minutes.\n")
   data <- normalizeBetweenArrays(data, method = norm.method)  
-
+  
   # definition of doses and item identifiers
   (dose <- as.vector(unlist(d[1, 2:ncold])))
   row.names(data) <- item <- as.character(d[2:nrowd, 1])
@@ -81,26 +81,26 @@ omicdata <- function(file, check = TRUE,
 
 print.omicdata <- function(x, ...)
 {
-    if (!inherits(x, "omicdata"))
-        stop("Use only with 'omicdata' objects")
+  if (!inherits(x, "omicdata"))
+    stop("Use only with 'omicdata' objects")
   
-    cat("Elements of the experimental design in order to check the coding of the data :\n")
-    cat("Tested doses and number of replicates for each dose:\n")
-    print(x$design)
-    ########################################################## comment virer dose en titre ?
-    cat("Number of items: ", length(x$item),"\n")
-    
-    if (length(x$item) > 20)
-    {
-      cat("Identifiers of the first 20 items:\n")
-      print(x$item[1:20])
-    } else
-    {
-      cat("Identifiers of the items:\n")
-      print(x$item)
-    }
-    if (x$norm.method != "none")
-      cat("Data were normalized between arrays using the following method: ", x$norm.method," \n")
+  cat("Elements of the experimental design in order to check the coding of the data :\n")
+  cat("Tested doses and number of replicates for each dose:\n")
+  print(x$design)
+  ########################################################## comment virer dose en titre ?
+  cat("Number of items: ", length(x$item),"\n")
+  
+  if (length(x$item) > 20)
+  {
+    cat("Identifiers of the first 20 items:\n")
+    print(x$item[1:20])
+  } else
+  {
+    cat("Identifiers of the items:\n")
+    print(x$item)
+  }
+  if (x$norm.method != "none")
+    cat("Data were normalized between arrays using the following method: ", x$norm.method," \n")
 }
 
 

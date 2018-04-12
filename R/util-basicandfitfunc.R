@@ -93,8 +93,8 @@ fExpo <- function(x, b, d, e)
 invExpo <- function(y, b, d, e)
 {
   if ( ((e < 0) & (b < 0) & (y > d - b)) | ((e < 0) & (b > 0) & (y < d - b)) )
-  return(NaN) else
-  return(e * log(1 + (y - d) / b))
+    return(NaN) else
+      return(e * log(1 + (y - d) / b))
 }
 
 ### Hill model and starting values
@@ -145,7 +145,7 @@ invHill <- function(y, b, c, d, e)
 {
   if ( ((d < c) & (y > c)) | ((d > c) & (y < c)) )
     return(NaN) else
-    return(e * ((d - y) / (y - c))^(1/b))
+      return(e * ((d - y) / (y - c))^(1/b))
 }
 
 ### Gaussian model 5 p and starting values

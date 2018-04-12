@@ -21,7 +21,7 @@ plotfit <- function(subd, dose, data, data.mean, pmfrow = c(7,5), pmar = c(2.2, 
     valuelog0 <- log10doseu[2] - 3*(log10doseu[3] - log10doseu[2])
     log10dosecor[log10dose == -Inf] <- valuelog0
     log10dosecoru[log10dosecoru == -Inf] <- valuelog0
-      
+    
     xplot <- seq(min(log10dosecoru), max(log10dosecoru), length.out = npts)
     for (i in 1:nrow(subd))
     {
@@ -56,12 +56,12 @@ plotfit <- function(subd, dose, data, data.mean, pmfrow = c(7,5), pmar = c(2.2, 
         points(log10dosecoru, datameani, pch = 16, col = ifelse(doseu > 0, "black","grey"))
       }
       if (!is.finite(dose))
-
-      if (addBMD.xfold)
-      {
-        segments(x0=log10(subd$BMD.xfold[i]), x1=log10(subd$BMD.xfold[i]), y0=0, y1=subd$yp[i], col = colBMD.xfold)
-        segments(x0=-1, x1=log10(subd$BMD.xfold[i]), y0=subd$yp[i], y1=subd$yp[i], col = colBMD.xfold)
-      }
+        
+        if (addBMD.xfold)
+        {
+          segments(x0=log10(subd$BMD.xfold[i]), x1=log10(subd$BMD.xfold[i]), y0=0, y1=subd$yp[i], col = colBMD.xfold)
+          segments(x0=-1, x1=log10(subd$BMD.xfold[i]), y0=subd$yp[i], y1=subd$yp[i], col = colBMD.xfold)
+        }
       if (addBMD.SD)
       {
         segments(x0=log10(subd$BMD.SD[i]), x1=log10(subd$BMD.SD[i]), y0=0, y1=subd$ysd[i], col = colBMD.SD)

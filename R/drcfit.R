@@ -31,7 +31,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   # Checks
   if (!inherits(itemselect, "itemselect"))
     stop("Use only with 'itemselect' objects, created with the function itemselect")
-
+  
   parallel <- match.arg(parallel, c("no", "snow", "multicore"))
   if (parallel == "multicore" & .Platform$OS.type == "windows")
   {
@@ -42,10 +42,10 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     stop("You have to specify the number of available processors to parallelize 
          the fitting")
   if (parallel != "no") progressbar <- FALSE
-    
+  
   if (progressbar)
     cat("The fitting may be long if the number of selected items is high.\n")
- 
+  
   # Definition of the sigmoid model to fit
   sigmoid.model <- match.arg(sigmoid.model, c("Hill", "log-probit"))
   
@@ -73,7 +73,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   # progress bar
   if (progressbar)
     pb <- txtProgressBar(min = 0, max = length(selectindex), style = 3)
-
+  
   # function to fit all the models an choose the best on one item
   ################################################################
   fitoneitem <- function(i) 
@@ -98,11 +98,11 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     modlin <- lm(signal ~ doseranks)
     increaseranks <- coef(modlin)[2] >= 0
     increaseminmax <- dose[which.min(signal)] < dose[which.max(signal)]
-
+    
     # for choice of the quadratic trend (Ushape or Umbrella shape)
     modquad <- lm(signal ~ doseranks + I(doseranks^2))
     Ushape <- coef(modquad)[3] >= 0
-
+    
     ################ Expo fit ###############################
     if (keepExpo)
     {
@@ -118,23 +118,23 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
       {
         # Fit of the 3 par model
         Expo3p.1 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.1, data = dset, 
-                            lower = c(-Inf, -Inf, -Inf), 
-                            upper = c(Inf, Inf, 0),
-                            algorithm = "port"), silent = TRUE))
+                                             lower = c(-Inf, -Inf, -Inf), 
+                                             upper = c(Inf, Inf, 0),
+                                             algorithm = "port"), silent = TRUE))
         
         Expo3p.2 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.2, data = dset, 
-                            lower = c(-Inf, -Inf, -Inf), 
-                            upper = c(Inf, Inf, 0),
-                            algorithm = "port"), silent = TRUE))
+                                             lower = c(-Inf, -Inf, -Inf), 
+                                             upper = c(Inf, Inf, 0),
+                                             algorithm = "port"), silent = TRUE))
       } else # e > 0
       {
         # Fit of the 3 par model
         Expo3p.1 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.1, data = dset, 
-                            lower = c(-Inf, -Inf, 0), 
-                            algorithm = "port"), silent = TRUE))
+                                             lower = c(-Inf, -Inf, 0), 
+                                             algorithm = "port"), silent = TRUE))
         Expo3p.2 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.2, data = dset, 
-                            lower = c(-Inf, -Inf, 0), 
-                            algorithm = "port"), silent = TRUE))
+                                             lower = c(-Inf, -Inf, 0), 
+                                             algorithm = "port"), silent = TRUE))
       }
       #### convergence of both models
       if ((!inherits(Expo3p.1, "try-error")) & (!inherits(Expo3p.2, "try-error")))
@@ -178,7 +178,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
       startHill <- startvalHillnls2(x = dose, y = signal, xm = doseu, ym = signalm,  
                                     increase = increaseminmax)
       Hill <- suppressWarnings(try(nls(formHill, start = startHill, data = dset, 
-                      lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
+                                       lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
       if (!inherits(Hill, "try-error"))
       {
         AICHilli <- round(AIC(Hill, k = kcrit), digits = AICdigits)
@@ -195,7 +195,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
       startLprobit <- startvalLprobitnls2(x = dose, y = signal, xm = doseu, ym = signalm,  
                                           increase = increaseminmax)
       Lprobit <- suppressWarnings(try(nls(formLprobit, start = startLprobit, data = dset, 
-                         lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
+                                          lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
       if (!inherits(Lprobit, "try-error"))
       {
         AICLprobiti <- round(AIC(Lprobit, k = kcrit), digits = AICdigits)
@@ -215,9 +215,9 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
       startLGauss4p <- startvalLGauss4pnls(xm = doseu, ym = signalm,  
                                            Ushape = Ushape)
       LGauss5p <- suppressWarnings(try(nls(formLGauss5p, start = startLGauss5p, data = dset,
-                          lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+                                           lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
       LGauss4p <- suppressWarnings(try(nls(formLGauss4p, start = startLGauss4p, data = dset,
-                          lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+                                           lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
       #### convergence of both models
       if ((!inherits(LGauss4p, "try-error")) & (!inherits(LGauss5p, "try-error")))
       {
@@ -263,11 +263,11 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
       startGauss5p <- startvalGauss5pnls(xm = doseu, ym = signalm,  
                                          Ushape = Ushape)
       Gauss5p <- suppressWarnings(try(nls(formGauss5p, start = startGauss5p, data = dset, 
-                         lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+                                          lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
       startGauss4p <- startvalGauss4pnls(xm = doseu, ym = signalm,  
                                          Ushape = Ushape)
       Gauss4p <- suppressWarnings(try(nls(formGauss4p, start = startGauss4p, data = dset, 
-                         lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+                                          lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
       
       #### convergence of both models
       if ((!inherits(Gauss4p, "try-error")) & (!inherits(Gauss5p, "try-error")))
@@ -334,7 +334,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
       d.i <- NA
       e.i <- NA
       f.i <- NA
-       SDres.i <- sigma(constmodel)
+      SDres.i <- sigma(constmodel)
     } else
     {
       if (indmodeli == 1)
@@ -364,7 +364,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
           if (indmodeli == 3)
           {
             fit <- Hill
-             par <- coef(fit)
+            par <- coef(fit)
             b.i <- par["b"]
             c.i <- par["c"]
             d.i <- par["d"]
@@ -414,8 +414,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     # diagnostics on residuals
     resi <- residuals(fit)
     ShapiroPi <- shapiro.test(resi)$p.value # it would be better on studentized residuals
-                                          # but to write for linear model 
-                                          # the use of nlstools will take machine time
+    # but to write for linear model 
+    # the use of nlstools will take machine time
     resi.sign <- ifelse(resi > 0, "p", "n")
     runsPi <- runs.test(as.factor(resi.sign), alternative = "less")$p.value
     # alternative = "less" because we want to detect under-mixing trend
@@ -438,10 +438,10 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     }
     return(c(indmodeli, nbpari, b.i, c.i, d.i, e.i, f.i, SDres.i,
              AIClini, AICExpoi, AICHilli, AICLprobiti, AICLGaussi, AICGaussi,  
-              ShapiroPi, runsPi, heteroPi, trendPi))
+             ShapiroPi, runsPi, heteroPi, trendPi))
     
   } ##################################### and of fitoneitem
-
+  
   # Loop on items
   # parallel or sequential computation
   if (parallel != "no") 
@@ -460,14 +460,14 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   
   dfit <- as.data.frame(t(res))
   colnames(dfit) <- c("model", "nbpar", "b", "c", "d", "e", "f", "SDres",
-                     "AIC.L", "AIC.E", "AIC.H", "AIC.LP", "AIC.LGP", "AIC.GP",
-                     "ShapiroP", "runsP", "heteroP", "trendP")
+                      "AIC.L", "AIC.E", "AIC.H", "AIC.LP", "AIC.LGP", "AIC.GP",
+                      "ShapiroP", "runsP", "heteroP", "trendP")
   dfit <- cbind(data.frame(id = row.names(data[selectindex,]), 
                            irow = selectindex, 
                            adjpvalue = adjpvalue),
-                        dfit)
-
-    # close progress bar
+                dfit)
+  
+  # close progress bar
   if (progressbar) close(pb)
   
   # removing of null models (const)
@@ -490,26 +490,26 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   # Model names in the order of indmodel
   modelnames <- c("Gauss-probit", "log-Gauss-probit", "Hill", "log-probit", "exponential", "linear")
   dc$model <- modelnames[dc$model] 
-
-    # definition on the typology
+  
+  # definition on the typology
   typology <- character(length = nselect)
   for (i in 1:nselect) # réécrire avec un which !!!!!!!!!!!!!!!!!!!!
   {
     di <- dc[i,]
     if (di$model == "exponential" & di$e > 0 & di$b > 0) typology[i] <- "E.inc.convex" else
-    if (di$model == "exponential" & di$e <= 0 & di$b > 0) typology[i] <- "E.dec.convex" else
-    if (di$model == "exponential" & di$e <= 0 & di$b <= 0) typology[i] <- "E.inc.concave" else
-    if (di$model == "exponential" & di$e > 0 & di$b <= 0) typology[i] <- "E.dec.concave" else
-    if (di$model == "Hill" & di$c > di$d) typology[i] <- "H.inc" else
-    if (di$model == "Hill" & di$c <= di$d) typology[i] <- "H.dec" else
-    if (di$model == "log-probit" & di$c > di$d) typology[i] <- "LP.inc" else
-    if (di$model == "log-probit" & di$c <= di$d) typology[i] <- "LP.dec" else
-    if (di$model == "log-Gauss-probit" & di$f < 0) typology[i] <- "LGP.U" else
-    if (di$model == "log-Gauss-probit" & di$f >=0) typology[i] <- "LGP.bell" else
-    if (di$model == "Gauss-probit" & di$f < 0) typology[i] <- "GP.U" else
-    if (di$model == "Gauss-probit" & di$f >=0) typology[i] <- "GP.bell" else
-    if (di$model == "linear" & di$b > 0) typology[i] <- "L.inc" else
-    if (di$model == "linear" & di$b <= 0) typology[i] <- "L.dec" 
+      if (di$model == "exponential" & di$e <= 0 & di$b > 0) typology[i] <- "E.dec.convex" else
+        if (di$model == "exponential" & di$e <= 0 & di$b <= 0) typology[i] <- "E.inc.concave" else
+          if (di$model == "exponential" & di$e > 0 & di$b <= 0) typology[i] <- "E.dec.concave" else
+            if (di$model == "Hill" & di$c > di$d) typology[i] <- "H.inc" else
+              if (di$model == "Hill" & di$c <= di$d) typology[i] <- "H.dec" else
+                if (di$model == "log-probit" & di$c > di$d) typology[i] <- "LP.inc" else
+                  if (di$model == "log-probit" & di$c <= di$d) typology[i] <- "LP.dec" else
+                    if (di$model == "log-Gauss-probit" & di$f < 0) typology[i] <- "LGP.U" else
+                      if (di$model == "log-Gauss-probit" & di$f >=0) typology[i] <- "LGP.bell" else
+                        if (di$model == "Gauss-probit" & di$f < 0) typology[i] <- "GP.U" else
+                          if (di$model == "Gauss-probit" & di$f >=0) typology[i] <- "GP.bell" else
+                            if (di$model == "linear" & di$b > 0) typology[i] <- "L.inc" else
+                              if (di$model == "linear" & di$b <= 0) typology[i] <- "L.dec" 
   }
   dc$typology <- typology
   
@@ -519,24 +519,24 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   if (sigmoid.model == "Hill")
   {
     dc$model <- factor(dc$model, # to specify the order
-                    levels = c("Hill", "linear", "exponential", "Gauss-probit", "log-Gauss-probit"))
+                       levels = c("Hill", "linear", "exponential", "Gauss-probit", "log-Gauss-probit"))
     dc$typology <- factor(typology,
-                        levels = c("H.inc", "H.dec", "L.inc", "L.dec", 
-                                   "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
-                                   "GP.U", "GP.bell", "LGP.U", "LGP.bell"))
+                          levels = c("H.inc", "H.dec", "L.inc", "L.dec", 
+                                     "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
+                                     "GP.U", "GP.bell", "LGP.U", "LGP.bell"))
   } else
   {
     dc$model <- factor(dc$model, # to specify the order
-                    levels = c("log-probit", "linear", "exponential", "Gauss-probit", "log-Gauss-probit")) 
+                       levels = c("log-probit", "linear", "exponential", "Gauss-probit", "log-Gauss-probit")) 
     dc$typology <- factor(typology,
-                        levels = c("LP.inc", "LP.dec", "L.inc", "L.dec", 
-                                   "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
-                                   "GP.U", "GP.bell", "LGP.U", "LGP.bell"))
+                          levels = c("LP.inc", "LP.dec", "L.inc", "L.dec", 
+                                     "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
+                                     "GP.U", "GP.bell", "LGP.U", "LGP.bell"))
     
   }
   
   fitres <- dc
-
+  
   # Plot of fitted DRCs
   pdf("drcfitplot.pdf", width = 7, height = 10) # w and h in inches
   plotfit(fitres, 
@@ -547,9 +547,9 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
           allpoints = TRUE)
   dev.off()
   
-
+  
   reslist <- list(fitres = fitres, omicdata = itemselect$omicdata, n.failure = n.failure) 
-
+  
   return(structure(reslist, class = "drcfit"))
 }
 
@@ -562,7 +562,7 @@ print.drcfit <- function(x, ...) # passage du ... ?
   nsucces <- nrow(x$fitres)
   nfirstselect <- x$n.failure + nsucces
   if (x$n.failure > 0)
-   cat(x$n.failure,"dose-response curves out of ",nfirstselect, " previously selected were removed.\n")
+    cat(x$n.failure,"dose-response curves out of ",nfirstselect, " previously selected were removed.\n")
   cat("Distribution of the chosen models among the ",nsucces," fitted dose-response curves :\n")
   print(tfit)
   ttypology <- table(x$fitres$typology)
@@ -580,7 +580,7 @@ plot.drcfit <- function(x, ...)
           data.mean = x$omicdata$data.mean, 
           xlog10 = FALSE, 
           allpoints = TRUE, ...)
-# a ggplot alternative will be debelopped  
+  # a ggplot alternative will be debelopped  
 }
 
 
