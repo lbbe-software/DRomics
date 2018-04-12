@@ -182,7 +182,7 @@ print.bmdcalc <- function(x, ...)
     cat(nNaN.BMD.xfold,"BMD-xfold values and ", nNaN.BMD.zSD,
         " BMD_zSD values are not defined 
         (coded NaN as the BMR stands outside the range of response values 
-    defined by the model).\n")
+        defined by the model).\n")
   
   # count of cases where BMD is not yet reached at the highest tested dose
   nNA.BMD.zSD <- sum(is.na(x$res$BMD.zSD))
@@ -228,33 +228,33 @@ plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"),
   {
     if (plottype == "hist") 
     {
-      g <- ggplot(data = d, mapping = aes(x = BMD, fill = typology)) +
+      g <- ggplot(data = d, mapping = aes_(x = quote(BMD), fill = quote(typology))) +
         geom_histogram(bins = hist.bins) + facet_wrap(~ typology)
     } else
       if (plottype == "density") 
       {
-        g <- ggplot(data = d, mapping = aes(x = BMD, fill = typology)) + 
+        g <- ggplot(data = d, mapping = aes_(x = quote(BMD), fill = quote(typology))) + 
           geom_density() + facet_wrap(~ typology)
       } else
         if (plottype == "ecdf") 
         {
-          g <- ggplot(data = d, mapping = aes(x = BMD, col = typology)) +
+          g <- ggplot(data = d, mapping = aes_(x = quote(BMD), col = quote(typology))) +
             stat_ecdf(geom = "step") + facet_wrap(~ typology) + ylab("ECDF")
         }      
   }  else
   { # global distribution of BMDs
     if (plottype == "hist") 
     {
-      g <- ggplot(data = d, mapping = aes(x = BMD)) +
+      g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) +
         geom_histogram(bins = hist.bins) 
     } else
       if (plottype == "density") 
       {
-        g <- ggplot(data = d, mapping = aes(x = BMD)) + geom_density(fill = I("grey"))
+        g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) + geom_density(fill = I("grey"))
       } else
         if (plottype == "ecdf") 
         {
-          g <- ggplot(data = d, mapping = aes(x = BMD)) +
+          g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) +
             stat_ecdf(geom = "step") + ylab("ECDF")
         }      
   } 
