@@ -1,0 +1,586 @@
+######################################################################################
+#   Copyright (c) 2018 Marie Laure Delignette-Muller, Elise Billoir, Floriane Larras                                                                                                  
+#                                                                                                                                                                        
+#   This program is free software; you can redistribute it and/or modify                                               
+#   it under the terms of the GNU General Public License as published by                                         
+#   the Free Software Foundation; either version 2 of the License, or                                                   
+#   (at your option) any later version.                                                                                                            
+#                                                                                                                                                                         
+#   This program is distributed in the hope that it will be useful,                                                             
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of                                          
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                                 
+#   GNU General Public License for more details.                                                                                    
+#                                                                                                                                                                         
+#   You should have received a copy of the GNU General Public License                                           
+#   along with this program; if not, write to the                                                                                           
+#   Free Software Foundation, Inc.,                                                                                                              
+#   59 Temple Place, Suite 330, Boston, MA 02111-1307, USA                                                             
+#                                                                                                                                                                         
+#####################################################################################
+### fit different models to each dose-response curve and choose the best fit 
+###
+###         R functions
+### 
+drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"), 
+                   progressbar = TRUE, saveplot2pdf = TRUE, 
+                   parallel = c("no", "snow", "multicore"), ncpus)
+{
+  # options that will be removed
+  runs.filter <- FALSE
+  Shapiro.filter <- FALSE
+  # Checks
+  if (!inherits(itemselect, "itemselect"))
+    stop("Use only with 'itemselect' objects, created with the function itemselect")
+
+  parallel <- match.arg(parallel, c("no", "snow", "multicore"))
+  if (parallel == "multicore" & .Platform$OS.type == "windows")
+  {
+    parallel <- "snow"
+    warning("As the multicore option is not supported on Windows it was replaced by snow")
+  }
+  if ((parallel == "snow" | parallel == "multicore") & missing(ncpus)) 
+    stop("You have to specify the number of available processors to parallelize 
+         the fitting")
+  if (parallel != "no") progressbar <- FALSE
+    
+  if (progressbar)
+    cat("The fitting may be long if the number of selected items is high.\n")
+ 
+  # Definition of the sigmoid model to fit
+  sigmoid.model <- match.arg(sigmoid.model, c("Hill", "log-probit"))
+  
+  # definition of necessary data
+  selectindex <- itemselect$selectindex
+  adjpvalue <- itemselect$adjpvalue
+  dose <- itemselect$omicdata$dose
+  doseranks <- as.numeric(as.factor(itemselect$omicdata$dose)) 
+  data <- itemselect$omicdata$data 
+  data.mean <- itemselect$omicdata$data.mean 
+  
+  # calculations for starting values
+  dosemax <- max(dose)
+  dosemed <- median(dose[dose!=0])
+  doseu <- as.numeric(colnames(data.mean)) # sorted unique doses
+  
+  # number of points per dose-response curve
+  nptsperDR <- ncol(data)
+  nselect <- length(selectindex)
+  
+  AICdigits <- 2 # number of digits for rounding the AIC values
+  
+  kcrit = 2 # for defining AIC or BIC 
+  
+  # progress bar
+  if (progressbar)
+    pb <- txtProgressBar(min = 0, max = length(selectindex), style = 3)
+
+  # function to fit all the models an choose the best on one item
+  ################################################################
+  fitoneitem <- function(i) 
+  {
+    keeplin <- TRUE
+    keepExpo <- TRUE
+    keepHill <- sigmoid.model == "Hill"
+    keepLprobit <- sigmoid.model == "log-probit"
+    keepLGauss <- TRUE
+    keepGauss <- TRUE
+    
+    equalcdG <- FALSE # use to define the value of c equal to d in the Gauss4p model if needed
+    equalcdLG <- FALSE # use to define the value of c equal to d in the LGauss4p model if needed
+    
+    signal <- data[selectindex[i], ]
+    signalm <- as.vector(data.mean[selectindex[i],]) # means per dose
+    
+    # preparation of data for modelling with nls 
+    dset <- data.frame(signal = signal, dose = dose)
+    
+    # for choice of the linear trend (decreasing or increasing)
+    modlin <- lm(signal ~ doseranks)
+    increaseranks <- coef(modlin)[2] >= 0
+    increaseminmax <- dose[which.min(signal)] < dose[which.max(signal)]
+
+    # for choice of the quadratic trend (Ushape or Umbrella shape)
+    modquad <- lm(signal ~ doseranks + I(doseranks^2))
+    Ushape <- coef(modquad)[3] >= 0
+
+    ################ Expo fit ###############################
+    if (keepExpo)
+    {
+      # fit of the exponential model with two starting values for abs(e)
+      # 0.1*max(dose) or max(dose)
+      startExpo3p.1 <- startvalExp3pnls.1(xm = doseu, ym = signalm,  
+                                          increase = increaseranks,
+                                          Ushape = Ushape)
+      startExpo3p.2 <- startvalExp3pnls.2(xm = doseu, ym = signalm,  
+                                          increase = increaseranks,
+                                          Ushape = Ushape)
+      if ((increaseranks & !Ushape) | (!increaseranks & Ushape)) # e < 0
+      {
+        # Fit of the 3 par model
+        Expo3p.1 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.1, data = dset, 
+                            lower = c(-Inf, -Inf, -Inf), 
+                            upper = c(Inf, Inf, 0),
+                            algorithm = "port"), silent = TRUE))
+        
+        Expo3p.2 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.2, data = dset, 
+                            lower = c(-Inf, -Inf, -Inf), 
+                            upper = c(Inf, Inf, 0),
+                            algorithm = "port"), silent = TRUE))
+      } else # e > 0
+      {
+        # Fit of the 3 par model
+        Expo3p.1 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.1, data = dset, 
+                            lower = c(-Inf, -Inf, 0), 
+                            algorithm = "port"), silent = TRUE))
+        Expo3p.2 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.2, data = dset, 
+                            lower = c(-Inf, -Inf, 0), 
+                            algorithm = "port"), silent = TRUE))
+      }
+      #### convergence of both models
+      if ((!inherits(Expo3p.1, "try-error")) & (!inherits(Expo3p.2, "try-error")))
+      {
+        AICExpo3p.1 <- round(AIC(Expo3p.1, k = kcrit), digits = AICdigits)
+        AICExpo3p.2 <- round(AIC(Expo3p.2, k = kcrit), digits = AICdigits)
+        if (AICExpo3p.1 < AICExpo3p.2)
+        {
+          Expo <- Expo3p.1
+          AICExpoi <- AICExpo3p.1
+        } else
+        {
+          Expo <- Expo3p.2
+          AICExpoi <- AICExpo3p.2
+        }
+      } else
+        #### no convergence of both models
+        if (inherits(Expo3p.1, "try-error") & inherits(Expo3p.2, "try-error"))
+        {
+          keepExpo <- FALSE
+          AICExpoi <- Inf
+          Expo <- Expo3p.1 # we could have given Expo3p.2
+        } else 
+          #### convergence only of Expo3p.2
+          if ((!inherits(Expo3p.2, "try-error")) & inherits(Expo3p.1, "try-error"))
+          {
+            Expo <- Expo3p.2
+            AICExpoi <- round(AIC(Expo3p.2, k = kcrit), digits = AICdigits)
+          } else
+            #### convergence only of Expo3p.1
+            if ((!inherits(Expo3p.1, "try-error")) & inherits(Expo3p.2, "try-error"))
+            {
+              Expo <- Expo3p.1
+              AICExpoi <- round(AIC(Expo3p.1, k = kcrit), digits = AICdigits)
+            }
+    } else (AICExpoi <- Inf)
+    
+    ################## Hill fit ##########################
+    if (keepHill)
+    {
+      startHill <- startvalHillnls2(x = dose, y = signal, xm = doseu, ym = signalm,  
+                                    increase = increaseminmax)
+      Hill <- suppressWarnings(try(nls(formHill, start = startHill, data = dset, 
+                      lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
+      if (!inherits(Hill, "try-error"))
+      {
+        AICHilli <- round(AIC(Hill, k = kcrit), digits = AICdigits)
+      } else 
+      {
+        keepHill <- FALSE
+        AICHilli <- Inf
+      }
+    } else (AICHilli <- Inf)
+    
+    ############### Lprobit fit #################
+    if (keepLprobit)
+    {
+      startLprobit <- startvalLprobitnls2(x = dose, y = signal, xm = doseu, ym = signalm,  
+                                          increase = increaseminmax)
+      Lprobit <- suppressWarnings(try(nls(formLprobit, start = startLprobit, data = dset, 
+                         lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
+      if (!inherits(Lprobit, "try-error"))
+      {
+        AICLprobiti <- round(AIC(Lprobit, k = kcrit), digits = AICdigits)
+      } else 
+      {
+        keepLprobit <- FALSE
+        AICLprobiti <- Inf
+      }
+    } else (AICLprobiti <- Inf)
+    
+    
+    ################# LGauss fit ####################
+    if (keepLGauss)
+    {
+      startLGauss5p <- startvalLGauss5pnls(xm = doseu, ym = signalm,  
+                                           Ushape = Ushape)
+      startLGauss4p <- startvalLGauss4pnls(xm = doseu, ym = signalm,  
+                                           Ushape = Ushape)
+      LGauss5p <- suppressWarnings(try(nls(formLGauss5p, start = startLGauss5p, data = dset,
+                          lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+      LGauss4p <- suppressWarnings(try(nls(formLGauss4p, start = startLGauss4p, data = dset,
+                          lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+      #### convergence of both models
+      if ((!inherits(LGauss4p, "try-error")) & (!inherits(LGauss5p, "try-error")))
+      {
+        AICLGauss4p <- round(AIC(LGauss4p, k = kcrit), digits = AICdigits)
+        AICLGauss5p <- round(AIC(LGauss5p, k = kcrit), digits = AICdigits)
+        if (AICLGauss5p < AICLGauss4p)
+        {
+          LGauss <- LGauss5p
+          AICLGaussi <- AICLGauss5p
+        } else
+        {
+          LGauss <- LGauss4p
+          equalcdLG <- TRUE
+          AICLGaussi <- AICLGauss4p
+        }
+      } else
+        #### no convergence of both models
+        if (inherits(LGauss4p, "try-error") & inherits(LGauss5p, "try-error"))
+        {
+          keepLGauss <- FALSE
+          AICLGaussi <- Inf
+          LGauss <- LGauss5p # we could have given LGauss4p
+        } else 
+          #### convergence only of LGauss4p
+          if ((!inherits(LGauss4p, "try-error")) & inherits(LGauss5p, "try-error"))
+          {
+            equalcdLG <- TRUE
+            LGauss <- LGauss4p
+            AICLGaussi <- round(AIC(LGauss4p, k = kcrit), digits = AICdigits)
+          } else
+            #### convergence only of LGauss5p
+            if ((!inherits(LGauss5p, "try-error")) & inherits(LGauss4p, "try-error"))
+            {
+              LGauss <- LGauss5p
+              AICLGaussi <- round(AIC(LGauss5p, k = kcrit), digits = AICdigits)
+            }
+    } else (AICLGaussi <- Inf)
+    
+    
+    ################### Gauss fit ########################
+    if (keepGauss)
+    {
+      startGauss5p <- startvalGauss5pnls(xm = doseu, ym = signalm,  
+                                         Ushape = Ushape)
+      Gauss5p <- suppressWarnings(try(nls(formGauss5p, start = startGauss5p, data = dset, 
+                         lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+      startGauss4p <- startvalGauss4pnls(xm = doseu, ym = signalm,  
+                                         Ushape = Ushape)
+      Gauss4p <- suppressWarnings(try(nls(formGauss4p, start = startGauss4p, data = dset, 
+                         lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+      
+      #### convergence of both models
+      if ((!inherits(Gauss4p, "try-error")) & (!inherits(Gauss5p, "try-error")))
+      {
+        AICGauss4p <- round(AIC(Gauss4p, k = kcrit), digits = AICdigits)
+        AICGauss5p <- round(AIC(Gauss5p, k = kcrit), digits = AICdigits)
+        if (AICGauss5p < AICGauss4p)
+        {
+          Gauss <- Gauss5p
+          AICGaussi <- AICGauss5p
+        } else
+        {
+          Gauss <- Gauss4p
+          equalcdG <- TRUE
+          AICGaussi <- AICGauss4p
+        }
+      } else
+        #### no convergence of both models
+        if (inherits(Gauss4p, "try-error") & inherits(Gauss5p, "try-error"))
+        {
+          keepGauss <- FALSE
+          AICGaussi <- Inf
+          Gauss <- Gauss5p # we could have given Gauss4p
+        } else 
+          #### convergence only of Gauss4p
+          if ((!inherits(Gauss4p, "try-error")) & inherits(Gauss5p, "try-error"))
+          {
+            equalcdG <- TRUE
+            Gauss <- Gauss4p
+            AICGaussi <- round(AIC(Gauss4p, k = kcrit), digits = AICdigits)
+          } else
+            #### convergence only of Gauss5p
+            if ((!inherits(Gauss5p, "try-error")) & inherits(Gauss4p, "try-error"))
+            {
+              Gauss <- Gauss5p
+              AICGaussi <- round(AIC(Gauss5p, k = kcrit), digits = AICdigits)
+            }
+    } else (AICGaussi <- Inf)
+    
+    ######### Fit of the linear model ############################    
+    if (keeplin)
+    {
+      lin <- lm(signal ~ dose, data = dset)
+      AIClini <- round(AIC(lin, k = kcrit), digits = AICdigits)
+    } else (AIClii <- Inf)
+    
+    
+    ######## Fit of the null model (constant) ###########################
+    constmodel <- lm(signal ~ 1, data = dset)
+    AICconsti <-  round(AIC(constmodel, k = kcrit), digits = AICdigits)
+    
+    # Choice of the best fit
+    AICvec <- c(AICGaussi, AICLGaussi, AICHilli, AICLprobiti, AICExpoi, AIClini)
+    # Order in the default choice you want in case of equality of AIC values
+    indmodeli <- which.min(AICvec)
+    AICmin <- AICvec[indmodeli]
+    if (AICmin > AICconsti - 2) # we keep the null model
+    {
+      fit <- constmodel
+      indmodeli <- 7 # constant model
+      nbpari <- 1
+      b.i <- NA
+      c.i <- mean(dset$signal)
+      d.i <- NA
+      e.i <- NA
+      f.i <- NA
+       SDres.i <- sigma(constmodel)
+    } else
+    {
+      if (indmodeli == 1)
+      {
+        fit <- Gauss
+        par <- coef(fit)
+        b.i <- par["b"]
+        c.i <- ifelse(equalcdG, par["d"], par["c"])
+        d.i <- par["d"]
+        e.i <- par["e"]
+        f.i <- par["f"]
+        SDres.i <- sigma(fit)
+        nbpari <- ifelse(equalcdG, 4, 5)
+      } else
+        if (indmodeli == 2)
+        {
+          fit <- LGauss
+          par <- coef(fit)
+          b.i <- par["b"]
+          c.i <- ifelse(equalcdLG, par["d"], par["c"])
+          d.i <- par["d"]
+          e.i <- par["e"]
+          f.i <- par["f"]
+          SDres.i <- sigma(fit)
+          nbpari <- ifelse(equalcdLG, 4, 5)
+        } else
+          if (indmodeli == 3)
+          {
+            fit <- Hill
+             par <- coef(fit)
+            b.i <- par["b"]
+            c.i <- par["c"]
+            d.i <- par["d"]
+            e.i <- par["e"]
+            f.i <- NA
+            SDres.i <- sigma(fit)
+            nbpari <- 4
+          } else
+            if (indmodeli == 4)
+            {
+              fit <- Lprobit
+              par <- coef(fit)
+              b.i <- par["b"]
+              c.i <- par["c"]
+              d.i <- par["d"]
+              e.i <- par["e"]
+              f.i <- 0 # to enable the use of the LGauss function to plot the model and calculate the BMD 
+              SDres.i <- sigma(fit)
+              nbpari <- 4
+            } else
+              if (indmodeli == 5)
+              {
+                fit <- Expo
+                par <- coef(fit)
+                b.i <- par["b"]
+                c.i <- NA
+                d.i <- par["d"]
+                e.i <- par["e"]
+                f.i <- NA
+                SDres.i <- sigma(fit)
+                nbpari <- 3
+              } else
+                if (indmodeli == 6)
+                {
+                  fit <- lin
+                  par <- coef(fit)
+                  b.i <- par[2]
+                  c.i <- NA
+                  d.i <- par[1]
+                  e.i <- NA
+                  f.i <- NA
+                  SDres.i <- sigma(fit)
+                  nbpari <- 2
+                } 
+    }
+    
+    # diagnostics on residuals
+    resi <- residuals(fit)
+    ShapiroPi <- shapiro.test(resi)$p.value # it would be better on studentized residuals
+                                          # but to write for linear model 
+                                          # the use of nlstools will take machine time
+    resi.sign <- ifelse(resi > 0, "p", "n")
+    runsPi <- runs.test(as.factor(resi.sign), alternative = "less")$p.value
+    # alternative = "less" because we want to detect under-mixing trend
+    
+    # quadratic model on abs(residuals) heteroscedasticity
+    modquad.absresi <- lm(abs(resi) ~ doseranks + I(doseranks^2))
+    mod0.absresi <- lm(abs(resi) ~ 1)
+    heteroPi <- anova(modquad.absresi, mod0.absresi)[[6]][2]
+    # quadratic model on residuals (quadratic trend on residuals)
+    modquad.resi <- lm(resi ~ doseranks + I(doseranks^2))
+    mod0.resi <- lm(resi ~ 1)
+    trendPi <- anova(modquad.resi, mod0.resi)[[6]][2]
+    
+    
+    if (progressbar)
+    {
+      Sys.sleep(0.1)
+      setTxtProgressBar(pb, i)
+      
+    }
+    return(c(indmodeli, nbpari, b.i, c.i, d.i, e.i, f.i, SDres.i,
+             AIClini, AICExpoi, AICHilli, AICLprobiti, AICLGaussi, AICGaussi,  
+              ShapiroPi, runsPi, heteroPi, trendPi))
+    
+  } ##################################### and of fitoneitem
+
+  # Loop on items
+  # parallel or sequential computation
+  if (parallel != "no") 
+  {
+    if (parallel == "snow") type <- "PSOCK"
+    else if (parallel == "multicore") type <- "FORK"
+    clus <- parallel::makeCluster(ncpus, type = type)
+    res <- parallel::parSapply(clus, 1:nselect, fitoneitem)
+    parallel::stopCluster(clus)
+  }
+  else
+  {
+    res <- sapply(1:nselect, fitoneitem)
+  }
+  
+  
+  dfit <- as.data.frame(t(res))
+  colnames(dfit) <- c("model", "nbpar", "b", "c", "d", "e", "f", "SDres",
+                     "AIC.L", "AIC.E", "AIC.H", "AIC.LP", "AIC.LGP", "AIC.GP",
+                     "ShapiroP", "runsP", "heteroP", "trendP")
+  dfit <- cbind(data.frame(id = row.names(data[selectindex,]), 
+                           irow = selectindex, 
+                           adjpvalue = adjpvalue),
+                        dfit)
+
+    # close progress bar
+  if (progressbar) close(pb)
+  
+  # removing of null models (const)
+  dc <- dfit[dfit$model != 7, ]
+  nselect <- nrow(dc)
+  
+  # removing fits eliminated by the runs test on residuals
+  if (runs.filter)
+  {
+    dc <- dc[dc$runsP > 0.05, ]
+    nselect <- nrow(dc)
+  }
+  # removing fits eliminated by  the shapiro test on residuals
+  if (Shapiro.filter)
+  {
+    dc <- dc[dc$ShapiroP > 0.05, ]
+    nselect <- nrow(dc)
+  }
+  
+  # Model names in the order of indmodel
+  modelnames <- c("Gauss-probit", "log-Gauss-probit", "Hill", "log-probit", "exponential", "linear")
+  dc$model <- modelnames[dc$model] 
+
+    # definition on the typology
+  typology <- character(length = nselect)
+  for (i in 1:nselect) # réécrire avec un which !!!!!!!!!!!!!!!!!!!!
+  {
+    di <- dc[i,]
+    if (di$model == "exponential" & di$e > 0 & di$b > 0) typology[i] <- "E.inc.convex" else
+    if (di$model == "exponential" & di$e <= 0 & di$b > 0) typology[i] <- "E.dec.convex" else
+    if (di$model == "exponential" & di$e <= 0 & di$b <= 0) typology[i] <- "E.inc.concave" else
+    if (di$model == "exponential" & di$e > 0 & di$b <= 0) typology[i] <- "E.dec.concave" else
+    if (di$model == "Hill" & di$c > di$d) typology[i] <- "H.inc" else
+    if (di$model == "Hill" & di$c <= di$d) typology[i] <- "H.dec" else
+    if (di$model == "log-probit" & di$c > di$d) typology[i] <- "LP.inc" else
+    if (di$model == "log-probit" & di$c <= di$d) typology[i] <- "LP.dec" else
+    if (di$model == "log-Gauss-probit" & di$f < 0) typology[i] <- "LGP.U" else
+    if (di$model == "log-Gauss-probit" & di$f >=0) typology[i] <- "LGP.bell" else
+    if (di$model == "Gauss-probit" & di$f < 0) typology[i] <- "GP.U" else
+    if (di$model == "Gauss-probit" & di$f >=0) typology[i] <- "GP.bell" else
+    if (di$model == "linear" & di$b > 0) typology[i] <- "L.inc" else
+    if (di$model == "linear" & di$b <= 0) typology[i] <- "L.dec" 
+  }
+  dc$typology <- typology
+  
+  # number of null models
+  n.failure <- length(itemselect$selectindex) - nrow(dc)
+  
+  if (sigmoid.model == "Hill")
+  {
+    dc$model <- factor(dc$model, # to specify the order
+                    levels = c("Hill", "linear", "exponential", "Gauss-probit", "log-Gauss-probit"))
+    dc$typology <- factor(typology,
+                        levels = c("H.inc", "H.dec", "L.inc", "L.dec", 
+                                   "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
+                                   "GP.U", "GP.bell", "LGP.U", "LGP.bell"))
+  } else
+  {
+    dc$model <- factor(dc$model, # to specify the order
+                    levels = c("log-probit", "linear", "exponential", "Gauss-probit", "log-Gauss-probit")) 
+    dc$typology <- factor(typology,
+                        levels = c("LP.inc", "LP.dec", "L.inc", "L.dec", 
+                                   "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
+                                   "GP.U", "GP.bell", "LGP.U", "LGP.bell"))
+    
+  }
+  
+  fitres <- dc
+
+  # Plot of fitted DRCs
+  pdf("drcfitplot.pdf", width = 7, height = 10) # w and h in inches
+  plotfit(fitres, 
+          dose = dose, 
+          data = data, 
+          data.mean = data.mean, 
+          xlog10 = FALSE, 
+          allpoints = TRUE)
+  dev.off()
+  
+
+  reslist <- list(fitres = fitres, omicdata = itemselect$omicdata, n.failure = n.failure) 
+
+  return(structure(reslist, class = "drcfit"))
+}
+
+print.drcfit <- function(x, ...) # passage du ... ?
+{
+  if (!inherits(x, "drcfit"))
+    stop("Use only with 'drcfit' objects")
+  
+  tfit <- table(x$fitres$model)
+  nsucces <- nrow(x$fitres)
+  nfirstselect <- x$n.failure + nsucces
+  if (x$n.failure > 0)
+   cat(x$n.failure,"dose-response curves out of ",nfirstselect, " previously selected were removed.\n")
+  cat("Distribution of the chosen models among the ",nsucces," fitted dose-response curves :\n")
+  print(tfit)
+  ttypology <- table(x$fitres$typology)
+  cat("Distribution of the typology of the ",nsucces," fitted dose-response curves :\n")
+  print(ttypology)
+}
+
+plot.drcfit <- function(x, ...)
+{
+  if (!inherits(x, "drcfit"))
+    stop("Use only with 'drcfit' objects")
+  plotfit(x$fitres[1:min(nrow(x$fitres),20), ], pmfrow = c(4,5),
+          dose = x$omicdata$dose, 
+          data = x$omicdata$data, 
+          data.mean = x$omicdata$data.mean, 
+          xlog10 = FALSE, 
+          allpoints = TRUE, ...)
+# a ggplot alternative will be debelopped  
+}
+
+

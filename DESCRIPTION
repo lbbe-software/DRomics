@@ -1,0 +1,14 @@
+Package: DRomics
+Title: Dose Response for Omics
+Version: 0.0-1
+Authors@R: c(person("Marie-Laure", "Delignette-Muller", role = "aut", email = "marielaure.delignettemuller@vetagro-sup.fr"),
+             person("Elise", "Billoir", role = "aut", email = "elise.billoir@univ-lorraine.fr"),
+             person("Floriane", "Larras", role = "ctb", email = "floriane.larras@ufz.de"),
+             person("Aurélie", "Siberchicot", role = c("aut", "cre"), email = "aurelie.siberchicot@univ-lyon1.fr"))
+Description: Fits dose-response curves to omic data and estimates corresponding benchmark doses.
+Depends: R (>= 3.4.0), limma, tseries, utils, grDevices
+Imports: stats, graphics, ggplot2
+Suggests: parallel
+License: GPL (>= 2)
+Encoding: UTF-8
+Contact: Marie-Laure Delignette-Muller <marielaure.delignettemuller at vetagro-sup.fr>

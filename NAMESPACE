@@ -1,0 +1,28 @@
+### Imports
+import(stats)
+import(graphics)
+import(ggplot2)
+importFrom("limma", normalizeBetweenArrays, lmFit, eBayes, topTable)
+importFrom("tseries", runs.test)
+importFrom("utils", txtProgressBar, setTxtProgressBar, read.table)
+importFrom("grDevices", pdf, dev.off)
+
+### Exports
+
+#omicdata class
+export(omicdata)
+S3method(print, omicdata)
+
+#itemselect class
+export(itemselect)
+S3method(print, itemselect)
+
+#drcfit class
+export(drcfit)
+S3method(print, drcfit)
+S3method(plot, drcfit)
+
+#bmdcalc class
+export(bmdcalc)
+S3method(print, bmdcalc)
+S3method(plot, bmdcalc)
