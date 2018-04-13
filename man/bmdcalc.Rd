@@ -27,10 +27,10 @@ residual standard deviation of the dsoe response curve.}
 
 \item{x}{Threshold given as a percentage and defining the BMD_xfold as 
 the dose at which the response is reaching 
-y0 +/- (x/100)*y0 with y0 the level at the control given by the dose response curve.}
+y0 +/- (x/100)*y0 with y0 the level at the control given by the dose response curve.
 
 
-\item{x}{An object of class \code{"bmdcalc"}.}
+For \code{print} and \code{plot} functions, an object of class \code{"bmdcalc"}.}
 
 \item{BMDtype}{The type of BMD to plot, \code{"zSD"} (default choice) or \code{"xfold"}.}
 
