@@ -46,7 +46,7 @@ y0 +/- (x/100)*y0 with y0 the level at the control given by the dose response cu
 }
 
 \details{
-TO WRITE !!!!!!!!!!!!!!!!!!!!
+TO WRITE SOON!!!!!!!!!!!!!!!!!!!!
 }
 
 \value{ 
