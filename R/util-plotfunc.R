@@ -59,13 +59,13 @@ plotfit <- function(subd, dose, data, data.mean, pmfrow = c(7,5), pmar = c(2.2, 
         
         if (addBMD.xfold)
         {
-          segments(x0=log10(subd$BMD.xfold[i]), x1=log10(subd$BMD.xfold[i]), y0=0, y1=subd$yp[i], col = colBMD.xfold)
-          segments(x0=-1, x1=log10(subd$BMD.xfold[i]), y0=subd$yp[i], y1=subd$yp[i], col = colBMD.xfold)
+          segments(x0=log10(subd$BMD.xfold[i]), x1=log10(subd$BMD.xfold[i]), y0=0, y1=subd$yp[i], col = "blue")
+          segments(x0=-1, x1=log10(subd$BMD.xfold[i]), y0=subd$yp[i], y1=subd$yp[i], col = "blue")
         }
       if (addBMD.SD)
       {
-        segments(x0=log10(subd$BMD.SD[i]), x1=log10(subd$BMD.SD[i]), y0=0, y1=subd$ysd[i], col = colBMD.SD)
-        segments(x0=-1, x1=log10(subd$BMD.SD[i]), y0=subd$ysd[i], y1=subd$ysd[i], col = colBMD.SD)
+        segments(x0=log10(subd$BMD.SD[i]), x1=log10(subd$BMD.SD[i]), y0=0, y1=subd$ysd[i], col = "blue")
+        segments(x0=-1, x1=log10(subd$BMD.SD[i]), y0=subd$ysd[i], y1=subd$ysd[i], col = "blue")
       }
       
     }
