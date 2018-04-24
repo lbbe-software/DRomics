@@ -25,9 +25,6 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
                    progressbar = TRUE, saveplot2pdf = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
 {
-  # options that will be removed
-  runs.filter <- FALSE
-  Shapiro.filter <- FALSE
   # Checks
   if (!inherits(itemselect, "itemselect"))
     stop("Use only with 'itemselect' objects, created with the function itemselect")
@@ -411,20 +408,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
                 } 
     }
     
-    # diagnostics on residuals
+    # diagnostics on residuals (quadratic trend on residuals) 
     resi <- residuals(fit)
-    ShapiroPi <- shapiro.test(resi)$p.value # it would be better on studentized residuals
-    # but to write for linear model 
-    # the use of nlstools will take machine time
-    resi.sign <- ifelse(resi > 0, "p", "n")
-    runsPi <- runs.test(as.factor(resi.sign), alternative = "less")$p.value
-    # alternative = "less" because we want to detect under-mixing trend
-    
-    # quadratic model on abs(residuals) heteroscedasticity
-    modquad.absresi <- lm(abs(resi) ~ doseranks + I(doseranks^2))
-    mod0.absresi <- lm(abs(resi) ~ 1)
-    heteroPi <- anova(modquad.absresi, mod0.absresi)[[6]][2]
-    # quadratic model on residuals (quadratic trend on residuals)
     modquad.resi <- lm(resi ~ doseranks + I(doseranks^2))
     mod0.resi <- lm(resi ~ 1)
     trendPi <- anova(modquad.resi, mod0.resi)[[6]][2]
@@ -437,8 +422,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
       
     }
     return(c(indmodeli, nbpari, b.i, c.i, d.i, e.i, f.i, SDres.i,
-             AIClini, AICExpoi, AICHilli, AICLprobiti, AICLGaussi, AICGaussi,  
-             ShapiroPi, runsPi, heteroPi, trendPi))
+             AIClini, AICExpoi, AICHilli, AICLprobiti, AICLGaussi, 
+             AICGaussi,trendPi))
     
   } ##################################### and of fitoneitem
   
@@ -457,36 +442,26 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     res <- sapply(1:nselect, fitoneitem)
   }
   
-  
-  dfit <- as.data.frame(t(res))
-  colnames(dfit) <- c("model", "nbpar", "b", "c", "d", "e", "f", "SDres",
-                      "AIC.L", "AIC.E", "AIC.H", "AIC.LP", "AIC.LGP", "AIC.GP",
-                      "ShapiroP", "runsP", "heteroP", "trendP")
-  dfit <- cbind(data.frame(id = row.names(data[selectindex,]), 
-                           irow = selectindex, 
-                           adjpvalue = adjpvalue),
-                dfit)
-  
   # close progress bar
   if (progressbar) close(pb)
   
-  # removing of null models (const)
-  dc <- dfit[dfit$model != 7, ]
-  nselect <- nrow(dc)
+  dres <- as.data.frame(t(res))
+  colnames(dres) <- c("model", "nbpar", "b", "c", "d", "e", "f", "SDres",
+                      "AIC.L", "AIC.E", "AIC.H", "AIC.LP", "AIC.LGP", "AIC.GP",
+                      "trendP")
+
+  dres <- cbind(data.frame(id = row.names(data[selectindex,]), 
+                           irow = selectindex, 
+                           adjpvalue = adjpvalue),
+                           dres)
+    
+  # removing of null models (const, model no 7) and 
+  # fits eliminated by the quadratic trend test on residuals
+  dres <- dres[(dres$model != 7) & (dres$trendP > 0.05), ]
+  nselect <- nrow(dres)
   
-  # removing fits eliminated by the runs test on residuals
-  if (runs.filter)
-  {
-    dc <- dc[dc$runsP > 0.05, ]
-    nselect <- nrow(dc)
-  }
-  # removing fits eliminated by  the shapiro test on residuals
-  if (Shapiro.filter)
-  {
-    dc <- dc[dc$ShapiroP > 0.05, ]
-    nselect <- nrow(dc)
-  }
-  
+  dc <- dres[, c("id", "irow", "adjpvalue", "model", "nbpar", "b", "c", "d", "e", "f", "SDres")]
+
   # Model names in the order of indmodel
   modelnames <- c("Gauss-probit", "log-Gauss-probit", "Hill", "log-probit", "exponential", "linear")
   dc$model <- modelnames[dc$model] 
@@ -524,6 +499,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
                           levels = c("H.inc", "H.dec", "L.inc", "L.dec", 
                                      "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
                                      "GP.U", "GP.bell", "LGP.U", "LGP.bell"))
+    dAIC <- dres[, c("AIC.L", "AIC.E", "AIC.H", "AIC.LGP", "AIC.GP")] 
   } else
   {
     dc$model <- factor(dc$model, # to specify the order
@@ -532,14 +508,12 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
                           levels = c("LP.inc", "LP.dec", "L.inc", "L.dec", 
                                      "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
                                      "GP.U", "GP.bell", "LGP.U", "LGP.bell"))
-    
+    dAIC <- dres[, c("AIC.L", "AIC.E", "AIC.LP", "AIC.LGP", "AIC.GP")] 
   }
-  
-  fitres <- dc
   
   # Plot of fitted DRCs
   pdf("drcfitplot.pdf", width = 7, height = 10) # w and h in inches
-  plotfit(fitres, 
+  plotfit(dc, 
           dose = dose, 
           data = data, 
           data.mean = data.mean, 
@@ -548,7 +522,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   dev.off()
   
   
-  reslist <- list(fitres = fitres, omicdata = itemselect$omicdata, n.failure = n.failure) 
+  reslist <- list(fitres = dc, omicdata = itemselect$omicdata, n.failure = n.failure, AIC.val = dAIC) 
   
   return(structure(reslist, class = "drcfit"))
 }

@@ -47,17 +47,18 @@ TO WRITE !!!!!!!!!!!!!!!!!!!!
 }
 
 \value{ 
-   \code{drcfit} returns an object of class \code{"drcfit"}, a list with 3 components:
+   \code{drcfit} returns an object of class \code{"drcfit"}, a list with 4 components:
     
-   \item{fitres}{ a data frame reporting the results of the fit on each selected item
-  (I WILL HAVE TO DETAIL THIS !!!!!!!!!!!) 
-  sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}.}
+   \item{fitres}{ a data frame reporting the results of the fit on each selected item (one line per item) sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The different columns correspond to the identifier of each item (\code{id}), the row number of this item in the initial data set (\code{irow}), the adjusted p-value of the selection step (\code{adjpvalue}), the name of the best fit model (\code{model}), the number of fitted parameters (\code{nbpar}), the values of the parameters \code{b}, \code{c}, d,\code{d}, \code{e} and \code{f}, (\code{NA} for non used parameters) and the residual standard deviation (\code{SDres}).
+  }
 
     \item{omicdata}{ The corresponding object of class \code{"omicdata"} given in input 
     (component of itemselect).}
  
     \item{n.failure}{ The number of previously selected items on which the workflow failed to 
     fit an acceptable model.}
+
+    \item{AIC.val}{ a data frame reporting AIC values for each selected item (one line per item) and each fitted model (one colum per model with the AIC value fixed at \code{Inf} when the fit failed).}
 
   The print of a \code{"drcfit"} object gives TO WRITE !!!!!!!!!!!!!!.
 }
