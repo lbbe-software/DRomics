@@ -1,5 +1,5 @@
 plotfit <- function(subd, dose, data, data.mean, pmfrow = c(7,5), pmar = c(2.2, 2.2, 2.2, 0.7),
-                    xlog10 = FALSE, npts = 500, allpoints = TRUE, 
+                    xlog10 = FALSE, npts = 200, allpoints = TRUE, 
                     addBMD.xfold = FALSE, addBMD.SD = FALSE, view.axes = TRUE)
 {
   def.par <- par(no.readonly = TRUE)
@@ -115,6 +115,61 @@ plotfit <- function(subd, dose, data, data.mean, pmfrow = c(7,5), pmar = c(2.2, 
   par(def.par)    
   
 }
+
+
+plotfitsubset <- function(subd, dose, data, data.mean, npts = 500)
+{
+  nobs <- length(dose)
+  doseu <- as.numeric(colnames(data.mean)) # sorted unique doses
+  ndose <- length(doseu)
+  xplot <- seq(0, max(dose), length.out = npts)
+  nitems <- nrow(subd)
+  dataobs <- data.frame(dose = numeric(), signal = numeric(), 
+                        id = character())
+  dataobsmean <- data.frame(dose = numeric(), signal = numeric(), 
+                            id = character())
+  datatheo <- data.frame(dose = numeric(), signal = numeric(), 
+                         id = character())
+  # dataobs <- data.frame(dose = numeric(), signal = numeric(), 
+  #                       id = factor(levels = subd$id))
+  # dataobsmean <- data.frame(dose = numeric(), signal = numeric(), 
+  #                       id = factor(levels = subd$id))
+  # datatheo <- data.frame(dose = numeric(), signal = numeric(), 
+  #                        id = factor(levels = subd$id))
+  for (i in 1:nitems)
+  {
+      irow <- subd$irow[i]
+      ident <- subd$id[i]
+      datai <- data[irow, ]
+      datameani <- data.mean[irow, ]
+      # fitted curves
+      if (subd$model[i] == "exponential") datapred <- fExpo(x = xplot, d = subd$d[i], b = subd$b[i], e = subd$e[i])
+      if (subd$model[i]== "Hill") datapred <- fHill(x = xplot, c = subd$c[i], d = subd$d[i], b = subd$b[i], e = subd$e[i])
+      if (subd$model[i]== "log-Gauss-probit" | subd$model[i]== "log-probit") datapred <- fLGauss5p(x = xplot, c = subd$c[i], d = subd$d[i], b = subd$b[i], e = subd$e[i], f = subd$f[i])
+      if (subd$model[i]== "Gauss-probit") datapred <- fGauss5p(x = xplot, c = subd$c[i], d = subd$d[i], b = subd$b[i], e = subd$e[i], f = subd$f[i])
+      if (subd$model[i]== "linear") datapred <- xplot * subd$b[i] + subd$d[i]
+      if (subd$model[i]== "const") datapred <- rep(mean(datai), length(xplot))
+      
+      dataobs <- rbind(dataobs, 
+                       data.frame(dose = dose, signal = datai, id = rep(ident, nobs)))
+      dataobsmean <- rbind(dataobsmean, 
+                       data.frame(dose = doseu, signal = datameani, id = rep(ident, ndose)))
+      datatheo <- rbind(datatheo, 
+                       data.frame(dose = xplot, signal = datapred, id = rep(ident, npts)))
+  }
+  
+    dataobs$id <- factor(dataobs$id, levels = subd$id)
+    dataobsmean$id <- factor(dataobsmean$id, levels = subd$id)
+    datatheo$id <- factor(datatheo$id, levels = subd$id)
+    
+    g <- ggplot(dataobs, aes(x = dose, y = signal)) + geom_point(shape = 1) +
+     facet_wrap(~ id, scales = "free_y") +
+    geom_point(data = dataobsmean, shape = 19) +
+    geom_line(data = datatheo, colour = "red")
+  return(g)
+}
+
+
 
 
 

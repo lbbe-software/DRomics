@@ -15,7 +15,7 @@ drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
 
 \method{print}{drcfit}(x, \dots)
 
-\method{plot}{drcfit}(x, \dots)
+\method{plot}{drcfit}(x, items, \dots)
 }
 
 \arguments{
@@ -38,6 +38,10 @@ choice) or \code{"probit"}.}
 
 
 \item{x}{An object of class \code{"drcfit"}.}
+
+\item{items}{Argument of the \code{plot.drcfit} function : the number of the first fits to
+  plot (20 items max) or the character vector
+  specifying the identifiers of the items to plot (20 items max).}
 
 \item{\dots}{ further arguments passed to graphical or print functions.}
 }

@@ -24,10 +24,19 @@ datatxt <- system.file("extdata", "metabolo_norm.txt", package="DRomics")
 # no options in shiny
 (f <- drcfit(s_quad, progressbar = TRUE))
 plot(f)
+# Alternative plots
+# with a chosen number of first items
+plot(f, items = 12) 
+# to plot only the specified items in the specified order
+# plot(f, items = c("384.2", "383.1", "301.1", "363.1"))
+
 
 # Comparison of computation time with parallel version
 # system.time(f1 <- drcfit(s_quad, progressbar = TRUE))
 # system.time((f2 <- drcfit(s_quad, progressbar = FALSE, parallel = "snow", ncpus = 4)))
+
+
+# with specified items
 
 # calculation of benchmark doses
 # options in shiny : z (numerical positive value), x (numerical positive value : percentage)

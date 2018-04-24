@@ -544,17 +544,46 @@ print.drcfit <- function(x, ...) # passage du ... ?
   print(ttypology)
 }
 
-plot.drcfit <- function(x, ...)
+plot.drcfit <- function(x, items, ...)
 {
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects")
-  plotfit(x$fitres[1:min(nrow(x$fitres),20), ], pmfrow = c(4,5),
-          dose = x$omicdata$dose, 
-          data = x$omicdata$data, 
-          data.mean = x$omicdata$data.mean, 
-          xlog10 = FALSE, 
-          allpoints = TRUE, ...)
-  # a ggplot alternative will be debelopped  
+  # plotfit(x$fitres[1:min(nrow(x$fitres),20), ], pmfrow = c(4,5),
+  #         dose = x$omicdata$dose, 
+  #         data = x$omicdata$data, 
+  #         data.mean = x$omicdata$data.mean, 
+  #         xlog10 = FALSE, 
+  #         allpoints = TRUE, ...)
+  
+  # a ggplot alternative
+  if(missing(items))
+  {
+    items <- 20
+  }
+  if(!( is.numeric(items) | is.character(items)) )
+    stop("Wrong argument 'items'. It must be a number inferior or equal to 20 or
+         a character vector indicating the identifiers of the items who want to plot.")
+  if (is.numeric(items))
+  {
+    if (items > 20)
+      warning("Only the first 20 fits were plotted.")
+    subd <- x$fitres[1:min(nrow(x$fitres),items), ]
+  } else
+  if (is.character(items))
+  {
+    subd <- x$fitres[x$fitres$id %in% items,]
+    if (nrow(subd) > 20)
+    {
+      subd <- subd[1:20, ]
+      warning("Only the first 20 specified fits were plotted.")
+    }
+  } 
+  plotfitsubset(subd, 
+                dose = f$omicdata$dose, 
+                data = f$omicdata$data, 
+                data.mean = f$omicdata$data.mean, 
+                npts = 500) ########################### how to pass the ... using ggplot2 ? 
+  
 }
 
 
