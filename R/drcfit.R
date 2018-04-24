@@ -447,7 +447,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   
   dres <- as.data.frame(t(res))
   colnames(dres) <- c("model", "nbpar", "b", "c", "d", "e", "f", "SDres",
-                      "AIC.L", "AIC.E", "AIC.H", "AIC.LP", "AIC.LGP", "AIC.GP",
+                      "AIC.L", "AIC.E", "AIC.H", "AIC.lP", "AIC.lGP", "AIC.GP",
                       "trendP")
 
   dres <- cbind(data.frame(id = row.names(data[selectindex,]), 
@@ -477,10 +477,10 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
           if (di$model == "exponential" & di$e > 0 & di$b <= 0) typology[i] <- "E.dec.concave" else
             if (di$model == "Hill" & di$c > di$d) typology[i] <- "H.inc" else
               if (di$model == "Hill" & di$c <= di$d) typology[i] <- "H.dec" else
-                if (di$model == "log-probit" & di$c > di$d) typology[i] <- "LP.inc" else
-                  if (di$model == "log-probit" & di$c <= di$d) typology[i] <- "LP.dec" else
-                    if (di$model == "log-Gauss-probit" & di$f < 0) typology[i] <- "LGP.U" else
-                      if (di$model == "log-Gauss-probit" & di$f >=0) typology[i] <- "LGP.bell" else
+                if (di$model == "log-probit" & di$c > di$d) typology[i] <- "lP.inc" else
+                  if (di$model == "log-probit" & di$c <= di$d) typology[i] <- "lP.dec" else
+                    if (di$model == "log-Gauss-probit" & di$f < 0) typology[i] <- "lGP.U" else
+                      if (di$model == "log-Gauss-probit" & di$f >=0) typology[i] <- "lGP.bell" else
                         if (di$model == "Gauss-probit" & di$f < 0) typology[i] <- "GP.U" else
                           if (di$model == "Gauss-probit" & di$f >=0) typology[i] <- "GP.bell" else
                             if (di$model == "linear" & di$b > 0) typology[i] <- "L.inc" else
@@ -498,17 +498,17 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     dc$typology <- factor(typology,
                           levels = c("H.inc", "H.dec", "L.inc", "L.dec", 
                                      "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
-                                     "GP.U", "GP.bell", "LGP.U", "LGP.bell"))
-    dAIC <- dres[, c("AIC.L", "AIC.E", "AIC.H", "AIC.LGP", "AIC.GP")] 
+                                     "GP.U", "GP.bell", "lGP.U", "lGP.bell"))
+    dAIC <- dres[, c("AIC.L", "AIC.E", "AIC.H", "AIC.lGP", "AIC.GP")] 
   } else
   {
     dc$model <- factor(dc$model, # to specify the order
                        levels = c("log-probit", "linear", "exponential", "Gauss-probit", "log-Gauss-probit")) 
     dc$typology <- factor(typology,
-                          levels = c("LP.inc", "LP.dec", "L.inc", "L.dec", 
+                          levels = c("lP.inc", "lP.dec", "L.inc", "L.dec", 
                                      "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
-                                     "GP.U", "GP.bell", "LGP.U", "LGP.bell"))
-    dAIC <- dres[, c("AIC.L", "AIC.E", "AIC.LP", "AIC.LGP", "AIC.GP")] 
+                                     "GP.U", "GP.bell", "lGP.U", "lGP.bell"))
+    dAIC <- dres[, c("AIC.L", "AIC.E", "AIC.lP", "AIC.lGP", "AIC.GP")] 
   }
   
   # Plot of fitted DRCs
