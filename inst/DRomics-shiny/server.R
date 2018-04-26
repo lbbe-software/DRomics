@@ -81,7 +81,8 @@ server <- function(input, output, session) {
           req(input$zbmdcalc, input$xbmdcalc)
             plot(mybmdcalc, BMDtype = input$BMDtype, 
                  plottype = input$plottype, 
-                 bytypology = input$bytypology)
+                 bytypology = input$bytypology, 
+                 hist.bins = input$histbin)
         })
         
         # activate the button

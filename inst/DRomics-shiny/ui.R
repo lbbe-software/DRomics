@@ -157,6 +157,13 @@ ui <- fluidPage(
                                               choices = c('ecdf' = 'ecdf',
                                                           'hist' = 'hist',
                                                           'density' = 'density')),
+                                 br(),
+                                 conditionalPanel(
+                                   condition = "input.plottype == 'hist'",
+                                   numericInput('histbin', label = 'Hist bins',
+                                                min = 1, max = 100, value = 30, step = 1, width = "100%"),
+                                   br()
+                                 ),
                                  radioButtons('bytypology', 
                                               'bytypology',
                                               choices = c('TRUE' = 'TRUE',
