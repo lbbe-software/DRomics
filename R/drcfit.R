@@ -417,10 +417,9 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     
     if (progressbar)
     {
-      Sys.sleep(0.1)
       setTxtProgressBar(pb, i)
-      
     }
+    
     return(c(indmodeli, nbpari, b.i, c.i, d.i, e.i, f.i, SDres.i,
              AIClini, AICExpoi, AICHilli, AICLprobiti, AICLGaussi, 
              AICGaussi,trendPi))
@@ -512,15 +511,17 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   }
   
   # Plot of fitted DRCs
-  pdf("drcfitplot.pdf", width = 7, height = 10) # w and h in inches
-  plotfit(dc, 
-          dose = dose, 
-          data = data, 
-          data.mean = data.mean, 
-          xlog10 = FALSE, 
-          allpoints = TRUE)
-  dev.off()
-  
+  if(saveplot2pdf) 
+  {
+    pdf("drcfitplot.pdf", width = 7, height = 10) # w and h in inches
+    plotfit(dc, 
+            dose = dose, 
+            data = data, 
+            data.mean = data.mean, 
+            xlog10 = FALSE, 
+            allpoints = TRUE)
+    dev.off()
+  }
   
   reslist <- list(fitres = dc, omicdata = itemselect$omicdata, n.failure = n.failure, AIC.val = dAIC) 
   
@@ -581,9 +582,9 @@ plot.drcfit <- function(x, items, ...)
     }
   }
   plotfitsubset(subd, 
-                dose = f$omicdata$dose, 
-                data = f$omicdata$data, 
-                data.mean = f$omicdata$data.mean, 
+                dose = x$omicdata$dose, 
+                data = x$omicdata$data, 
+                data.mean = x$omicdata$data.mean, 
                 npts = 500) ########################### how to pass the ... using ggplot2 ? 
   
 }
