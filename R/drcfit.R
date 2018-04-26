@@ -512,15 +512,17 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   }
   
   # Plot of fitted DRCs
-  pdf("drcfitplot.pdf", width = 7, height = 10) # w and h in inches
-  plotfit(dc, 
-          dose = dose, 
-          data = data, 
-          data.mean = data.mean, 
-          xlog10 = FALSE, 
-          allpoints = TRUE)
-  dev.off()
-  
+  if(saveplot2pdf) 
+  {
+    pdf("drcfitplot.pdf", width = 7, height = 10) # w and h in inches
+    plotfit(dc, 
+            dose = dose, 
+            data = data, 
+            data.mean = data.mean, 
+            xlog10 = FALSE, 
+            allpoints = TRUE)
+    dev.off()
+  }
   
   reslist <- list(fitres = dc, omicdata = itemselect$omicdata, n.failure = n.failure, AIC.val = dAIC) 
   
