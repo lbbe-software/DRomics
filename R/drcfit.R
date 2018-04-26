@@ -417,10 +417,9 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     
     if (progressbar)
     {
-      Sys.sleep(0.1)
       setTxtProgressBar(pb, i)
-      
     }
+    
     return(c(indmodeli, nbpari, b.i, c.i, d.i, e.i, f.i, SDres.i,
              AIClini, AICExpoi, AICHilli, AICLprobiti, AICLGaussi, 
              AICGaussi,trendPi))
