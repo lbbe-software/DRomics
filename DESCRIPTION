@@ -8,7 +8,7 @@ Authors@R: c(person("Marie-Laure", "Delignette-Muller", role = "aut", email = "m
 Description: Fits dose-response curves to omic data and estimates corresponding benchmark doses.
 Depends: R (>= 3.4.0), limma, tseries, utils, grDevices
 Imports: stats, graphics, ggplot2
-Suggests: parallel
+Suggests: parallel, shiny, shinyjs
 License: GPL (>= 2)
 Encoding: UTF-8
 Contact: Marie-Laure Delignette-Muller <marielaure.delignettemuller at vetagro-sup.fr>
