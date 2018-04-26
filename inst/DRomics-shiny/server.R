@@ -81,6 +81,9 @@ server <- function(input, output, session) {
     input$buttonDrcfit
     mydrcfit <- rundrcfit()
     mybmdcalc <- bmdcalc(mydrcfit, z = input$zbmdcalc, x = input$xbmdcalc)
+    print(mybmdcalc)
+    cat("\n")
+    cat("\n")
     print(head(mybmdcalc$res, n = 10))
     
     output$plotBmdcalc <- renderPlot({
