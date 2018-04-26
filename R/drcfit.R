@@ -584,9 +584,9 @@ plot.drcfit <- function(x, items, ...)
     }
   }
   plotfitsubset(subd, 
-                dose = f$omicdata$dose, 
-                data = f$omicdata$data, 
-                data.mean = f$omicdata$data.mean, 
+                dose = x$omicdata$dose, 
+                data = x$omicdata$data, 
+                data.mean = x$omicdata$data.mean, 
                 npts = 500) ########################### how to pass the ... using ggplot2 ? 
   
 }
