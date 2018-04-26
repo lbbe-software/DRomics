@@ -23,12 +23,14 @@ datatxt <- system.file("extdata", "metabolo_norm.txt", package="DRomics")
 # fit of dose response models and choice of the best fit for each item
 # no options in shiny
 (f <- drcfit(s_quad, progressbar = TRUE))
+f$fitres
 plot(f)
 # Alternative plots
 # with a chosen number of first items
 plot(f, items = 12) 
 # to plot only the specified items in the specified order
 # plot(f, items = c("384.2", "383.1", "301.1", "363.1"))
+plot(f, items = c("P_78", "AP_M52", "P_135", "AP_M1"))
 
 
 # Comparison of computation time with parallel version

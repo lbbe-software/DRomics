@@ -571,13 +571,16 @@ plot.drcfit <- function(x, items, ...)
   } else
   if (is.character(items))
   {
-    subd <- x$fitres[x$fitres$id %in% items,]
+    inditems <- match(items, x$fitres$id)
+    subd <- x$fitres[inditems, ]
+    # first written not keeping the order specified in items 
+    # subd <- x$fitres[x$fitres$id %in% items,] 
     if (nrow(subd) > 20)
     {
       subd <- subd[1:20, ]
       warning("Only the first 20 specified fits were plotted.")
     }
-  } 
+  }
   plotfitsubset(subd, 
                 dose = f$omicdata$dose, 
                 data = f$omicdata$data, 
