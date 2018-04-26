@@ -513,7 +513,9 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   # Plot of fitted DRCs
   if(saveplot2pdf) 
   {
-    pdf("drcfitplot.pdf", width = 7, height = 10) # w and h in inches
+    pathToFigs <- tempdir()
+    pdf(paste0(pathToFigs, "/drcfitplot.pdf"), width = 7, height = 10) # w and h in inches
+    message("Figures are stored in ", pathToFigs, ". This directory is temporary. It will be removed when the R session is closed.")
     plotfit(dc, 
             dose = dose, 
             data = data, 
