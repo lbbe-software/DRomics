@@ -52,7 +52,8 @@ ui <- fluidPage(
                                               choices = c('no normalization' = 'none', 
                                                           'cyclic loess' = 'cyclicloess',
                                                           quantile = 'quantile',
-                                                          scale = 'scale'))
+                                                          scale = 'scale'),
+                                              selected = 'cyclicloess')
                              )
                              )
                )
