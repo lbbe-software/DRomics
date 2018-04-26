@@ -28,6 +28,8 @@ plot(f)
 # Alternative plots
 # with a chosen number of first items
 plot(f, items = 12) 
+
+
 # to plot only the specified items in the specified order
 # plot(f, items = c("384.2", "383.1", "301.1", "363.1"))
 plot(f, items = c("P_78", "AP_M52", "P_135", "AP_M1"))

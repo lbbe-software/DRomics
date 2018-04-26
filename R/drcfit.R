@@ -573,9 +573,8 @@ plot.drcfit <- function(x, items, ...)
   {
     inditems <- match(items, x$fitres$id)
     subd <- x$fitres[inditems, ]
-    # first written not keeping the order specified in items 
-    # subd <- x$fitres[x$fitres$id %in% items,] 
-    if (nrow(subd) > 20)
+
+        if (nrow(subd) > 20)
     {
       subd <- subd[1:20, ]
       warning("Only the first 20 specified fits were plotted.")
