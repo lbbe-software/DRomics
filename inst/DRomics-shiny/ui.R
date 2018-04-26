@@ -133,8 +133,8 @@ ui <- fluidPage(
                          fixedRow(
                              sidebarPanel(
                                  width = 2,
-                                 numericInput('zbmdcalc', label = 'z', min = 0, max = 100, value = 0.05, step = 1e-03),
-                                 numericInput('xbmdcalc', label = 'x (in %)', min = 0, max = 100, value = 0.05, step = 1e-03),
+                                 numericInput('zbmdcalc', label = 'z', min = 0, max = 100, value = 1, step = 1e-02),
+                                 numericInput('xbmdcalc', label = 'x (in %)', min = 0, max = 100, value = 10, step = 1e-02),
                                  hr(),
                                  downloadButton("buttonResBmdcalc", "Download results", icon = icon("fas fa-download"))
                              ),
