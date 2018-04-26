@@ -115,6 +115,8 @@ ui <- fluidPage(
                          fixedRow(
                              mainPanel(
                                  width = 12,
+                                 verbatimTextOutput('printDrcfit'),
+                                 br(),
                                  plotOutput("plotDrcfit", width = "100%", height = "900px")
                              )
                          )

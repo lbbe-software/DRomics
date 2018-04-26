@@ -49,12 +49,14 @@ server <- function(input, output, session) {
                          detail = 'The fitting may be long if the number of selected items is high.', value = 0, {
                 for (i in 1:n) {
                     incProgress(1 / n)
-                    ggplotdrcfit <- plot(rundrcfit())
+                    mydrcfit <- rundrcfit()
                 }
             })
-            plot(ggplotdrcfit)
             
-            output$testdowload <- reactive({length(ggplotdrcfit)})
+            plotdrcfit <- plot(mydrcfit)
+            plot(plotdrcfit)
+            
+            output$testdowload <- reactive({length(mydrcfit)})
             outputOptions(output, "testdowload", suspendWhenHidden = FALSE)
             
             output$buttonDownloadDrcfitplot <- downloadHandler(
@@ -65,6 +67,10 @@ server <- function(input, output, session) {
                     file.copy("drcfitplot.pdf", file)
                 }
             )
+            
+            output$printDrcfit <- renderPrint({
+              print(mydrcfit)
+            })
         }
     })
     
