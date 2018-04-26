@@ -162,7 +162,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 500)
     dataobsmean$id <- factor(dataobsmean$id, levels = subd$id)
     datatheo$id <- factor(datatheo$id, levels = subd$id)
     
-    g <- ggplot(dataobs, aes(x = dose, y = signal)) + geom_point(shape = 1) +
+    g <- ggplot(dataobs, aes_(x = quote(dose), y = quote(signal))) + geom_point(shape = 1) +
      facet_wrap(~ id, scales = "free_y") +
     geom_point(data = dataobsmean, shape = 19) +
     geom_line(data = datatheo, colour = "red")
