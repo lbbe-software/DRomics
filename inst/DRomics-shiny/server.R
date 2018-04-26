@@ -69,13 +69,16 @@ server <- function(input, output, session) {
     })
     
     output$printBmdcalc <- renderPrint({
+      
+      req(input$zbmdcalc, input$xbmdcalc)
+      
         input$buttonDrcfit
         mydrcfit <- rundrcfit()
-        mybmdcalc <- bmdcalc(mydrcfit)
+        mybmdcalc <- bmdcalc(mydrcfit, z = input$zbmdcalc, x = input$xbmdcalc)
         print(head(mybmdcalc$res, n = 10))
 
-                
         output$plotBmdcalc <- renderPlot({
+          req(input$zbmdcalc, input$xbmdcalc)
             plot(mybmdcalc, BMDtype = input$BMDtype, 
                  plottype = input$plottype, 
                  bytypology = input$bytypology)
@@ -106,6 +109,5 @@ server <- function(input, output, session) {
                 ggsave(file, width = 8, height = 8, plot = last_plot())
             }
         )
-        
     })
 }
