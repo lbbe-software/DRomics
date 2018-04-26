@@ -42,7 +42,10 @@ ui <- fluidPage(
                                            accept = c('text/csv',
                                                       'text/comma-separated-values,
                                                       text/plain',
-                                                      '.csv'))
+                                                      '.csv')),
+                                 "You can test the DRomics shiny app with this ",
+                                 tags$a(href='DRomicspkg/transcripto_sample.txt', target='blank', 'test file', download = 'transcripto_sample.txt'),
+                                 " (choose the 'cyclic loess' method to normalize the data)."
                                  
                              ),
                              sidebarPanel(
