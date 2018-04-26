@@ -49,8 +49,8 @@ ui <- fluidPage(
                                  width = 4,
                                  radioButtons('normMethod', 
                                               'Select a method to normalize the data',
-                                              choices = c(none = 'none', 
-                                                          cyclicloess = 'cyclicloess',
+                                              choices = c('no normalization' = 'none', 
+                                                          'cyclic loess' = 'cyclicloess',
                                                           quantile = 'quantile',
                                                           scale = 'scale'))
                              )
@@ -69,17 +69,17 @@ ui <- fluidPage(
                          h3("Step 2: Selection of significantly responsive items"), br(),
                          fixedRow(
                              sidebarPanel(
-                                 width = 2,
+                                 width = 3,
                                  radioButtons('selectMethod', 
                                               'Select a method',
-                                              choices = c('quadratic' = 'quadratic', 
-                                                          'linear' = 'linear',
-                                                          'ANOVA' = 'ANOVA')),
+                                              choices = c('quadratic trend test' = 'quadratic', 
+                                                          'linear trend test' = 'linear',
+                                                          'ANOVA test' = 'ANOVA')),
                                  br(),
-                                 numericInput('FDR', label = 'FDR',
-                                              min = 0, max = 1, value = 0.05, step = 1e-03, width = "50%")),
+                                 numericInput('FDR', label = 'False Discovery Rate for the Benjamini-Hochberg correction of p-values',
+                                              min = 0, max = 1, value = 0.05, step = 1e-03, width = "100%")),
                              mainPanel(
-                                 width = 10,
+                                 width = 9,
                                  verbatimTextOutput('printItemSelect')
                              )
                          )
