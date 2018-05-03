@@ -467,25 +467,65 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   
   # definition on the typology
   typology <- character(length = nselect)
-  for (i in 1:nselect) # réécrire avec un which !!!!!!!!!!!!!!!!!!!!
+  trend <- character(length = nselect)
+ # pf <- 0.1 # if abs(f) < pf * abs(c - d) gaussian trends are considered roughly monotonous
+  
+  for (i in 1:nselect) 
   {
     di <- dc[i,]
-    if (di$model == "exponential" & di$e > 0 & di$b > 0) typology[i] <- "E.inc.convex" else
-      if (di$model == "exponential" & di$e <= 0 & di$b > 0) typology[i] <- "E.dec.convex" else
-        if (di$model == "exponential" & di$e <= 0 & di$b <= 0) typology[i] <- "E.inc.concave" else
-          if (di$model == "exponential" & di$e > 0 & di$b <= 0) typology[i] <- "E.dec.concave" else
-            if (di$model == "Hill" & di$c > di$d) typology[i] <- "H.inc" else
-              if (di$model == "Hill" & di$c <= di$d) typology[i] <- "H.dec" else
-                if (di$model == "log-probit" & di$c > di$d) typology[i] <- "lP.inc" else
-                  if (di$model == "log-probit" & di$c <= di$d) typology[i] <- "lP.dec" else
-                    if (di$model == "log-Gauss-probit" & di$f < 0) typology[i] <- "lGP.U" else
-                      if (di$model == "log-Gauss-probit" & di$f >=0) typology[i] <- "lGP.bell" else
-                        if (di$model == "Gauss-probit" & di$f < 0) typology[i] <- "GP.U" else
-                          if (di$model == "Gauss-probit" & di$f >=0) typology[i] <- "GP.bell" else
-                            if (di$model == "linear" & di$b > 0) typology[i] <- "L.inc" else
-                              if (di$model == "linear" & di$b <= 0) typology[i] <- "L.dec" 
+    if (di$model == "exponential" & di$e > 0 & di$b > 0) 
+      {typology[i] <- "E.inc.convex"
+       trend[i] <- "inc"} else
+      if (di$model == "exponential" & di$e <= 0 & di$b > 0) 
+        {typology[i] <- "E.dec.convex"
+         trend[i] <- "dec"} else
+        if (di$model == "exponential" & di$e <= 0 & di$b <= 0) 
+          {typology[i] <- "E.inc.concave"
+           trend[i] <- "inc"} else
+          if (di$model == "exponential" & di$e > 0 & di$b <= 0) 
+            {typology[i] <- "E.dec.concave"
+             trend[i] <- "dec"} else
+            if (di$model == "Hill" & di$c > di$d) 
+              {typology[i] <- "H.inc"
+               trend[i] <- "inc"} else
+              if (di$model == "Hill" & di$c <= di$d) 
+                {typology[i] <- "H.dec"
+                 trend[i] <- "dec"} else
+                if (di$model == "log-probit" & di$c > di$d) 
+                  {typology[i] <- "lP.inc"
+                    trend[i] <- "inc"} else
+                  if (di$model == "log-probit" & di$c <= di$d) 
+                    {typology[i] <- "lP.dec"
+                    trend[i] <- "dec"} else
+                    if (di$model == "log-Gauss-probit" & di$f < 0) 
+                      {typology[i] <- "lGP.U"
+                      trend[i] <- "U"
+                        #ifelse(abs(di$f) > pf * abs(di$d - di$c), "U", ifelse(di$c > di$d, "inc", "dec"))
+                      } else
+                      if (di$model == "log-Gauss-probit" & di$f >=0) 
+                        {typology[i] <- "lGP.bell"
+                        trend[i] <- "bell"
+                          #ifelse(abs(di$f) > pf * abs(di$d - di$c), "bell", ifelse(di$c > di$d, "inc", "dec"))
+                          } else
+                        if (di$model == "Gauss-probit" & di$f < 0) 
+                          {typology[i] <- "GP.U"
+                          trend[i] <- "U"
+                            #ifelse(abs(di$f) > pf * abs(di$d - di$c), "U", ifelse(di$c > di$d, "inc", "dec"))
+                            } else
+                          if (di$model == "Gauss-probit" & di$f >=0) 
+                            {typology[i] <- "GP.bell"
+                            trend[i] <- "bell"
+                              #ifelse(abs(di$f) > pf * abs(di$d - di$c), "bell", ifelse(di$c > di$d, "inc", "dec"))
+                              } else
+                            if (di$model == "linear" & di$b > 0) 
+                              {typology[i] <- "L.inc"
+                              trend[i] <- "inc"} else
+                              if (di$model == "linear" & di$b <= 0) 
+                                {typology[i] <- "L.dec"
+                                trend[i] <- "dec"} 
   }
   dc$typology <- typology
+  dc$trend <- factor(trend)
   
   # number of null models
   n.failure <- length(itemselect$selectindex) - nrow(dc)
