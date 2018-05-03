@@ -12,6 +12,7 @@ importFrom("grDevices", pdf, dev.off)
 #omicdata class
 export(omicdata)
 S3method(print, omicdata)
+S3method(plot, omicdata)
 
 #itemselect class
 export(itemselect)

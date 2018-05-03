@@ -1,6 +1,7 @@
 \name{omicdata}
 \alias{omicdata}
 \alias{print.omicdata}
+\alias{plot.omicdata}
 \title{Import, check and normalization of omic data}
 
 \description{
@@ -13,6 +14,7 @@ of data) and normalized if required.
 omicdata(file, check = TRUE, norm.method = c("none", "cyclicloess", "quantile", "scale"))
 
 \method{print}{omicdata}(x, \dots)
+\method{plot}{omicdata}(x, \dots)
 }
 
 \arguments{
@@ -41,7 +43,7 @@ TO WRITE !
 \value{ 
    \code{omicdata} returns an object of class "omicdata", a list with 5 components:
     \item{data}{ the numeric matrix of responses of each item in each replicate
-  (one line per item, one column per replicate  }
+  (one line per item, one column per replicate)  }
 
     \item{dose}{ the numeric vector of the tested doses or concentrations corresponding
     to each column of data}
@@ -57,6 +59,9 @@ TO WRITE !
     of the dose}
 
     \item{norm.method}{The normalization method specified in input}
+
+    \item{data.beforenorm}{ the numeric matrix of responses of each item in each replicate
+  (one line per item, one column per replicate) before normalization  }
 
   The print of a \code{omicdata} object gives the tested doses (or concentrations) 
   and number of replicates for each dose, the number of items, the identifiers 

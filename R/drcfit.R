@@ -539,7 +539,8 @@ print.drcfit <- function(x, ...) # passage du ... ?
   nsucces <- nrow(x$fitres)
   nfirstselect <- x$n.failure + nsucces
   if (x$n.failure > 0)
-    cat(x$n.failure,"dose-response curves out of ",nfirstselect, " previously selected were removed.\n")
+    cat(x$n.failure,"dose-response curves out of ",nfirstselect, " previously selected were removed
+        because no model could be fitted reliably.\n")
   cat("Distribution of the chosen models among the ",nsucces," fitted dose-response curves :\n")
   print(tfit)
   ttypology <- table(x$fitres$typology)

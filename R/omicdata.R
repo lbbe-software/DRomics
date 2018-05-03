@@ -54,6 +54,7 @@ omicdata <- function(file, check = TRUE,
   norm.method <- match.arg(norm.method, c("none", "cyclicloess", "quantile", "scale"))
   if(norm.method == "cyclicloess")
     cat("Just wait, the normalization using cyclicloess may take a few minutes.\n")
+  data.beforenorm <- data
   data <- normalizeBetweenArrays(data, method = norm.method)  
   
   # definition of doses and item identifiers
@@ -73,7 +74,7 @@ omicdata <- function(file, check = TRUE,
   
   reslist <- list(data = data, dose = dose, item = item, 
                   design = design, data.mean = data.mean, 
-                  norm.method = norm.method)  
+                  norm.method = norm.method, data.beforenorm = data.beforenorm)  
   
   return(structure(reslist, class = "omicdata"))
 }
@@ -103,5 +104,28 @@ print.omicdata <- function(x, ...)
     cat("Data were normalized between arrays using the following method: ", x$norm.method," \n")
 }
 
+plot.omicdata <- function(x, ...) 
+{
+  if (!inherits(x, "omicdata"))
+    stop("Use only with 'omicdata' objects")
+
+  # TO REWRITE IN GGPLOT2 !!!!!!!!!!!!!!!!!!!!!!!
+  def.par <- par(no.readonly = TRUE)
+  if (x$norm.method != "none")
+  {
+    par(mfrow = c(2,1), xaxt = "n")
+    boxplot(x$data.beforenorm, xlab = "replicates", ylab = "signal", 
+            main = paste("data before normalization")) 
+    boxplot(x$data, xlab = "replicates", ylab = "signal", 
+            main = paste("data after ", x$norm.method," normalization")) 
+    
+  } else
+  {
+    par(xaxt = "n")
+    boxplot(x$data, xlab = "replicates", ylab = "signal", 
+            main = paste("data without normalization")) 
+  }
+  par(def.par)    
+}
 
 
