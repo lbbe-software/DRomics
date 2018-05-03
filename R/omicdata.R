@@ -113,17 +113,20 @@ plot.omicdata <- function(x, ...)
   def.par <- par(no.readonly = TRUE)
   if (x$norm.method != "none")
   {
-    par(mfrow = c(2,1), xaxt = "n")
-    boxplot(x$data.beforenorm, xlab = "replicates", ylab = "signal", 
-            main = paste("data before normalization")) 
-    boxplot(x$data, xlab = "replicates", ylab = "signal", 
-            main = paste("data after ", x$norm.method," normalization")) 
+    ymin <- min(x$data.beforenorm, x$data)
+    ymax <- max(x$data.beforenorm, x$data)
+    par(mfrow = c(1,2), xaxt = "n")
+    boxplot(x$data.beforenorm, xlab = "Samples", ylab = "Signal", 
+            main = paste("Data before normalization"), ylim = c(ymin, ymax)) 
+    boxplot(x$data, xlab = "Samples", ylab = "Signal", 
+            main = paste("Data after", x$norm.method,"normalization"), 
+            ylim = c(ymin, ymax)) 
     
   } else
   {
     par(xaxt = "n")
-    boxplot(x$data, xlab = "replicates", ylab = "signal", 
-            main = paste("data without normalization")) 
+    boxplot(x$data, xlab = "Samples", ylab = "Signal", 
+            main = paste("Data without normalization")) 
   }
   par(def.par)    
 }
