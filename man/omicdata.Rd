@@ -33,11 +33,20 @@ normalization is performed using the function normalizeBetweenArrays of the
 
 \item{x}{An object of class \code{"omicdata"}.}
 
-\item{\dots}{ further arguments passed to print functions.}
+\item{\dots}{ further arguments passed to print or plot functions.}
 }
 
 \details{
-TO WRITE !
+This function imports the data from a .txt file, internally checks the format of 
+data (see the description 
+of argument \code{file} for the required format
+of data) and gives in the \code{print} informations
+that should help the user to check that the coding of data is correct : the tested doses (or concentrations) 
+the number of replicates for each dose, the number of items, the identifiers 
+of the first 20 items. If the argument \code{norm.method} is not \code{"none"},
+data are normalized using the function \code{\link{normalizeBetweenArrays}} of the 
+\code{limma} package using the specified method : \code{"cyclicloess"} (default choice), 
+\code{"quantile"} or \code{"scale"}.
 }
 
 \value{ 
@@ -68,6 +77,14 @@ TO WRITE !
   of the first 20 items (for check of good coding of data) and the normalization method.
 }
 
+\seealso{
+    See \code{\link{normalizeBetweenArrays}} for details about the normalization.
+}
+
+\references{ 
+Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, and Smyth, GK (2015), \emph{limma powers differential expression analyses for RNA-sequencing and microarray studies}. Nucleic Acids Research 43, e47.
+}
+
 \author{ 
 Marie-Laure Delignette-Muller
 }
@@ -80,9 +97,9 @@ Marie-Laure Delignette-Muller
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 (o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 
-# (2) import of metabolomic data (which has been normalized before)
-#
-datatxt <- system.file("extdata", "metabolo_norm.txt", package="DRomics")
-(o <- omicdata(datatxt, check = TRUE, norm.method = "none"))
+# (2) normalization with other methods
+(o.2 <- omicdata(datatxt, check = TRUE, norm.method = "quantile"))
+(o.3 <- omicdata(datatxt, check = TRUE, norm.method = "scale"))
+
 
 }

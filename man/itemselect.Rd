@@ -30,7 +30,27 @@ an ANOVA-type test (see details for further explaination).}
 }
 
 \details{
-TO WRITE !!!!!!!!!!!!!!!!!!!!
+The selection of responsive items is performed using the \code{limma} package. 
+Three methods are proposed, all implemented using functions \code{\link{lmFit}},  
+\code{\link{eBayes}} and \code{\link{topTable}} with p-values ajusted for multiple 
+testing using the Benjamini-Hochberg method, with the false discovery rate given in
+input (argument \code{FDR}). 
+
+ \itemize{
+\item The ANOVA_based test (\code{"ANOVA"}) is classically used for 
+selection of omics data in the general case but it requires many replicates per dose
+to be efficient, and is thus not really suited for a dose-response design.
+
+\item The linear trend test aims at detecting monotonic trends from dose-response designs,
+whatever the number of replicates per dose. 
+As proposed by Tukey (1985), it tests the global significance of
+a linear model describing the response as a function of the dose in rank-scale.
+
+\item The quadratic trend test  
+tests the global significance of a quadratic model describing the response as a function of the dose in rank-scale.
+It is a variant of the linear trend method that aims at detecting monotonic and non monotonic trends from a dose-response designs, whatever the number of replicates per dose (default chosen method).
+ }
+ 
 }
 
 \value{ 
@@ -49,6 +69,19 @@ TO WRITE !!!!!!!!!!!!!!!!!!!!
 
   The print of a \code{"itemselect"} object gives the number of selected items and the 
   identifiers of the 20 most responsive items.
+}
+
+\seealso{
+    See \code{\link{lmFit}}, \code{\link{eBayes}} and \code{\link{topTable}}
+    for details about the used functions of the \code{limma} package.
+}
+
+\references{ 
+Tukey JW, Ciminera JL and Heyse JF (1985), \emph{Testing the statistical certainty of a response to increasing doses of a drug}. Biometrics, 295-301.
+
+
+Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, and Smyth, GK (2015), \emph{limma powers differential expression analyses for RNA-sequencing and microarray studies}. Nucleic Acids Research 43, e47.
+
 }
 
 \author{ 
