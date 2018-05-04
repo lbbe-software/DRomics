@@ -5,7 +5,7 @@
 \title{Computation of benchmark doses for responsive items}
 
 \description{
-Computes x-fold and z-SD benchmark doses for each responsive item using the best fit dose reponse model.
+Computes x-fold and z-SD benchmark doses for each responsive item using the best fit dose-reponse model.
 }
 
 \usage{
@@ -22,12 +22,12 @@ bmdcalc(f, z = 1, x = 10)
 \item{f}{An object of class \code{"drcfit"} returned by the function\code{drcfit}.}
 
 \item{z}{Threshold defining the BMD_zSD as the dose at which the response is reaching 
-y0 +/- z * SD with y0 the level at the control given by the dose response curve and SD the 
-residual standard deviation of the dsoe response curve.}
+y0 +/- z * SD, with y0 the level at the control given by the dose-response fitted model and SD the 
+residual standard deviation of the dose-response fitted model.}
 
 \item{x}{Threshold given as a percentage and defining the BMD_xfold as 
 the dose at which the response is reaching 
-y0 +/- (x/100)*y0 with y0 the level at the control given by the dose response curve.
+y0 +/- (x/100) * y0, with y0 the level at the control given by the dose-response fitted model.
 
 
 For \code{print} and \code{plot} functions, an object of class \code{"bmdcalc"}.}
@@ -46,7 +46,23 @@ For \code{print} and \code{plot} functions, an object of class \code{"bmdcalc"}.
 }
 
 \details{
-TO WRITE SOON!!!!!!!!!!!!!!!!!!!!
+Two types of benchmark doses (BMD) were computed for each responsive item using 
+the best fit dose-reponse model previously obtained using the \code{\link{drcfit}} function :
+\itemize{
+  \item the BMD_zSD defined as the dose at which the response is reaching 
+    y0 +/- z * SD, with y0 the level at the control given by the dose-response model, SD the 
+    residual standard deviation of the dose response model fit and z given as an input 
+    (\code{z} fixed to 1  by default),
+  \item the BMD_xfold defined as the dose at which the response is reaching 
+  y0 +/- (x/100) * y0, with y0 the level at the control given by the dose-response fitted model 
+  and x the percentage given as an input (\code{x} fixed at 10 by default.)
+  }
+
+When there is no analytical solution for the BMD, it is numerically searched along the fitted 
+curve using the \code{\link{uniroot}} function.
+
+In cases where the BMD cannot be reached due to the asymptote at high doses, \code{NaN} is returned.
+In cases where the BMD is not reached at the highest tested dose, \code{NA} is returned.
 }
 
 \value{ 
@@ -57,20 +73,24 @@ TO WRITE SOON!!!!!!!!!!!!!!!!!!!!
   (I WILL HAVE TO DETAIL THIS !!!!!!!!!!!) 
   sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}.}
 
-  \item{z}{Threshold given in input to define the BMD_zSD as the dose at which the response is reaching 
-y0 +/- z * SD with y0 the level at the control given by the dose response curve and SD the 
-residual standard deviation of the dsoe response curve.}
+  \item{z}{Threshold given in input to define the BMD_zSD.}
 
-  \item{x}{Threshold given in input as a percentage and defining the BMD_xfold as 
-the dose at which the response is reaching 
-y0 +/- (x/100)*y0 with y0 the level at the control given by the dose response curve.}
+  \item{x}{Threshold given in input as a percentage to define the BMD_xfold.}
 
     \item{omicdata}{ The corresponding object of class \code{"omicdata"} given in input 
     (component of itemselect).}
  
-
-  The print of a \code{"bmdcalc"} object gives TO WRITE !!!!!!!!!!!!!!.
 }
+
+\seealso{
+    See \code{\link{uniroot}} for details about the function used for the numerical 
+    search of the benmarkdose for cases where there is no analytical solution.
+}
+
+\references{ 
+Larras and co, our paper when it will be published - TO COMPLETE !!!!!!!!!!!
+}
+
 
 \author{ 
 Marie-Laure Delignette-Muller
@@ -78,24 +98,19 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# (1) example on a metabolomic data (which has been normalized before)
+# (1) an example on a transcriptomic data (a subsample of a greater data set) 
 #
-datatxt <- system.file("extdata", "metabolo_norm.txt", package="DRomics")
-(o <- omicdata(datatxt, check = TRUE, norm.method = "none"))
-(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
+datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))
 plot(r) 
 
 # different plots of BMD_zSD
 plot(r, plottype = "hist", bytypology = FALSE) 
-plot(r, plottype = "hist", bytypology = FALSE, hist.bins = 40) 
 plot(r, plottype = "density", bytypology = FALSE) 
-
-plot(r, plottype = "ecdf", bytypology = TRUE) 
 plot(r, plottype = "hist", bytypology = TRUE) 
-plot(r, plottype = "hist", bytypology = TRUE, hist.bins = 10) 
-plot(r, plottype = "density", bytypology = TRUE) 
 
 # a plot of BMD_xfold (by default BMD_zSD is plotted)
 plot(r, BMDtype = "xfold", plottype = "hist", bytypology = TRUE, hist.bins = 10) 
@@ -103,17 +118,5 @@ plot(r, BMDtype = "xfold", plottype = "hist", bytypology = TRUE, hist.bins = 10)
 # changing the values of z and x for BMD calculation
 (rb <- bmdcalc(f, z = 2, x = 50))
 plot(rb) 
-
-
-# (2) example on a transcriptomic data (a subsample of a greater data set) 
-#
-\dontrun{
-datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
-(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
-(f <- drcfit(s_quad, progressbar = TRUE))
-(r <- bmdcalc(f))
-plot(r)
-}
 
 }

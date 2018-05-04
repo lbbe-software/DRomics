@@ -3,7 +3,6 @@ import(stats)
 import(graphics)
 import(ggplot2)
 importFrom("limma", normalizeBetweenArrays, lmFit, eBayes, topTable)
-importFrom("tseries", runs.test)
 importFrom("utils", txtProgressBar, setTxtProgressBar, read.table)
 importFrom("grDevices", pdf, dev.off)
 

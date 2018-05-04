@@ -92,10 +92,12 @@ Marie-Laure Delignette-Muller
 \examples{
 
 # (1) import, check and normalization of transcriptomic data 
-# (a subsample of a greater data set)
+# (an example on a subsample of a greater data set)
 #
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess")
+print(o)
+plot(o)
 
 # (2) normalization with other methods
 (o.2 <- omicdata(datatxt, check = TRUE, norm.method = "quantile"))

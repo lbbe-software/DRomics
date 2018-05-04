@@ -90,27 +90,26 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# (1) example on a transcriptomic data (a subsample of a greater data set) 
-#
+# (1) an example on a transcriptomic data (a subsample of a greater data set) 
+#     
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 (o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 
 # 1.a using the quadratic trend test
 #
-(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
+(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
 
 # 1.b using the linear trend test
 #
-(s_quad <- itemselect(o, select.method = "linear", FDR = 0.05))
+(s_lin <- itemselect(o, select.method = "linear", FDR = 0.01))
 
 # 1.c using the ANOVA-based test
 #
-(s_quad <- itemselect(o, select.method = "ANOVA", FDR = 0.05))
+(s_ANOVA <- itemselect(o, select.method = "ANOVA", FDR = 0.01))
 
-# (2) example on a metabolomic data (which has been normalized before)
+# 1.d using the quadratic trend test with a higher false discovery rate
 #
-datatxt <- system.file("extdata", "metabolo_norm.txt", package="DRomics")
-(o <- omicdata(datatxt, check = TRUE, norm.method = "none"))
-(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
+(s_quad.2 <- itemselect(o, select.method = "quadratic", FDR = 0.001))
+
 
 }

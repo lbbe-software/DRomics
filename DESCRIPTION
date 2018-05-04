@@ -6,7 +6,7 @@ Authors@R: c(person("Marie-Laure", "Delignette-Muller", role = "aut", email = "m
              person("Floriane", "Larras", role = "ctb", email = "floriane.larras@ufz.de"),
              person("Aurélie", "Siberchicot", role = c("aut", "cre"), email = "aurelie.siberchicot@univ-lyon1.fr"))
 Description: Fits dose-response curves to omic data and estimates corresponding benchmark doses.
-Depends: R (>= 3.4.0), limma, tseries, utils, grDevices
+Depends: R (>= 3.4.0), limma, utils, grDevices
 Imports: stats, graphics, ggplot2
 Suggests: parallel, shiny, shinyjs
 License: GPL (>= 2)
