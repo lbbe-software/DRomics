@@ -85,7 +85,7 @@ Each retained is also classified in four classes by its global trend :
    \code{drcfit} returns an object of class \code{"drcfit"}, a list with 4 components:
     
    \item{fitres}{ a data frame reporting the results of the fit on each selected item (one line per item) sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The different columns correspond to the identifier of each item (\code{id}), the row number of this item in the initial data set (\code{irow}), the adjusted p-value of the selection step (\code{adjpvalue}), the name of the best fit model (\code{model}), the number of fitted parameters (\code{nbpar}), the values of the parameters \code{b}, \code{c}, d,\code{d}, \code{e} and \code{f}, (\code{NA} for non used parameters), the residual standard deviation (\code{SDres}), the typology of the curve \code{typology} and the
-   rough trend of the curve \code{trend}.
+   rough trend of the curve \code{trend} defined with four classes (U, bell, increasing or decreasing shape).
   }
 
     \item{omicdata}{ The corresponding object of class \code{"omicdata"} given in input 

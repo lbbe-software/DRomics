@@ -69,7 +69,8 @@ In cases where the BMD is not reached at the highest tested dose, \code{NA} is r
    \code{bmdcalc} returns an object of class \code{"bmdcalc"}, a list with 4 components:
     
    \item{res}{ a data frame reporting the results of the fit and BMD computation
-   on each selected item sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The given results are: id, the item identifier; irow, the row number in the initial dataset; adjpvalue, the adjusted p-values returned by function \code{itemselect}; model, the best model fitted; nbpar, the number of parameters of this best model; b, c, d, e, and f, the model parameter values (see Larras et al. for their interpretation); SDres, the residual standard deviation of the best model; typology, the class of typology (twelve class typology described in the help of the \code{drcfit} function); BMD.zSD, the BMD_zSD value; BMD.xfold, the BMD_xfold value.}
+   on each selected item sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The given results are: id, the item identifier; irow, the row number in the initial dataset; adjpvalue, the adjusted p-values returned by function \code{itemselect}; model, the best model fitted; nbpar, the number of parameters of this best model; b, c, d, e, and f, the model parameter values (see Larras et al. for their interpretation); SDres, the residual standard deviation of the best model; typology, the class of typology (twelve class typology described in the help of the \code{drcfit} function); trend, the
+   rough trend of the curve defined with four classes (U, bell, increasing or decreasing shape), BMD.zSD, the BMD_zSD value; BMD.xfold, the BMD_xfold value.}
 
   \item{z}{Value of z given in input to define the BMD_zSD.}
 
