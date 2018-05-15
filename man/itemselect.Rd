@@ -16,7 +16,7 @@ itemselect(omicdata, select.method = c("quadratic", "linear", "ANOVA"), FDR = 0.
 
 \arguments{
 \item{omicdata}{An object of class \code{"omicdata"} returned by 
-the function \code{micdata}.}
+the function \code{omicdata}.}
 
 \item{select.method}{The chosen method for selecting items using the \code{limma} package : \code{"quadratic"} for a 
 quadratic trend test on dose ranks, \code{"linear"} for a linear trend test on dose ranks and \code{"ANOVA"} for 
@@ -26,7 +26,7 @@ an ANOVA-type test (see details for further explaination).}
 
 \item{x}{An object of class \code{"itemselect"}.}
 
-\item{\dots}{ further arguments passed to print functions.}
+\item{\dots}{ further arguments passed to print function.}
 }
 
 \details{
@@ -41,12 +41,12 @@ input (argument \code{FDR}).
 selection of omics data in the general case but it requires many replicates per dose
 to be efficient, and is thus not really suited for a dose-response design.
 
-\item The linear trend test aims at detecting monotonic trends from dose-response designs,
+\item The linear trend test (\code{"linear"}) aims at detecting monotonic trends from dose-response designs,
 whatever the number of replicates per dose. 
 As proposed by Tukey (1985), it tests the global significance of
 a linear model describing the response as a function of the dose in rank-scale.
 
-\item The quadratic trend test  
+\item The quadratic trend test (\code{"quadratic"})  
 tests the global significance of a quadratic model describing the response as a function of the dose in rank-scale.
 It is a variant of the linear trend method that aims at detecting monotonic and non monotonic trends from a dose-response designs, whatever the number of replicates per dose (default chosen method).
  }
@@ -59,7 +59,7 @@ It is a variant of the linear trend method that aims at detecting monotonic and 
   \item{ adjpvalue }{ the vector of the p-values adjusted by the Benjamini-Hochberg method for selected items 
 (adjpvalue inferior to FDR) sorted in ascending order}
 
-  \item{ selectindex }{ the corresponding vector of the raw lines of selected items in the object omicdata }
+  \item{ selectindex }{ the corresponding vector of row indices of selected items in the object omicdata }
 
   \item{omicdata}{The corresponding object of class "omicdata" given in input.}
 

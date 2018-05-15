@@ -18,12 +18,11 @@ omicdata(file, check = TRUE, norm.method = c("none", "cyclicloess", "quantile", 
 }
 
 \arguments{
-\item{file}{The name of the .txt file containing one raw per item, with the the 
-first column corresponding to the identifier of each item, in a column named 
+\item{file}{The name of the .txt file containing one row per item, with the first column corresponding to the identifier of each item, in a column named 
 \code{"item"}, and the other columns giving the responses
 of the item for each replicate at each dose or concentration. 
 The names of the corresponding columns must correspond to the tested
-doses or concentrations in a numeric format for the corresponding replicate.}
+doses or concentrations in a numeric format for the corresponding replicate (for example, if there are triplicates for each treatment, column names can be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.}
 
 \item{check}{If TRUE the format of the input file is checked.}
 
@@ -37,10 +36,10 @@ normalization is performed using the function normalizeBetweenArrays of the
 }
 
 \details{
-This function imports the data from a .txt file, internally checks the format of 
+This function imports the data from a .txt file, then checks the format of 
 data (see the description 
 of argument \code{file} for the required format
-of data) and gives in the \code{print} informations
+of data) and gives in the \code{print} information
 that should help the user to check that the coding of data is correct : the tested doses (or concentrations) 
 the number of replicates for each dose, the number of items, the identifiers 
 of the first 20 items. If the argument \code{norm.method} is not \code{"none"},
@@ -75,6 +74,7 @@ data are normalized using the function \code{\link{normalizeBetweenArrays}} of t
   The print of a \code{omicdata} object gives the tested doses (or concentrations) 
   and number of replicates for each dose, the number of items, the identifiers 
   of the first 20 items (for check of good coding of data) and the normalization method.
+   The plot of a \code{omicdata} object shows the data distribution for each dose or concentration and replicate before and after normalization.
 }
 
 \seealso{

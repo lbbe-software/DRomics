@@ -19,13 +19,13 @@ bmdcalc(f, z = 1, x = 10)
 }
 
 \arguments{
-\item{f}{An object of class \code{"drcfit"} returned by the function\code{drcfit}.}
+\item{f}{An object of class \code{"drcfit"} returned by the function \code{drcfit}.}
 
-\item{z}{Threshold defining the BMD_zSD as the dose at which the response is reaching 
+\item{z}{Value of z defining the BMD_zSD as the dose at which the response is reaching 
 y0 +/- z * SD, with y0 the level at the control given by the dose-response fitted model and SD the 
 residual standard deviation of the dose-response fitted model.}
 
-\item{x}{Threshold given as a percentage and defining the BMD_xfold as 
+\item{x}{Value of x given as a percentage and defining the BMD_xfold as 
 the dose at which the response is reaching 
 y0 +/- (x/100) * y0, with y0 the level at the control given by the dose-response fitted model.
 
@@ -37,7 +37,7 @@ For \code{print} and \code{plot} functions, an object of class \code{"bmdcalc"}.
 \item{plottype}{The type plot, \code{"ecdf"} for an empirical cumulative distribution plot 
 (default choice), \code{"hist"} for a histogram or \code{"density"} for a density plot.}
 
-\item{bytypology}{If \code{TRUE} the plotted is splitted by typology.}
+\item{bytypology}{If \code{TRUE} the plot is split by typology.}
 
 \item{hist.bins}{The number of bins, only used for histogram(s).}
 
@@ -69,13 +69,11 @@ In cases where the BMD is not reached at the highest tested dose, \code{NA} is r
    \code{bmdcalc} returns an object of class \code{"bmdcalc"}, a list with 4 components:
     
    \item{res}{ a data frame reporting the results of the fit and BMD computation
-   on each selected item
-  (I WILL HAVE TO DETAIL THIS !!!!!!!!!!!) 
-  sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}.}
+   on each selected item sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The given results are: id, the item identifier; irow, the row number in the initial dataset; adjpvalue, the adjusted p-values returned by function \code{itemselect}; model, the best model fitted; nbpar, the number of parameters of this best model; b, c, d, e, and f, the model parameter values (see Larras et al. for their interpretation); SDres, the residual standard deviation of the best model; typology, the class of typology (twelve class typology described in the help of the \code{drcfit} function); BMD.zSD, the BMD_zSD value; BMD.xfold, the BMD_xfold value.}
 
-  \item{z}{Threshold given in input to define the BMD_zSD.}
+  \item{z}{Value of z given in input to define the BMD_zSD.}
 
-  \item{x}{Threshold given in input as a percentage to define the BMD_xfold.}
+  \item{x}{Value of x given in input as a percentage to define the BMD_xfold.}
 
     \item{omicdata}{ The corresponding object of class \code{"omicdata"} given in input 
     (component of itemselect).}
@@ -84,7 +82,7 @@ In cases where the BMD is not reached at the highest tested dose, \code{NA} is r
 
 \seealso{
     See \code{\link{uniroot}} for details about the function used for the numerical 
-    search of the benmarkdose for cases where there is no analytical solution.
+    search of the benchmark dose for cases where there is no analytical solution.
 }
 
 \references{ 
@@ -93,7 +91,7 @@ Larras and co, our paper when it will be published - TO COMPLETE !!!!!!!!!!!
 
 
 \author{ 
-Marie-Laure Delignette-Muller
+Marie-Laure Delignette-Muller and Elise Billoir
 }
 
 \examples{

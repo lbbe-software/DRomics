@@ -9,7 +9,7 @@ Fits dose reponse models to responsive items.
 }
 
 \usage{
-drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"), 
+drcfit(itemselect, sigmoid.model = c("Hill", "probit"), 
                    progressbar = TRUE, saveplot2pdf = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
 
@@ -24,7 +24,7 @@ drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
 \item{sigmoid.model}{The chosen sigmoid model, \code{"Hill"} (default
 choice) or \code{"probit"}.}
 
-\item{progressbar}{If \code{TRUE} a progress is used to follow the fitting process.}
+\item{progressbar}{If \code{TRUE} a progress bar is used to follow the fitting process.}
 
 \item{saveplot2pdf}{If \code{TRUE} a pdf file named drcfitplot.pdf is saved containing
 	all the fitted dose-response curves sorted by adjusted p-values of the selection step.}
@@ -50,11 +50,11 @@ choice) or \code{"probit"}.}
 For each selected item, five dose-response models (linear, Hill, exponential, 
 Gauss-probit and log-Gauss-probit, see Larras et al. ????
 for their definition) were fitted by non linear regression,
-using the \code{\link{nls}} function. The best one was chosen as the one giving the lower AIC value.
+using the \code{\link{nls}} function. The best one was chosen as the one giving the lowest AIC value.
 Items with the best AIC value not lower than the AIC value of the null model (constant model) minus 2
 were eliminated. Items with the best fit showing a global significant quadratic trend of the residuals
 as a function of the dose (in rank-scale) were also eliminated (the best fit is considered as 
-not reliable in such cases). Each retained item is classified in a twelve class typoly depending of the
+not reliable in such cases). Each retained item is classified in a twelve class typology depending of the
 chosen model and of its parameter values : 
   \itemize{
   \item H.inc for increasing Hill curves (or lP.inc if \code{sigmoid.model = "log-probit"}),
