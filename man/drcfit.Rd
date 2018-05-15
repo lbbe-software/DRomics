@@ -9,7 +9,7 @@ Fits dose reponse models to responsive items.
 }
 
 \usage{
-drcfit(itemselect, sigmoid.model = c("Hill", "probit"), 
+drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"), 
                    progressbar = TRUE, saveplot2pdf = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
 
@@ -22,7 +22,7 @@ drcfit(itemselect, sigmoid.model = c("Hill", "probit"),
 \item{itemselect}{An object of class \code{"itemselect"} returned by the function \code{itemselect}.}
 
 \item{sigmoid.model}{The chosen sigmoid model, \code{"Hill"} (default
-choice) or \code{"probit"}.}
+choice) or \code{"log-probit"}.}
 
 \item{progressbar}{If \code{TRUE} a progress bar is used to follow the fitting process.}
 
