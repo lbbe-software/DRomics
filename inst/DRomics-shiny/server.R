@@ -8,6 +8,19 @@ server <- function(input, output, session) {
     omicdata(inFile$datapath, check = TRUE, norm.method = input$normMethod)
   })
   
+  output$printOmicData <- renderPrint({ 
+    oo <<- filedata()
+    if (!is.null(oo)) {
+      print(oo)
+    }
+  })
+  
+  output$plotOmicData <- renderPlot({ 
+    oo <<- filedata()
+    if (!is.null(oo)) {
+      plot(oo)
+    }
+  })
   
   runitemselect <- reactive({
     oo <- filedata()
