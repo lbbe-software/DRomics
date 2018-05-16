@@ -38,6 +38,8 @@ ui <- fluidPage(
                                           "- marielaure.delignettemuller@vetagro-sup.fr - VetAgro Sup Campus Vétérinaire de Lyon - Laboratoire de Biométrie et Biologie Evolutive "),
                                         p("Floriane Larras - floriane.larras@ufz.de - Department of Bioanalytical Ecotoxicology - Helmholtz Center for Environmental Research GmbH - UFZ - Leipzig, Germany"),
                                         p("Elise Billoir - elise.billoir@univ-lorraine.fr"),
+                                        br(),
+                                        p(strong("Technical maintainer")),
                                         p(a("Aurélie SIBERCHICOT", href = "https://lbbe.univ-lyon1.fr/-Siberchicot-Aurelie-.html", TARGET = "_blank", style="color:#34837e;"), 
                                           "- aurelie.siberchicot@univ-lyon1.fr - Laboratoire de Biométrie et Biologie Evolutive")
                         )),
