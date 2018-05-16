@@ -203,33 +203,34 @@ ui <- fluidPage(
                                    style = "background-color: #a7dbd8;",
                                    width = 2,
                                    radioButtons('BMDtype', 
-                                                'BMDtype',
+                                                'BMD type',
                                                 choices = c('zSD' = 'zSD',
                                                             'xfold' = 'xfold')),
                                    br(),
                                    radioButtons('plottype', 
-                                                'plottype',
-                                                choices = c('ecdf' = 'ecdf',
-                                                            'hist' = 'hist',
+                                                'plot type',
+                                                choices = c('empirical cumulative distribution' = 'ecdf',
+                                                            'histogram' = 'hist' ,
                                                             'density' = 'density')),
                                    br(),
                                    conditionalPanel(
                                      condition = "input.plottype == 'hist'",
-                                     numericInput('histbin', label = 'Hist bins',
+                                     numericInput('histbin', label = 'Histogram bins',
                                                   min = 1, max = 100, value = 30, step = 1, width = "100%"),
                                      br()
                                    ),
                                    radioButtons('bytypology', 
-                                                'bytypology',
+                                                'by typology ?',
                                                 choices = c('TRUE' = 'TRUE',
                                                             'FALSE' = 'FALSE'),
                                                 selected = 'FALSE'),
+                                   h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about typologies"),
                                    hr(),
                                    downloadButton("buttonPlotBmdcalc", "Download figure", icon = icon("fas fa-download"))
                                  ),
                                  mainPanel(
                                    width = 10,
-                                   plotOutput("plotBmdcalc", width = "60%", height = "600px"),
+                                   plotOutput("plotBmdcalc", width = "100%", height = "900px"),
                                    br(), br()
                                  )
                                )

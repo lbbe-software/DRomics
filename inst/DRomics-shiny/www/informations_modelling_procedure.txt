@@ -23,4 +23,4 @@ chosen model and of its parameter values :
 - "lGP.U" for U-shape log-Gauss-probit curves
 - "lGP.bell" for bell-shape log-Gauss-probit curves
 
-Larras, …., ES&T ?
+Larras, ..., ES&T ?
