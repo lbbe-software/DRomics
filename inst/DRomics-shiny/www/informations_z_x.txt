@@ -1,0 +1,20 @@
+Two types of benchmark doses (BMD) are computed for each responsive item using 
+the best fit dose-reponse model previously obtained:
+
+- the BMD_zSD detects the concentration leading to a level of change compared 
+to the control response that takes data variability of the modelled curve into 
+account. It is calculated as the concentration corresponding to a Benchmark
+Response (BMR-zSD) defined as follows: BMR-zSD = y0 +/- z*SD, where y0 is the 
+mean control response, and SD is the residual standard deviation of the 
+considered CRC and z is the factor of SD (z fixed at 1 by default).
+
+- the BMD_xfold considers a x-fold change of the control response which makes 
+it equivalent to a x% inhibition/enhancement concentration. The so-called 
+BMD-xfold is calculated as the concentration corresponding to a Benchmark 
+Response (BMR-xfold) defined as follows: BMR-xfold = y0 +/- y0*x/100, where y0 
+is the mean control response and x is the percentage of change (x fixed at 10 
+by default).
+
+In cases where the BMD cannot be reached due to the asymptote at high doses, 
+NaN is returned. In cases where the BMD is not reached at the highest tested 
+dose, NA is returned.

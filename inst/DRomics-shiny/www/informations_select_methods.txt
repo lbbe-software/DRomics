@@ -1,0 +1,18 @@
+The chosen method for selecting items using the limma package: "quadratic" for 
+a quadratic trend test on dose ranks, "linear" for a linear trend test on dose 
+ranks and "ANOVA" for an ANOVA-type test.
+
+The ANOVA_based test ("ANOVA") is classically used for selection of omics data 
+in the general case but it requires many replicates per dose to be efficient, 
+and is thus not really suited for a dose-response design.
+
+The linear trend test ("linear") aims at detecting monotonic trends from
+dose-response designs, whatever the number of replicates per dose. 
+As proposed by Tukey (1985), it tests the global significance of a linear 
+model describing the response as a function of the dose in rank-scale.
+
+The quadratic trend test ("quadratic") tests the global significance of a 
+quadratic model describing the response as a function of the dose in rank-scale. 
+It is a variant of the linear trend method that aims at detecting monotonic and 
+non monotonic trends from a dose-response designs, whatever the number of 
+replicates per dose (default chosen method).

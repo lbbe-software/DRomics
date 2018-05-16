@@ -1,0 +1,13 @@
+Briefly, the quantile normalization forces the entire empirical distributions 
+of each array to be identical while the scale method forces only the medians of 
+each array to be the same. 
+
+The cyclic loess method, which is more sophisticated and more time consuming, 
+is based on the repetition on each pair of arrays of a loess regression between 
+the difference of expression between the two arrays and the average expression. 
+
+For details, see 
+
+Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, and Smyth, GK (2015), 
+limma powers differential expression analyses for RNA-sequencing and microarray
+studies. Nucleic Acids Research 43, e47.

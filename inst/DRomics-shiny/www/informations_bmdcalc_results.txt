@@ -1,0 +1,15 @@
+A table is provided reporting the results of the fit and BMD computation on 
+each selected item sorted in the ascending order of the adjusted p-values 
+returned by the item selection step. The given results are: 
+
+- id: the item identifier
+- irow: the row number in the initial dataset
+- adjpvalue: the adjusted p-values returned by the item selection step
+- model: the best model fitted
+- nbpar: the number of parameters of this best model; b, c, d, e, and f, the 
+  model parameter values (see Larras et al. for their interpretation)
+- SDres: the residual standard deviation of the best model
+- typology: the class of typology (twelve class typology as described in the 
+  dose response modelling step)
+- BMD.zSD: the BMD_zSD value
+- BMD.xfold: the BMD_xfold value
