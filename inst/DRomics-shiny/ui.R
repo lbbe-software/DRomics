@@ -35,7 +35,7 @@ ui <- fluidPage(
                         fixedRow(column(10, offset = 2,
                                         p(strong("Authors & Contacts")),
                                         p(a("Marie-Laure DELIGNETTE-MULLER", href = "http://lbbe.univ-lyon1.fr/-Delignette-Muller-Marie-Laure-.html", TARGET = "_blank", style="color:#34837e;"), 
-                                          "- marielaure.delignettemuller@vetagro-sup.fr - VetAgro Sup Campus Vétérinaire de Lyon - Laboratoire de Biométrie et Biologie Evolutive "),
+                                          "- marielaure.delignettemuller@vetagro-sup.fr - VetAgro Sup - Laboratoire de Biométrie et Biologie Evolutive "),
                                         p("Floriane Larras - floriane.larras@ufz.de - Department of Bioanalytical Ecotoxicology - Helmholtz Center for Environmental Research GmbH - UFZ - Leipzig, Germany"),
                                         p("Elise Billoir - elise.billoir@univ-lorraine.fr"),
                                         br(),
