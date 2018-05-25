@@ -16,3 +16,9 @@ quadratic model describing the response as a function of the dose in rank-scale.
 It is a variant of the linear trend method that aims at detecting monotonic and 
 non monotonic trends from a dose-response designs, whatever the number of 
 replicates per dose (default chosen method).
+
+For details, see 
+
+Tukey JW, Ciminera JL and Heyse JF (1985).
+Testing the statistical certainty of a response to increasing doses of a drug. 
+Biometrics, 295-301.
