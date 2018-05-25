@@ -1,5 +1,6 @@
 ######################################################################################
-#   Copyright (c) 2018 Marie Laure Delignette-Muller, Elise Billoir, Floriane Larras                                                                                                  
+#   Copyright (c) 2018 Marie Laure Delignette-Muller, Elise Billoir, Floriane Larras,
+#   Aurelie Siberchicot
 #                                                                                                                                                                        
 #   This program is free software; you can redistribute it and/or modify                                               
 #   it under the terms of the GNU General Public License as published by                                         
