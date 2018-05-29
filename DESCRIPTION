@@ -5,7 +5,7 @@ Authors@R: c(person("Marie-Laure", "Delignette-Muller", role = "aut", email = "m
              person("Elise", "Billoir", role = "aut", email = "elise.billoir@univ-lorraine.fr"),
              person("Floriane", "Larras", role = "ctb", email = "floriane.larras@ufz.de"),
              person("Aurélie", "Siberchicot", role = c("aut", "cre"), email = "aurelie.siberchicot@univ-lyon1.fr"))
-Description: Fits dose-response curves to omic data and estimates corresponding benchmark doses.
+Description: DRomics provides several functions for dose-response (or concentration-response) characterization from omic data. It is especially dedicated to omic data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates. DRomics provides functions 1) to check and normalize data, 2) to select monotonic or biphasic significant responses (function selectitem), 3) to choose the best-fit model among a predefined family of monotonic and biphasic models to describe each significant response and 4) to derive a sensitivity value (a benchmark dose or concentration) and a typology of response from each fitted curve.
 Depends: R (>= 3.4.0), limma, utils, grDevices
 Imports: stats, graphics, ggplot2
 Suggests: parallel, shiny, shinyBS, shinyjs
