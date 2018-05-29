@@ -181,7 +181,7 @@ print.bmdcalc <- function(x, ...)
   nNaN.BMD.xfold <- sum(is.nan(x$res$BMD.xfold))
   if ((nNaN.BMD.zSD > 0) |  (nNaN.BMD.xfold > 0))
     cat(nNaN.BMD.xfold,"BMD-xfold values and ", nNaN.BMD.zSD,
-        " BMD_zSD values are not defined 
+        " BMD-zSD values are not defined 
         (coded NaN as the BMR stands outside the range of response values 
         defined by the model).\n")
   
@@ -190,7 +190,7 @@ print.bmdcalc <- function(x, ...)
   nNA.BMD.xfold <- sum(is.na(x$res$BMD.xfold))
   if ((nNA.BMD.zSD > 0) |  (nNA.BMD.xfold > 0))
     cat(nNA.BMD.xfold,"BMD-xfold values and ", nNA.BMD.zSD,
-        " BMD_zSD values could not be calculated 
+        " BMD-zSD values could not be calculated 
         (coded NA as the BMR stands within the range of response values defined by the model 
         but outside the range of tested doses).\n")
   

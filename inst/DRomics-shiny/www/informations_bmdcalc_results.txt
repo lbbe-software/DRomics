@@ -11,5 +11,6 @@ returned by the item selection step. The given results are:
 - SDres: the residual standard deviation of the best model
 - typology: the class of typology (twelve class typology as described in the 
   dose response modelling step)
-- BMD.zSD: the BMD_zSD value
-- BMD.xfold: the BMD_xfold value
+- trend: the rough trend of the curve defined with four classes (U, bell, increasing or decreasing shape)
+- BMD.zSD: the BMD-zSD value
+- BMD.xfold: the BMD-xfold value
