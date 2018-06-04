@@ -97,7 +97,11 @@ server <- function(input, output, session) {
     print(mybmdcalc)
     cat("\n")
     cat("\n")
-    print(head(mybmdcalc$res, n = 10))
+    
+    mybmdcalcdigits <- head(mybmdcalc$res, 10)
+    idx <- as.numeric(which(sapply(mybmdcalcdigits, function(X) is.numeric(X))))
+    mybmdcalcdigits[, idx] <- signif(mybmdcalcdigits[, idx], digits = 4)
+    print(mybmdcalcdigits)
     
     output$plotBmdcalc <- renderPlot({
       req(input$zbmdcalc, input$xbmdcalc)
