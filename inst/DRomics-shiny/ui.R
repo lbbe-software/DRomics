@@ -26,22 +26,36 @@ ui <- fluidPage(
                         br(), br(), br(), 
                         HTML("<center><font face=verdana size=6 color=#155450>Welcome to the DRomics Shiny Application</font></center>"),
                         br(), br(),
-                        fixedRow(column(10, offset = 2,
-                                        h4("DRomics Shiny App is an interactive tool to fit dose-response curves to omic data and estimates corresponding benchmark doses."),
-                                        h4("It runs on the ", a("shiny server of the LBBE", href = "http://lbbe.univ-lyon1.fr/", TARGET="_blank", style="color:#34837e;"),"."),
-                                        h4("DRomics is also available on CRAN as an R package and on this web page.")
+                        fixedRow(column(8, offset = 2,
+                                        tags$blockquote("DRomics is a freely available on-line tool for dose-response (or concentration-response) characterization from omic data.
+                                             It is especially dedicated to omic data obtained using a typical dose-response design, favoring a great number of tested doses 
+                                             (or concentrations, at least 6, and the more the better) rather than a great number of replicates (no need of three replicates).
+                                             After a first optional step which consists to normalize the data (step 1), the aim of the proposed workflow is to select monotonic
+                                             and/or biphasic significantly responsive items (e.g. probes, metabolites) (step 2), to choose the best-fit model among a predefined
+                                             family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive a sensitivity value
+                                             (a benchmark dose or concentration) and a typology of response from each fitted curve.
+                                             In the available version data are supposed to be single-channel microarray data transformed in log2, or another type of data that can
+                                             be directly fitted by least-square regression without any normalization step. In the future this tool will also be able to process RNA-seq data.", 
+                                                        style="text-align:justify;"),
+                                        br(),
+                                        h4("DRomics Shiny App runs on the ", 
+                                           a("shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#34837e;"), "."),
+                                        h4("DRomics is also available on CRAN as an R package and on ",
+                                           a("this web page", href = "https://lbbe.univ-lyon1.fr/-DRomics-.html", TARGET="_blank", style="color:#34837e;"), ".")
                         )),
                         hr(style='width: 70%;'),
                         fixedRow(column(10, offset = 2,
                                         p(strong("Authors & Contacts")),
-                                        p(a("Marie-Laure DELIGNETTE-MULLER", href = "http://lbbe.univ-lyon1.fr/-Delignette-Muller-Marie-Laure-.html", TARGET = "_blank", style="color:#34837e;"), 
-                                          "- marielaure.delignettemuller@vetagro-sup.fr - VetAgro Sup - Laboratoire de Biométrie et Biologie Evolutive "),
-                                        p("Floriane Larras - floriane.larras@ufz.de - Department of Bioanalytical Ecotoxicology - Helmholtz Center for Environmental Research GmbH - UFZ - Leipzig, Germany"),
-                                        p("Elise Billoir - elise.billoir@univ-lorraine.fr"),
+                                        p(a("Marie-Laure Delignette-Muller", href = "http://lbbe.univ-lyon1.fr/-Delignette-Muller-Marie-Laure-.html", TARGET = "_blank", style="color:#34837e;"), 
+                                          "- marielaure.delignettemuller@vetagro-sup.fr - Laboratoire de Biométrie et Biologie Evolutive - VetAgro Sup - Lyon - France"),
+                                        p(a("Floriane Larras", href = "http://www.ufz.de/index.php?en=42332&nopagecache", TARGET = "_blank", style="color:#34837e;"),
+                                          "- floriane.larras@ufz.de - Department of Bioanalytical Ecotoxicology - Helmholtz Center for Environmental Research GmbH - Leipzig - Germany"),
+                                        p(a("Elise Billoir", href = "http://bddc.liec.univ-lorraine.fr/cv/BILLOIR%20E.htm", TARGET = "_blank", style="color:#34837e;"), 
+                                          "- elise.billoir@univ-lorraine.fr - Laboratoire Interdisciplinaire des Environnements Continentaux - Université de Lorraine - Metz - France"),
                                         br(),
                                         p(strong("Technical maintainer")),
-                                        p(a("Aurélie SIBERCHICOT", href = "https://lbbe.univ-lyon1.fr/-Siberchicot-Aurelie-.html", TARGET = "_blank", style="color:#34837e;"), 
-                                          "- aurelie.siberchicot@univ-lyon1.fr - Laboratoire de Biométrie et Biologie Evolutive")
+                                        p(a("Aurélie Siberchicot", href = "https://lbbe.univ-lyon1.fr/-Siberchicot-Aurelie-.html", TARGET = "_blank", style="color:#34837e;"), 
+                                          "- aurelie.siberchicot@univ-lyon1.fr - Laboratoire de Biométrie et Biologie Evolutive - Université Lyon 1 - Lyon - France")
                         )),
                         hr(style='width: 70%;'),
                         # HTML("<hr style='height: 2px; color: #FF4000; background-color: #FF4000; width: 50%;>"),
@@ -49,11 +63,12 @@ ui <- fluidPage(
                                         p("Grant Agreement number: 705149 - MicroERA - H2020-MSCA-IF-2015"),
                                         br(), br()
                         )),
-                        div(a(img(src = "logoLbbe.png", height = 68, width = 92), href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
-                            "   ",
+                        div(a(img(src = "logoLbbe.png", height = 70, width = 92), href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
                             a(img(src = "logoVetAgroSup.jpg", height = 100, width = 120), href="http://www.vetagro-sup.fr/", TARGET="_blank"),
-                            "   ",
-                            a(img(src = "logoLyon1.png", height = 80, width = 350), href="https://www.univ-lyon1.fr/", TARGET="_blank"),
+                            a(img(src = "logoLyon1.png", height = 80, width = 380), href="https://www.univ-lyon1.fr/", TARGET="_blank"),
+                            a(img(src = "logoLiec.png", height = 70, width = 100), href="http://liec.univ-lorraine.fr/", TARGET="_blank"),
+                            a(img(src = "LogoUniversiteLorraine.png", height = 80, width = 180), href="http://www.univ-lorraine.fr/", TARGET="_blank"),
+                            a(img(src = "LogoHelmholtz.jpg", height = 80, width = 180), href="https://www.ufz.de/index.php?en=33573", TARGET="_blank"),
                             style="text-align: center;")
                       )
              ),
@@ -142,14 +157,14 @@ ui <- fluidPage(
              ####### STEP 3 #####################################################################
              ####################################################################################
              tabPanel(HTML("<font face=verdana size=3 color=#155450>Step 3</font>"),
-                      fixedRow(
+                      fluidRow(
                         column(12, 
                                br(), HTML("<font face=verdana size=5 color=#155450><b>DOSE RESPONSE MODELLING FOR RESPONSIVE ITEMS</b></font>"), br(), br(), br(),
-                               fixedRow(
+                               fluidRow(
                                  sidebarPanel(
                                    style = "background-color: #a7dbd8;",
                                    width = 5,
-                                   fixedRow(
+                                   fluidRow(
                                      column(width = 9, "Click this button each time you update a setting in previous steps"),
                                      column(width = 2, actionButton("buttonDrcfit", "Fit", icon = icon("bar-chart-o")))),
                                    br(), 
@@ -163,7 +178,7 @@ ui <- fluidPage(
                                                   downloadButton("buttonDownloadDrcfitplot", "Download all the fitted dose-response plots", icon = icon("fas fa-download")))))
                                ),
                                
-                               fixedRow(
+                               fluidRow(
                                  mainPanel(
                                    width = 12,
                                    verbatimTextOutput('printDrcfit'),
@@ -187,9 +202,9 @@ ui <- fluidPage(
                                  sidebarPanel(
                                    style = "background-color: #a7dbd8;",
                                    width = 2,
-                                   numericInput('zbmdcalc', label = 'z value for BMD_zSD', min = 0, max = 100, value = 1, step = 1e-02),
-                                   numericInput('xbmdcalc', label = 'x value for BMD_xfold (in %)', min = 0, max = 100, value = 10, step = 1e-02),
-                                   h5("See ", a("here", href = "informations_z_x.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the BMD_zSD and the BMD_xfold"),
+                                   numericInput('zbmdcalc', label = 'z value for BMD-zSD', min = 0, max = 100, value = 1, step = 1e-02),
+                                   numericInput('xbmdcalc', label = 'x value for BMD-xfold (in %)', min = 0, max = 100, value = 10, step = 1e-02),
+                                   h5("See ", a("here", href = "informations_z_x.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the BMD-zSD and the BMD-xfold"),
                                    hr(),
                                    downloadButton("buttonResBmdcalc", "Download results", icon = icon("fas fa-download")),
                                    h5("See ", a("here", href = "informations_bmdcalc_results.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the provided results")
