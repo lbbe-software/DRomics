@@ -17,6 +17,9 @@ It is a variant of the linear trend method that aims at detecting monotonic and
 non monotonic trends from a dose-response designs, whatever the number of 
 replicates per dose (default chosen method).
 
+We recommend the use of the latter for selecting both monotonic
+and biphasic trends form a dose-response design.
+
 For details, see 
 
 Tukey JW, Ciminera JL and Heyse JF (1985).

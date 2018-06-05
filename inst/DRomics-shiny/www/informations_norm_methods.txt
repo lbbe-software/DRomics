@@ -6,6 +6,9 @@ The cyclic loess method, which is more sophisticated and more time consuming,
 is based on the repetition on each pair of arrays of a loess regression between 
 the difference of expression between the two arrays and the average expression. 
 
+We recommend the use of the latter which gives a less agressive and more robust 
+transformation of data. 
+
 For details, see 
 
 Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, and Smyth, GK (2015), 
