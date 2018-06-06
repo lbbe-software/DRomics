@@ -22,10 +22,12 @@ server <- function(input, output, session) {
     }
   })
   
+  numFDR <- reactive({as.numeric(input$FDR)})
+  
   runitemselect <- reactive({
     oo <- filedata()
     if (!is.null(oo)) {
-      itemselect(oo, select.method = input$selectMethod, FDR = input$FDR)
+      itemselect(oo, select.method = input$selectMethod, FDR = numFDR())
     } else {
       NULL
     }
@@ -89,11 +91,12 @@ server <- function(input, output, session) {
   
   output$printBmdcalc <- renderPrint({
     
-    req(input$zbmdcalc, input$xbmdcalc)
+    numZbmdcalc <- reactive({as.numeric(input$zbmdcalc)})
+    numXbmdcalc <- reactive({as.numeric(input$xbmdcalc)})
     
     input$buttonDrcfit
     mydrcfit <- rundrcfit()
-    mybmdcalc <- bmdcalc(mydrcfit, z = input$zbmdcalc, x = input$xbmdcalc)
+    mybmdcalc <- bmdcalc(mydrcfit, z = numZbmdcalc(), x = numXbmdcalc())
     print(mybmdcalc)
     cat("\n")
     cat("\n")
@@ -104,7 +107,6 @@ server <- function(input, output, session) {
     print(mybmdcalcdigits)
     
     output$plotBmdcalc <- renderPlot({
-      req(input$zbmdcalc, input$xbmdcalc)
       plot(mybmdcalc, BMDtype = input$BMDtype, 
            plottype = input$plottype, 
            bytypology = input$bytypology, 

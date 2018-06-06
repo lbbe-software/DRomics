@@ -141,8 +141,7 @@ ui <- fluidPage(
                                                             'ANOVA test' = 'ANOVA')),
                                    h5("See ", a("here", href = "informations_select_methods.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the selection methods"),
                                    br(),
-                                   numericInput('FDR', label = 'False Discovery Rate (FDR) for the Benjamini-Hochberg correction of p-values',
-                                                min = 0, max = 1, value = 0.05, step = 1e-03, width = "100%"))),
+                                   textInput('FDR', label = 'False Discovery Rate (FDR) for the Benjamini-Hochberg correction of p-values', value = "0.05"))),
                                fixedRow(
                                  mainPanel(
                                    width = 12,
@@ -202,8 +201,8 @@ ui <- fluidPage(
                                  sidebarPanel(
                                    style = "background-color: #a7dbd8;",
                                    width = 2,
-                                   numericInput('zbmdcalc', label = 'z value for BMD-zSD', min = 0, max = 100, value = 1, step = 1e-02),
-                                   numericInput('xbmdcalc', label = 'x value for BMD-xfold (in %)', min = 0, max = 100, value = 10, step = 1e-02),
+                                   textInput('zbmdcalc', label = 'z value for BMD-zSD', value = "1"),
+                                   textInput('xbmdcalc', label = 'x value for BMD-xfold (in %)', value = "10"),
                                    h5("See ", a("here", href = "informations_z_x.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the BMD-zSD and the BMD-xfold"),
                                    hr(),
                                    downloadButton("buttonResBmdcalc", "Download results", icon = icon("fas fa-download")),
