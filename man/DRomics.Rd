@@ -9,7 +9,7 @@ DRomics provides several functions for dose-response (or concentration-response)
 \item \code{\link{omicdata}} to check and normalize data,
 \item \code{\link{itemselect}} to select monotonic or biphasic significant responses,
 \item \code{\link{drcfit}} to choose the best-fit model among a predefined family of monotonic and biphasic models to describe each significant response and classify it in a typology of response, 
-\item and \code{\link{bmdcal}} to derive a sensitivity value (a benchmark dose or concentration) from each fitted curve.
+\item and \code{\link{bmdcalc}} to derive a sensitivity value (a benchmark dose or concentration) from each fitted curve.
 }
 
 In the available version data are supposed to be single-channel microarray data transformed in log2, or another type of data that can be directly fitted by least-square regression without any normalization step. In the future this tool will also be able to process RNA-seq data.
