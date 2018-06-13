@@ -610,20 +610,12 @@ plot.drcfit <- function(x, items, ...)
          a character vector indicating the identifiers of the items who want to plot.")
   if (is.numeric(items))
   {
-    if (items > 20)
-      warning("Only the first 20 fits were plotted.")
     subd <- x$fitres[1:min(nrow(x$fitres),items), ]
   } else
   if (is.character(items))
   {
     inditems <- match(items, x$fitres$id)
     subd <- x$fitres[inditems, ]
-
-        if (nrow(subd) > 20)
-    {
-      subd <- subd[1:20, ]
-      warning("Only the first 20 specified fits were plotted.")
-    }
   }
   plotfitsubset(subd, 
                 dose = x$omicdata$dose, 
