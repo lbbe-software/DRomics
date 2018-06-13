@@ -2,7 +2,7 @@
 \alias{omicdata}
 \alias{print.omicdata}
 \alias{plot.omicdata}
-\title{Import, check and normalization of omic data}
+\title{Import, check and normalization of omics data}
 
 \description{
 Data are imported from a .txt file, checked (see the description 
@@ -91,7 +91,7 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# (1) import, check and normalization of transcriptomic data 
+# (1) import, check and normalization of transcriptomics data 
 # (an example on a subsample of a greater data set)
 #
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")

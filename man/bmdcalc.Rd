@@ -97,7 +97,7 @@ Marie-Laure Delignette-Muller and Elise Billoir
 
 \examples{
 
-# (1) an example on a transcriptomic data (a subsample of a greater data set) 
+# (1) an example on a transcriptomics data (a subsample of a greater data set) 
 #
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 (o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))

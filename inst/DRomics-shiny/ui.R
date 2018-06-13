@@ -27,13 +27,13 @@ ui <- fluidPage(
                         HTML("<center><font face=verdana size=6 color=#155450>Welcome to the DRomics Shiny Application</font></center>"),
                         br(), br(),
                         fixedRow(column(8, offset = 2,
-                                        tags$blockquote("DRomics is a freely available on-line tool for dose-response (or concentration-response) characterization from omic data.
-                                             It is especially dedicated to omic data obtained using a typical dose-response design, favoring a great number of tested doses 
+                                        tags$blockquote("DRomics is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data.
+                                             It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses 
                                              (or concentrations, at least 6, and the more the better) rather than a great number of replicates (no need of three replicates).
                                              After a first optional step which consists to normalize the data (step 1), the aim of the proposed workflow is to select monotonic
                                              and/or biphasic significantly responsive items (e.g. probes, metabolites) (step 2), to choose the best-fit model among a predefined
-                                             family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive a sensitivity value
-                                             (a benchmark dose or concentration) and a typology of response from each fitted curve.
+                                             family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive 
+                                             a benchmark dose or concentration and a typology of response from each fitted curve.
                                              In the available version data are supposed to be single-channel microarray data transformed in log2, or another type of data that can
                                              be directly fitted by least-square regression without any normalization step. In the future this tool will also be able to process RNA-seq data.", 
                                                         style="text-align:justify;"),
@@ -79,7 +79,7 @@ ui <- fluidPage(
              tabPanel(HTML("<font face=verdana size=3 color=#155450>Step 1</font>"),
                       fixedRow(
                         column(12, 
-                               br(), HTML("<font face=verdana size=5 color=#155450><b>IMPORT, CHECK AND NORMALIZATION OF OMIC DATA</b></font>"), br(), br(), br(),
+                               br(), HTML("<font face=verdana size=5 color=#155450><b>IMPORT, CHECK AND NORMALIZATION OF OMICS DATA</b></font>"), br(), br(), br(),
                                fixedRow(
                                  sidebarPanel(
                                    style = "background-color: #a7dbd8;",

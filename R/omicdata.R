@@ -18,7 +18,7 @@
 #   59 Temple Place, Suite 330, Boston, MA 02111-1307, USA                                                             
 #                                                                                                                                                                         
 #####################################################################################
-### import, check and optionnally normalize omic data
+### import, check and optionnally normalize omics data
 ###
 ###         R functions
 ### 

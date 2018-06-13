@@ -4,12 +4,12 @@
 \title{Overview of the \pkg{DRomics} package}
 
 \description{
-DRomics provides several functions for dose-response (or concentration-response) characterization from omic data. It is especially dedicated to omic data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 6, and the more the better) rather than a great number of replicates (no need of three replicates). DRomics provides four main functions described as follows:
+DRomics provides several functions for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 6, and the more the better) rather than a great number of replicates (no need of three replicates). DRomics provides four main functions described as follows:
 \itemize{
 \item \code{\link{omicdata}} to check and normalize data,
 \item \code{\link{itemselect}} to select monotonic or biphasic significant responses,
 \item \code{\link{drcfit}} to choose the best-fit model among a predefined family of monotonic and biphasic models to describe each significant response and classify it in a typology of response, 
-\item and \code{\link{bmdcalc}} to derive a sensitivity value (a benchmark dose or concentration) from each fitted curve.
+\item and \code{\link{bmdcalc}} to derive a benchmark dose or concentration from each fitted curve.
 }
 
 In the available version data are supposed to be single-channel microarray data transformed in log2, or another type of data that can be directly fitted by least-square regression without any normalization step. In the future this tool will also be able to process RNA-seq data.
@@ -32,7 +32,7 @@ Marie-Laure Delignette-Muller, Elise Billoir, Floriane Larras and Aurelie Siberc
 
 # Step 1: importation, check and normalization of data if need
 #
-## here cyclicloess normalization of a small transcriptomic data set
+## here cyclicloess normalization of a small transcriptomics data set
 ## (sample of a real data set)
 
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
