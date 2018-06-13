@@ -80,7 +80,8 @@ server <- function(input, output, session) {
         },
         content = function(file) {
           file.copy(paste0(tempdir(), "/drcfitplot.pdf"), file)
-        }
+        },
+        contentType = {"application/pdf"}
       )
       
       output$printDrcfit <- renderPrint({
@@ -118,11 +119,12 @@ server <- function(input, output, session) {
     
     output$buttonResBmdcalc <- downloadHandler(
       filename = function(){
-        paste0("data-", Sys.Date(), ".txt")
+        paste0("data-", Sys.Date(), ".csv")
       },
       content = function(file) {
         write.table(mybmdcalc$res, file)
-      }
+      },
+      contentType = {"text/csv"}
     )
     
     # activate the button
@@ -134,9 +136,10 @@ server <- function(input, output, session) {
         paste0("data-", Sys.Date(), ".pdf")
       },
       content = function(file) {
-        plot(mybmdcalc, BMDtype = input$BMDtype, plottype = input$plottype, bytypology = input$bytypology)
-        ggsave(file, width = 8, height = 8, plot = last_plot())
-      }
+        myplot <- function() {plot(mybmdcalc, BMDtype = input$BMDtype, plottype = input$plottype, bytypology = input$bytypology)}
+        ggsave(file, width = 8, height = 8, plot = myplot(), device = "pdf")
+      },
+      contentType = {"application/pdf"}
     )
   })
 }
