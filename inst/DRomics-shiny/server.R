@@ -76,10 +76,10 @@ server <- function(input, output, session) {
       
       output$buttonDownloadDrcfitplot <- downloadHandler(
         filename = function(){
-          paste("drcfitplot.pdf", sep="")
+          "drcfitplot.pdf"
         },
         content = function(file) {
-          file.copy("drcfitplot.pdf", file)
+          file.copy(paste0(tempdir(), "/drcfitplot.pdf"), file)
         }
       )
       
@@ -118,7 +118,7 @@ server <- function(input, output, session) {
     
     output$buttonResBmdcalc <- downloadHandler(
       filename = function(){
-        paste("data-", Sys.Date(), ".txt", sep="")
+        paste0("data-", Sys.Date(), ".txt")
       },
       content = function(file) {
         write.table(mybmdcalc$res, file)
@@ -131,7 +131,7 @@ server <- function(input, output, session) {
     ## Output: plots downloading
     output$buttonPlotBmdcalc <- downloadHandler(
       filename = function(){
-        paste("data-", Sys.Date(), ".pdf", sep="")
+        paste0("data-", Sys.Date(), ".pdf")
       },
       content = function(file) {
         plot(mybmdcalc, BMDtype = input$BMDtype, plottype = input$plottype, bytypology = input$bytypology)
