@@ -57,19 +57,19 @@ server <- function(input, output, session) {
   })
   
   output$plotDrcfit <- renderPlot({
-    input$buttonDrcfit # Re-run when button is clicked
+    
     if(exists("ss") & !is.null(ss)){
+      observe(input$buttonDrcfit) # Re-run when button is clicked
       n <- length(ss$selectindex)
-      withProgress(message = 'Fitting in progress', 
-                   detail = 'The fitting may be long if the number of selected items is high.', value = 0, {
-                     for (i in 1:n) {
-                       incProgress(1 / n)
-                       mydrcfit <- rundrcfit()
-                     }
+      withProgress(message = 'These ongoing calculations can take from minutes to few hours.
+                   Your patience should be proportional to the size of your data and the chosen FDR.', 
+                   min = 1, max = 1, value = 1, {
+                     mydrcfit <- rundrcfit()
+                     plotdrcfit <- plot(mydrcfit)
+                     plot(plotdrcfit)
                    })
       
-      plotdrcfit <- plot(mydrcfit)
-      plot(plotdrcfit)
+      
       
       output$testdowload <- reactive({length(mydrcfit)})
       outputOptions(output, "testdowload", suspendWhenHidden = FALSE)

@@ -6,8 +6,12 @@ ui <- fluidPage(
               height: 100px;
               width: 500px;
               position:fixed;
-              top: calc(50%);;
-              left: calc(50% - 250px);;
+              top: calc(50%);
+              left: calc(50% - 250px);
+              color: #155450;
+              font-size: 16px;
+              font-style: italic;
+              background-color: #c6c6c6;
             }
            "
       )
@@ -60,7 +64,6 @@ ui <- fluidPage(
                                           "- aurelie.siberchicot@univ-lyon1.fr - Laboratoire de Biométrie et Biologie Evolutive - Université Lyon 1 - Lyon - France")
                         )),
                         hr(style='width: 70%;'),
-                        # HTML("<hr style='height: 2px; color: #FF4000; background-color: #FF4000; width: 50%;>"),
                         fixedRow(column(10, offset = 2,
                                         p("Grant Agreement number: 705149 - MicroERA - H2020-MSCA-IF-2015"),
                                         br(), br()
