@@ -29,6 +29,7 @@ Marie-Laure Delignette-Muller, Elise Billoir, Floriane Larras and Aurelie Siberc
 }
 
 \examples{
+\dontrun{
 
 # Step 1: importation, check and normalization of data if need
 #
@@ -45,7 +46,7 @@ plot(o)
 ## monotonic and biphasic curves from
 ## a typical dose-response design (with few replicates per dose)
 
-(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
+(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
 
 
 # Step 3: fit of dose-response models, choice of the best fit for each curve
@@ -63,6 +64,7 @@ plot(f)
 plot(r, BMDtype = "zSD", plottype = "ecdf", bytypology = FALSE) 
 plot(r, BMDtype = "xfold", plottype = "hist", bytypology = TRUE, hist.bins = 10) 
 
+}
 }
 
 

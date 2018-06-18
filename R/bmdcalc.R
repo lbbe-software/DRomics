@@ -186,8 +186,8 @@ print.bmdcalc <- function(x, ...)
         defined by the model).\n")
   
   # count of cases where BMD is not yet reached at the highest tested dose
-  nNA.BMD.zSD <- sum(is.na(x$res$BMD.zSD))
-  nNA.BMD.xfold <- sum(is.na(x$res$BMD.xfold))
+  nNA.BMD.zSD <- sum(is.na(x$res$BMD.zSD) & !is.nan(x$res$BMD.zSD))
+  nNA.BMD.xfold <- sum(is.na(x$res$BMD.xfold) & !is.nan(x$res$BMD.xfold))
   if ((nNA.BMD.zSD > 0) |  (nNA.BMD.xfold > 0))
     cat(nNA.BMD.xfold,"BMD-xfold values and ", nNA.BMD.zSD,
         " BMD-zSD values could not be calculated 

@@ -96,10 +96,12 @@ Marie-Laure Delignette-Muller and Elise Billoir
 }
 
 \examples{
+\dontrun{
 
 # (1) an example on a transcriptomics data (a subsample of a greater data set) 
 #
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+
 (o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
 (f <- drcfit(s_quad, progressbar = TRUE))
@@ -117,5 +119,5 @@ plot(r, BMDtype = "xfold", plottype = "hist", bytypology = TRUE, hist.bins = 10)
 # changing the values of z and x for BMD calculation
 (rb <- bmdcalc(f, z = 2, x = 50))
 plot(rb) 
-
+  }
 }

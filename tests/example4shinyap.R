@@ -5,18 +5,12 @@ library(DRomics)
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 (o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 plot(o)
-
-
 (o.2 <- omicdata(datatxt, check = TRUE, norm.method = "none"))
 plot(o.2)
 (o.3 <- omicdata(datatxt, check = TRUE, norm.method = "quantile"))
 plot(o.3)
 (o.4 <- omicdata(datatxt, check = TRUE, norm.method = "scale"))
 plot(o.4)
-
-## or the metabolo data set (smaller)
-# datatxt <- system.file("extdata", "metabolo_norm.txt", package="DRomics")
-# (o <- omicdata(datatxt, check = TRUE, norm.method = "none"))
 
 # item selection using the quadratic method
 # options to put in shiny : select.method (3 methods), FDR (numerical positive value < 1)
@@ -33,19 +27,8 @@ plot(f)
 # Alternative plots
 # with a chosen number of first items
 plot(f, items = 12) 
-
-
-# to plot only the specified items in the specified order
-# plot(f, items = c("384.2", "383.1", "301.1", "363.1"))
-#plot(f, items = c("P_78", "AP_M52", "P_135", "AP_M1"))
-
-
-# Comparison of computation time with parallel version
-# system.time(f1 <- drcfit(s_quad, progressbar = TRUE))
-# system.time((f2 <- drcfit(s_quad, progressbar = FALSE, parallel = "snow", ncpus = 4)))
-
-
-# with specified items
+# with chosen items in a specified order
+plot(f, items = c("301.2", "363.1", "383.1"))
 
 # calculation of benchmark doses
 # options in shiny : z (numerical positive value), x (numerical positive value : percentage)
@@ -60,7 +43,7 @@ plot(r, BMDtype = "zSD", plottype = "ecdf", bytypology = FALSE)
 plot(r, BMDtype = "xfold", plottype = "ecdf", bytypology = FALSE) 
 
 plot(r, plottype = "hist", bytypology = FALSE) 
-plot(r, plottype = "hist", bytypology = FALSE, hist.bins = 40) 
+plot(r, plottype = "hist", bytypology = FALSE, hist.bins = 10) 
 plot(r, plottype = "density", bytypology = FALSE) 
 
 plot(r, plottype = "hist", bytypology = TRUE, hist.bins = 10) 

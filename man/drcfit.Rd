@@ -114,9 +114,10 @@ Marie-Laure Delignette-Muller
 
 # (1) an example on a transcriptomics data (a subsample of a greater data set) 
 #
+  \dontrun{
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 (o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
-(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
+(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
 (f <- drcfit(s_quad, progressbar = TRUE))
 
 # Default plot
@@ -127,6 +128,7 @@ plot(f, items = 12)
 
 # Plot of the chosen items in the chosen order
 plot(f, items = c("301.2", "363.1", "383.1"))
+}
 
 # (2) Comparison of parallel and non paralell implementations on a 
 #     larger selection of items
