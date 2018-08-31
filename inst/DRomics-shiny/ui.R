@@ -92,10 +92,7 @@ ui <- fluidPage(
                                    width = 5,
                                    fileInput('datafile', 
                                              'Select an input file',
-                                             accept = c('text/csv',
-                                                        'text/comma-separated-values,
-                                                      text/plain',
-                                                        '.csv')),
+                                             accept = c('text/csv', 'text/plain')),
                                    h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the format required"),
                                    h5("See ", a("here", href = "DRomicspkg/transcripto_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;", download = 'transcripto_sample.txt'), " an example file (choose the 'cyclic loess' method to normalize these data)")
                                  ),

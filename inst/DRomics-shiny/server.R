@@ -119,12 +119,11 @@ server <- function(input, output, session) {
     
     output$buttonResBmdcalc <- downloadHandler(
       filename = function(){
-        paste0("data-", Sys.Date(), ".csv")
+        paste0("data-", Sys.Date(), ".txt")
       },
       content = function(file) {
-        write.table(mybmdcalc$res, file)
-      },
-      contentType = {"text/csv"}
+        write.table(mybmdcalc$res, file, sep = "\t", dec = ".")
+      }
     )
     
     # activate the button
