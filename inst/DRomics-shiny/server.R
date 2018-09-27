@@ -1,5 +1,5 @@
 server <- function(input, output, session) {
-#pour tester update  
+
   ## Input: file data
   filedata <- reactive({
     inFile <- NULL
@@ -135,8 +135,9 @@ server <- function(input, output, session) {
         paste0("data-", Sys.Date(), ".pdf")
       },
       content = function(file) {
-        myplot <- function() {plot(mybmdcalc, BMDtype = input$BMDtype, plottype = input$plottype, bytypology = input$bytypology)}
-        ggsave(file, width = 8, height = 8, plot = myplot(), device = "pdf")
+        pdf(file, width = 8, height = 8)
+        print(plot(mybmdcalc, BMDtype = input$BMDtype, plottype = input$plottype, bytypology = input$bytypology))
+        dev.off()
       },
       contentType = {"application/pdf"}
     )
