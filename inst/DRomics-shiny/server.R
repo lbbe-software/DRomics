@@ -61,7 +61,7 @@ server <- function(input, output, session) {
     if(exists("ss") & !is.null(ss)){
       observe(input$buttonDrcfit) # Re-run when button is clicked
       n <- length(ss$selectindex)
-      withProgress(message = 'These ongoing calculations can take from minutes to few hours.
+      withProgress(message = 'These ongoing calculations can take from minutes to about an hour.
                    Your patience should be proportional to the size of your data and the chosen FDR.', 
                    min = 1, max = 1, value = 1, {
                      mydrcfit <- rundrcfit()
