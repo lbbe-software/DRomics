@@ -66,9 +66,12 @@ omicdata <- function(file, check = TRUE,
   # control of the design
   design <- table(dose, dnn = "")
   
+  fdose <- as.factor(dose)
+  tdata <- t(data)
   calcmean <- function(i)
   {
-    tapply(data[i,], as.factor(dose), mean)
+  #   tapply(data[i,], fdose, mean)
+    tapply(tdata[, i], fdose, mean)
   }
   s <- sapply(1:(nrowd - 1), calcmean)
   data.mean <- as.matrix(t(s))
