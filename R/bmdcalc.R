@@ -79,7 +79,8 @@ bmdcalc <- function(f, z = 1, x = 10)
     e <- dfitall$e[i]
     g <- dfitall$f[i] # f is renamed g
     
-    if(dfitall$model[i] == "linear") {
+    modeli <- dfitall$model[i]
+    if(modeli == "linear") {
       #print("lin")
       y0 <- dcalc$y0[i] <- flin(x=0, b=b, d=d)
       ydosemax <- dcalc$ydosemax[i] <- flin(x=dosemax, b=b, d=d)
@@ -89,7 +90,7 @@ bmdcalc <- function(f, z = 1, x = 10)
       dcalc$BMDsd[i] <- invlin(dcalc$ysd[i], b, d)
     } 
     
-    if(dfitall$model[i] == "exponential") {
+    if(modeli == "exponential") {
       #print("Expo")
       y0 <- dcalc$y0[i] <- fExpo(x=0, b=b, d=d, e=e)
       ydosemax <- dcalc$ydosemax[i] <- fExpo(x=dosemax, b=b, d=d, e=e)
@@ -97,9 +98,8 @@ bmdcalc <- function(f, z = 1, x = 10)
       dcalc$BMDp[i] <- invExpo(dcalc$yp[i], b, d, e)
       dcalc$ysd[i] <- y0 + z*dfitall$SDres[i]*sign(e*b)
       dcalc$BMDsd[i] <- invExpo(dcalc$ysd[i], b, d, e)
-    }
-    
-    if(dfitall$model[i] == "Hill") {
+    } else
+    if(modeli == "Hill") {
       #print("Hill")
       y0 <- dcalc$y0[i] <- fHill(x=0, b=b, c=c, d=d, e=e)
       ydosemax <- dcalc$ydosemax[i] <- fHill(x=dosemax, b=b, c=c, d=d, e=e)
@@ -107,9 +107,8 @@ bmdcalc <- function(f, z = 1, x = 10)
       dcalc$BMDp[i] <- invHill(dcalc$yp[i], b, c, d, e)
       dcalc$ysd[i] <- y0 + z*dfitall$SDres[i]*sign(c - d)
       dcalc$BMDsd[i] <- invHill(dcalc$ysd[i], b, c, d, e)
-    }
-    
-    if(dfitall$model[i] == "log-probit") {
+    } else
+    if(modeli == "log-probit") {
       #print("Lprobit")
       y0 <- dcalc$y0[i] <- fLprobit(x=0, b=b, c=c, d=d, e=e)
       ydosemax <- dcalc$ydosemax[i] <- fHill(x=dosemax, b=b, c=c, d=d, e=e)
@@ -117,10 +116,8 @@ bmdcalc <- function(f, z = 1, x = 10)
       dcalc$BMDp[i] <- invLprobit(dcalc$yp[i], b, c, d, e)
       dcalc$ysd[i] <- y0 + z*dfitall$SDres[i]*sign(c - d)
       dcalc$BMDsd[i] <- invLprobit(dcalc$ysd[i], b, c, d, e)
-    }
-    
-    
-    if(dfitall$model[i] == "Gauss-probit") {
+    } else
+    if(modeli == "Gauss-probit") {
       #print("Gauss")
       xext <- dcalc$xextrem[i] <- e + (c - d)*b/(g*sqrt(2*pi)) # g is renamed f
       yext <- dcalc$yextrem[i] <- fGauss5p(xext, b=b, c=c, d=d, e=e, f=g)
@@ -139,9 +136,8 @@ bmdcalc <- function(f, z = 1, x = 10)
                           ydosemax=ydosemax, func=fGauss5pBMR, b=b, c=c, d=d, e=e, g=g)
       dcalc$ysd[i] <- resBMDsd$threshold
       dcalc$BMDsd[i] <- resBMDsd$BMD
-    }
-    
-    if(dfitall$model[i] == "log-Gauss-probit") {
+    } else
+    if(modeli == "log-Gauss-probit") {
       xext <- dcalc$xextrem[i] <- exp(log(e) + (c - d)*b/(g*sqrt(2*pi)))# g is renamed f
       yext <- dcalc$yextrem[i] <- fLGauss5p(xext, b=b, c=c, d=d, e=e, f=g)
       y0 <- dcalc$y0[i] <- fLGauss5p(x=0, b=b, c=c, d=d, e=e, f=g)
