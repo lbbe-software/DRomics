@@ -1,4 +1,5 @@
-install.packages("limma", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+install.packages("BiocManager", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+BiocManager::install("limma")
 install.packages("ggplot2", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 install.packages("shiny", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 install.packages("shinyjs", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
