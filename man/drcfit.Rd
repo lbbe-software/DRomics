@@ -103,7 +103,8 @@ Each retained is also classified in four classes by its global trend :
 }
 
 \references{ 
-Larras and co, our paper when it will be published - TO COMPLETE !!!!!!!!!!!
+Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M,
+  Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental science & technology.\href{https://doi.org/10.1021/acs.est.8b04752}{https://doi.org/10.1021/acs.est.8b04752}
 }
 
 \author{ 
