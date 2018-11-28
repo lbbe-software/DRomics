@@ -27,7 +27,7 @@ ui <- fluidPage(
              
              tabPanel(HTML("<font face=verdana size=3 color=#155450>DRomics Shiny App</font>"),
                       fluidRow(
-                        br(), br(), br(), 
+                        br(), br(), 
                         HTML("<center><font face=verdana size=6 color=#155450>Welcome to the DRomics Shiny Application</font></center>"),
                         br(), br(),
                         fixedRow(column(8, offset = 2,
@@ -73,6 +73,7 @@ ui <- fluidPage(
                         hr(style='width: 70%;'),
                         fixedRow(column(10, offset = 2,
                                         p("Grant Agreement number: 705149 - MicroERA - H2020-MSCA-IF-2015"),
+                                        p("Horizon 2020"),
                                         br(), br()
                         )),
                         div(a(img(src = "logoLbbe.png", height = 70, width = 92), href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
@@ -81,6 +82,7 @@ ui <- fluidPage(
                             a(img(src = "logoLiec.png", height = 70, width = 100), href="http://liec.univ-lorraine.fr/", TARGET="_blank"),
                             a(img(src = "LogoUniversiteLorraine.png", height = 80, width = 180), href="http://www.univ-lorraine.fr/", TARGET="_blank"),
                             a(img(src = "LogoHelmholtz.jpg", height = 80, width = 180), href="https://www.ufz.de/index.php?en=33573", TARGET="_blank"),
+                            img(src = "flag_yellow_high.jpg", height = 70, width = 110),
                             style="text-align: center;")
                       )
              ),
