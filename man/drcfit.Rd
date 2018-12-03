@@ -48,7 +48,7 @@ choice) or \code{"log-probit"}.}
 
 \details{
 For each selected item, five dose-response models (linear, Hill, exponential, 
-Gauss-probit and log-Gauss-probit, see Larras et al. ????
+Gauss-probit and log-Gauss-probit, see Larras et al. 2018
 for their definition) were fitted by non linear regression,
 using the \code{\link{nls}} function. The best one was chosen as the one giving the lowest AIC value.
 Items with the best AIC value not lower than the AIC value of the null model (constant model) minus 2
@@ -78,14 +78,20 @@ Each retained is also classified in four classes by its global trend :
   \item U for U-shape curves,
   \item bell for bell-shape curves.
  }
+Some curves fitted by a Gauss-probit model can be classified as increasing or decreasing when the 
+dose value at which their extremum is reached is at zero.
 
 }
 
 \value{ 
    \code{drcfit} returns an object of class \code{"drcfit"}, a list with 4 components:
     
-   \item{fitres}{ a data frame reporting the results of the fit on each selected item (one line per item) sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The different columns correspond to the identifier of each item (\code{id}), the row number of this item in the initial data set (\code{irow}), the adjusted p-value of the selection step (\code{adjpvalue}), the name of the best fit model (\code{model}), the number of fitted parameters (\code{nbpar}), the values of the parameters \code{b}, \code{c}, d,\code{d}, \code{e} and \code{f}, (\code{NA} for non used parameters), the residual standard deviation (\code{SDres}), the typology of the curve \code{typology} and the
-   rough trend of the curve \code{trend} defined with four classes (U, bell, increasing or decreasing shape).
+   \item{fitres}{ a data frame reporting the results of the fit on each selected item (one line per item) sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The different columns correspond to the identifier of each item (\code{id}), the row number of this item in the initial data set (\code{irow}), the adjusted p-value of the selection step (\code{adjpvalue}), the name of the best fit model (\code{model}), the number of fitted parameters (\code{nbpar}), the values of the parameters \code{b}, \code{c}, \code{d}, \code{e} and \code{f}, (\code{NA} for non used parameters), the residual standard deviation (\code{SDres}), the typology of the curve (\code{typology}), the
+   rough trend of the curve (\code{trend}) defined with four classes (U, bell, increasing or decreasing shape), the
+   theoretical value at the control \code{y0}), the theoretical y range for x within the range of 
+   tested doses (\code{yrange}) and 
+   for biphasic curves 
+   the x value at which their extremum is reached (\code{xextrem}).
   }
 
     \item{omicdata}{ The corresponding object of class \code{"omicdata"} given in input 

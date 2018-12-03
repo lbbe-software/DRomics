@@ -55,7 +55,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   data <- itemselect$omicdata$data 
   data.mean <- itemselect$omicdata$data.mean 
   
-  # calculations for starting values
+  # calculations for starting values and other uses
+  dosemin <- min(dose)
   dosemax <- max(dose)
   dosemed <- median(dose[dose!=0])
   doseu <- as.numeric(colnames(data.mean)) # sorted unique doses
@@ -458,6 +459,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   # removing of null models (const, model no 7) and 
   # fits eliminated by the quadratic trend test on residuals
   dres <- dres[(dres$model != 7) & (dres$trendP > 0.05), ]
+  # update of nselect
   nselect <- nrow(dres)
   
   dc <- dres[, c("id", "irow", "adjpvalue", "model", "nbpar", "b", "c", "d", "e", "f", "SDres")]
@@ -466,7 +468,70 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   modelnames <- c("Gauss-probit", "log-Gauss-probit", "Hill", "log-probit", "exponential", "linear")
   dc$model <- modelnames[dc$model] 
   
-  # definition on the typology
+  # Calculation of the theoretical value at the control : y0
+  # of the theoretical signal range on the range of tested concentration : yrange
+  # of the x-value that corresponds to the extremum for U and bell curves : xextrem
+  ##################################################################################
+  y0 <- numeric(length = nselect)
+  yrange <- numeric(length = nselect)
+  xextrem <- numeric(length = nselect)
+  xextrem[1:nselect] <- NA # will remain at NA for monotonic curves
+  
+  # calculation of y0 and yrange for linear curves
+  indlin <- which(dc$model == "linear")
+  vb <- dc$b[indlin]
+  vd <- dc$d[indlin]
+  yrange[indlin] <- abs(flin(dosemin, vb, vd) - flin(dosemax, vb, vd))
+  y0[indlin] <- vd
+
+  # calculation of y0 and yrange for exponential curves
+  indExpo <- which(dc$model == "exponential")
+  vb <- dc$b[indExpo]
+  vd <- dc$d[indExpo]
+  ve <- dc$e[indExpo]
+  yrange[indExpo] <- 
+    abs(fExpo(dosemin, vb, vd, ve) - fExpo(dosemax, vb, vd, ve))
+  y0[indExpo] <- vd
+  
+  # calculation of y0 and yrange for Hill curves
+  indHill <- which(dc$model == "Hill")
+  vb <- dc$b[indHill]
+  vc <- dc$c[indHill]
+  vd <- dc$d[indHill]
+  ve <- dc$e[indHill]
+  yrange[indHill] <- 
+    abs(fHill(dosemin, vb, vc, vd, ve) - fHill(dosemax, vb, vc, vd, ve))
+  y0[indHill] <- vd
+  
+  # calculation of y0, xextrem and yrange for Gauss-probit curves
+  indGP <- which(dc$model == "Gauss-probit")
+  vb <- dc$b[indGP]
+  vc <- dc$c[indGP]
+  vd <- dc$d[indGP]
+  ve <- dc$e[indGP]
+  vf <- dc$f[indGP]
+  xextr <- xextrem[indGP] <- ve + (vc - vd)*vb/(vf*sqrt(2*pi)) 
+  yrange[indGP] <- pmax(
+    abs(fGauss5p(dosemin, vb, vc, vd, ve, vf) - fGauss5p(xextr, vb, vc, vd, ve, vf)),
+    abs(fGauss5p(xextr, vb, vc, vd, ve, vf) - fGauss5p(dosemax, vb, vc, vd, ve, vf))
+  )
+  y0[indGP] <- fGauss5p(0, vb, vc, vd, ve, vf)
+
+  # calculation of y0, xextrem and yrange for log-Gauss-probit and log-probit curves
+  indlGP <- which(dc$model == "log-Gauss-probit" | dc$model == "log-probit")
+  vb <- dc$b[indlGP]
+  vc <- dc$c[indlGP]
+  vd <- dc$d[indlGP]
+  ve <- dc$e[indlGP]
+  vf <- dc$f[indlGP]
+  xextr <- xextrem[indlGP] <- exp(log(ve) + (vc - vd)*vb/(vf*sqrt(2*pi))) 
+  yrange[indlGP] <- pmax(
+    abs(fLGauss5p(dosemin, vb, vc, vd, ve, vf) - fLGauss5p(xextr, vb, vc, vd, ve, vf)),
+    abs(fLGauss5p(xextr, vb, vc, vd, ve, vf) - fLGauss5p(dosemax, vb, vc, vd, ve, vf))
+  )
+  y0[indlGP] <- vd
+  
+  # definition of the typology
   typology <- character(length = nselect)
   trend <- character(length = nselect)
  # pf <- 0.1 # if abs(f) < pf * abs(c - d) gaussian trends are considered roughly monotonous
@@ -526,7 +591,15 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
                                 trend[i] <- "dec"} 
   }
   dc$typology <- typology
+  
+  # correction of the trend for Gauss-probit curves with xextrem == 0
+  indnullxextr <- which((dc$model == "Gauss-probit") & (xextrem == 0))
+  trend[indnullxextr] <- ifelse(dc$f[indnullxextr] > 0, "dec", "inc") 
+  
   dc$trend <- factor(trend)
+  dc$y0 <- y0
+  dc$yrange <- yrange
+  dc$xextrem <- xextrem
   
   # number of null models
   n.failure <- length(itemselect$selectindex) - nrow(dc)
@@ -535,7 +608,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   {
     dc$model <- factor(dc$model, # to specify the order
                        levels = c("Hill", "linear", "exponential", "Gauss-probit", "log-Gauss-probit"))
-    dc$typology <- factor(typology,
+    dc$typology <- factor(dc$typology,
                           levels = c("H.inc", "H.dec", "L.inc", "L.dec", 
                                      "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
                                      "GP.U", "GP.bell", "lGP.U", "lGP.bell"))
@@ -544,7 +617,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   {
     dc$model <- factor(dc$model, # to specify the order
                        levels = c("log-probit", "linear", "exponential", "Gauss-probit", "log-Gauss-probit")) 
-    dc$typology <- factor(typology,
+    dc$typology <- factor(dc$typology,
                           levels = c("lP.inc", "lP.dec", "L.inc", "L.dec", 
                                      "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
                                      "GP.U", "GP.bell", "lGP.U", "lGP.bell"))

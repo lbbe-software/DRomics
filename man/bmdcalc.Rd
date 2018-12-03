@@ -69,8 +69,15 @@ In cases where the BMD is not reached at the highest tested dose, \code{NA} is r
    \code{bmdcalc} returns an object of class \code{"bmdcalc"}, a list with 4 components:
     
    \item{res}{ a data frame reporting the results of the fit and BMD computation
-   on each selected item sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The given results are: id, the item identifier; irow, the row number in the initial dataset; adjpvalue, the adjusted p-values returned by function \code{itemselect}; model, the best model fitted; nbpar, the number of parameters of this best model; b, c, d, e, and f, the model parameter values (see Larras et al. for their interpretation); SDres, the residual standard deviation of the best model; typology, the class of typology (twelve class typology described in the help of the \code{drcfit} function); trend, the
-   rough trend of the curve defined with four classes (U, bell, increasing or decreasing shape), BMD.zSD, the BMD-zSD value; BMD.xfold, the BMD-xfold value.}
+   on each selected item sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The different columns correspond to the identifier of each item (\code{id}), the row number of this item in the initial data set (\code{irow}), the adjusted p-value of the selection step (\code{adjpvalue}), the name of the best fit model (\code{model}), the number of fitted parameters (\code{nbpar}), the values of the parameters \code{b}, \code{c}, \code{d}, \code{e} and \code{f}, (\code{NA} for non used parameters), the residual standard deviation (\code{SDres}), the typology of the curve (\code{typology}, (twelve class typology described in the help of the \code{drcfit} 
+   function)), the
+   rough trend of the curve (\code{trend}) defined with four classes (U, bell, increasing or decreasing shape), the
+   theoretical value at the control (\code{y0}), the theoretical y range 
+   for x within the range of tested doses 
+   (\code{yrange}) and 
+   for biphasic curves 
+   the x value at which their extremum is reached (\code{xextrem}), the BMD-zSD value (\code{BMD.zSD}) and 
+   the BMD-xfold value (\code{BMD.xfold}).}
 
   \item{z}{Value of z given in input to define the BMD-zSD.}
 

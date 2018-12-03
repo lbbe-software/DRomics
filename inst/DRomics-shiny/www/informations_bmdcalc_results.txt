@@ -12,5 +12,8 @@ returned by the item selection step. The given results are:
 - typology: the class of typology (twelve class typology as described in the 
   dose response modelling step)
 - trend: the rough trend of the curve defined with four classes (U, bell, increasing or decreasing shape)
+- y0 : theoretical value at the control
+- yrange : theoretical y range for x within the range of tested doses
+- xextrem : for biphasic curves, x value at which their extremum is reached
 - BMD.zSD: the BMD-zSD value
 - BMD.xfold: the BMD-xfold value
