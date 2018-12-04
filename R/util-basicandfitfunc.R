@@ -70,7 +70,7 @@ startvalExp3pnls.2 <- function(xm, ym, increase, Ushape)
     # initial value of e that corresponds to its value in the 2 parameter model
     e <- eabs
     # initial value of b 
-    reg <- lm(ym ~ exp(xm / e)) ############# remettre explicitement le e dans l'expo pour pouvoir le faire varier !!!!!!!
+    reg <- lm(ym ~ exp(xm / e)) 
     b <- coef(reg)[2]
   }
   startval <- list(b = b, d = d, e = e)

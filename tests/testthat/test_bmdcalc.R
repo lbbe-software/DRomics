@@ -1,12 +1,14 @@
 context("bmdcalc_BMD")
 test_that("bmdcalc works as expected on the BMD results",
   {
+    skip_on_cran()
+    skip_on_os(c("mac", "linux", "solaris"))
     datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
-    (o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
-    (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
-    (f <- drcfit(s_quad, progressbar = TRUE))
-    (r.1 <- bmdcalc(f, z = 1, x = 10))
-    (r.2 <- bmdcalc(f, z = 2, x = 50))
+    o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess")
+    s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)
+    f <- drcfit(s_quad, progressbar = TRUE)
+    r.1 <- bmdcalc(f, z = 1, x = 10)
+    r.2 <- bmdcalc(f, z = 2, x = 50)
     BMD.zSD.1 <- r.1$res$BMD.zSD
     BMD.zSD.2 <- r.2$res$BMD.zSD
     BMD.xfold.1 <- r.1$res$BMD.xfold
