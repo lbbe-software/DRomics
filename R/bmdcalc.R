@@ -1,24 +1,4 @@
-######################################################################################
-#   Copyright (c) 2018 Marie Laure Delignette-Muller, Elise Billoir, Floriane Larras,
-#   Aurelie Siberchicot
-#                                                                                                                                                                        
-#   This program is free software; you can redistribute it and/or modify                                               
-#   it under the terms of the GNU General Public License as published by                                         
-#   the Free Software Foundation; either version 2 of the License, or                                                   
-#   (at your option) any later version.                                                                                                            
-#                                                                                                                                                                         
-#   This program is distributed in the hope that it will be useful,                                                             
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of                                          
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                                 
-#   GNU General Public License for more details.                                                                                    
-#                                                                                                                                                                         
-#   You should have received a copy of the GNU General Public License                                           
-#   along with this program; if not, write to the                                                                                           
-#   Free Software Foundation, Inc.,                                                                                                              
-#   59 Temple Place, Suite 330, Boston, MA 02111-1307, USA                                                             
-#                                                                                                                                                                         
-#####################################################################################
-# internally used function (to place elsewhere)
+# internally used function
 calcBMD <- function(y0, delta, xext, yext, dosemax, ydosemax, func, b, c, d, e, g){
   BMD <- NA
   if(g > 0){ # Umbrella shape
@@ -49,9 +29,6 @@ calcBMD <- function(y0, delta, xext, yext, dosemax, ydosemax, func, b, c, d, e, 
 }
 
 ### Calculation of BMD values (x-fold or z-SD) from fitted dose-response curves
-###
-###         R functions
-### 
 bmdcalc <- function(f, z = 1, x = 10)
 {
   # Checks

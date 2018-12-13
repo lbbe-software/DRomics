@@ -130,12 +130,6 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 500)
                             id = character())
   datatheo <- data.frame(dose = numeric(), signal = numeric(), 
                          id = character())
-  # dataobs <- data.frame(dose = numeric(), signal = numeric(), 
-  #                       id = factor(levels = subd$id))
-  # dataobsmean <- data.frame(dose = numeric(), signal = numeric(), 
-  #                       id = factor(levels = subd$id))
-  # datatheo <- data.frame(dose = numeric(), signal = numeric(), 
-  #                        id = factor(levels = subd$id))
   for (i in 1:nitems)
   {
       irow <- subd$irow[i]
@@ -168,9 +162,4 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 500)
     geom_line(data = datatheo, colour = "red")
   return(g)
 }
-
-
-
-
-
 

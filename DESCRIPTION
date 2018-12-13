@@ -11,4 +11,4 @@ Imports: stats, graphics, ggplot2
 Suggests: parallel, shiny, shinyBS, shinyjs, testthat
 License: GPL (>= 2)
 Encoding: UTF-8
-Contact: Marie-Laure Delignette-Muller <marielaure.delignettemuller at vetagro-sup.fr>
+Contact: Marie-Laure Delignette-Muller <marielaure.delignettemuller@vetagro-sup.fr>

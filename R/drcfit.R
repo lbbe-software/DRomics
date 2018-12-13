@@ -1,27 +1,4 @@
-######################################################################################
-#   Copyright (c) 2018 Marie Laure Delignette-Muller, Elise Billoir, Floriane Larras,
-#   Aurelie Siberchicot
-#                                                                                                                                                                        
-#   This program is free software; you can redistribute it and/or modify                                               
-#   it under the terms of the GNU General Public License as published by                                         
-#   the Free Software Foundation; either version 2 of the License, or                                                   
-#   (at your option) any later version.                                                                                                            
-#                                                                                                                                                                         
-#   This program is distributed in the hope that it will be useful,                                                             
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of                                          
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                                 
-#   GNU General Public License for more details.                                                                                    
-#                                                                                                                                                                         
-#   You should have received a copy of the GNU General Public License                                           
-#   along with this program; if not, write to the                                                                                           
-#   Free Software Foundation, Inc.,                                                                                                              
-#   59 Temple Place, Suite 330, Boston, MA 02111-1307, USA                                                             
-#                                                                                                                                                                         
-#####################################################################################
 ### fit different models to each dose-response curve and choose the best fit 
-###
-###         R functions
-### 
 drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"), 
                    progressbar = TRUE, saveplot2pdf = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
@@ -649,7 +626,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   return(structure(reslist, class = "drcfit"))
 }
 
-print.drcfit <- function(x, ...) # passage du ... ?
+print.drcfit <- function(x, ...)
 {
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects")
@@ -671,12 +648,6 @@ plot.drcfit <- function(x, items, ...)
 {
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects")
-  # plotfit(x$fitres[1:min(nrow(x$fitres),20), ], pmfrow = c(4,5),
-  #         dose = x$omicdata$dose, 
-  #         data = x$omicdata$data, 
-  #         data.mean = x$omicdata$data.mean, 
-  #         xlog10 = FALSE, 
-  #         allpoints = TRUE, ...)
   
   # a ggplot alternative
   if(missing(items))
