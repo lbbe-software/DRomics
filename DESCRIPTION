@@ -1,6 +1,6 @@
 Package: DRomics
 Title: Dose Response for Omics
-Version: 1.0-0
+Version: 1.0-1
 Authors@R: c(person("Marie-Laure", "Delignette-Muller", role = "aut", email = "marielaure.delignettemuller@vetagro-sup.fr"),
              person("Elise", "Billoir", role = "aut", email = "elise.billoir@univ-lorraine.fr"),
              person("Floriane", "Larras", role = "ctb", email = "floriane.larras@ufz.de"),

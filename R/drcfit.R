@@ -476,6 +476,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   yrange <- numeric(length = nselect)
   xextrem <- numeric(length = nselect)
   xextrem[1:nselect] <- NA # will remain at NA for monotonic curves
+  yextrem <- numeric(length = nselect)
+  yextrem[1:nselect] <- NA # will remain at NA for monotonic curves
   
   # calculation of y0 and yrange for linear curves
   indlin <- which(dc$model == "linear")
@@ -511,9 +513,10 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   ve <- dc$e[indGP]
   vf <- dc$f[indGP]
   xextr <- xextrem[indGP] <- ve + (vc - vd)*vb/(vf*sqrt(2*pi)) 
+  yextr <- yextrem[indGP] <- fGauss5p(xextr, vb, vc, vd, ve, vf)
   yrange[indGP] <- pmax(
-    abs(fGauss5p(dosemin, vb, vc, vd, ve, vf) - fGauss5p(xextr, vb, vc, vd, ve, vf)),
-    abs(fGauss5p(xextr, vb, vc, vd, ve, vf) - fGauss5p(dosemax, vb, vc, vd, ve, vf))
+    abs(fGauss5p(dosemin, vb, vc, vd, ve, vf) - yextr),
+    abs(yextr - fGauss5p(dosemax, vb, vc, vd, ve, vf))
   )
   y0[indGP] <- fGauss5p(0, vb, vc, vd, ve, vf)
 
@@ -525,9 +528,10 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   ve <- dc$e[indlGP]
   vf <- dc$f[indlGP]
   xextr <- xextrem[indlGP] <- exp(log(ve) + (vc - vd)*vb/(vf*sqrt(2*pi))) 
+  yextr <- yextrem[indlGP] <- fLGauss5p(xextr, vb, vc, vd, ve, vf) 
   yrange[indlGP] <- pmax(
-    abs(fLGauss5p(dosemin, vb, vc, vd, ve, vf) - fLGauss5p(xextr, vb, vc, vd, ve, vf)),
-    abs(fLGauss5p(xextr, vb, vc, vd, ve, vf) - fLGauss5p(dosemax, vb, vc, vd, ve, vf))
+    abs(fLGauss5p(dosemin, vb, vc, vd, ve, vf) - yextr),
+    abs(yextr - fLGauss5p(dosemax, vb, vc, vd, ve, vf))
   )
   y0[indlGP] <- vd
   
@@ -600,6 +604,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   dc$y0 <- y0
   dc$yrange <- yrange
   dc$xextrem <- xextrem
+  dc$yextrem <- yextrem
   
   # number of null models
   n.failure <- length(itemselect$selectindex) - nrow(dc)

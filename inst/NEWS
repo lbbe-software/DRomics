@@ -1,6 +1,11 @@
 === DRomics : Dose response for omics ===
 
 
+Version 1.0-1
+=============
+NEW FEATURES
+- Add of column yextrem in the results of drcfit (y value at the extremum for biphasic curves)
+
 Version 1.0-0
 =============
 

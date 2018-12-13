@@ -76,7 +76,8 @@ In cases where the BMD is not reached at the highest tested dose, \code{NA} is r
    for x within the range of tested doses 
    (\code{yrange}) and 
    for biphasic curves 
-   the x value at which their extremum is reached (\code{xextrem}), the BMD-zSD value (\code{BMD.zSD}) and 
+   the x value at which their extremum is reached (\code{xextrem})
+   and the corresponding y value (\code{yextrem}), the BMD-zSD value (\code{BMD.zSD}) and 
    the BMD-xfold value (\code{BMD.xfold}).}
 
   \item{z}{Value of z given in input to define the BMD-zSD.}
