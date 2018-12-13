@@ -89,7 +89,7 @@ Marie-Laure Delignette-Muller
 }
 
 \examples{
-\dontrun{
+\donttest{
 
 # (1) an example on a transcriptomics data (a subsample of a greater data set) 
 #     

@@ -90,7 +90,7 @@ Marie-Laure Delignette-Muller
 }
 
 \examples{
-\dontrun{
+\donttest{
 # (1) import, check and normalization of transcriptomics data 
 # (an example on a subsample of a greater data set)
 #

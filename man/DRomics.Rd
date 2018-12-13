@@ -29,7 +29,7 @@ Marie-Laure Delignette-Muller, Elise Billoir, Floriane Larras and Aurelie Siberc
 }
 
 \examples{
-\dontrun{
+\donttest{
 
 # Step 1: importation, check and normalization of data if need
 #
