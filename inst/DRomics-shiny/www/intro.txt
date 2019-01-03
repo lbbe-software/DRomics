@@ -1,2 +1,1 @@
-DRomics-shiny is a freely available on-line tool for dose-response 
-(or concentration-response) characterization from omics data.
+DRomics-shiny is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data.
