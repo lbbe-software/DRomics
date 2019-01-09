@@ -90,7 +90,6 @@ Marie-Laure Delignette-Muller
 }
 
 \examples{
-\donttest{
 # (1) import, check and normalization of transcriptomics data 
 # (an example on a subsample of a greater data set)
 #
@@ -103,6 +102,5 @@ plot(o)
 # (2) normalization with other methods
 (o.2 <- omicdata(datatxt, check = TRUE, norm.method = "quantile"))
 (o.3 <- omicdata(datatxt, check = TRUE, norm.method = "scale"))
-}
 
 }

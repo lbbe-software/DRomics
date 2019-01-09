@@ -120,10 +120,27 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# (1) an example on a transcriptomics data (a subsample of a greater data set) 
+# (1) a toy example (a very small subsample of a transcriptomics data set) 
 #
-  \donttest{
+datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", package="DRomics")
+
+# to test the package on a small (for a quick calculation) but not very small data set
+# use the following commented line
+# datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+
+(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
+(f <- drcfit(s_quad, progressbar = TRUE))
+
+# Default plot
+plot(f)
+
+
+# (2) an example on a transcriptomics data set (a subsample of a greater data set) 
+#
+\donttest{
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+
 (o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
 (f <- drcfit(s_quad, progressbar = TRUE))
@@ -138,12 +155,12 @@ plot(f, items = 12)
 plot(f, items = c("301.2", "363.1", "383.1"))
 }
 
-# (2) Comparison of parallel and non paralell implementations on a 
+# (3) Comparison of parallel and non paralell implementations on a 
 #     larger selection of items
 #
   \donttest{
    s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05)
     system.time(f1 <- drcfit(s_quad, progressbar = TRUE))
    system.time(f2 <- drcfit(s_quad, progressbar = FALSE, parallel = "snow", ncpus = 2))
-  }
+   }
 }

@@ -29,7 +29,8 @@ Marie-Laure Delignette-Muller, Elise Billoir, Floriane Larras and Aurelie Siberc
 }
 
 \examples{
-\donttest{
+  \donttest{
+
 
 # Step 1: importation, check and normalization of data if need
 #
@@ -63,7 +64,6 @@ plot(f)
 (r <- bmdcalc(f, z = 1, x = 10))
 plot(r, BMDtype = "zSD", plottype = "ecdf", bytypology = FALSE) 
 plot(r, BMDtype = "xfold", plottype = "hist", bytypology = TRUE, hist.bins = 10) 
-
 }
 }
 

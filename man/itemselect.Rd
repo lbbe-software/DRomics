@@ -89,7 +89,6 @@ Marie-Laure Delignette-Muller
 }
 
 \examples{
-\donttest{
 
 # (1) an example on a transcriptomics data (a subsample of a greater data set) 
 #     
@@ -113,5 +112,4 @@ datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 #
 (s_quad.2 <- itemselect(o, select.method = "quadratic", FDR = 0.001))
 
-}
 }
