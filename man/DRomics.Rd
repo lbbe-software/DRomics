@@ -65,6 +65,13 @@ plot(f)
 plot(r, BMDtype = "zSD", plottype = "ecdf", bytypology = FALSE) 
 plot(r, BMDtype = "xfold", plottype = "hist", bytypology = TRUE, hist.bins = 10) 
 }
+
+
+# About using the DRomics-shiny app
+# 
+
+if(interactive()) {
+  appDir <- system.file("DRomics-shiny", package = "DRomics")
+  shiny::runApp(appDir, display.mode = "normal")
 }
-
-
+}
