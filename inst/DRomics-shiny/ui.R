@@ -45,7 +45,9 @@ ui <- fluidPage(
                                         h4("DRomics Shiny App runs on the ", 
                                            a("shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#34837e;"), "(see here the ",
                                            a("DRomics tutorial", href = "Dromics_tutorial.pdf", TARGET="_blank", style="color:#34837e;"), ")."),
-                                        h4("DRomics is also available on CRAN as an R package and on ",
+                                        h4("DRomics is also an R package, available on ", 
+                                           a("CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#34837e;"), 
+                                           " and on ",
                                            a("this web page", href = "https://lbbe.univ-lyon1.fr/-DRomics-.html", TARGET="_blank", style="color:#34837e;"), ".")
                         )),
                         hr(style='width: 70%;'),
