@@ -47,6 +47,7 @@ bmdcalc <- function(f, z = 1, x = 10)
                       BMDp = rep(NA,nselect), 
                       BMDsd = rep(NA,nselect)
   )
+  xdiv100 <- x/100 # x in relative value and not in percentage
   
   for(i in 1:nselect)
   {
@@ -61,28 +62,28 @@ bmdcalc <- function(f, z = 1, x = 10)
     modeli <- dfitall$model[i]
     if(modeli == "linear") {
       ydosemax <- dcalc$ydosemax[i] <- flin(x=dosemax, b=b, d=d)
-      dcalc$yp[i] <- y0 * ( 1 + x/100*sign(b))
+      dcalc$yp[i] <- y0 * ( 1 + xdiv100*sign(b))
       dcalc$BMDp[i] <- invlin(dcalc$yp[i], b, d)
       dcalc$ysd[i] <- y0 + z*dfitall$SDres[i]*sign(b)
       dcalc$BMDsd[i] <- invlin(dcalc$ysd[i], b, d)
     } else
     if(modeli == "exponential") {
       ydosemax <- dcalc$ydosemax[i] <- fExpo(x=dosemax, b=b, d=d, e=e)
-      dcalc$yp[i] <- y0 * ( 1 + x/100*sign(e*b))
+      dcalc$yp[i] <- y0 * ( 1 + xdiv100*sign(e*b))
       dcalc$BMDp[i] <- invExpo(dcalc$yp[i], b, d, e)
       dcalc$ysd[i] <- y0 + z*dfitall$SDres[i]*sign(e*b)
       dcalc$BMDsd[i] <- invExpo(dcalc$ysd[i], b, d, e)
     } else
     if(modeli == "Hill") {
       ydosemax <- dcalc$ydosemax[i] <- fHill(x=dosemax, b=b, c=c, d=d, e=e)
-      dcalc$yp[i] <- y0 * ( 1 + x/100*sign(c - d))
+      dcalc$yp[i] <- y0 * ( 1 + xdiv100*sign(c - d))
       dcalc$BMDp[i] <- invHill(dcalc$yp[i], b, c, d, e)
       dcalc$ysd[i] <- y0 + z*dfitall$SDres[i]*sign(c - d)
       dcalc$BMDsd[i] <- invHill(dcalc$ysd[i], b, c, d, e)
     } else
     if(modeli == "log-probit") {
       ydosemax <- dcalc$ydosemax[i] <- fHill(x=dosemax, b=b, c=c, d=d, e=e)
-      dcalc$yp[i] <- y0 * ( 1 + x/100*sign(c - d))
+      dcalc$yp[i] <- y0 * ( 1 + xdiv100*sign(c - d))
       dcalc$BMDp[i] <- invLprobit(dcalc$yp[i], b, c, d, e)
       dcalc$ysd[i] <- y0 + z*dfitall$SDres[i]*sign(c - d)
       dcalc$BMDsd[i] <- invLprobit(dcalc$ysd[i], b, c, d, e)
@@ -92,7 +93,7 @@ bmdcalc <- function(f, z = 1, x = 10)
       yext <- dcalc$yextrem[i] <- fGauss5p(xext, b=b, c=c, d=d, e=e, f=g) # g is renamed f
       ydosemax <- dcalc$ydosemax[i] <- fGauss5p(x=dosemax, b=b, c=c, d=d, e=e, f=g)
       
-      deltap <- y0 * x/100
+      deltap <- y0 * xdiv100
       deltasd <- z * dfitall$SDres[i]
       
       resBMDp <- calcBMD(y0=y0, delta=deltap, xext=xext, yext=yext, dosemax=dosemax, 
@@ -108,7 +109,7 @@ bmdcalc <- function(f, z = 1, x = 10)
     if(modeli == "log-Gauss-probit") {
       yext <- dcalc$yextrem[i] <- fLGauss5p(xext, b=b, c=c, d=d, e=e, f=g) # g is renamed f
       ydosemax <- dcalc$ydosemax[i] <- fLGauss5p(x=dosemax, b=b, c=c, d=d, e=e, f=g)
-      deltap <- y0 * x/100
+      deltap <- y0 * xdiv100
       deltasd <- z * dfitall$SDres[i]
       
       resBMDp <- calcBMD(y0=y0, delta=deltap, xext=xext, yext=yext, dosemax=dosemax, ydosemax=ydosemax, func=fLGauss5pBMR, b=b, c=c, d=d, e=e, g=g)
