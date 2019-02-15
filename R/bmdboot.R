@@ -109,7 +109,7 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
       } # end fboot
     } else
     # Model Gauss-probit 5p
-    if (modelnamei == "Gauss-probit5")
+    if (modelnbpari == "Gauss-probit5")
     {
       b1 <- lestimpar$b
       c1 <- lestimpar$c
@@ -119,6 +119,7 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
       #### Y a un bug ici, ca donne toujours la même valeur !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       fitted1 <- fGauss5p(x = dose, c = c1, d = d1, b = b1, e = e1, f = f1)
       resid1 <- datai - fitted1
+      # lines(dose, fitted1)
         
       dsetboot <- dset
       fboot <- function(i)
@@ -163,31 +164,36 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
     
     # bootstrap iterations on item i
     l1 <- lapply(1:niter, fboot)
-    if(sum(sapply(l1, is.null)) > niter/2) stop(paste("Procedure aborted: the fit only converged in", round(sum(sapply(l1, is.null))/niter), "% during bootstrapping"))
-      
-    tabbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$coef)
-    SDresbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$SDres)
-    BMDpbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$BMDp)
-    BMDsdbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$BMDsd)
-      
-    BMDp.CI95 <- quantile(BMDpbooti, probs = c(0.025, 0.975), na.rm = TRUE)
-    BMDplower <- BMDp.CI95[1]
-    BMDpupper <- BMDp.CI95[2]
-      
-    BMDsd.CI95 <- quantile(BMDsdbooti, probs = c(0.025, 0.975), na.rm = TRUE)
-    BMDsdlower <- BMDsd.CI95[1]
-    BMDsdupper <- BMDsd.CI95[2]
-      
-    if (progressbar)
+    if(sum(sapply(l1, is.null)) > niter/2) 
     {
-      setTxtProgressBar(pb, i)
-    }
-    return(c(BMDsdlower, BMDsdupper, BMDplower, BMDpupper))
+      warning(paste("Procedure aborted: the fit only converged in", round(sum(sapply(l1, is.null))/niter), "% during bootstrapping for item ", items[i]))
+      return(c(NA, NA, NA, NA))
+    } else
+    {
+      # tabbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$coef)
+      # SDresbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$SDres)
+      BMDpbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$BMDp)
+      BMDsdbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$BMDsd)
       
-    pairs(as.data.frame(t(tabbooti)))
-    boxplot(SDresbooti)
-    boxplot(BMDpbooti)
-    boxplot(BMDsdbooti)
+      BMDp.CI95 <- quantile(BMDpbooti, probs = c(0.025, 0.975), na.rm = TRUE)
+      BMDplower <- BMDp.CI95[1]
+      BMDpupper <- BMDp.CI95[2]
+      
+      BMDsd.CI95 <- quantile(BMDsdbooti, probs = c(0.025, 0.975), na.rm = TRUE)
+      BMDsdlower <- BMDsd.CI95[1]
+      BMDsdupper <- BMDsd.CI95[2]
+      
+      if (progressbar)
+      {
+        setTxtProgressBar(pb, i)
+      }
+      return(c(BMDsdlower, BMDsdupper, BMDplower, BMDpupper))
+    }
+   
+    # pairs(as.data.frame(t(tabbooti)))
+    # boxplot(SDresbooti)
+    # boxplot(BMDpbooti)
+    # boxplot(BMDsdbooti)
   } # end bootoneitem
   
   # trial
@@ -222,17 +228,19 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
 # test
 source("util-basicandfitfunc.R")
 source("bmdcalc.R")
-# check on GP 5 p
-# items <- "247.2" # GP 5 y en a qu'un dans le sous jeu de données
-items <- r$res[r$res$model == "Gauss-probit" & r$res$nbpar == 5, "id"]
-r$res[r$res$id == items, ]
 
 # check on expo
 items <- "363.1" # expo e > 0
 items <- "301.1" # expo e < 0
 items <- c("301.1", "363.1")
 items <- r$res[r$res$model == "exponential", "id"]
+(bootres <- bmdboot(r, items))
 
+
+# check on GP 5 p
+# items <- "247.2" # GP 5 y en a qu'un dans le sous jeu de données
+items <- r$res[r$res$model == "Gauss-probit" & r$res$nbpar == 5, "id"]
+r$res[r$res$id == items, ]
 (bootres <- bmdboot(r, items))
 
 
