@@ -1,6 +1,6 @@
 ## Perform bootstrap on a selection of items in order to give
 ## a 95% confidence interval for the BMD values
-bmdboot <- function(r, items, niter = 99, progressbar = TRUE, 
+bmdboot <- function(r, items, niter = 100, progressbar = TRUE, 
                     parallel = c("no", "snow", "multicore"), ncpus)
 {
   # Checks
@@ -28,18 +28,7 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
     
   dose <- r$omicdata$dose
   dosemax <- max(dose)
-  # formlist <- list(Exp = formExp3p, 
-  #                  Gauss4p = formGauss4p,  
-  #                  Gauss5p = formGauss5p, 
-  #                  Hill = formHill,
-  #                  Lin = as.formula(signal ~ d + b * dose),
-  #                  LGauss4p = formLGauss4p,
-  #                  LGauss5p = formLGauss5p, 
-  #                  Lprobit = formLprobit)
-  # formlist and modelnbpar MUST BE IN THE SAME ORDER
-  # modelnbpar <- c("exponential3", "Gauss-probit4", "Gauss-probit5", "Hill4", "linear2", 
-  #                 "log-Gauss-probit4", "log-Gauss-probit5", "log-probit4")
-  
+
   # progress bar
   if (progressbar)
     pb <- txtProgressBar(min = 0, max = nitems, style = 3)
@@ -52,14 +41,9 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
     estimpar <- unlist(resitem[c("b","c","d","e","f")])
     lestimpar <- as.list(estimpar[!is.na(estimpar)])
     
-    # formula of the model (formi) and associated function (funci)
     modeli <- as.character(unlist(resitem["model"]))
     nbpari <- unlist(resitem["nbpar"])
-    # modeli <- as.character(unlist(resitem["model"]))
-    # nbpari <- as.character(unlist(resitem["nbpar"]))
-    # modelnbpari <- paste(modeli, nbpari, sep = "")
-    # formi <- formlist[[match(modelnbpari, modelnbpar)]]
-    
+
     # dataset
     datai <- r$omicdata$data[resitem$irow, ]
     dset <- data.frame(signal = datai, dose = dose)
@@ -113,6 +97,81 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
       } # end fboot
     } else
     ############ END model expo ###################
+    
+    ############## Model Hill ###########
+    if (modeli == "Hill")
+    {
+      b1 <- lestimpar$b
+      c1 <- lestimpar$c
+      d1 <- lestimpar$d
+      e1 <- lestimpar$e
+      fitted1 <- fHill(x = dose, b = b1, c = c1, d = d1,  e = e1)
+      resid1 <- datai - fitted1
+      
+      dsetboot <- dset
+      # plot(dose, fitted1, type = "l")
+      # points(dose, datai)
+      fboot <- function(i)
+      {
+        dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        # plot(dsetboot[,2], dsetboot[,1])
+        # fit
+        nlsboot <- suppressWarnings(try(nls(formula = formHill, data = dsetboot, start = lestimpar,
+                                             lower = c(0, -Inf, -Inf, 0), algorithm = "port"), 
+                                          silent = TRUE))
+        if(inherits(nlsboot, "nls"))
+        {
+          SDresboot <- sqrt(sum(residuals(nlsboot)^2)/(ndata - nbpari))
+          bboot <- coef(nlsboot)["b"]
+          cboot <- coef(nlsboot)["c"]
+          dboot <- coef(nlsboot)["d"]
+          eboot <- coef(nlsboot)["e"]
+          y0boot <- dboot
+          ydosemaxboot <- fHill(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot)
+          ypboot <- y0boot * ( 1 + xdiv100*sign(cboot * dboot))
+          BMDpboot <- invHill(ypboot, b= bboot, c = cboot, d = dboot, e = eboot)
+          ysdboot <- y0boot + z*SDresboot * sign(cboot * dboot)
+          BMDsdboot <- invHill(ysdboot, b= bboot, c = cboot, d = dboot, e = eboot)
+
+          # return(list(coef = coef(nlsboot), SDres = SDresboot, BMDp = BMDpboot, BMDsd = BMDsdboot))
+          return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
+        }
+      } # end fboot
+    } else
+    ############ END model Hill ###################
+
+    ############## Linear model ###########
+    if (modeli == "linear")
+    {
+      b1 <- lestimpar$b
+      d1 <- lestimpar$d
+      fitted1 <- flin(x = dose, b = b1, d = d1)
+      resid1 <- datai - fitted1
+      
+      dsetboot <- dset
+      # plot(dose, fitted1, type = "l")
+      # points(dose, datai)
+      fboot <- function(i)
+      {
+        dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        # plot(dsetboot[,2], dsetboot[,1])
+        # fit
+        linboot <- lm(signal ~ dose, data = dsetboot)
+        SDresboot <- sqrt(sum(residuals(linboot)^2)/(ndata - nbpari))
+        bboot <- coef(linboot)[2]
+        dboot <- coef(linboot)[1]
+        y0boot <- dboot
+        ydosemaxboot <- flin(x = dosemax, b = bboot, d = dboot)
+        ypboot <- y0boot * ( 1 + xdiv100*sign(bboot))
+        BMDpboot <- invlin(ypboot, b= bboot, d = dboot)
+        ysdboot <- y0boot + z*SDresboot * sign(bboot)
+        BMDsdboot <- invlin(ysdboot, b= bboot, d = dboot)
+          
+          # return(list(coef = coef(nlsboot), SDres = SDresboot, BMDp = BMDpboot, BMDsd = BMDsdboot))
+          return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
+      } # end fboot
+    } else
+      ############ END linear model ###################
     
     ##### Model Gauss-probit #######
     if (modeli == "Gauss-probit")
@@ -246,8 +305,8 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
     nboot.successful <- niter - sum(sapply(l1, is.null))
     if(nboot.successful < niter / 2) 
     {
-      warning(paste("Procedure aborted: the fit only converged for", nboot.successful, 
-                    "iterations during bootstrapping for item ", items[i]))
+      # warning(paste("Procedure aborted: the fit only converged for", nboot.successful, 
+      #               "iterations during bootstrapping for item ", items[i]))
       return(c(NA, NA, NA, NA, nboot.successful))
     } else
     {
@@ -309,6 +368,33 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
   dres <- cbind(r$res[i.items, ], dres)
   return(dres)
 }
+############################# END of bmdboot
+
+plot.bootres <- function(x, ymax = 7)
+  # to greatly improve and not fix ymax at 7 but at an automatic value from the design
+{
+
+  par(mfrow = c(2, 1), mar = c(3,4,0.1,0.1))
+  BMD.zSD.lower <- x$BMD.zSD.lower
+  BMD.zSD.upper <- x$BMD.zSD.upper
+  BMD.zSD.upper[is.infinite(BMD.zSD.upper)] <- ymax*2
+  BMD.zSD <- x$BMD.zSD
+  plot(BMD.zSD, ylim = c(0, ymax), ylab = "BMD.zSD")
+  nitems <- nrow(x)
+  segments(x0 = 1:nitems, y0 = BMD.zSD.lower, x1 = 1:nitems, y1 = BMD.zSD.upper, 
+           col = as.numeric(x$model))
+  
+  BMD.xfold.lower <- x$BMD.xfold.lower
+  BMD.xfold.upper <- x$BMD.xfold.upper
+  BMD.xfold.upper[is.infinite(BMD.xfold.upper)] <- ymax*2
+  BMD.xfold <- x$BMD.xfold
+  plot(BMD.xfold, ylim = c(0, ymax), ylab = "BMD.xfold")
+  nitems <- nrow(x)
+  segments(x0 = 1:nitems, y0 = BMD.xfold.lower, x1 = 1:nitems, y1 = BMD.xfold.upper,
+           col = as.numeric(x$model))
+  
+}
+############## END of the plot function
 
 # test
 library(DRomics)
@@ -328,6 +414,17 @@ items <- r$res[r$res$model == "exponential", "id"]
 (bootres <- bmdboot(r, items))
 plot.bootres(bootres)
 
+# check on Hill
+items <- r$res[r$res$model == "Hill", "id"]
+(bootres <- bmdboot(r, items))
+plot.bootres(bootres)
+
+# check on linear
+items <- r$res[r$res$model == "linear", "id"]
+(bootres <- bmdboot(r, items))
+plot.bootres(bootres)
+
+
 # check on GP 
 items <- r$res[r$res$model == "Gauss-probit" & r$res$nbpar == 5, "id"]
 (bootres <- bmdboot(r, items))
@@ -344,13 +441,12 @@ items <- r$res[r$res$model == "log-Gauss-probit" & r$res$nbpar == 4, "id"]
 (bootres <- bmdboot(r, items))
 plot.bootres(bootres)
 
-plot.bootres <- function(bootres)
-{
-  plot(bootres$BMD.zSD, ylim = c(0, 7))
-  nitems <- nrow(bootres)
-  segments(x0 = 1:nitems, y0 = bootres$BMD.zSD.lower, x1 = 1:nitems, y1 = bootres$BMD.zSD.upper)
-  plot(bootres$BMD.xfold, ylim = c(0,7))
-  nitems <- nrow(bootres)
-  segments(x0 = 1:nitems, y0 = bootres$BMD.xfold.lower, x1 = 1:nitems, y1 = bootres$BMD.xfold.upper)
-  
-}
+# check on all
+items <- r$res$id
+system.time(bootres1 <- bmdboot(r, items, niter = 100, progressbar = TRUE))
+# pour tester le calcul parallèle faudra avoir complètement intégré la fonction dans le package
+# system.time(bootres2 <- bmdboot(r, items, niter = 100, progressbar = FALSE, 
+#                                 parallel = "snow", ncpus = 4))
+
+plot.bootres(bootres1)
+
