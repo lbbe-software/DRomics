@@ -89,7 +89,6 @@ bmdcalc <- function(f, z = 1, x = 10)
       dcalc$BMDsd[i] <- invLprobit(dcalc$ysd[i], b, c, d, e)
     } else
     if(modeli == "Gauss-probit") {
-      #print("Gauss")
       yext <- dcalc$yextrem[i] <- fGauss5p(xext, b=b, c=c, d=d, e=e, f=g) # g is renamed f
       ydosemax <- dcalc$ydosemax[i] <- fGauss5p(x=dosemax, b=b, c=c, d=d, e=e, f=g)
       

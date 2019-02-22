@@ -44,6 +44,7 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
   if (progressbar)
     pb <- txtProgressBar(min = 0, max = nitems, style = 3)
 
+  ##### Bootstrap for one item ####################
   bootoneitem <- function(i)
   {
     resitem <- r$res[i.items[i], ]
@@ -62,7 +63,7 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
     dset <- data.frame(signal = datai, dose = dose)
     # plot(dset$dose, dset$signal)
 
-    # Model expo
+    ############## Model expo ###########
     if (modelnbpari == "exponential3")
     {
       b1 <- lestimpar$b
@@ -108,6 +109,8 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
         }
       } # end fboot
     } else
+    ############ END model expo ###################
+    
     # Model Gauss-probit 5p
     if (modelnbpari == "Gauss-probit5")
     {
@@ -161,40 +164,48 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
         }
       } # end fboot
     }
+    ############ END model Gauss probit 5p ###################
     
-    # bootstrap iterations on item i
+    
+    ########### Bootstrap iterations on item i ################
     l1 <- lapply(1:niter, fboot)
-    if(sum(sapply(l1, is.null)) > niter/2) 
+    nboot.successful <- niter - sum(sapply(l1, is.null))
+    if(nboot.successful < niter / 2) 
     {
-      warning(paste("Procedure aborted: the fit only converged in", round(sum(sapply(l1, is.null))/niter), "% during bootstrapping for item ", items[i]))
-      return(c(NA, NA, NA, NA))
+      warning(paste("Procedure aborted: the fit only converged for", nboot.successful, 
+                    "iterations during bootstrapping for item ", items[i]))
+      return(c(NA, NA, NA, NA, nboot.successful))
     } else
     {
       # tabbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$coef)
       # SDresbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$SDres)
       BMDpbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$BMDp)
       BMDsdbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$BMDsd)
-      
-      BMDp.CI95 <- quantile(BMDpbooti, probs = c(0.025, 0.975), na.rm = TRUE)
+
+      BMDpbooti[is.na(BMDpbooti) | BMDpbooti > dosemax] <- Inf
+      BMDsdbooti[is.na(BMDsdbooti) | BMDsdbooti > dosemax] <- Inf
+      BMDp.CI95 <- quantile(BMDpbooti, probs = c(0.025, 0.975))
       BMDplower <- BMDp.CI95[1]
       BMDpupper <- BMDp.CI95[2]
       
-      BMDsd.CI95 <- quantile(BMDsdbooti, probs = c(0.025, 0.975), na.rm = TRUE)
+      BMDsd.CI95 <- quantile(BMDsdbooti, probs = c(0.025, 0.975))
       BMDsdlower <- BMDsd.CI95[1]
       BMDsdupper <- BMDsd.CI95[2]
+      
       
       if (progressbar)
       {
         setTxtProgressBar(pb, i)
       }
-      return(c(BMDsdlower, BMDsdupper, BMDplower, BMDpupper))
+      return(c(BMDsdlower, BMDsdupper, BMDplower, BMDpupper, nboot.successful))
     }
    
     # pairs(as.data.frame(t(tabbooti)))
     # boxplot(SDresbooti)
     # boxplot(BMDpbooti)
     # boxplot(BMDsdbooti)
-  } # end bootoneitem
+  } 
+  ##### END bootstrap for one item ####################
   
   # trial
   # bootoneitem(1)
@@ -219,15 +230,21 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
   if (progressbar) close(pb)
   
   dres <- as.data.frame(t(res))
-  colnames(dres) <- c("BMD.zSD.lower", "BMD.zSD.upper", "BMD.xfold.lower", "BMD.xfold.upper")
+  colnames(dres) <- c("BMD.zSD.lower", "BMD.zSD.upper", "BMD.xfold.lower", "BMD.xfold.upper", "nboot.successful")
   
   dres <- cbind(r$res[i.items, ], dres)
   return(dres)
 }
 
 # test
+library(DRomics)
 source("util-basicandfitfunc.R")
 source("bmdcalc.R")
+datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
+(f <- drcfit(s_quad, progressbar = TRUE))
+(r <- bmdcalc(f, z = 1, x = 10))
 
 # check on expo
 items <- "363.1" # expo e > 0
