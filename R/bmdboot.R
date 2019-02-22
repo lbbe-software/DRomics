@@ -28,17 +28,17 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
     
   dose <- r$omicdata$dose
   dosemax <- max(dose)
-  formlist <- list(Exp = formExp3p, 
-                   Gauss4p = formGauss4p,  
-                   Gauss5p = formGauss5p, 
-                   Hill = formHill,
-                   Lin = as.formula(signal ~ d + b * dose),
-                   LGauss4p = formLGauss4p,
-                   LGauss5p = formLGauss5p, 
-                   Lprobit = formLprobit)
+  # formlist <- list(Exp = formExp3p, 
+  #                  Gauss4p = formGauss4p,  
+  #                  Gauss5p = formGauss5p, 
+  #                  Hill = formHill,
+  #                  Lin = as.formula(signal ~ d + b * dose),
+  #                  LGauss4p = formLGauss4p,
+  #                  LGauss5p = formLGauss5p, 
+  #                  Lprobit = formLprobit)
   # formlist and modelnbpar MUST BE IN THE SAME ORDER
-  modelnbpar <- c("exponential3", "Gauss-probit4", "Gauss-probit5", "Hill4", "linear2", 
-                  "log-Gauss-probit4", "log-Gauss-probit5", "log-probit4")
+  # modelnbpar <- c("exponential3", "Gauss-probit4", "Gauss-probit5", "Hill4", "linear2", 
+  #                 "log-Gauss-probit4", "log-Gauss-probit5", "log-probit4")
   
   # progress bar
   if (progressbar)
@@ -53,18 +53,21 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
     lestimpar <- as.list(estimpar[!is.na(estimpar)])
     
     # formula of the model (formi) and associated function (funci)
-    modelnamei <- as.character(unlist(resitem["model"]))
-    nbpari <- as.character(unlist(resitem["nbpar"]))
-    modelnbpari <- paste(modelnamei, nbpari, sep = "")
-    formi <- formlist[[match(modelnbpari, modelnbpar)]]
+    modeli <- as.character(unlist(resitem["model"]))
+    nbpari <- unlist(resitem["nbpar"])
+    # modeli <- as.character(unlist(resitem["model"]))
+    # nbpari <- as.character(unlist(resitem["nbpar"]))
+    # modelnbpari <- paste(modeli, nbpari, sep = "")
+    # formi <- formlist[[match(modelnbpari, modelnbpar)]]
     
     # dataset
     datai <- r$omicdata$data[resitem$irow, ]
     dset <- data.frame(signal = datai, dose = dose)
+    ndata <- nrow(dset)
     # plot(dset$dose, dset$signal)
 
     ############## Model expo ###########
-    if (modelnbpari == "exponential3")
+    if (modeli == "exponential")
     {
       b1 <- lestimpar$b
       d1 <- lestimpar$d
@@ -82,19 +85,19 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
         # fit
         if (e1 < 0)
         {
-          nlsboot <- suppressWarnings(try(nls(formula = formi, data = dsetboot, start = lestimpar,
+          nlsboot <- suppressWarnings(try(nls(formula = formExp3p, data = dsetboot, start = lestimpar,
                              lower = c(-Inf, -Inf, -Inf), 
                              upper = c(Inf, Inf, 0), algorithm = "port"), 
                          silent = TRUE))
         } else
         {
-          nlsboot <- suppressWarnings(try(nls(formula = formi, data = dsetboot, start = lestimpar,
+          nlsboot <- suppressWarnings(try(nls(formula = formExp3p, data = dsetboot, start = lestimpar,
                              lower = c(-Inf, -Inf, 0), algorithm = "port"), 
                          silent = TRUE))
         }
         if(inherits(nlsboot, "nls"))
         {
-          SDresboot <- summary(nlsboot)$sigma
+          SDresboot <- sqrt(sum(residuals(nlsboot)^2)/(ndata - nbpari))
           bboot <- coef(nlsboot)["b"]
           dboot <- coef(nlsboot)["d"]
           eboot <- coef(nlsboot)["e"]
@@ -111,15 +114,14 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
     } else
     ############ END model expo ###################
     
-    # Model Gauss-probit 5p
-    if (modelnbpari == "Gauss-probit5")
+    ##### Model Gauss-probit #######
+    if (modeli == "Gauss-probit")
     {
       b1 <- lestimpar$b
       c1 <- lestimpar$c
       d1 <- lestimpar$d
       e1 <- lestimpar$e
       f1 <- lestimpar$f
-      #### Y a un bug ici, ca donne toujours la même valeur !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       fitted1 <- fGauss5p(x = dose, c = c1, d = d1, b = b1, e = e1, f = f1)
       resid1 <- datai - fitted1
       # lines(dose, fitted1)
@@ -129,14 +131,24 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
       {
         dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
         # fit
-        nlsboot <- suppressWarnings(try(nls(formula = formi, data = dsetboot, start = lestimpar,
+        if (nbpari == 5)
+        {
+          nlsboot <- suppressWarnings(try(nls(formula = formGauss5p, data = dsetboot, start = lestimpar,
                                               lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), 
-                           silent = TRUE))
+                                          silent = TRUE))
+        }
+        else
+        {
+          lestimpar.4p <- list(b = lestimpar$b, d = lestimpar$d, e = lestimpar$e, f = lestimpar$f)
+          nlsboot <- suppressWarnings(try(nls(formula = formGauss4p, data = dsetboot, start = lestimpar.4p,
+                                              lower = c(0, -Inf, 0, -Inf), algorithm = "port"), 
+                                          silent = TRUE))
+        }
         if(inherits(nlsboot, "nls"))
         {
-          SDresboot <- summary(nlsboot)$sigma
+          SDresboot <- sqrt(sum(residuals(nlsboot)^2)/(ndata - nbpari))
           bboot <- coef(nlsboot)["b"]
-          cboot <- coef(nlsboot)["c"]
+          if (nbpari == 5) cboot <- coef(nlsboot)["c"] else cboot <- coef(nlsboot)["d"]
           dboot <- coef(nlsboot)["d"]
           eboot <- coef(nlsboot)["e"]
           fboot <- coef(nlsboot)["f"]
@@ -145,8 +157,7 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
             
           xextrboot <- eboot + (cboot - dboot)*bboot/(fboot*sqrt(2*pi)) 
           yextrboot <- fGauss5p(x = xextrboot, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
-          ydosemaxboot <- fGauss5p(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
-            
+
           deltapboot <- y0boot * xdiv100
           deltasdboot <- z * SDresboot
             
@@ -163,8 +174,71 @@ bmdboot <- function(r, items, niter = 99, progressbar = TRUE,
           return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
         }
       } # end fboot
+    } else
+    ############ END model Gauss probit ###################
+    
+    ############ Model log Gauss-probit #################
+    if (modeli == "log-Gauss-probit")
+    {
+      b1 <- lestimpar$b
+      c1 <- lestimpar$c
+      d1 <- lestimpar$d
+      e1 <- lestimpar$e
+      f1 <- lestimpar$f
+      fitted1 <- fLGauss5p(x = dose, c = c1, d = d1, b = b1, e = e1, f = f1)
+      resid1 <- datai - fitted1
+      # lines(dose, fitted1)
+      
+      dsetboot <- dset
+      fboot <- function(i)
+      {
+        dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        # fit
+        if (nbpari == 5)
+        {
+          nlsboot <- suppressWarnings(try(nls(formula = formLGauss5p, data = dsetboot, start = lestimpar,
+                                              lower =  c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), 
+                                          silent = TRUE))
+        }
+        else
+        {
+          lestimpar.4p <- list(b = lestimpar$b, d = lestimpar$d, e = lestimpar$e, f = lestimpar$f)
+          nlsboot <- suppressWarnings(try(nls(formula = formLGauss4p, data = dsetboot, start = lestimpar.4p,
+                                              lower = c(0, -Inf, 0, -Inf), algorithm = "port"), 
+                                          silent = TRUE))
+        }
+        if(inherits(nlsboot, "nls"))
+        {
+          SDresboot <- sqrt(sum(residuals(nlsboot)^2)/(ndata - nbpari))
+          bboot <- coef(nlsboot)["b"]
+          if (nbpari == 5) cboot <- coef(nlsboot)["c"] else cboot <- coef(nlsboot)["d"]
+          dboot <- coef(nlsboot)["d"]
+          eboot <- coef(nlsboot)["e"]
+          fboot <- coef(nlsboot)["f"]
+          y0boot <- dboot
+          ydosemaxboot <- fLGauss5p(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
+          
+          xextrboot <-  exp(log(eboot) + (cboot - dboot)*bboot/(fboot*sqrt(2*pi))) 
+          yextrboot <-  fLGauss5p(x = xextrboot, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot) 
+          
+          deltapboot <- y0boot * xdiv100
+          deltasdboot <- z * SDresboot
+          
+          resBMDp <- calcBMD(y0=y0boot, delta=deltapboot, xext=xextrboot, yext=yextrboot, 
+                             dosemax = dosemax, ydosemax = ydosemaxboot, func = fLGauss5pBMR, 
+                             b = bboot, c = cboot, d = dboot, e = eboot, g = fboot)
+          BMDpboot <- resBMDp$BMD
+          
+          resBMDsd <- calcBMD(y0=y0boot, delta=deltasdboot, xext=xextrboot, yext=yextrboot, 
+                              dosemax = dosemax, ydosemax = ydosemaxboot, func = fLGauss5pBMR, 
+                              b = bboot, c = cboot, d = dboot, e = eboot, g = fboot)
+          BMDsdboot <- resBMDsd$BMD
+          # return(list(coef = coef(nlsboot), SDres = SDresboot, BMDp = BMDpboot, BMDsd = BMDsdboot))
+          return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
+        }
+      } # end fboot
     }
-    ############ END model Gauss probit 5p ###################
+    ############ END model log Gauss probit ###################
     
     
     ########### Bootstrap iterations on item i ################
@@ -242,7 +316,7 @@ source("util-basicandfitfunc.R")
 source("bmdcalc.R")
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 (o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
-(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
+(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f, z = 1, x = 10))
 
@@ -252,19 +326,31 @@ items <- "301.1" # expo e < 0
 items <- c("301.1", "363.1")
 items <- r$res[r$res$model == "exponential", "id"]
 (bootres <- bmdboot(r, items))
+plot.bootres(bootres)
 
-
-# check on GP 5 p
-# items <- "247.2" # GP 5 y en a qu'un dans le sous jeu de données
+# check on GP 
 items <- r$res[r$res$model == "Gauss-probit" & r$res$nbpar == 5, "id"]
-r$res[r$res$id == items, ]
 (bootres <- bmdboot(r, items))
+plot.bootres(bootres)
+items <- r$res[r$res$model == "Gauss-probit" & r$res$nbpar == 4, "id"]
+(bootres <- bmdboot(r, items))
+plot.bootres(bootres)
 
+# check on LGP 
+items <- r$res[r$res$model == "log-Gauss-probit" & r$res$nbpar == 5, "id"]
+(bootres <- bmdboot(r, items))
+plot.bootres(bootres)
+items <- r$res[r$res$model == "log-Gauss-probit" & r$res$nbpar == 4, "id"]
+(bootres <- bmdboot(r, items))
+plot.bootres(bootres)
 
-
-plot(bootres$BMD.zSD)
-nitems <- nrow(bootres)
-segments(x0 = 1:nitems, y0 = bootres$BMD.zSD.lower, x1 = 1:nitems, y1 = bootres$BMD.zSD.upper)
-plot(bootres$BMD.xfold)
-nitems <- nrow(bootres)
-segments(x0 = 1:nitems, y0 = bootres$BMD.xfold.lower, x1 = 1:nitems, y1 = bootres$BMD.xfold.upper)
+plot.bootres <- function(bootres)
+{
+  plot(bootres$BMD.zSD, ylim = c(0, 7))
+  nitems <- nrow(bootres)
+  segments(x0 = 1:nitems, y0 = bootres$BMD.zSD.lower, x1 = 1:nitems, y1 = bootres$BMD.zSD.upper)
+  plot(bootres$BMD.xfold, ylim = c(0,7))
+  nitems <- nrow(bootres)
+  segments(x0 = 1:nitems, y0 = bootres$BMD.xfold.lower, x1 = 1:nitems, y1 = bootres$BMD.xfold.upper)
+  
+}
