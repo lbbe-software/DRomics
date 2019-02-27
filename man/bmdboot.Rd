@@ -122,23 +122,16 @@ datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", package="
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))
 (b <- bmdboot(r))
+b$res
 plot(b) 
 
 # bootstrap on only a subsample of items, here those best fitted by the linear model
 # with a greater numbre of iterations
 (b.lin <- bmdboot(r, items = r$res$id[r$res$model == "linear"],
                        niter = 1000, progressbar = TRUE))
+b.lin$res
 
-# (2) Comparison of parallel and non parallel implementations 
-#
-  \donttest{
-   system.time(b1 <- bmdboot(r, niter = 500, progressbar = TRUE))
-   # Do no work - message fGauss5p not found
-   # system.time(b2 <- bmdboot(r, niter = 500, progressbar = FALSE, parallel = "snow", ncpus = 2))
-}
-
-
-# (3) an example on a transcriptomics data set (a subsample of a greater data set) 
+# (2) an example on a transcriptomics data set (a subsample of a greater data set) 
 #
 \donttest{
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
@@ -147,16 +140,23 @@ datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))
-(b <- bmdboot(r, niter = 100) # niter to put at 1000 for a better precision
+(b <- bmdboot(r, niter = 100)) # niter to put at 1000 for a better precision
 
 # different plots of BMD-zSD
-
 plot(b, plottype = "ecdf", bytypology = FALSE) 
 plot(b, plottype = "univariate", bytypology = FALSE) 
 plot(b, plottype = "univariate", bytypology = TRUE) 
 
 # a plot of BMD-xfold (by default BMD-zSD is plotted)
 plot(b, BMDtype = "xfold", plottype = "ecdf", bytypology = FALSE) 
+}
+
+# (3) Comparison of parallel and non parallel implementations 
+#
+  \donttest{
+  # to be tested with a greater number of iterations
+   system.time(b1 <- bmdboot(r, niter = 100, progressbar = TRUE))
+   system.time(b2 <- bmdboot(r, niter = 100, progressbar = FALSE, parallel = "snow", ncpus = 2))
 }
 
 

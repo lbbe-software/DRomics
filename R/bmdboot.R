@@ -2,7 +2,6 @@
 ## a 95% confidence interval for the BMD values
 bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = TRUE, 
                     parallel = c("no", "snow", "multicore"), ncpus)
-#  tol = percentage of bootstrap failure admitted
 {
   # Checks
   if (!inherits(r, "bmdcalc"))
@@ -55,7 +54,6 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
     datai <- r$omicdata$data[resitem$irow, ]
     dset <- data.frame(signal = datai, dose = dose)
     ndata <- nrow(dset)
-    # plot(dset$dose, dset$signal)
 
     ############## Model expo ###########
     if (modeli == "exponential")
@@ -67,13 +65,9 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
       resid1 <- datai - fitted1
       
       dsetboot <- dset
-      # plot(dose, fitted1, type = "l")
-      # points(dose, datai)
       fboot <- function(i)
       {
         dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
-        # plot(dsetboot[,2], dsetboot[,1])
-        # fit
         if (e1 < 0)
         {
           nlsboot <- suppressWarnings(try(nls(formula = formExp3p, data = dsetboot, start = lestimpar,
@@ -98,7 +92,6 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
           BMDpboot <- invExpo(ypboot, b= bboot, d = dboot, e = eboot)
           ysdboot <- y0boot + z*SDresboot * sign(eboot * bboot)
           BMDsdboot <- invExpo(ysdboot, b= bboot, d = dboot, e = eboot)
-          # return(list(coef = coef(nlsboot), SDres = SDresboot, BMDp = BMDpboot, BMDsd = BMDsdboot))
           return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
         }
       } # end fboot
@@ -116,13 +109,9 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
       resid1 <- datai - fitted1
       
       dsetboot <- dset
-      # plot(dose, fitted1, type = "l")
-      # points(dose, datai)
       fboot <- function(i)
       {
         dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
-        # plot(dsetboot[,2], dsetboot[,1])
-        # fit
         nlsboot <- suppressWarnings(try(nls(formula = formHill, data = dsetboot, start = lestimpar,
                                              lower = c(0, -Inf, -Inf, 0), algorithm = "port"), 
                                           silent = TRUE))
@@ -140,7 +129,6 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
           ysdboot <- y0boot + z*SDresboot * sign(cboot * dboot)
           BMDsdboot <- invHill(ysdboot, b= bboot, c = cboot, d = dboot, e = eboot)
 
-          # return(list(coef = coef(nlsboot), SDres = SDresboot, BMDp = BMDpboot, BMDsd = BMDsdboot))
           return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
         }
       } # end fboot
@@ -156,12 +144,9 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
       resid1 <- datai - fitted1
       
       dsetboot <- dset
-      # plot(dose, fitted1, type = "l")
-      # points(dose, datai)
       fboot <- function(i)
       {
         dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
-        # plot(dsetboot[,2], dsetboot[,1])
         # fit
         linboot <- lm(signal ~ dose, data = dsetboot)
         SDresboot <- sqrt(sum(residuals(linboot)^2)/(ndata - nbpari))
@@ -174,8 +159,7 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
         ysdboot <- y0boot + z*SDresboot * sign(bboot)
         BMDsdboot <- invlin(ysdboot, b= bboot, d = dboot)
           
-          # return(list(coef = coef(nlsboot), SDres = SDresboot, BMDp = BMDpboot, BMDsd = BMDsdboot))
-          return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
+        return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
       } # end fboot
     } else
       ############ END linear model ###################
@@ -190,8 +174,7 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
       f1 <- lestimpar$f
       fitted1 <- fGauss5p(x = dose, c = c1, d = d1, b = b1, e = e1, f = f1)
       resid1 <- datai - fitted1
-      # lines(dose, fitted1)
-        
+       
       dsetboot <- dset
       fboot <- function(i)
       {
@@ -236,7 +219,6 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
                                 dosemax = dosemax, ydosemax = ydosemaxboot, func = fGauss5pBMR, 
                                 b = bboot, c = cboot, d = dboot, e = eboot, g = fboot)
           BMDsdboot <- resBMDsd$BMD
-          # return(list(coef = coef(nlsboot), SDres = SDresboot, BMDp = BMDpboot, BMDsd = BMDsdboot))
           return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
         }
       } # end fboot
@@ -253,8 +235,7 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
       f1 <- lestimpar$f
       fitted1 <- fLGauss5p(x = dose, c = c1, d = d1, b = b1, e = e1, f = f1)
       resid1 <- datai - fitted1
-      # lines(dose, fitted1)
-      
+
       dsetboot <- dset
       fboot <- function(i)
       {
@@ -299,7 +280,6 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
                               dosemax = dosemax, ydosemax = ydosemaxboot, func = fLGauss5pBMR, 
                               b = bboot, c = cboot, d = dboot, e = eboot, g = fboot)
           BMDsdboot <- resBMDsd$BMD
-          # return(list(coef = coef(nlsboot), SDres = SDresboot, BMDp = BMDpboot, BMDsd = BMDsdboot))
           return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
         }
       } # end fboot
@@ -317,8 +297,6 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
       return(c(NA, NA, NA, NA, nboot.successful))
     } else
     {
-      # tabbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$coef)
-      # SDresbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$SDres)
       BMDpbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$BMDp)
       BMDsdbooti <- sapply(l1[!sapply(l1, is.null)], function(z) z$BMDsd)
 
@@ -340,16 +318,8 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
       return(c(BMDsdlower, BMDsdupper, BMDplower, BMDpupper, nboot.successful))
     }
    
-    # pairs(as.data.frame(t(tabbooti)))
-    # boxplot(SDresbooti)
-    # boxplot(BMDpbooti)
-    # boxplot(BMDsdbooti)
   } 
   ##### END bootstrap for one item ####################
-  
-  # trial
-  # bootoneitem(1)
-  # bootoneitem(2)
   
   # Loop on items
   # parallel or sequential computation
@@ -400,11 +370,11 @@ print.bmdboot <- function(x, ...)
   nInf.BMD.zSD.upper <- sum(is.infinite(x$res$BMD.zSD.upper))
   nInf.BMD.xfold.upper <- sum(is.infinite(x$res$BMD.xfold.upper))
   cat("For", nInf.BMD.zSD.upper, "BMD.zSD values and", nInf.BMD.xfold.upper,
-        "BMD.xfold values among", ntot, 
-        "at least one bound of the 95 percent confidence interval could not be
-          computed due to some bootstrapped BMD values not reachable due to model asymptotes 
-          or reached outside the range of tested doses (bounds coded Inf)).\n")
- }
+      "BMD.xfold values among", ntot, 
+      "at least one bound of the 95 percent confidence interval could not be
+      computed due to some bootstrapped BMD values not reachable due to model asymptotes 
+      or reached outside the range of tested doses (bounds coded Inf)).\n")
+  }
 
 plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), 
                          plottype = c("ecdf", "univariate"), bytypology = FALSE, ...) 
@@ -428,6 +398,8 @@ plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"),
   
   # Remove NA values if needed
   d <- dwithNA[!is.na(dwithNA$BMD) & !is.na(dwithNA$BMD.lower) & !is.na(dwithNA$BMD.upper), ]
+  # remove BMD with infinite lower values
+  d <- d[is.finite(d$BMD.lower), ]
   n.nonNA <- nrow(d)
   allBMDval <- c(d$BMD, d$BMD.upper, d$BMD.lower)
   ymax <- max(allBMDval[is.finite(allBMDval)])
@@ -455,15 +427,15 @@ plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"),
       g <- ggplot(data = d, mapping = aes(x = BMD, y = ECDF)) + 
         facet_wrap(~ typology) + 
         geom_errorbarh(aes(xmin = BMD.lower, xmax = BMD.upper), col = "blue", 
-                      alpha = 0.5, height = 0) +
+                       alpha = 0.5, height = 0) +
         geom_point() + xlim(0, ylimmax)
     } else
     {
       g <- ggplot(data = d, mapping = aes(x= Index, y = BMD)) + 
-            facet_wrap(~ typology) + 
-            geom_errorbar(aes(ymin = BMD.lower, ymax = BMD.upper), col = "blue", 
-                          alpha = 0.5, width = 0) +
-            geom_point() + ylim(0, ylimmax)
+        facet_wrap(~ typology) + 
+        geom_errorbar(aes(ymin = BMD.lower, ymax = BMD.upper), col = "blue", 
+                      alpha = 0.5, width = 0) +
+        geom_point() + ylim(0, ylimmax)
     }
   }  else
   { # global plot of BMDs
@@ -471,7 +443,7 @@ plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"),
     {
       g <- ggplot(data = d, mapping = aes(x = BMD, y = ECDF)) + 
         geom_errorbarh(aes(xmin = BMD.lower, xmax = BMD.upper), col = "blue", 
-                      alpha = 0.5,  height = 0) +
+                       alpha = 0.5,  height = 0) +
         geom_point() + xlim(0, ylimmax)
     } else
     {
