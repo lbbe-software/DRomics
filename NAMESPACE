@@ -26,3 +26,8 @@ S3method(plot, drcfit)
 export(bmdcalc)
 S3method(print, bmdcalc)
 S3method(plot, bmdcalc)
+
+#bmdboot class
+export(bmdboot)
+S3method(print, bmdboot)
+S3method(plot, bmdboot)

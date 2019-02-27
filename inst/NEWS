@@ -1,5 +1,10 @@
 === DRomics : Dose response for omics ===
 
+Version 1.1-0
+=============
+NEW FEATURES
+- Add of bootstrap computation of confidence intervals on benchmark doses (new function bmdboot)
+
 
 Version 1.0-1
 =============
