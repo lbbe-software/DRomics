@@ -31,3 +31,5 @@ S3method(plot, bmdcalc)
 export(bmdboot)
 S3method(print, bmdboot)
 S3method(plot, bmdboot)
+
+export(ecdfplotwithCI)

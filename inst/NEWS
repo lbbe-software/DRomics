@@ -4,6 +4,8 @@ Version 1.1-0
 =============
 NEW FEATURES
 - Add of bootstrap computation of confidence intervals on benchmark doses (new function bmdboot)
+- Add of a function to plot the distribution of a variable as an ecdf plot, with confidence 
+intervals on this variable (new function ecdfplotwithCI)
 
 
 Version 1.0-1
