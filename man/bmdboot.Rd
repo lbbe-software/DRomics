@@ -9,21 +9,27 @@ Computes  95 percent confidence intervals on x-fold and z-SD benchmark doses by 
 }
 
 \usage{
-bmdboot(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = TRUE, 
+bmdboot(r, items = r$res$id, niter = 1000, conf.level = 0.95,
+                    tol = 0.5, progressbar = TRUE, 
                     parallel = c("no", "snow", "multicore"), ncpus)
 
 \method{print}{bmdboot}(x, \dots)
 
-\method{plot}{bmdboot}(x, BMDtype = c("zSD", "xfold"), bytypology = FALSE, \dots)
+\method{plot}{bmdboot}(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
+                   by = c("none", "trend", "model", "typology"), CI.col = "blue",  \dots) 
 }
 
 \arguments{
 \item{r}{An object of class \code{"bmdcalc"} returned by the function \code{bmdcalc}.}
 
 \item{items}{A character vector specifying the identifiers of the items for which you want the
-computation of confidence intervals. If omitted the computation is done for all the items.}
+computation of confidence intervals (for \code{bmdboot}) or the plot of 
+BMD with confidence intervals (for \code{plot.bmdboot}). 
+If omitted the computation or the plot is done for all the items.}
 
 \item{niter}{The number of samples drawn by bootstrap.}
+
+\item{conf.level}{Confidence level of the intervals.}
 
 \item{tol}{The tolerance in term of proportion of bootstrap samples
 on which the fit of the model is successful (if this proportion is below the tolerance,
@@ -42,9 +48,15 @@ NA values are given for the limits of the confidence interval.}
 
 \item{BMDtype}{The type of BMD to plot, \code{"zSD"} (default choice) or \code{"xfold"}.}
 
-\item{bytypology}{If \code{TRUE} the plot is split by typology.}
+\item{remove.infinite}{If TRUE the confidence intervals with non finite upper bound are not plotted.}
 
-\item{\dots}{ further arguments passed to graphical or print functions.}
+\item{by}{If not at \code{"none"} the plot is split by the indicated factor (\code{"trend"},
+  \code{"model"} or \code{"typology"}).}
+  
+\item{CI.col}{The color to draw the confidence intervals.}
+
+
+\item{\dots}{Further arguments passed to graphical or print functions.}
 
 }
 
@@ -52,8 +64,10 @@ NA values are given for the limits of the confidence interval.}
 
 Non-parametric bootstrapping is used. Mean centered residuals are bootstrapped. For each item, bootstrapped parameter estimates are obtained by fitting the model on each of these resampled data sets. If the fitting procedure fails to converge in more than tol*100\% of the cases, NA values are given for the confidence interval. Otherwise, bootstraped
 BMD are computed from bootstrapped parameter estimates using the same method as in \code{\link{bmdcalc}}.
-95 percent confidence intervals on BMD are then
-computed using 2.5 and 97.5 percentiles of the bootstrapped BMD. 
+Confidence intervals on BMD are then
+computed using percentiles of the bootstrapped BMDs.
+For example 95 percent confidence intervals are 
+computed using 2.5 and 97.5 percentiles of the bootstrapped BMDs. 
 In cases where the bootstrapped BMD cannot be estimated as
 not reached at the highest tested dose or not reachable due to model asymptotes,
 it was given an infinite value \code{Inf}, so as to enable the computation
@@ -78,9 +92,9 @@ to finite values.
    the x value at which their extremum is reached (\code{xextrem})
    and the corresponding y value (\code{yextrem}), the BMD-zSD value (\code{BMD.zSD}) and 
    the BMD-xfold value (\code{BMD.xfold}), 
-   \code{BMD.zSD.lower} and  \code{BMD.zSD.upper}the lower and upper bounds of the 95 percent
+   \code{BMD.zSD.lower} and  \code{BMD.zSD.upper}the lower and upper bounds of the 
    confidence intervals of the BMD-zSD value, 
-   \code{BMD.xfold.lower} and  \code{BMD.xfold.upper} the lower and upper bounds of the 95 percent
+   \code{BMD.xfold.lower} and  \code{BMD.xfold.upper} the lower and upper bounds of the
    confidence intervals of the BMD-xfold value and
    \code{nboot.successful} the number of successful fits on bootstrapped samples for each item.}
 
@@ -117,19 +131,27 @@ datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", package="
 # use the following commented line
 # datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
+set.seed(123)
 (o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))
-(b <- bmdboot(r))
+(b <- bmdboot(r, niter = 250)) # niter = 1000 should be better (longer to run)
 b$res
-plot(b) 
+plot(b) # plot of BMD.zSD after removing of BMDs with infinite upper bounds
+plot(b, remove.infinite = FALSE) # plot of BMD.zSD without removing of BMDs 
+                                 # with infinite upper bounds
 
 # bootstrap on only a subsample of items, here those best fitted by the linear model
-# with a greater numbre of iterations
-(b.lin <- bmdboot(r, items = r$res$id[r$res$model == "linear"],
+# with a greater number of iterations
+(b.lin.95 <- bmdboot(r, items = r$res$id[r$res$model == "linear"],
                        niter = 1000, progressbar = TRUE))
-b.lin$res
+b.lin.95$res
+
+# same bootstrap but changing the default confidence level (0.95) to 0.90
+(b.lin.90 <- bmdboot(r, items = r$res$id[r$res$model == "linear"],
+                       niter = 1000, conf.level = 0.9, progressbar = TRUE))
+b.lin.90$res
 
 # (2) an example on a transcriptomics data set (a subsample of a greater data set) 
 #
@@ -143,12 +165,12 @@ datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 (b <- bmdboot(r, niter = 100)) # niter to put at 1000 for a better precision
 
 # different plots of BMD-zSD
-plot(b, plottype = "ecdf", bytypology = FALSE) 
-plot(b, plottype = "univariate", bytypology = FALSE) 
-plot(b, plottype = "univariate", bytypology = TRUE) 
+plot(b, by = "trend") 
+plot(b, by = "model") 
+plot(b, by = "typology") 
 
 # a plot of BMD-xfold (by default BMD-zSD is plotted)
-plot(b, BMDtype = "xfold", plottype = "ecdf", bytypology = FALSE) 
+plot(b, BMDtype = "xfold") 
 }
 
 # (3) Comparison of parallel and non parallel implementations 

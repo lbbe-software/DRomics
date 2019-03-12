@@ -1,6 +1,7 @@
 ## Perform bootstrap on a selection of items in order to give
 ## a 95% confidence interval for the BMD values
-bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = TRUE, 
+bmdboot <- function(r, items = r$res$id, niter = 1000, conf.level = 0.95,
+                    tol = 0.5, progressbar = TRUE, 
                     parallel = c("no", "snow", "multicore"), ncpus)
 {
   # Checks
@@ -19,7 +20,7 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
   if (parallel != "no") progressbar <- FALSE
   
   if (progressbar)
-    cat("The bootstrap may be long if the number of items is high.\n")
+    cat("The bootstrap may be long if the number of items and the number of bootstrap iterations is high.\n")
 
   i.items <- match(items, r$res$id)
   nitems <- length(items)
@@ -27,6 +28,12 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
   if (!is.numeric(tol) | (tol > 1) | (tol < 0))
     stop("Wrong argument 'tol'. If not omitted it must be a number between 0 and 1 (the proportion
          of failure of model fit among bootstrap samples).")
+
+  if (!is.numeric(conf.level) | (conf.level >= 1) | (conf.level <= 0))
+    stop("Wrong argument 'conf.level'. If not omitted it must be a number between 0 and 1 
+         (the confidence level of the bootstrap confidence intervals).")
+  prob.lower <- (1 - conf.level) / 2
+  prob.upper <- conf.level + prob.lower
   
   z <- r$z
   x <- r$x
@@ -302,13 +309,13 @@ bmdboot <- function(r, items = r$res$id, niter = 250, tol = 0.5, progressbar = T
 
       BMDpbooti[is.na(BMDpbooti) | BMDpbooti > dosemax] <- Inf
       BMDsdbooti[is.na(BMDsdbooti) | BMDsdbooti > dosemax] <- Inf
-      BMDp.CI95 <- quantile(BMDpbooti, probs = c(0.025, 0.975))
-      BMDplower <- BMDp.CI95[1]
-      BMDpupper <- BMDp.CI95[2]
+      BMDp.CI <- quantile(BMDpbooti, probs = c(prob.lower, prob.upper))
+      BMDplower <- BMDp.CI[1]
+      BMDpupper <- BMDp.CI[2]
       
-      BMDsd.CI95 <- quantile(BMDsdbooti, probs = c(0.025, 0.975))
-      BMDsdlower <- BMDsd.CI95[1]
-      BMDsdupper <- BMDsd.CI95[2]
+      BMDsd.CI <- quantile(BMDsdbooti, probs = c(prob.lower, prob.upper))
+      BMDsdlower <- BMDsd.CI[1]
+      BMDsdupper <- BMDsd.CI[2]
       
       
       if (progressbar)
@@ -363,8 +370,9 @@ print.bmdboot <- function(x, ...)
   } else
   {
     cat("Bootstrap confidence interval computation failed on", nNA.BMDboot,
-        "items among", ntot, "due to lack of convergence of the model fit for
-        a fraction of the bootstrapped samples greater than", x$tol, ".\n")
+        "items among", ntot, 
+        "due to lack of convergence of the model fit for a fraction of the bootstrapped samples greater than",
+        x$tol, ".\n")
   }
   
   nInf.BMD.zSD.upper <- sum(is.infinite(x$res$BMD.zSD.upper))
@@ -376,146 +384,119 @@ print.bmdboot <- function(x, ...)
       or reached outside the range of tested doses (bounds coded Inf)).\n")
   }
 
-plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), 
-                         plottype = c("ecdf", "univariate"), bytypology = FALSE, ...) 
+plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
+                         by = c("none", "trend", "model", "typology"), CI.col = "blue",  ...) 
 {
   if (!inherits(x, "bmdboot"))
     stop("Use only with 'bmdboot' objects")
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
-  plottype <- match.arg(plottype, c("ecdf", "univariate"))  
+  by <- match.arg(by, c("none", "trend", "model", "typology"))  
   
-  # que faire des NA et NaN (enlever, les représenter en données censurées ?)
-  
+  res <- x$res
+
   if (BMDtype == "zSD")
   {
-    dwithNA <- data.frame(BMD = x$res$BMD.zSD, BMD.lower = x$res$BMD.zSD.lower,
-                          BMD.upper = x$res$BMD.zSD.upper, typology = x$res$typology)
+    dwithNA <- data.frame(BMD = res$BMD.zSD, BMD.lower = res$BMD.zSD.lower,
+                          BMD.upper = res$BMD.zSD.upper)
   } else
   {
-    dwithNA <- data.frame(BMD = x$res$BMD.xfold, BMD.lower = x$res$BMD.xfold.lower,
-                          BMD.upper = x$res$BMD.xfold.upper,typology = x$res$typology)
+    dwithNA <- data.frame(BMD = res$BMD.xfold, BMD.lower = res$BMD.xfold.lower,
+                          BMD.upper = res$BMD.xfold.upper)
   }
+  nrow(dwithNA)
+  
+  if (by == "trend") dwithNA$by <- res$trend else
+    if (by == "model") dwithNA$by <- res$model else
+      if (by == "typology") dwithNA$by <- res$typology 
   
   # Remove NA values if needed
   d <- dwithNA[!is.na(dwithNA$BMD) & !is.na(dwithNA$BMD.lower) & !is.na(dwithNA$BMD.upper), ]
-  # remove BMD with infinite lower values
+  nrow(d)
+  
+  # remove BMD with infinite lower bounds
   d <- d[is.finite(d$BMD.lower), ]
-  n.nonNA <- nrow(d)
-  allBMDval <- c(d$BMD, d$BMD.upper, d$BMD.lower)
-  ymax <- max(allBMDval[is.finite(allBMDval)])
-  ylimmax <- ymax * 1.2
-  d$BMD.upper[!is.finite(d$BMD.upper)] <- ylimmax
+  nrow(d)
   
-  nremoved <- nrow(dwithNA) - nrow(d)
-  if (nremoved > 0)
-    warning(nremoved," BMD values for which lower and upper bounds were coded NA were removed before plotting")
-  if (plottype == "univariate")
+  # remove BMD with infinite upper bounds
+  if (remove.infinite)
   {
-    d$Index <- 1:n.nonNA
-  }
-  else
+    # remove BMD with infinite upper values
+    d <- d[is.finite(d$BMD.upper), ]
+    define.xlim <- FALSE
+    nrow(d)
+  } else
   {
-    BMDorder <- order(d$BMD)
-    d <- d[BMDorder,]
-    d$ECDF <- ((1:n.nonNA) - 0.5)/n.nonNA
-  }
-  
-  if (bytypology) 
-  {
-    if (plottype == "ecdf") 
+    ind.infinite <- !is.finite(d$BMD.upper)
+    if (any(ind.infinite))
     {
-      g <- ggplot(data = d, mapping = aes(x = BMD, y = ECDF)) + 
-        facet_wrap(~ typology) + 
-        geom_errorbarh(aes(xmin = BMD.lower, xmax = BMD.upper), col = "blue", 
-                       alpha = 0.5, height = 0) +
-        geom_point() + xlim(0, ylimmax)
+      allBMDval <- c(d$BMD, d$BMD.upper, d$BMD.lower)
+      BMDmax <- max(allBMDval[is.finite(allBMDval)])
+      BMDlimmax <- BMDmax * 1.5
+      d$BMD.upper[ind.infinite] <- BMDlimmax # I did not manage to fix it at a higher value 
+                                            # (not plotted by geom_errorbarh)
+      define.xlim <- TRUE
     } else
     {
-      g <- ggplot(data = d, mapping = aes(x= Index, y = BMD)) + 
-        facet_wrap(~ typology) + 
-        geom_errorbar(aes(ymin = BMD.lower, ymax = BMD.upper), col = "blue", 
-                      alpha = 0.5, width = 0) +
-        geom_point() + ylim(0, ylimmax)
+      define.xlim <- FALSE
+    }
+  }
+  
+  nplotted <- nrow(d)
+  nremoved <- nrow(dwithNA) - nplotted
+  
+  if (nremoved > 0)
+  {
+    if (remove.infinite)
+    {
+      warning(nremoved,
+    " BMD values for which lower and upper bounds were coded NA or with lower or upper infinite bounds were removed before plotting")
+    } else
+    {
+      warning(nremoved,
+    " BMD values for which lower and upper bounds were coded NA or with lower and upper infinite bounds were removed before plotting")
+    }
+  }
+  
+  if (by != "none") 
+  {
+    uniqueby <- unique(d$by)
+    n.uniqueby <- length(uniqueby)
+    d$ECDF <- rep(0, nplotted) # initialization
+    for (i in 1:n.uniqueby)
+    {
+      indi <- which(d$by == uniqueby[i])
+      ntoti <- length(indi)
+      d$ECDF[indi] <- (rank(d$BMD[indi], ties.method = "first") - 0.5) / ntoti
+    }
+    if (!define.xlim)
+    {
+      g <- ggplot(data = d, mapping = aes(x = BMD, y = ECDF)) + 
+        facet_wrap(~ by) + 
+        geom_errorbarh(aes(xmin = BMD.lower, xmax = BMD.upper), col = CI.col, 
+                       alpha = 0.5, height = 0) + geom_point() 
+    } else
+    {
+      g <- ggplot(data = d, mapping = aes(x = BMD, y = ECDF)) + 
+        facet_wrap(~ by) + 
+        geom_errorbarh(aes(xmin = BMD.lower, xmax = BMD.upper), col = CI.col, 
+              alpha = 0.5, height = 0) + geom_point() + xlim(0, BMDlimmax)
+      
     }
   }  else
   { # global plot of BMDs
-    if (plottype == "ecdf") 
+    d$ECDF <- (rank(d$BMD, ties.method = "first") - 0.5) / nplotted
+    if (!define.xlim)
     {
       g <- ggplot(data = d, mapping = aes(x = BMD, y = ECDF)) + 
-        geom_errorbarh(aes(xmin = BMD.lower, xmax = BMD.upper), col = "blue", 
-                       alpha = 0.5,  height = 0) +
-        geom_point() + xlim(0, ylimmax)
+        geom_errorbarh(aes(xmin = BMD.lower, xmax = BMD.upper), col = CI.col, 
+                       alpha = 0.5,  height = 0) + geom_point() 
     } else
     {
-      g <- ggplot(data = d, mapping = aes(x= Index, y = BMD)) + 
-        geom_errorbar(aes(ymin = BMD.lower, ymax = BMD.upper), col = "blue", 
-                      alpha = 0.5, width = 0) +
-        geom_point() + ylim(0, ylimmax)
+      g <- ggplot(data = d, mapping = aes(x = BMD, y = ECDF)) + 
+        geom_errorbarh(aes(xmin = BMD.lower, xmax = BMD.upper), col = CI.col, 
+                       alpha = 0.5,  height = 0) + geom_point() + xlim(0, BMDlimmax)
     }
   } 
   return(g)
 }
 
-# plot.bootres <- function(x, ymax = 10)
-#   # to greatly improve and not fix ymax at 7 but at an automatic value from the design
-# {
-#   indexFDR0p001 <- min(which(x$adjpvalue > 0.001))
-#   modelu <- unique(x$model)
-#   colmodel <- 2:6
-#   
-#   par(mfrow = c(2, 1), mar = c(3,4,0.1,0.1))
-#   BMD.zSD.lower <- x$BMD.zSD.lower
-#   BMD.zSD.upper <- x$BMD.zSD.upper
-#   BMD.zSD.upper[is.infinite(BMD.zSD.upper)] <- ymax*2
-#   BMD.zSD <- x$BMD.zSD
-#   plot(BMD.zSD, ylim = c(0, ymax), ylab = "BMD.zSD",
-#        col = colmodel[match(x$model, modelu)], pch = 16)
-#   nitems <- nrow(x)
-#   segments(x0 = 1:nitems, y0 = BMD.zSD.lower, x1 = 1:nitems, y1 = BMD.zSD.upper, 
-#            col = colmodel[match(x$model, modelu)])
-#   abline(v = indexFDR0p001, lwd = 2)
-#   legend("topleft", legend = modelu, pch = 16, col = colmodel, bty = "n", cex = 0.75)
-#   
-#   BMD.xfold.lower <- x$BMD.xfold.lower
-#   BMD.xfold.upper <- x$BMD.xfold.upper
-#   BMD.xfold.upper[is.infinite(BMD.xfold.upper)] <- ymax*2
-#   BMD.xfold <- x$BMD.xfold
-#   plot(BMD.xfold, ylim = c(0, ymax), ylab = "BMD.xfold",
-#        col = colmodel[match(x$model, modelu)], pch = 16)
-#   nitems <- nrow(x)
-#   segments(x0 = 1:nitems, y0 = BMD.xfold.lower, x1 = 1:nitems, y1 = BMD.xfold.upper,
-#            col = colmodel[match(x$model, modelu)])
-#   abline(v = indexFDR0p001, lwd = 2)
-#   
-# }
-# ############## END of the plot function
-# 
-# plot.bootres.gg <- function(x, ymax = 10, type = c("zSD", "xplot"))
-#   # to greatly improve and not fix ymax at 7 but at an automatic value from the design
-# {
-#   indexFDR0p001 <- min(which(x$adjpvalue > 0.001))
-# 
-#   if (type == "zSD")
-#   {
-#     BMD.lower <- x$BMD.zSD.lower
-#     BMD.upper <- x$BMD.zSD.upper
-#     BMD <- x$BMD.zSD
-#   }
-#   else
-#   {
-#     BMD.lower <- x$BMD.xfold.lower
-#     BMD.upper <- x$BMD.xfold.upper
-#     BMD <- x$BMD.xfold
-#     
-#   }
-#   BMD.upper[is.infinite(BMD.upper)] <- ymax
-#   
-#   d2plot <- data.frame(BMD = BMD, lower = BMD.lower, 
-#                        upper = BMD.upper, index = 1:nrow(x),
-#                        model = x$model)
-#   ggplot(data = d2plot, mapping = aes(x= index, y = BMD)) + 
-#     facet_wrap(~ model) + geom_vline(xintercept = indexFDR0p001, col = "red") +
-#     geom_errorbar(aes(ymin = lower, ymax = upper), col = "grey",alpha = 0.5) + 
-#     geom_point() +
-#     theme_bw() + ylim(0, ymax)
-# }
