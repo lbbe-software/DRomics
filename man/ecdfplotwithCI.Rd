@@ -8,7 +8,8 @@ intervals on this variable
 }
 
 \usage{
-ecdfplotwithCI(variable, CI.lower, CI.upper, by, CI.col = "blue")
+ecdfplotwithCI(variable, CI.lower, CI.upper, by, CI.col = "blue", 
+CI.alpha = 1, add.point = TRUE)
 }
 
 \arguments{
@@ -20,12 +21,20 @@ ecdfplotwithCI(variable, CI.lower, CI.upper, by, CI.col = "blue")
 
 \item{by}{A factor of the same length for split of the plot by this factor (no split if omitted).}
   
-\item{CI.col}{The color to draw the confidence intervals.}
+\item{CI.col}{The color to draw the confidence intervals (unique color) of a factor coding for the color.}
+
+\item{CI.alpha}{Optional transparency of the lines used to draw the confidence intervals}
+
+\item{add.point}{If \code{TRUE} points are added to confidence intervals}
+
 }
 
 \details{
 
-TO WRITE !!!!!!!!!!!!!!!!!!!!!}
+A function to plot a variable as an ECDF plot, potentially splitted by the groups coded in the argument 
+\code{by}, with the confidence intervals associated to each value of the variable, given in \code{CI.lower}
+and \code{CI.upper}. 
+}
 
 \value{ 
    a ggplot object.
@@ -41,7 +50,7 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# (1) an example on a transcriptomics data set (a subsample of a greater data set) 
+# an example on a transcriptomics data set (a subsample of a greater data set) 
 #
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
@@ -51,10 +60,31 @@ datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 (r <- bmdcalc(f))
 (b <- bmdboot(r, niter = 100)) # niter to put at 1000 for a better precision
 
-# manual ecdf plot of the bootstrap results as an ecdf distribution by trend 
-# that could also be obtained with plot(b, by = "trend") in this simple case
+# (1) 
+# manual ecdf plot of the bootstrap results as an ecdf distribution 
+# on BMD for each trend
+# plot that could also be obtained with plot(b, by = "trend") 
+# in this simple case
+#
 a <- b$res[is.finite(b$res$BMD.zSD.upper), ]
 ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
               CI.upper = a$BMD.zSD.upper, by = a$trend, CI.col = "red")
 plot(b, by = "trend")
+
+# (2)
+# ecdf plot of the bootstrap results as an ecdf distribution 
+# on BMD for each model
+# with the color of the confidence intervals coding for the trend
+#
+ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
+              CI.upper = a$BMD.zSD.upper, by = a$model, CI.col = a$trend)
+
+# (3)
+# ecdf plot of the bootstrap results as an ecdf distribution on 
+# on BMD_L (lower value of the confidence interval) for each trend
+# 
+ecdfplotwithCI(variable = a$BMD.zSD.lower, CI.lower = a$BMD.zSD.lower, 
+              CI.upper = a$BMD.zSD.upper, by = a$model, CI.col = a$trend, 
+              add.point = FALSE)
+
 }
