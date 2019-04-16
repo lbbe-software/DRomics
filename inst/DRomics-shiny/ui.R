@@ -18,9 +18,7 @@ ui <- fluidPage(
     )),
   
   titlePanel(
-    # title = HTML("<font face=verdana size=6 color=#155450><b>DRomics Shiny Application</b></font>"),
     tags$head(tags$title("DRomics Shiny App"))
-    # tags$head(tags$link(rel = "icon", type = "image/png", href = "logo-guts-shinnyapp.png"), tags$title(" GUTS-shinyapp"))
   ),
   br(),
   navbarPage(title = "", 
@@ -117,9 +115,6 @@ ui <- fluidPage(
                                                             scale = 'scale'),
                                                 selected = 'cyclicloess'),
                                    
-                                   # tags$style(".popover{max-width: 30%;vertical-align: middle}"),
-                                   # h5("See ", bsButton("Help_norm_methods", label = "here", style = "info", size = "extra-small"), " information about the normalization methods"),
-                                   # bsPopover("Help_norm_methods", "help", HTML(help1), placement = "bottom", trigger = "click", options=list(container="body"))
                                    h5("See ", a("here", href = "informations_norm_methods.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the normalization methods")
                                  )
                                ),
@@ -128,7 +123,7 @@ ui <- fluidPage(
                                    width = 12,
                                    verbatimTextOutput('printOmicData'),
                                    br(),
-                                   plotOutput("plotOmicData", width = "100%", height = "900px"),
+                                   withSpinner(plotOutput("plotOmicData", width = "100%", height = "900px"), type = 4, color = '#155450'),
                                    br()
                                  )
                                )
@@ -175,19 +170,29 @@ ui <- fluidPage(
                                fluidRow(
                                  sidebarPanel(
                                    style = "background-color: #a7dbd8;",
-                                   width = 5,
+                                   width = 8,
                                    fluidRow(
-                                     column(width = 9, "Click this button each time you update a setting in previous steps"),
-                                     column(width = 2, actionButton("buttonDrcfit", "Fit", icon = icon("bar-chart-o")))),
-                                   br(), 
-                                   h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the dose reponse modelling procedure")),
-                                 conditionalPanel(
-                                   condition = "output.testdowload",
-                                   sidebarPanel(style = "background-color: #a7dbd8;",
-                                                width = 3,
-                                                fluidRow(
-                                                  style="text-align: center;", 
-                                                  downloadButton("buttonDownloadDrcfitplot", "Download all the fitted dose-response plots", icon = icon("fas fa-download")))))
+                                     column(width = 6, 
+                                            "Click this button each time you update a setting in previous steps:",
+                                            br(), 
+                                            h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the dose reponse modelling procedure")
+                                     ),
+                                     column(width = 2, actionButton("buttonDrcfit", "Fit", icon = icon("bar-chart-o"), style='font-size:200%')),
+                                     column(width = 3,
+                                            conditionalPanel(
+                                              condition = "output.okfordowload",
+                                              downloadButton("buttonDownloadDrcfitplot", HTML("Download all the fitted<br/>dose-response plots"), style = 'background-color:#e6e6e6; color:#000000; border-color:#9d9d9d; font-size:110%;', icon = icon("fas fa-download"))
+                                            )
+                                     )
+                                   )
+                                 ),
+                                 
+                                 sidebarPanel(
+                                   style = "background-color: #FFFFFF;",
+                                   width = 4,
+                                   icon("exclamation-triangle"),
+                                   "These ongoing calculations can take from minutes to about an hour. Your patience should be proportional to the size of your data and the chosen FDR."
+                                 )
                                ),
                                
                                fluidRow(
@@ -195,7 +200,7 @@ ui <- fluidPage(
                                    width = 12,
                                    verbatimTextOutput('printDrcfit'),
                                    br(),
-                                   plotOutput("plotDrcfit", width = "100%", height = "900px"),
+                                   withSpinner(plotOutput("plotDrcfit", width = "100%", height = "900px"), type = 4, color = '#155450'),
                                    br(), br()
                                  )
                                )
