@@ -269,6 +269,19 @@ ui <- fluidPage(
                                  )
                                )
                         )
+                      )),
+             
+             
+             ####################################################################################
+             ####### STEP 5 #####################################################################
+             ####################################################################################
+             tabPanel(HTML("<font face=verdana size=3 color=#155450>R Code</font>"),
+                      fixedRow(
+                        column(8, 
+                               br(), HTML("<font face=verdana size=5 color=#155450><b>R CODE</b></font>"), br(), br(), br(),
+                               downloadButton("buttonDownRCode", "Download R Code", icon = icon("fas fa-download"), style = 'background-color:#e6e6e6; color:#000000; border-color:#9d9d9d;'), br(), br(),
+                               verbatimTextOutput('printRCode')
                       ))
+             )
   )
 )

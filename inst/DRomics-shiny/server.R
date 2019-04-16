@@ -81,10 +81,10 @@ server <- function(input, output, session) {
   ####### STEP 4 #####################################################################
   ####################################################################################
   
+  numZbmdcalc <- reactive({as.numeric(input$zbmdcalc)})
+  numXbmdcalc <- reactive({as.numeric(input$xbmdcalc)})
+  
   output$printBmdcalc <- renderPrint({
-    
-    numZbmdcalc <- reactive({as.numeric(input$zbmdcalc)})
-    numXbmdcalc <- reactive({as.numeric(input$xbmdcalc)})
     
     input$buttonDrcfit
     mydrcfit <- rundrcfit()
@@ -133,4 +133,42 @@ server <- function(input, output, session) {
       contentType = {"application/pdf"}
     )
   })
+  
+  
+  ####################################################################################
+  ####### R CODE #####################################################################
+  ####################################################################################
+
+  output$printRCode <- renderText({ 
+    req(input$datafile)
+    
+    text <- c("library(DRomics)",
+              "# Step 1",
+              paste0("o <- omicdata('", input$datafile$name, "', check = TRUE, norm.method = '", input$normMethod, "')"),
+              "print(o)",
+              "plot(o)",
+              "# Step 2",
+              paste0("s <- itemselect(o, select.method = '", inSelectMethod(), "', FDR = ", inFDR(), ")"),
+              "print(s)",
+              "# Step 3",
+              paste0("f <- drcfit(s, progressbar = FALSE, sigmoid.model = 'Hill', parallel = 'no')"),
+              "plot(f)",
+              "# Step 4",
+              paste0("r <- bmdcalc(f, z = ", numZbmdcalc(), ", x = ", numXbmdcalc(), ")"),
+              paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', bytypology = ", input$bytypology, ", hist.bins = ", input$histbin, ")"))
+    
+    output$buttonDownRCode <- downloadHandler(
+      filename = function(){
+        paste0("rcode-", Sys.Date(), ".R")
+      },
+      content = function(file) {
+        writeLines(paste(text, collapse = "\n"), file)
+      },
+      contentType = {"text/plain"}
+    )
+    
+    return(paste(text, collapse = "\n"))
+    
+  })
+  
 }
