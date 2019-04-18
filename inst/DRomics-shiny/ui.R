@@ -253,11 +253,13 @@ ui <- fluidPage(
                                                   min = 1, max = 100, value = 30, step = 1, width = "100%"),
                                      br()
                                    ),
-                                   radioButtons('bytypology', 
-                                                'by typology ?',
-                                                choices = c('TRUE' = 'TRUE',
-                                                            'FALSE' = 'FALSE'),
-                                                selected = 'FALSE'),
+                                   radioButtons('splitby', 
+                                                'split by',
+                                                choices = c('none' = 'none',
+                                                            'trend' = 'trend',
+                                                            'model' = 'model',
+                                                            'typology' = 'typology'),
+                                                selected = 'none'),
                                    h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about typologies"),
                                    hr(),
                                    downloadButton("buttonPlotBmdcalc", "Download figure", icon = icon("fas fa-download"))

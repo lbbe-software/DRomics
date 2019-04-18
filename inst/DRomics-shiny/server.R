@@ -101,7 +101,7 @@ server <- function(input, output, session) {
     output$plotBmdcalc <- renderPlot({
       plot(mybmdcalc, BMDtype = input$BMDtype, 
            plottype = input$plottype, 
-           bytypology = input$bytypology, 
+           by = input$splitby, 
            hist.bins = input$histbin)
     })
     
@@ -127,7 +127,7 @@ server <- function(input, output, session) {
       },
       content = function(file) {
         pdf(file, width = 8, height = 8)
-        print(plot(mybmdcalc, BMDtype = input$BMDtype, plottype = input$plottype, bytypology = input$bytypology))
+        print(plot(mybmdcalc, BMDtype = input$BMDtype, plottype = input$plottype, by = input$splitby))
         dev.off()
       },
       contentType = {"application/pdf"}
@@ -155,7 +155,7 @@ server <- function(input, output, session) {
               "plot(f)",
               "# Step 4",
               paste0("r <- bmdcalc(f, z = ", numZbmdcalc(), ", x = ", numXbmdcalc(), ")"),
-              paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', bytypology = ", input$bytypology, ", hist.bins = ", input$histbin, ")"))
+              paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', by = '", input$splitby, "', hist.bins = ", input$histbin, ")"))
     
     output$buttonDownRCode <- downloadHandler(
       filename = function(){
