@@ -82,7 +82,7 @@ bmdcalc <- function(f, z = 1, x = 10)
       dcalc$BMDsd[i] <- invHill(dcalc$ysd[i], b, c, d, e)
     } else
     if(modeli == "log-probit") {
-      ydosemax <- dcalc$ydosemax[i] <- fHill(x=dosemax, b=b, c=c, d=d, e=e)
+      ydosemax <- dcalc$ydosemax[i] <- fLGauss5p(x=dosemax, b=b, c=c, d=d, e=e, f=0)
       dcalc$yp[i] <- y0 * ( 1 + xdiv100*sign(c - d))
       dcalc$BMDp[i] <- invLprobit(dcalc$yp[i], b, c, d, e)
       dcalc$ysd[i] <- y0 + z*dfitall$SDres[i]*sign(c - d)
@@ -163,22 +163,24 @@ print.bmdcalc <- function(x, ...)
 }
 
 plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"), 
-                         plottype = c("ecdf", "hist", "density"), bytypology = FALSE, 
+                         plottype = c("ecdf", "hist", "density"), 
+                         by = c("none", "trend", "model", "typology"), 
                          hist.bins = 30, ...) 
 {
   if (!inherits(x, "bmdcalc"))
     stop("Use only with 'bmdcalc' objects")
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
   plottype <- match.arg(plottype, c("ecdf", "hist", "density"))  
-  
-  # que faire des NA et NaN (enlever, les représenter en données censurées ?)
+  by <- match.arg(by, c("none", "trend", "model", "typology"))  
   
   if (BMDtype == "zSD")
   {
-    dwithNANaN <- data.frame(BMD = x$res$BMD.zSD, typology = x$res$typology)
+    dwithNANaN <- data.frame(BMD = x$res$BMD.zSD, 
+      trend = x$res$trend, model = x$res$model, typology = x$res$typology)
   } else
   {
-    dwithNANaN <- data.frame(BMD = x$res$BMD.xfold, typology = x$res$typology)
+    dwithNANaN <- data.frame(BMD = x$res$BMD.xfold, 
+      trend = x$res$trend, model = x$res$model, typology = x$res$typology)
   }
   
   # Remove NA and NaN values if needed
@@ -187,40 +189,42 @@ plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"),
   if (nremoved > 0)
     warning(nremoved," BMD coded NA or NaN were removed before plotting")
   
-  if (bytypology) # distribution of BMDs by typology of curves
+  # previous version splitted by typology and colored by typology
+  # if (plottype == "hist") 
+  # {
+  #   g <- ggplot(data = d, mapping = aes_(x = quote(BMD), fill = quote(typology))) +
+  #       geom_histogram(bins = hist.bins) + facet_wrap(~ typology)
+  # } else
+  #   if (plottype == "density") 
+  #   {
+  #     g <- ggplot(data = d, mapping = aes_(x = quote(BMD), fill = quote(typology))) + 
+  #         geom_density() + facet_wrap(~ typology)
+  #     } else
+  #       if (plottype == "ecdf") 
+  #       {
+  #         g <- ggplot(data = d, mapping = aes_(x = quote(BMD), col = quote(typology))) +
+  #           stat_ecdf(geom = "step") + facet_wrap(~ typology) + ylab("ECDF")
+  #       } 
+    
+  if (plottype == "hist") 
   {
-    if (plottype == "hist") 
-    {
-      g <- ggplot(data = d, mapping = aes_(x = quote(BMD), fill = quote(typology))) +
-        geom_histogram(bins = hist.bins) + facet_wrap(~ typology)
-    } else
-      if (plottype == "density") 
-      {
-        g <- ggplot(data = d, mapping = aes_(x = quote(BMD), fill = quote(typology))) + 
-          geom_density() + facet_wrap(~ typology)
-      } else
-        if (plottype == "ecdf") 
-        {
-          g <- ggplot(data = d, mapping = aes_(x = quote(BMD), col = quote(typology))) +
-            stat_ecdf(geom = "step") + facet_wrap(~ typology) + ylab("ECDF")
-        }      
-  }  else
-  { # global distribution of BMDs
-    if (plottype == "hist") 
-    {
-      g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) +
+    g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) +
         geom_histogram(bins = hist.bins) 
-    } else
-      if (plottype == "density") 
-      {
-        g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) + geom_density(fill = I("grey"))
-      } else
-        if (plottype == "ecdf") 
-        {
-          g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) +
+  } else
+  if (plottype == "density") 
+  {
+    g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) + geom_density(fill = I("grey"))
+  } else
+  if (plottype == "ecdf") 
+  {
+    g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) +
             stat_ecdf(geom = "step") + ylab("ECDF")
-        }      
-  } 
+  }
+  
+  if (by == "trend")  g <- g + facet_wrap(~ trend) else
+    if (by == "model") g <- g + facet_wrap(~ model) else
+      if (by == "typology") g <- g + facet_wrap(~ typology)
+    
   return(g)
 }
 

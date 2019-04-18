@@ -62,8 +62,10 @@ plot(f)
 #
 
 (r <- bmdcalc(f, z = 1, x = 10))
-plot(r, BMDtype = "zSD", plottype = "ecdf", bytypology = FALSE) 
-plot(r, BMDtype = "xfold", plottype = "hist", bytypology = TRUE, hist.bins = 10) 
+plot(r, BMDtype = "zSD", plottype = "ecdf") 
+plot(r, BMDtype = "xfold", plottype = "hist", by = "trend", hist.bins = 10) 
+plot(r, BMDtype = "xfold", plottype = "hist", by = "model", hist.bins = 10) 
+plot(r, BMDtype = "xfold", plottype = "hist", by = "typology", hist.bins = 10) 
 }
 
 

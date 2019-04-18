@@ -1,6 +1,20 @@
 === DRomics : Dose response for omics ===
 
-Version 1.1-0
+Version 1.1-3 
+=============
+NEW FEATURES
+- Replacement of the argument named bytypology of plot.bmdcalc
+by an argument named by which can taka three values,
+"none", "trend", "model" or "typology".
+- Add of a function to plot fitted curves (new function curvesplot()).
+
+Version 1.1-2 
+=============
+NEW FEATURES
+- Add of a function to plot the distribution of a variable as an ecdf plot, with confidence 
+intervals on this variable (new function ecdfplotwithCI)
+
+Version 1.1-1 
 =============
 NEW FEATURES
 - Add of bootstrap computation of confidence intervals on benchmark doses (new function bmdboot)

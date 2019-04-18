@@ -9,7 +9,8 @@ Computes  95 percent confidence intervals on x-fold and z-SD benchmark doses by 
 }
 
 \usage{
-bmdboot(r, items = r$res$id, niter = 1000, conf.level = 0.95,
+bmdboot(r, items = r$res$id, niter = 1000, 
+                    conf.level = 0.95, 
                     tol = 0.5, progressbar = TRUE, 
                     parallel = c("no", "snow", "multicore"), ncpus)
 
@@ -62,8 +63,10 @@ NA values are given for the limits of the confidence interval.}
 
 \details{
 
-Non-parametric bootstrapping is used. Mean centered residuals are bootstrapped. For each item, bootstrapped parameter estimates are obtained by fitting the model on each of these resampled data sets. If the fitting procedure fails to converge in more than tol*100\% of the cases, NA values are given for the confidence interval. Otherwise, bootstraped
-BMD are computed from bootstrapped parameter estimates using the same method as in \code{\link{bmdcalc}}.
+Non-parametric bootstrapping is used, where mean centered residuals are bootstrapped. 
+For each item, bootstrapped parameter estimates are obtained by fitting the model on each of the resampled data sets. If the fitting procedure fails to converge in more than tol*100\% of the cases, NA values are given for the confidence interval. Otherwise, bootstraped
+BMD are computed from bootstrapped parameter estimates using the same method as 
+in \code{\link{bmdcalc}}.
 Confidence intervals on BMD are then
 computed using percentiles of the bootstrapped BMDs.
 For example 95 percent confidence intervals are 
@@ -125,7 +128,8 @@ Marie-Laure Delignette-Muller
 
 # (1) a toy example (a very small subsample of a transcriptomics data set) 
 #
-datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", package="DRomics")
+datatxt <- system.file("extdata", "transcripto_very_small_sample.txt",
+package="DRomics")
 
 # to test the package on a small but not very small data set
 # use the following commented line

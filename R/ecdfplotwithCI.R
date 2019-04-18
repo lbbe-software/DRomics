@@ -1,6 +1,5 @@
 ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI.alpha = 1, 
-                           add.point = TRUE)
-  # I have changed alpha to one (to put as an argument ?????)
+                           add.point = TRUE, point.size = 1)
 {
   if (!missing(by)) 
   {
@@ -51,6 +50,6 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
                        alpha = CI.alpha, height = 0)  
     }
   }
-  if (add.point) g <- g + geom_point()
+  if (add.point) g <- g + geom_point(size = point.size)
   return(g)
 }
