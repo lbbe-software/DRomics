@@ -9,7 +9,7 @@ intervals on this variable
 
 \usage{
 ecdfplotwithCI(variable, CI.lower, CI.upper, by, CI.col = "blue", 
-CI.alpha = 1, add.point = TRUE)
+CI.alpha = 1, add.point = TRUE, point.size = 1)
 }
 
 \arguments{
@@ -26,6 +26,8 @@ CI.alpha = 1, add.point = TRUE)
 \item{CI.alpha}{Optional transparency of the lines used to draw the confidence intervals}
 
 \item{add.point}{If \code{TRUE} points are added to confidence intervals}
+
+\item{point.size}{Size of the added points in case \code{add.point} is \code{TRUE}}
 
 }
 
@@ -78,6 +80,11 @@ plot(b, by = "trend")
 #
 ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
               CI.upper = a$BMD.zSD.upper, by = a$model, CI.col = a$trend)
+
+# changing the size of the points and the transparency of CI lines
+ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
+              CI.upper = a$BMD.zSD.upper, by = a$model, CI.col = a$trend,
+              CI.alpha = 0.5, point.size = 0.5)
 
 # (3)
 # ecdf plot of the bootstrap results as an ecdf distribution on 

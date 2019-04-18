@@ -1,6 +1,7 @@
-## Perform bootstrap on a selection of items in order to give
-## a 95% confidence interval for the BMD values
-bmdboot <- function(r, items = r$res$id, niter = 1000, conf.level = 0.95,
+## Perform non parametric bootstrap on a selection of items in order to give
+## a confidence interval for the BMD values
+bmdboot <- function(r, items = r$res$id, niter = 1000, 
+                    conf.level = 0.95, 
                     tol = 0.5, progressbar = TRUE, 
                     parallel = c("no", "snow", "multicore"), ncpus)
 {
@@ -8,7 +9,10 @@ bmdboot <- function(r, items = r$res$id, niter = 1000, conf.level = 0.95,
   if (!inherits(r, "bmdcalc"))
     stop("Use only with 'bmdcalc' objects, created with the function bmdcalc")
   
-  parallel <- match.arg(parallel, c("no", "snow", "multicore"))
+  # bootmethod <- match.arg(bootmethod, c("nonparam", "param"))
+  bootmethod <- "nonparam"
+  
+    parallel <- match.arg(parallel, c("no", "snow", "multicore"))
   if (parallel == "multicore" & .Platform$OS.type == "windows")
   {
     parallel <- "snow"
@@ -41,7 +45,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000, conf.level = 0.95,
     
   dose <- r$omicdata$dose
   dosemax <- max(dose)
-
+  
   # progress bar
   if (progressbar)
     pb <- txtProgressBar(min = 0, max = nitems, style = 3)
@@ -53,6 +57,9 @@ bmdboot <- function(r, items = r$res$id, niter = 1000, conf.level = 0.95,
     # parameter estimates as a named list for starting values
     estimpar <- unlist(resitem[c("b","c","d","e","f")])
     lestimpar <- as.list(estimpar[!is.na(estimpar)])
+    
+    # residual standard error
+    SDresi <- unlist(resitem["SDres"])
     
     modeli <- as.character(unlist(resitem["model"]))
     nbpari <- unlist(resitem["nbpar"])
@@ -74,7 +81,14 @@ bmdboot <- function(r, items = r$res$id, niter = 1000, conf.level = 0.95,
       dsetboot <- dset
       fboot <- function(i)
       {
-        dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        if(bootmethod == "param")
+        {
+          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
+        } else
+        {
+          dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        }
+        # fit
         if (e1 < 0)
         {
           nlsboot <- suppressWarnings(try(nls(formula = formExp3p, data = dsetboot, start = lestimpar,
@@ -118,7 +132,14 @@ bmdboot <- function(r, items = r$res$id, niter = 1000, conf.level = 0.95,
       dsetboot <- dset
       fboot <- function(i)
       {
-        dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        if(bootmethod == "param")
+        {
+          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
+        } else
+        {
+          dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        }
+        # fit
         nlsboot <- suppressWarnings(try(nls(formula = formHill, data = dsetboot, start = lestimpar,
                                              lower = c(0, -Inf, -Inf, 0), algorithm = "port"), 
                                           silent = TRUE))
@@ -142,6 +163,51 @@ bmdboot <- function(r, items = r$res$id, niter = 1000, conf.level = 0.95,
     } else
     ############ END model Hill ###################
 
+    ############## Model log-probit ###########
+    if (modeli == "log-probit")
+    {
+      b1 <- lestimpar$b
+      c1 <- lestimpar$c
+      d1 <- lestimpar$d
+      e1 <- lestimpar$e
+      fitted1 <- fLGauss5p(x = dose, b = b1, c = c1, d = d1, e = e1, f = 0)
+      resid1 <- datai - fitted1
+      
+      dsetboot <- dset
+      fboot <- function(i)
+      {
+        if(bootmethod == "param")
+        {
+          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
+        } else
+        {
+          dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        }
+        # fit
+        nlsboot <- suppressWarnings(try(nls(formula = formLprobit, data = dsetboot, start = lestimpar,
+                                            lower = c(0, -Inf, -Inf, 0), algorithm = "port"), 
+                                        silent = TRUE))
+        if(inherits(nlsboot, "nls"))
+        {
+          SDresboot <- sqrt(sum(residuals(nlsboot)^2)/(ndata - nbpari))
+          bboot <- coef(nlsboot)["b"]
+          cboot <- coef(nlsboot)["c"]
+          dboot <- coef(nlsboot)["d"]
+          eboot <- coef(nlsboot)["e"]
+          y0boot <- dboot
+          ydosemaxboot <- fLGauss5p(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot, f = 0)
+          ypboot <- y0boot * ( 1 + xdiv100*sign(cboot * dboot))
+          BMDpboot <- invLprobit(ypboot, b= bboot, c = cboot, d = dboot, e = eboot)
+          ysdboot <- y0boot + z*SDresboot * sign(cboot * dboot)
+          BMDsdboot <- invLprobit(ysdboot, b= bboot, c = cboot, d = dboot, e = eboot)
+          
+          return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
+        }
+      } # end fboot
+    } else
+    ############ END model log-probit ###################
+    
+    
     ############## Linear model ###########
     if (modeli == "linear")
     {
@@ -153,7 +219,13 @@ bmdboot <- function(r, items = r$res$id, niter = 1000, conf.level = 0.95,
       dsetboot <- dset
       fboot <- function(i)
       {
-        dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        if(bootmethod == "param")
+        {
+          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
+        } else
+        {
+          dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        }
         # fit
         linboot <- lm(signal ~ dose, data = dsetboot)
         SDresboot <- sqrt(sum(residuals(linboot)^2)/(ndata - nbpari))
@@ -185,7 +257,13 @@ bmdboot <- function(r, items = r$res$id, niter = 1000, conf.level = 0.95,
       dsetboot <- dset
       fboot <- function(i)
       {
-        dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        if(bootmethod == "param")
+        {
+          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
+        } else
+        {
+          dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        }
         # fit
         if (nbpari == 5)
         {
@@ -246,7 +324,13 @@ bmdboot <- function(r, items = r$res$id, niter = 1000, conf.level = 0.95,
       dsetboot <- dset
       fboot <- function(i)
       {
-        dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        if(bootmethod == "param")
+        {
+          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
+        } else
+        {
+          dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
+        }
         # fit
         if (nbpari == 5)
         {

@@ -14,7 +14,8 @@ bmdcalc(f, z = 1, x = 10)
 \method{print}{bmdcalc}(x, \dots)
 
 \method{plot}{bmdcalc}(x, BMDtype = c("zSD", "xfold"), 
-            plottype = c("ecdf", "hist", "density"), bytypology = FALSE, 
+            plottype = c("ecdf", "hist", "density"), 
+            by = c("none", "trend", "model", "typology"),
             hist.bins = 30, \dots)
 }
 
@@ -29,7 +30,6 @@ residual standard deviation of the dose-response fitted model.}
 the dose at which the response is reaching 
 y0 +/- (x/100) * y0, with y0 the level at the control given by the dose-response fitted model.
 
-
 For \code{print} and \code{plot} functions, an object of class \code{"bmdcalc"}.}
 
 \item{BMDtype}{The type of BMD to plot, \code{"zSD"} (default choice) or \code{"xfold"}.}
@@ -37,7 +37,7 @@ For \code{print} and \code{plot} functions, an object of class \code{"bmdcalc"}.
 \item{plottype}{The type plot, \code{"ecdf"} for an empirical cumulative distribution plot 
 (default choice), \code{"hist"} for a histogram or \code{"density"} for a density plot.}
 
-\item{bytypology}{If \code{TRUE} the plot is split by typology.}
+\item{by}{If different from \code{"none"} the plot is split by trend (if \code{"trend"}), by model (if \code{"model"}) or by typology (if \code{"typology"}).}
 
 \item{hist.bins}{The number of bins, only used for histogram(s).}
 
@@ -141,12 +141,15 @@ plot(r)
 
 # different plots of BMD-zSD
 
-plot(r, plottype = "hist", bytypology = FALSE) 
-plot(r, plottype = "density", bytypology = FALSE) 
-plot(r, plottype = "hist", bytypology = TRUE) 
+plot(r, plottype = "hist") 
+plot(r, plottype = "density") 
+plot(r, plottype = "density", by = "trend") 
+plot(r, plottype = "ecdf", by = "trend") 
+plot(r, plottype = "ecdf", by = "model") 
+plot(r, plottype = "ecdf", by = "typology") 
 
 # a plot of BMD-xfold (by default BMD-zSD is plotted)
-plot(r, BMDtype = "xfold", plottype = "hist", bytypology = TRUE, hist.bins = 10) 
+plot(r, BMDtype = "xfold", plottype = "hist", by = "typology", hist.bins = 10) 
 }
 
 }
