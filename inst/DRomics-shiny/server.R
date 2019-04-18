@@ -1,45 +1,42 @@
 server <- function(input, output, session) {
-
+  
+  
+  ####################################################################################
+  ####### STEP 1 #####################################################################
+  ####################################################################################
+  
   ## Input: file data
   filedata <- reactive({
-    inFile <- NULL
-    inFile <- input$datafile
-    if(is.null(inFile)) {return(NULL)}
-    omicdata(inFile$datapath, check = TRUE, norm.method = input$normMethod)
+    req(input$datafile)
+    omicdata(input$datafile$datapath, check = TRUE, norm.method = input$normMethod)
   })
   
+  ## Output : print and plot omic data
   output$printOmicData <- renderPrint({ 
-    oo <<- filedata()
-    if (!is.null(oo)) {
-      print(oo)
-    }
+    print(filedata())
   })
   
-  output$plotOmicData <- renderPlot({ 
-    oo <<- filedata()
-    if (!is.null(oo)) {
-      plot(oo)
-    }
+  output$plotOmicData <- renderPlot({
+    plot(filedata())
   })
   
-  numFDR <- reactive({as.numeric(input$FDR)})
   
-  runitemselect <- reactive({
-    oo <- filedata()
-    if (!is.null(oo)) {
-      itemselect(oo, select.method = input$selectMethod, FDR = numFDR())
-    } else {
-      NULL
-    }
-  })
+  ####################################################################################
+  ####### STEP 2 #####################################################################
+  ####################################################################################
+  
+  inFDR <- reactive({as.numeric(input$FDR)})
+  inSelectMethod <- reactive({input$selectMethod})
   
   output$printItemSelect <- renderPrint({ 
-    ss <<- runitemselect()
-    oo <- filedata()
-    if (!is.null(oo) & !is.null(ss)) {
-      print(ss)
-    }
+    signifitems <<- itemselect(filedata(), select.method = inSelectMethod(), FDR = inFDR())
+    print(signifitems)
   })
+  
+  
+  ####################################################################################
+  ####### STEP 3 #####################################################################
+  ####################################################################################
   
   observe({
     if (is.null(input$datafile)) {
@@ -53,47 +50,41 @@ server <- function(input, output, session) {
   observe({shinyjs::disable("buttonPlotBmdcalc")})
   
   rundrcfit <- eventReactive(input$buttonDrcfit, {
-    drcfit(ss, progressbar = FALSE, sigmoid.model = "Hill", parallel = "no")
+    return(drcfit(signifitems, progressbar = FALSE, sigmoid.model = "Hill", parallel = "no"))
   })
   
   output$plotDrcfit <- renderPlot({
+    mydrcfit <- rundrcfit()
+    plotdrcfit <- plot(mydrcfit)
+    plot(plotdrcfit)
     
-    if(exists("ss") & !is.null(ss)){
-      observe(input$buttonDrcfit) # Re-run when button is clicked
-      n <- length(ss$selectindex)
-      withProgress(message = 'These ongoing calculations can take from minutes to about an hour.
-                   Your patience should be proportional to the size of your data and the chosen FDR.', 
-                   min = 1, max = 1, value = 1, {
-                     mydrcfit <- rundrcfit()
-                     plotdrcfit <- plot(mydrcfit)
-                     plot(plotdrcfit)
-                   })
-      
-      
-      
-      output$testdowload <- reactive({length(mydrcfit)})
-      outputOptions(output, "testdowload", suspendWhenHidden = FALSE)
-      
-      output$buttonDownloadDrcfitplot <- downloadHandler(
-        filename = function(){
-          "drcfitplot.pdf"
-        },
-        content = function(file) {
-          file.copy(paste0(tempdir(), "/drcfitplot.pdf"), file)
-        },
-        contentType = {"application/pdf"}
-      )
-      
-      output$printDrcfit <- renderPrint({
-        print(mydrcfit)
-      })
-    }
+    output$okfordowload <- reactive({length(mydrcfit)})
+    outputOptions(output, "okfordowload", suspendWhenHidden = FALSE)
+    
+    output$buttonDownloadDrcfitplot <- downloadHandler(
+      filename = function(){
+        "drcfitplot.pdf"
+      },
+      content = function(file) {
+        file.copy(paste0(tempdir(), "/drcfitplot.pdf"), file)
+      },
+      contentType = {"application/pdf"}
+    )
+    
+    output$printDrcfit <- renderPrint({
+      print(mydrcfit)
+    })
   })
   
+  
+  ####################################################################################
+  ####### STEP 4 #####################################################################
+  ####################################################################################
+  
+  numZbmdcalc <- reactive({as.numeric(input$zbmdcalc)})
+  numXbmdcalc <- reactive({as.numeric(input$xbmdcalc)})
+  
   output$printBmdcalc <- renderPrint({
-    
-    numZbmdcalc <- reactive({as.numeric(input$zbmdcalc)})
-    numXbmdcalc <- reactive({as.numeric(input$xbmdcalc)})
     
     input$buttonDrcfit
     mydrcfit <- rundrcfit()
@@ -142,4 +133,42 @@ server <- function(input, output, session) {
       contentType = {"application/pdf"}
     )
   })
+  
+  
+  ####################################################################################
+  ####### R CODE #####################################################################
+  ####################################################################################
+
+  output$printRCode <- renderText({ 
+    req(input$datafile)
+    
+    text <- c("library(DRomics)",
+              "# Step 1",
+              paste0("o <- omicdata('", input$datafile$name, "', check = TRUE, norm.method = '", input$normMethod, "')"),
+              "print(o)",
+              "plot(o)",
+              "# Step 2",
+              paste0("s <- itemselect(o, select.method = '", inSelectMethod(), "', FDR = ", inFDR(), ")"),
+              "print(s)",
+              "# Step 3",
+              paste0("f <- drcfit(s, progressbar = FALSE, sigmoid.model = 'Hill', parallel = 'no')"),
+              "plot(f)",
+              "# Step 4",
+              paste0("r <- bmdcalc(f, z = ", numZbmdcalc(), ", x = ", numXbmdcalc(), ")"),
+              paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', bytypology = ", input$bytypology, ", hist.bins = ", input$histbin, ")"))
+    
+    output$buttonDownRCode <- downloadHandler(
+      filename = function(){
+        paste0("rcode-", Sys.Date(), ".R")
+      },
+      content = function(file) {
+        writeLines(paste(text, collapse = "\n"), file)
+      },
+      contentType = {"text/plain"}
+    )
+    
+    return(paste(text, collapse = "\n"))
+    
+  })
+  
 }
