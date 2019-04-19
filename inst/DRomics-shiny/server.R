@@ -139,27 +139,32 @@ server <- function(input, output, session) {
   ####### R CODE #####################################################################
   ####################################################################################
 
-  output$printRCode <- renderText({ 
+  output$printRCode <- renderText({
     req(input$datafile)
     
     text <- c("library(DRomics)",
+              "",
               "# Step 1",
               paste0("o <- omicdata('", input$datafile$name, "', check = TRUE, norm.method = '", input$normMethod, "')"),
               "print(o)",
               "plot(o)",
+              "",
               "# Step 2",
               paste0("s <- itemselect(o, select.method = '", inSelectMethod(), "', FDR = ", inFDR(), ")"),
               "print(s)",
+              "",
               "# Step 3",
               paste0("f <- drcfit(s, progressbar = FALSE, sigmoid.model = 'Hill', parallel = 'no')"),
+              "# This computation time can be reduced using parallel computing (see ?drcfit)",
               "plot(f)",
+              "",
               "# Step 4",
               paste0("r <- bmdcalc(f, z = ", numZbmdcalc(), ", x = ", numXbmdcalc(), ")"),
               paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', by = '", input$splitby, "', hist.bins = ", input$histbin, ")"))
     
     output$buttonDownRCode <- downloadHandler(
       filename = function(){
-        paste0("rcode-", Sys.Date(), ".R")
+        paste0("Rcode-", Sys.Date(), ".R")
       },
       content = function(file) {
         writeLines(paste(text, collapse = "\n"), file)
@@ -168,7 +173,46 @@ server <- function(input, output, session) {
     )
     
     return(paste(text, collapse = "\n"))
+  })
+  
+  output$printRCodeFurther <- renderText({
+    req(input$datafile)
     
+    text <- c("# Few lines of R script to go further using the package",
+              "",
+              "# Plot of fitted curves",
+              "curvesplot(f$fitres, xmax = max(f$omicdata$dose), facetby = 'trend', colorby = 'model') + 
+  xlab('dose') + ylab('theoretical signal')",
+              "# The first argument can be an extended dataframe, which could be used to split",
+              "# the plot of color the curves (using facetby or colorby)",
+              "",
+              "# Bootstrap to compute confidence intervals on BMD estimations",
+              "# May take few hours !!!!!!!!!!!!!!!!!!!!!",
+              "# This computation time can be reduced using parallel computing",
+              "# (see ?bmdboot for corresponding code)",
+              "(b <- bmdboot(r, niter = 1000, progressbar = TRUE))",
+              "plot(b)",
+              "",
+              "# Representation of cumulative distribution of BMD values",
+              "# with their confidence 95% intervals",
+              "# Argument by and CI.col can be used with additional columns",
+              "# built from annotation of items for example",
+              "a <- b$res[is.finite(b$res$BMD.zSD.upper), ] # removing of CI with infinite bounds",
+              "ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
+  CI.upper = a$BMD.zSD.upper, by = a$model, CI.col = a$trend)"
+              )
+    
+    output$buttonDownRCodeFurther <- downloadHandler(
+      filename = function(){
+        paste0("moreRcode-", Sys.Date(), ".R")
+      },
+      content = function(file) {
+        writeLines(paste(text, collapse = "\n"), file)
+      },
+      contentType = {"text/plain"}
+    )
+    
+    return(paste(text, collapse = "\n"))
   })
   
 }
