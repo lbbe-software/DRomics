@@ -88,6 +88,6 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
         gg <- ggplot(data = curves2plot, aes(x, y, group = id, colour = colorby)) +
           geom_line(size = line.size, alpha = line.alpha) + facet_wrap(~ facetby)  
       }
-  if (removelegend) gg <- gg + theme(legend.position = "none")
+  if (removelegend) gg <- gg + theme(legend.position = "none") 
   return(gg)
 }

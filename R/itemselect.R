@@ -2,46 +2,93 @@
 itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA"), FDR = 0.05)
 {
   # Checks
-  if (!inherits(omicdata, "omicdata"))
-    stop("Use only with 'omicdata' objects, created with the function omicdata")
+  if (!(inherits(omicdata, "omicdata") | inherits(omicdata, "RNAseqdata")))
+    stop("Use only with 'omicdata' or 'RNAseqdata' objects, respectively
+         created with the function omicdata or the function RNAseqdata")
   select.method <- match.arg(select.method, c("quadratic", "linear", "ANOVA"))
   if (!is.numeric(FDR))
     stop("FDR, the false discovery rate, must a number in ]0; 1[ (generally under 0.1).")
   if ((FDR <=0) | (FDR >=1))
     stop("FDR, the false discovery rate, must in ]0; 1[.")
   
-  data <- omicdata$data
   item <- omicdata$item
   dose <- omicdata$dose
+  fdose <- as.factor(dose)
   doseranks <- as.numeric(as.factor(dose))
+  doseranks2 <- doseranks*doseranks
   irow <- 1:length(item)
   
-  if (select.method == "quadratic")
+  if (inherits(omicdata,"omicdata"))
   {
-    doseranks2 <- doseranks*doseranks
-    design4lmFit <- model.matrix(~ doseranks + doseranks2)
-  } else
-    if (select.method == "linear")
+    data <- omicdata$data
+    if (select.method == "quadratic")
     {
-      design4lmFit <- model.matrix(~ doseranks)
+      design4lmFit <- model.matrix(~ doseranks + doseranks2)
     } else
-      if (select.method == "ANOVA")
+      if (select.method == "linear")
       {
-        fdose <- as.factor(dose)
-        design4lmFit <- model.matrix(~ fdose)
-      } 
-  
-  # Selection using limma    
-  fit <- lmFit(data, design4lmFit)
-  fitBayes <- eBayes(fit)
-  # all adjusted pvalues without sorting
-  res <- topTable(fitBayes, adjust.method = "BH", number = nrow(data), sort.by = "none") 
-  
-  selectindexnonsorted <- irow[res$adj.P.Val < FDR]
-  adjpvaluenonsorted <- res$adj.P.Val[selectindexnonsorted]
-  irowsortedbypvalue <- order(adjpvaluenonsorted, decreasing = FALSE)
-  selectindex <- selectindexnonsorted[irowsortedbypvalue]
-  adjpvalue <- adjpvaluenonsorted[irowsortedbypvalue]
+        design4lmFit <- model.matrix(~ doseranks)
+      } else
+        if (select.method == "ANOVA")
+        {
+          design4lmFit <- model.matrix(~ fdose)
+        } 
+    
+    # Selection using limma    
+    fit <- lmFit(data, design4lmFit)
+    fitBayes <- eBayes(fit)
+    # all adjusted pvalues without sorting
+    res <- topTable(fitBayes, adjust.method = "BH", number = nrow(data), sort.by = "none") 
+    
+    selectindexnonsorted <- irow[res$adj.P.Val < FDR]
+    adjpvaluenonsorted <- res$adj.P.Val[selectindexnonsorted]
+    irowsortedbypvalue <- order(adjpvaluenonsorted, decreasing = FALSE)
+    selectindex <- selectindexnonsorted[irowsortedbypvalue]
+    adjpvalue <- adjpvaluenonsorted[irowsortedbypvalue]
+  } else
+  if (inherits(omicdata,"RNAseqdata"))
+  {
+    data <- omicdata$raw.counts
+    coldata <- data.frame(fdose = fdose, doseranks = doseranks, doseranks2 = doseranks2)
+    rownames(coldata) <- colnames(data)
+    
+    if (select.method == "quadratic")
+    {
+      dds <- DESeqDataSetFromMatrix(
+        countData = data,
+        colData = coldata,
+        design = ~ doseranks + doseranks2
+      )
+    } else
+      if (select.method == "linear")
+      {
+        dds <- DESeqDataSetFromMatrix(
+          countData = data,
+          colData = coldata,
+          design = ~ doseranks
+        )
+      } else
+        if (select.method == "ANOVA")
+        {
+          dds <- DESeqDataSetFromMatrix(
+            countData = data,
+            colData = coldata,
+            design = ~ fdose
+          )
+        } 
+    
+    # Selection using DESeq2    
+    dds <- DESeq(dds, test = "LRT", reduced = ~ 1)
+    res <- results(dds)
+    # all adjusted pvalues without sorting in res$padj
+
+    selectindexnonsorted <- irow[(res$padj < FDR) & !is.na(res$padj)]
+    adjpvaluenonsorted <- res$padj[selectindexnonsorted]
+    irowsortedbypvalue <- order(adjpvaluenonsorted, 
+                                decreasing = FALSE, na.last = TRUE)
+    selectindex <- selectindexnonsorted[irowsortedbypvalue]
+    adjpvalue <- adjpvaluenonsorted[irowsortedbypvalue]
+  }
   
   reslist <- list(adjpvalue = adjpvalue, selectindex = selectindex, 
                   omicdata = omicdata, select.method = select.method, FDR = FDR)  
