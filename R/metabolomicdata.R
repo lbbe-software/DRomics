@@ -1,7 +1,6 @@
-### import, check normalize and transform RNAseq data
+### import, check metabolomic data
 
-RNAseqdata <- function(file, check = TRUE, 
-                     transfo.method = c("rlog", "vst"))
+metabolomicdata <- function(file, check = TRUE)
 {
   if (check)
   {
@@ -12,6 +11,10 @@ RNAseqdata <- function(file, check = TRUE,
     suffix <- substr(file, le.file - 3, le.file)
     if (suffix != ".txt")
       stop("The argument file must be a character string ending by .txt")
+    warning("We recommend you to check that your metabolomic data were 
+correctly pretreated before importation especially so that 
+the hypothesis of Gaussian error model used during the selection
+and model fitting processes could be considered valid \n")
   }
   
   d <- read.table(file, header = FALSE)
@@ -24,22 +27,8 @@ RNAseqdata <- function(file, check = TRUE,
     # check that doses and responses are numeric
     if (!is.numeric(as.matrix(d[,2:ncold])))
       stop("All the columns except the first one must be numeric with the numeric 
-           dose in the firt line and the read counts (integer values corresponding 
-            to raw counts) of each item in the other lines.")
-  }
-  
-  # Normalization and count data transformation using DESeq2
-  transfo.method <- match.arg(transfo.method, c("rlog", "vst"))
-  if(transfo.method == "rlog")
-    cat("Just wait, the transformation using regularized logarithm (rlog)
-        may take a few minutes.\n")
-  raw.counts <- data
-  if (transfo.method == "rlog")
-  {
-    data <- rlog(data)  
-  } else
-  {
-    data <- vst(data)  
+           dose in the firt line and the numeric response of each item in the other
+           lines.")
   }
   
   # definition of doses and item identifiers
@@ -64,17 +53,16 @@ RNAseqdata <- function(file, check = TRUE,
   data.mean <- as.matrix(t(s))
   
   reslist <- list(data = data, dose = dose, item = item, 
-                  design = design, data.mean = data.mean, 
-                  transfo.method = transfo.method, raw.counts = raw.counts)  
+                  design = design, data.mean = data.mean)  
   
-  return(structure(reslist, class = "RNAseqdata"))
+  return(structure(reslist, class = "metabolomicdata"))
 }
 
 
-print.RNAseqdata <- function(x, ...)
+print.metabolomicdata <- function(x, ...)
 {
-  if (!inherits(x, "RNAseqdata"))
-    stop("Use only with 'RNAseqdata' objects")
+  if (!inherits(x, "metabolomicdata"))
+    stop("Use only with 'metabolomic' objects")
   
   cat("Elements of the experimental design in order to check the coding of the data :\n")
   cat("Tested doses and number of replicates for each dose:\n")
@@ -90,27 +78,22 @@ print.RNAseqdata <- function(x, ...)
     cat("Identifiers of the items:\n")
     print(x$item)
   }
-  cat("Data were normalized with respect to library size
-        and  tranformed using the following method: ", x$transfo.method," \n")
+    cat("We recommend you to check that your metabolomic data were 
+        correctly pretreated
+        before importation epecially so that the hypothesis of Gaussian error model 
+        used during the selection and model fitting processes could 
+        be considered valid \n")
 }
 
-plot.RNAseqdata <- function(x, ...) 
+plot.metabolomicdata <- function(x, ...) 
 {
-  if (!inherits(x, "RNAseqdata"))
-    stop("Use only with 'RNAseqdata' objects")
+  if (!inherits(x, "metabolomicdata"))
+    stop("Use only with 'metabolomicdata' objects")
 
   def.par <- par(no.readonly = TRUE)
-  ymin.rc <- min(x$raw.counts)
-  ymax.rc <- max(x$raw.counts)
-  par(mfrow = c(1,2), xaxt = "n")
-  boxplot(x$raw.counts, xlab = "Samples", ylab = "Raw counts", 
-          main = paste("Raw data"), 
-          ylim = c(ymin.rc, ymax.rc)) 
-  ymin.log <- min(x$data)
-  ymax.log <- max(x$data)
-  boxplot(x$data, xlab = "Samples", ylab = "Signal", 
-          main = paste("Normalized and transformed data"), 
-          ylim = c(ymin.log, ymax.log))   
+    par(xaxt = "n")
+    boxplot(x$data, xlab = "Samples", ylab = "Signal", 
+            main = paste("Metabolomic data")) 
   par(def.par)    
 }
 

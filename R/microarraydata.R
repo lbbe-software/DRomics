@@ -1,7 +1,7 @@
-### import, check normalize and transform RNAseq data
+### import, check and optionnally normalize single-channel microarray data
 
-RNAseqdata <- function(file, check = TRUE, 
-                     transfo.method = c("rlog", "vst"))
+microarraydata <- function(file, check = TRUE, 
+                     norm.method = c("cyclicloess", "quantile", "scale", "none"))
 {
   if (check)
   {
@@ -24,23 +24,16 @@ RNAseqdata <- function(file, check = TRUE,
     # check that doses and responses are numeric
     if (!is.numeric(as.matrix(d[,2:ncold])))
       stop("All the columns except the first one must be numeric with the numeric 
-           dose in the firt line and the read counts (integer values corresponding 
-            to raw counts) of each item in the other lines.")
+           dose in the firt line and the numeric response of each item in the other
+           lines.")
   }
   
-  # Normalization and count data transformation using DESeq2
-  transfo.method <- match.arg(transfo.method, c("rlog", "vst"))
-  if(transfo.method == "rlog")
-    cat("Just wait, the transformation using regularized logarithm (rlog)
-        may take a few minutes.\n")
-  raw.counts <- data
-  if (transfo.method == "rlog")
-  {
-    data <- rlog(data)  
-  } else
-  {
-    data <- vst(data)  
-  }
+  # Normalization using limma
+  norm.method <- match.arg(norm.method, c("cyclicloess", "quantile", "scale", "none"))
+  if(norm.method == "cyclicloess")
+    cat("Just wait, the normalization using cyclicloess may take a few minutes.\n")
+  data.beforenorm <- data
+  data <- normalizeBetweenArrays(data, method = norm.method)  
   
   # definition of doses and item identifiers
   (dose <- as.vector(unlist(d[1, 2:ncold])))
@@ -65,16 +58,16 @@ RNAseqdata <- function(file, check = TRUE,
   
   reslist <- list(data = data, dose = dose, item = item, 
                   design = design, data.mean = data.mean, 
-                  transfo.method = transfo.method, raw.counts = raw.counts)  
+                  norm.method = norm.method, data.beforenorm = data.beforenorm)  
   
-  return(structure(reslist, class = "RNAseqdata"))
+  return(structure(reslist, class = "microarraydata"))
 }
 
 
-print.RNAseqdata <- function(x, ...)
+print.microarraydata <- function(x, ...)
 {
-  if (!inherits(x, "RNAseqdata"))
-    stop("Use only with 'RNAseqdata' objects")
+  if (!inherits(x, "microarraydata"))
+    stop("Use only with 'microarraydata' objects")
   
   cat("Elements of the experimental design in order to check the coding of the data :\n")
   cat("Tested doses and number of replicates for each dose:\n")
@@ -90,27 +83,33 @@ print.RNAseqdata <- function(x, ...)
     cat("Identifiers of the items:\n")
     print(x$item)
   }
-  cat("Data were normalized with respect to library size
-        and  tranformed using the following method: ", x$transfo.method," \n")
+  if (x$norm.method != "none")
+    cat("Data were normalized between arrays using the following method: ", x$norm.method," \n")
 }
 
-plot.RNAseqdata <- function(x, ...) 
+plot.microarraydata <- function(x, ...) 
 {
-  if (!inherits(x, "RNAseqdata"))
-    stop("Use only with 'RNAseqdata' objects")
+  if (!inherits(x, "microarraydata"))
+    stop("Use only with 'microarraydata' objects")
 
   def.par <- par(no.readonly = TRUE)
-  ymin.rc <- min(x$raw.counts)
-  ymax.rc <- max(x$raw.counts)
-  par(mfrow = c(1,2), xaxt = "n")
-  boxplot(x$raw.counts, xlab = "Samples", ylab = "Raw counts", 
-          main = paste("Raw data"), 
-          ylim = c(ymin.rc, ymax.rc)) 
-  ymin.log <- min(x$data)
-  ymax.log <- max(x$data)
-  boxplot(x$data, xlab = "Samples", ylab = "Signal", 
-          main = paste("Normalized and transformed data"), 
-          ylim = c(ymin.log, ymax.log))   
+  if (x$norm.method != "none")
+  {
+    ymin <- min(x$data.beforenorm, x$data)
+    ymax <- max(x$data.beforenorm, x$data)
+    par(mfrow = c(1,2), xaxt = "n")
+    boxplot(x$data.beforenorm, xlab = "Samples", ylab = "Signal", 
+            main = paste("Microarray data before normalization"), ylim = c(ymin, ymax)) 
+    boxplot(x$data, xlab = "Samples", ylab = "Signal", 
+            main = paste("Microarray data after", x$norm.method,"normalization"), 
+            ylim = c(ymin, ymax)) 
+    
+  } else
+  {
+    par(xaxt = "n")
+    boxplot(x$data, xlab = "Samples", ylab = "Signal", 
+            main = paste("Microarray data without normalization")) 
+  }
   par(def.par)    
 }
 

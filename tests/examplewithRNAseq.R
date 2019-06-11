@@ -20,6 +20,20 @@ plot(o2)
 f$fitres
 plot(f)
 
+# various plot of fitted curves (without data)
+curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+           facetby = "model", colorby = "model")
+
+curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+           facetby = "typology")
+
+# plot of selection of curves
+curvesplot(f$fitres[f$fitres$trend == "bell", ], xmax = max(f$omicdata$dose), 
+           facetby = "id")
+curvesplot(f$fitres[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose), 
+           facetby = "id")
+
+
 # calculation of benchmark doses
 # options in shiny : z (numerical positive value), x (numerical positive value : percentage)
 (r <- bmdcalc(f, z = 1, x = 10))
@@ -38,3 +52,7 @@ plot(r, plottype = "density", by = "none")
 plot(r, plottype = "hist", by = "trend", hist.bins = 10) 
 plot(r, plottype = "hist", by = "model", hist.bins = 10) 
 plot(r, plottype = "hist", by = "typology", hist.bins = 10) 
+
+# Bootstrap
+b <- bmdboot(r, niter = 250) # niter should be fixed at least at 1000 to get a reasonable precision
+plot(b)

@@ -1,20 +1,24 @@
-\name{omicdata}
-\alias{omicdata}
-\alias{print.omicdata}
-\alias{plot.omicdata}
-\title{Import, check and normalization of omics data}
+\name{metabolomicdata}
+\alias{metabolomicdata}
+\alias{print.metabolomicdata}
+\alias{plot.metabolomicdata}
+\title{Import and check of metabolomic data}
 
 \description{
-Data are imported from a .txt file, checked (see the description 
+Metabolomic data are imported from a .txt file and checked (see the description 
 of argument \code{file} for the required format
-of data) and normalized if required.
+of data). No normalization nor transformation is provided in this function.
+The pretreatment of metabolomic data must be done before importation of data, 
+especially so that imported data can be directly modelled using a Gaussian 
+error model. This strong hypothesis is required both for selection of items and 
+for dose-reponse modelling.
 }
 
 \usage{
-omicdata(file, check = TRUE, norm.method = c("none", "cyclicloess", "quantile", "scale"))
+metabolomicdata(file, check = TRUE)
 
-\method{print}{omicdata}(x, \dots)
-\method{plot}{omicdata}(x, \dots)
+\method{print}{metabolomic}(x, \dots)
+\method{plot}{metabolomic}(x, \dots)
 }
 
 \arguments{
@@ -26,11 +30,7 @@ doses or concentrations in a numeric format for the corresponding replicate (for
 
 \item{check}{If TRUE the format of the input file is checked.}
 
-\item{norm.method}{If \code{"none"} no normalization is performed, else a 
-normalization is performed using the function normalizeBetweenArrays of the 
-\code{limma} package using the specified method.}
-
-\item{x}{An object of class \code{"omicdata"}.}
+\item{x}{An object of class \code{"metabolomic"}.}
 
 \item{\dots}{ further arguments passed to print or plot functions.}
 }
@@ -42,14 +42,11 @@ of argument \code{file} for the required format
 of data) and gives in the \code{print} information
 that should help the user to check that the coding of data is correct : the tested doses (or concentrations) 
 the number of replicates for each dose, the number of items, the identifiers 
-of the first 20 items. If the argument \code{norm.method} is not \code{"none"},
-data are normalized using the function \code{\link{normalizeBetweenArrays}} of the 
-\code{limma} package using the specified method : \code{"cyclicloess"} (default choice), 
-\code{"quantile"} or \code{"scale"}.
+of the first 20 items. 
 }
 
 \value{ 
-   \code{omicdata} returns an object of class "omicdata", a list with 5 components:
+   \code{metabolomicdata} returns an object of class "metabolomicdata", a list with 5 components:
     \item{data}{ the numeric matrix of responses of each item in each replicate
   (one line per item, one column per replicate)  }
 
@@ -66,23 +63,10 @@ data are normalized using the function \code{\link{normalizeBetweenArrays}} of t
     of the corresponding replicates) (one line per item, one column per unique value 
     of the dose}
 
-    \item{norm.method}{The normalization method specified in input}
-
-    \item{data.beforenorm}{ the numeric matrix of responses of each item in each replicate
-  (one line per item, one column per replicate) before normalization  }
-
-  The print of a \code{omicdata} object gives the tested doses (or concentrations) 
+  The print of a \code{metabolomic} object gives the tested doses (or concentrations) 
   and number of replicates for each dose, the number of items, the identifiers 
   of the first 20 items (for check of good coding of data) and the normalization method.
-   The plot of a \code{omicdata} object shows the data distribution for each dose or concentration and replicate before and after normalization.
-}
-
-\seealso{
-    See \code{\link{normalizeBetweenArrays}} for details about the normalization.
-}
-
-\references{ 
-Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, and Smyth, GK (2015), \emph{limma powers differential expression analyses for RNA-sequencing and microarray studies}. Nucleic Acids Research 43, e47.
+   The plot of a \code{metabolomic} object shows the data distribution for each dose or concentration and replicate.
 }
 
 \author{ 
@@ -90,17 +74,13 @@ Marie-Laure Delignette-Muller
 }
 
 \examples{
-# (1) import, check and normalization of microarray data 
+# (1) import and check of metabolomic data 
 # (an example on a subsample of a greater data set)
 #
-datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+datatxt <- system.file("extdata", "metabolo_norm.txt", package="DRomics")
 
-o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess")
+o <- metabolomicdata(datatxt, check = TRUE)
 print(o)
 plot(o)
-
-# (2) normalization with other methods
-(o.2 <- omicdata(datatxt, check = TRUE, norm.method = "quantile"))
-(o.3 <- omicdata(datatxt, check = TRUE, norm.method = "scale"))
 
 }

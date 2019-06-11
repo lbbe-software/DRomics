@@ -2,9 +2,11 @@
 itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA"), FDR = 0.05)
 {
   # Checks
-  if (!(inherits(omicdata, "omicdata") | inherits(omicdata, "RNAseqdata")))
-    stop("Use only with 'omicdata' or 'RNAseqdata' objects, respectively
-         created with the function omicdata or the function RNAseqdata")
+  if (!(inherits(omicdata, "microarraydata") | 
+        inherits(omicdata, "RNAseqdata") |
+        inherits(omicdata, "metabolomicdata")))
+    stop("Use only with 'microarraydata', 'RNAseqdata' or 'metabolomicdata' objects, respectively
+         created with functions 'microarraydata', 'RNAseqdata' or 'metabolomicdata' ")
   select.method <- match.arg(select.method, c("quadratic", "linear", "ANOVA"))
   if (!is.numeric(FDR))
     stop("FDR, the false discovery rate, must a number in ]0; 1[ (generally under 0.1).")
@@ -18,7 +20,8 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
   doseranks2 <- doseranks*doseranks
   irow <- 1:length(item)
   
-  if (inherits(omicdata,"omicdata"))
+  if (inherits(omicdata,"microarraydata") | 
+      inherits(omicdata,"metabolomicdata"))
   {
     data <- omicdata$data
     if (select.method == "quadratic")

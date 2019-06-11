@@ -1,6 +1,6 @@
 library(DRomics)
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
 (f <- drcfit(s_quad, sigmoid.model = "log-probit", progressbar = TRUE))
 itemslP <- as.character(f$fitres[f$fitres$model == "log-probit",]$id)
