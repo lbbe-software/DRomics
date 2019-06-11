@@ -7,8 +7,8 @@
 \description{
 RNAseq data in raw counts are imported from a .txt file, checked (see the description 
 of argument \code{file} for the required format
-of data), normalized with respect to library size and tranformed in pseudocounts
-(\eqn{y = log_2(n + n_0)}) using
+of data), normalized with respect to library size and tranformed in data in 
+a log2 scale using
 variance stabilizing transformation or regularized logarithm.
 }
 

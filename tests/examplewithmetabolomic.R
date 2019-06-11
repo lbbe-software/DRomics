@@ -44,7 +44,7 @@ plot(r, plottype = "density", by = "none")
 
 plot(r, plottype = "ecdf", by = "trend", hist.bins = 10) 
 
-# Bootstrap
-b <- bmdboot(r, niter = 250) # niter should be fixed at least at 1000 to get a reasonable precision
+# Calculation of confidence intervals on BMDs by Bootstrap
+b <- bmdboot(r, niter = 100) # niter should be fixed at least at 1000 to get a reasonable precision
 plot(b)
 

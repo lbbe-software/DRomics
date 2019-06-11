@@ -17,8 +17,8 @@ for dose-reponse modelling.
 \usage{
 metabolomicdata(file, check = TRUE)
 
-\method{print}{metabolomic}(x, \dots)
-\method{plot}{metabolomic}(x, \dots)
+\method{print}{metabolomicdata}(x, \dots)
+\method{plot}{metabolomicdata}(x, \dots)
 }
 
 \arguments{

@@ -53,6 +53,6 @@ plot(r, plottype = "hist", by = "trend", hist.bins = 10)
 plot(r, plottype = "hist", by = "model", hist.bins = 10) 
 plot(r, plottype = "hist", by = "typology", hist.bins = 10) 
 
-# Bootstrap
-b <- bmdboot(r, niter = 250) # niter should be fixed at least at 1000 to get a reasonable precision
+# Calculation of confidence intervals on BMDs by Bootstrap
+b <- bmdboot(r, niter = 100) # niter should be fixed at least at 1000 to get a reasonable precision
 plot(b)
