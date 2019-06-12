@@ -3,6 +3,7 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
 {
   # Checks
   if (!(inherits(omicdata, "microarraydata") | 
+        inherits(omicdata, "omicdata") | # deprecated name of microarray data
         inherits(omicdata, "RNAseqdata") |
         inherits(omicdata, "metabolomicdata")))
     stop("Use only with 'microarraydata', 'RNAseqdata' or 'metabolomicdata' objects, respectively
@@ -21,6 +22,7 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
   irow <- 1:length(item)
   
   if (inherits(omicdata,"microarraydata") | 
+      inherits(omicdata, "omicdata") | # deprecated name of microarraydata
       inherits(omicdata,"metabolomicdata"))
   {
     data <- omicdata$data
