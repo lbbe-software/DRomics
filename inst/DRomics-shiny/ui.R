@@ -103,9 +103,9 @@ ui <- fluidPage(
                                    width = 4,
                                    radioButtons('typeData', 
                                                 "What kind of data do you use?",
-                                                choices = c('micro-arrays' = 'microarraydata', 
-                                                            'RNA-seq' = 'rnaseqdata',
-                                                            'metabolomic data' = 'metabolomicdata'),
+                                                choices = c('microarray data (in log scale)' = 'microarraydata', 
+                                                            'RNAseq data (in raw counts)' = 'rnaseqdata',
+                                                            'metabolomics data (in log scale)' = 'metabolomicdata'),
                                                 selected = 'microarraydata'), 
                                    br(), br()),
                                  
