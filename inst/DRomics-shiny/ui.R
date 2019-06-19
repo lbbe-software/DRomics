@@ -94,30 +94,97 @@ ui <- fluidPage(
                       fixedRow(
                         column(12, 
                                br(), HTML("<font face=verdana size=5 color=#155450><b>IMPORT, CHECK AND NORMALIZATION OF OMICS DATA</b></font>"), br(), br(), br(),
+                               
                                fixedRow(
-                                 sidebarPanel(
-                                   style = "background-color: #a7dbd8;",
-                                   width = 5,
-                                   fileInput('datafile', 
-                                             'Select an input file',
-                                             accept = c('text/csv', 'text/plain')),
-                                   h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the format required"),
-                                   h5("See ", a("here", href = "DRomicspkg/transcripto_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;", download = 'transcripto_sample.txt'), " an example file (choose the 'cyclic loess' method to normalize these data)")
-                                 ),
+                                 
+                                 ###### Select type of data 
                                  sidebarPanel(
                                    style = "background-color: #a7dbd8;",
                                    width = 4,
-                                   radioButtons('normMethod', 
-                                                'Select a method to normalize the data',
-                                                choices = c('no normalization' = 'none', 
-                                                            'cyclic loess' = 'cyclicloess',
-                                                            quantile = 'quantile',
-                                                            scale = 'scale'),
-                                                selected = 'cyclicloess'),
+                                   radioButtons('typeData', 
+                                                "What kind of data do you use?",
+                                                choices = c('microarray data (in log scale)' = 'microarraydata', 
+                                                            'RNAseq data (in raw counts)' = 'rnaseqdata',
+                                                            'metabolomics data (in log scale)' = 'metabolomicdata'),
+                                                selected = 'microarraydata'), 
+                                   br(), br()),
+                                 
+                                 ###### For micro-array data (default)
+                                 conditionalPanel(
+                                   condition = "input.typeData == 'microarraydata'",
                                    
-                                   h5("See ", a("here", href = "informations_norm_methods.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the normalization methods")
+                                   sidebarPanel(
+                                     style = "background-color: #a7dbd8;",
+                                     width = 4,
+                                     fileInput('datafile_microarray', 
+                                               'Select an input file',
+                                               accept = c('text/csv', 'text/plain')),
+                                     h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the format required"),
+                                     h5("See ", a("here", href = "DRomicspkg/transcripto_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;", download = 'transcripto_sample.txt'), " an example file")
+                                   ),
+                                   sidebarPanel(
+                                     style = "background-color: #a7dbd8;",
+                                     width = 4,
+                                     radioButtons('normMethod_microarray', 
+                                                  'Select a method to normalize the data',
+                                                  choices = c('cyclic loess' = 'cyclicloess',
+                                                              'quantile' = 'quantile',
+                                                              'scale' = 'scale',
+                                                              'no normalization' = 'none'),
+                                                  selected = 'cyclicloess'),
+                                     
+                                     h5("See ", a("here", href = "informations_norm_methods.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the normalization methods")
+                                   )
+                                 ),
+                                 
+                                 ###### For RNA-seq data
+                                 conditionalPanel(
+                                   condition = "input.typeData == 'rnaseqdata'",
+                                   sidebarPanel(
+                                     style = "background-color: #a7dbd8;",
+                                     width = 4,
+                                     fileInput('datafile_rnaseq', 
+                                               'Select an input file',
+                                               accept = c('text/csv', 'text/plain')),
+                                     h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the format required"),
+                                     h5("See ", a("here", href = "DRomicspkg/Zhou_kidney_pce.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;", download = 'Zhou_kidney_pce.txt'), " an example file")
+                                   ),
+                                   sidebarPanel(
+                                     style = "background-color: #a7dbd8;",
+                                     width = 4,
+                                     radioButtons('transfoMethod_rnaseq', 
+                                                  'Select a method to transform the data',
+                                                  choices = c('regularized logarithm (rlog)' = 'rlog',
+                                                              'variance stabilizing transformation (vst)' = 'vst'),
+                                                  selected = 'rlog'),
+                                     
+                                     h5("See ", a("here", href = "informations_transfo_methods.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the transformation methods")
+                                   )
+                                 ),
+                                 
+                                 ###### For metabolomic data
+                                 conditionalPanel(
+                                   condition = "input.typeData == 'metabolomicdata'",
+                                   sidebarPanel(
+                                     style = "background-color: #a7dbd8;",
+                                     width = 4,
+                                     fileInput('datafile_metabolomic', 
+                                               'Select an input file',
+                                               accept = c('text/csv', 'text/plain')),
+                                     h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the format required"),
+                                     h5("See ", a("here", href = "DRomicspkg/metabolo_norm.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;", download = 'metabolo_norm.txt'), " an example file")
+                                   ),
+                                   sidebarPanel(
+                                     style = "background-color: #a7dbd8;",
+                                     width = 4,
+                                     icon("exclamation-triangle"), "We recommend you to check that your metabolomics data were correctly pretreated before importation. In particular data (metabolomic signal) should have been log-transformed, without replacing 0 values by NA values (consider using the half minimum method instead for example).",
+                                     h5("See ", a("here", href = "informations_metabolo_pretreatment.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " more information about metabolomics data pretreatment")
+                                   )
                                  )
+                                 
                                ),
+                               
+                               
                                fixedRow(
                                  mainPanel(
                                    width = 12,

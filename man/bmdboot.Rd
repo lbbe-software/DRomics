@@ -126,7 +126,7 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# (1) a toy example (a very small subsample of a transcriptomics data set) 
+# (1) a toy example (a very small subsample of a microarray data set) 
 #
 datatxt <- system.file("extdata", "transcripto_very_small_sample.txt",
 package="DRomics")
@@ -136,7 +136,7 @@ package="DRomics")
 # datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
 set.seed(123)
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))
@@ -157,12 +157,12 @@ b.lin.95$res
                        niter = 1000, conf.level = 0.9, progressbar = TRUE))
 b.lin.90$res
 
-# (2) an example on a transcriptomics data set (a subsample of a greater data set) 
+# (2) an example on a microarray data set (a subsample of a greater data set) 
 #
 \donttest{
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))

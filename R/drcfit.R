@@ -435,7 +435,10 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     
   # removing of null models (const, model no 7) and 
   # fits eliminated by the quadratic trend test on residuals
-  dres <- dres[(dres$model != 7) & (dres$trendP > 0.05), ]
+  dres <- dres[(dres$model != 7) & 
+                 ((dres$trendP > 0.05) | is.na(dres$trendP)) , ]
+  # is.na(trendP because anova of two models with very close RSS
+  # may return NA for pvalue)
   # update of nselect
   nselect <- nrow(dres)
   

@@ -67,12 +67,12 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# A toy example on a very small subsample of a transcriptomics data set) 
+# A toy example on a very small subsample of a microarray data set) 
 #
 datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", 
 package="DRomics")
 
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
 (f <- drcfit(s_quad, progressbar = TRUE))
 
@@ -101,12 +101,12 @@ curvesplot(f$fitres, xmax = max(f$omicdata$dose),
   facetby = "trend", colorby = "model", 
   line.size = 1, line.alpha = 0.5)
   
-# (4) an example on a transcriptomics data set (a subsample of a greater data set)
+# (4) an example on a microarray data set (a subsample of a greater data set)
 #
 \donttest{
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))

@@ -1,6 +1,6 @@
 # Plot of fitted curves using columns of on extended dataframe to optionnally code 
 # for color and or facet 
-curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
+curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE, 
                        facetby, colorby, removelegend = FALSE,  
                         npoints = 50, line.size = 0.2, line.alpha = 1)
 {
@@ -55,7 +55,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
   # no color no facet
   if (missing(colorby) & missing(facetby))
   {
-    gg <- ggplot(data = curves2plot, aes(x, y, group = id)) +
+    gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id))) +
       geom_line(size = line.size, alpha = line.alpha) 
   } else
     # facet only
@@ -64,7 +64,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
       if (!is.character(facetby)) 
         stop("facetby should be a character string for the name of the column used for facetting")
       curves2plot$facetby <- rep(extendedres[, facetby], each = npoints)
-      gg <- ggplot(data = curves2plot, aes(x, y, group = id)) +
+      gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id))) +
         geom_line(size = line.size, alpha = line.alpha) + 
         facet_wrap(~ facetby) 
     } else
@@ -74,7 +74,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
         if (!is.character(colorby)) 
           stop("colorby should be a character string for the name of the column used for coloring curves")
         curves2plot$colorby <- rep(extendedres[, colorby], each = npoints)
-        gg <- ggplot(data = curves2plot, aes(x, y, group = id, colour = colorby)) +
+        gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id), colour = colorby)) +
           geom_line(size = line.size, alpha = line.alpha)  
       } else
         # color and facet
@@ -85,9 +85,9 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
           stop("colorby should be a character string for the name of the column used for coloring curves")
         curves2plot$facetby <- rep(extendedres[, facetby], each = npoints)
         curves2plot$colorby <- rep(extendedres[, colorby], each = npoints)
-        gg <- ggplot(data = curves2plot, aes(x, y, group = id, colour = colorby)) +
+        gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id), colour = colorby)) +
           geom_line(size = line.size, alpha = line.alpha) + facet_wrap(~ facetby)  
       }
-  if (removelegend) gg <- gg + theme(legend.position = "none")
+  if (removelegend) gg <- gg + theme(legend.position = "none") 
   return(gg)
 }

@@ -84,7 +84,7 @@ In cases where the BMD is not reached at the highest tested dose, \code{NA} is r
 
   \item{x}{Value of x given in input as a percentage to define the BMD-xfold.}
 
-    \item{omicdata}{ The corresponding object of class \code{"omicdata"} given in input 
+    \item{microarraydata}{ The corresponding object of class \code{"microarraydata"} given in input 
     (component of itemselect).}
  
 }
@@ -106,7 +106,7 @@ Marie-Laure Delignette-Muller and Elise Billoir
 
 \examples{
 
-# (1) a toy example (a very small subsample of a transcriptomics data set) 
+# (1) a toy example (a very small subsample of a microarray data set) 
 #
 datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", package="DRomics")
 
@@ -114,7 +114,7 @@ datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", package="
 # use the following commented line
 # datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))
@@ -124,7 +124,7 @@ plot(r)
 (rb <- bmdcalc(f, z = 2, x = 50))
 plot(rb) 
 
-# (2) an example on a transcriptomics data set (a subsample of a greater data set) 
+# (2) an example on a microarray data set (a subsample of a greater data set) 
 #
 \donttest{
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
@@ -133,7 +133,7 @@ datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 # use the following commented line
 # datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))

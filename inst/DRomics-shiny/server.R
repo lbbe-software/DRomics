@@ -5,10 +5,21 @@ server <- function(input, output, session) {
   ####### STEP 1 #####################################################################
   ####################################################################################
   
+  inTypeData <- reactive({input$typeData})
+  
   ## Input: file data
   filedata <- reactive({
-    req(input$datafile)
-    omicdata(input$datafile$datapath, check = TRUE, norm.method = input$normMethod)
+    
+    if(inTypeData() == 'microarraydata') {
+      req(input$datafile_microarray)
+      microarraydata(input$datafile_microarray$datapath, check = TRUE, norm.method = input$normMethod_microarray)
+    } else if(inTypeData() == 'rnaseqdata') {
+      req(input$datafile_rnaseq)
+      RNAseqdata(input$datafile_rnaseq$datapath, check = TRUE, transfo.method = input$transfoMethod_rnaseq)
+    } else if(inTypeData() == 'metabolomicdata') {
+      req(input$datafile_metabolomic)
+      metabolomicdata(input$datafile_metabolomic$datapath, check = TRUE)
+    }
   })
   
   ## Output : print and plot omic data
@@ -140,12 +151,24 @@ server <- function(input, output, session) {
   ####################################################################################
 
   output$printRCode <- renderText({
-    req(input$datafile)
+    # req(input$datafile)
+    
+    if(inTypeData() == 'microarraydata') {
+      req(input$datafile_microarray)
+    } else if(inTypeData() == 'rnaseqdata') {
+      req(input$datafile_rnaseq)
+    } else if(inTypeData() == 'metabolomicdata') {
+      req(input$datafile_metabolomic)
+    }
     
     text <- c("library(DRomics)",
               "",
               "# Step 1",
-              paste0("o <- omicdata('", input$datafile$name, "', check = TRUE, norm.method = '", input$normMethod, "')"),
+              paste0("o <- ", ifelse(input$typeData == 'microarraydata', 
+                                     paste0("microarraydata('", input$datafile_microarray$name, "', check = TRUE, norm.method = '", input$normMethod_microarray, "')"), 
+                                     ifelse(input$typeData == 'rnaseqdata', 
+                                            paste0("RNAseqdata('", input$datafile_rnaseq$name, "', check = TRUE, transfo.method = '", input$transfoMethod_rnaseq, "')"), 
+                                            paste0("metabolomicdata('", input$datafile_metabolomic$datapath, "', check = TRUE)")))),
               "print(o)",
               "plot(o)",
               "",
@@ -175,8 +198,16 @@ server <- function(input, output, session) {
     return(paste(text, collapse = "\n"))
   })
   
+  
   output$printRCodeFurther <- renderText({
-    req(input$datafile)
+    
+    if(inTypeData() == 'microarraydata') {
+      req(input$datafile_microarray)
+    } else if(inTypeData() == 'rnaseqdata') {
+      req(input$datafile_rnaseq)
+    } else if(inTypeData() == 'metabolomicdata') {
+      req(input$datafile_metabolomic)
+    }
     
     text <- c("# Few lines of R script to go further using the package",
               "",

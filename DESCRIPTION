@@ -1,12 +1,12 @@
 Package: DRomics
 Title: Dose Response for Omics
-Version: 1.1-3
+Version: 2.0-0
 Authors@R: c(person("Marie-Laure", "Delignette-Muller", role = "aut", email = "marielaure.delignettemuller@vetagro-sup.fr"),
              person("Elise", "Billoir", role = "aut", email = "elise.billoir@univ-lorraine.fr"),
              person("Floriane", "Larras", role = "ctb", email = "floriane.larras@ufz.de"),
              person("Aurelie", "Siberchicot", role = c("aut", "cre"), email = "aurelie.siberchicot@univ-lyon1.fr"))
-Description: Several functions are provided for dose-response (or concentration-response) characterization from omics data. 'DRomics' is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 6, and the more the better) rather than a great number of replicates (no need of three replicates). 'DRomics' provides functions 1) to check and normalize data, 2) to select monotonic or biphasic significantly responding items (e.g. probes, metabolites), 3) to choose the best-fit model among a predefined family of monotonic and biphasic models to describe each selected item 4) to derive a benchmark dose or concentration and a typology of response from each fitted curve. In the available version data are supposed to be single-channel microarray data transformed in log2, or another type of data that can be directly fitted by least-square regression without any normalization step. In the future this tool will also be able to process RNA-seq data. For further details see Larras et al (2018) <DOI:10.1021/acs.est.8b04752>.
-Depends: R (>= 3.4.0), limma, utils, grDevices
+Description: Several functions are provided for dose-response (or concentration-response) characterization from omics data. 'DRomics' is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 5, and the more the better) rather than a great number of replicates (no need of three replicates). 'DRomics' provides functions 1) to check and normalize data, 2) to select monotonic or biphasic significantly responding items (e.g. probes, metabolites), 3) to choose the best-fit model among a predefined family of monotonic and biphasic models to describe each selected item 4) to derive a benchmark dose or concentration and a typology of response from each fitted curve. In the available version data are supposed to be single-channel microarray data transformed in log2, RNAseq data in raw counts or pretreated metabolomic data (that can be directly fitted by least-square regression without any further transformation step). For further details see Larras et al (2018) <DOI:10.1021/acs.est.8b04752>.
+Depends: R (>= 3.4.0), limma, utils, grDevices, DESeq2
 Imports: stats, graphics, ggplot2
 Suggests: parallel, shiny, shinyBS, shinyjs, testthat
 License: GPL (>= 2)

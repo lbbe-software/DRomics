@@ -1,7 +1,7 @@
-### import, check and optionnally normalize omics data
+### import, check and optionnally normalize single-channel microarray data
 
-omicdata <- function(file, check = TRUE, 
-                     norm.method = c("none", "cyclicloess", "quantile", "scale"))
+microarraydata <- function(file, check = TRUE, 
+                     norm.method = c("cyclicloess", "quantile", "scale", "none"))
 {
   if (check)
   {
@@ -29,7 +29,7 @@ omicdata <- function(file, check = TRUE,
   }
   
   # Normalization using limma
-  norm.method <- match.arg(norm.method, c("none", "cyclicloess", "quantile", "scale"))
+  norm.method <- match.arg(norm.method, c("cyclicloess", "quantile", "scale", "none"))
   if(norm.method == "cyclicloess")
     cat("Just wait, the normalization using cyclicloess may take a few minutes.\n")
   data.beforenorm <- data
@@ -42,6 +42,9 @@ omicdata <- function(file, check = TRUE,
   
   # control of the design
   design <- table(dose, dnn = "")
+  if (length(design) < 5)
+    stop("Dromics cannot be used with a dose-response design 
+         with less than five tested doses/concentrations")
   
   fdose <- as.factor(dose)
   tdata <- t(data)
@@ -57,14 +60,14 @@ omicdata <- function(file, check = TRUE,
                   design = design, data.mean = data.mean, 
                   norm.method = norm.method, data.beforenorm = data.beforenorm)  
   
-  return(structure(reslist, class = "omicdata"))
+  return(structure(reslist, class = "microarraydata"))
 }
 
 
-print.omicdata <- function(x, ...)
+print.microarraydata <- function(x, ...)
 {
-  if (!inherits(x, "omicdata"))
-    stop("Use only with 'omicdata' objects")
+  if (!inherits(x, "microarraydata"))
+    stop("Use only with 'microarraydata' objects")
   
   cat("Elements of the experimental design in order to check the coding of the data :\n")
   cat("Tested doses and number of replicates for each dose:\n")
@@ -84,10 +87,10 @@ print.omicdata <- function(x, ...)
     cat("Data were normalized between arrays using the following method: ", x$norm.method," \n")
 }
 
-plot.omicdata <- function(x, ...) 
+plot.microarraydata <- function(x, ...) 
 {
-  if (!inherits(x, "omicdata"))
-    stop("Use only with 'omicdata' objects")
+  if (!inherits(x, "microarraydata"))
+    stop("Use only with 'microarraydata' objects")
 
   def.par <- par(no.readonly = TRUE)
   if (x$norm.method != "none")
@@ -96,16 +99,16 @@ plot.omicdata <- function(x, ...)
     ymax <- max(x$data.beforenorm, x$data)
     par(mfrow = c(1,2), xaxt = "n")
     boxplot(x$data.beforenorm, xlab = "Samples", ylab = "Signal", 
-            main = paste("Data before normalization"), ylim = c(ymin, ymax)) 
+            main = paste("Microarray data before normalization"), ylim = c(ymin, ymax)) 
     boxplot(x$data, xlab = "Samples", ylab = "Signal", 
-            main = paste("Data after", x$norm.method,"normalization"), 
+            main = paste("Microarray data after", x$norm.method,"normalization"), 
             ylim = c(ymin, ymax)) 
     
   } else
   {
     par(xaxt = "n")
     boxplot(x$data, xlab = "Samples", ylab = "Signal", 
-            main = paste("Data without normalization")) 
+            main = paste("Microarray data without normalization")) 
   }
   par(def.par)    
 }

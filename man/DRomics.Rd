@@ -4,21 +4,36 @@
 \title{Overview of the \pkg{DRomics} package}
 
 \description{
-DRomics provides several functions for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 6, and the more the better) rather than a great number of replicates (no need of three replicates). DRomics provides four main functions described as follows:
+DRomics provides several functions for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 5, and the more the better) rather than a great number of replicates (no need of three replicates). DRomics provides seven main functions described as follows:
 \itemize{
-\item \code{\link{omicdata}} to check and normalize data,
+\item \code{\link{microarraydata}}, \code{\link{RNAseqdata}} and 
+\code{\link{metabolomicdata}} to check, normalize and transform data dependending of the type of omics data (see next paragraph for details),
 \item \code{\link{itemselect}} to select monotonic or biphasic significant responses,
 \item \code{\link{drcfit}} to choose the best-fit model among a predefined family of monotonic and biphasic models to describe each significant response and classify it in a typology of response, 
 \item and \code{\link{bmdcalc}} to derive a benchmark dose or concentration from each fitted curve.
 }
 
-In the available version data are supposed to be single-channel microarray data transformed in log2, or another type of data that can be directly fitted by least-square regression without any normalization step. In the future this tool will also be able to process RNA-seq data.
+The available version supports three types of data:
+\itemize{
+\item Single-channel microarray data (previously transformed in log2)
+that must imported  using the function\code{\link{microarraydata}}, 
+\item RNAseq (in raw counts) that must imported using the function 
+\code{\link{RNAseqdata}} and 
+\item metabolomic data that must imported using the function 
+\code{\link{metabolomicdata}}.
+For metabolomic data, all the pretreatment steps must be done before importation
+of data, especially so that imported data can be directly fitted by least-square regression
+(assuming a Guassian error model valid)
+without any transformation.
+}
 
-Below is proposed an example including each step or the workflow. 
+
+Below is proposed an example including each step or the workflow on microarray data. 
 }
 
 \seealso{
-    See \code{\link{omicdata}}, \code{\link{itemselect}},
+    See \code{\link{microarraydata}}, \code{\link{RNAseqdata}},
+    \code{\link{metabolomicdata}}, \code{\link{itemselect}},
     \code{\link{drcfit}}, \code{\link{bmdcalc}} 
     for details about each function.
 }
@@ -34,11 +49,11 @@ Marie-Laure Delignette-Muller, Elise Billoir, Floriane Larras and Aurelie Siberc
 
 # Step 1: importation, check and normalization of data if need
 #
-## here cyclicloess normalization of a small transcriptomics data set
+## here cyclicloess normalization of a small microarray data set
 ## (sample of a real data set)
 
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 plot(o)
 
 # Step 2: item selection using the quadratic method
@@ -66,6 +81,14 @@ plot(r, BMDtype = "zSD", plottype = "ecdf")
 plot(r, BMDtype = "xfold", plottype = "hist", by = "trend", hist.bins = 10) 
 plot(r, BMDtype = "xfold", plottype = "hist", by = "model", hist.bins = 10) 
 plot(r, BMDtype = "xfold", plottype = "hist", by = "typology", hist.bins = 10) 
+
+# Step 5: calculation of confidence intervals on the BMDs by bootstrap 
+#
+
+(b <- bmdboot(r, niter = 100)) # niter to put at 1000 for a reasonable precision
+plot(b, BMDtype = "zSD") 
+plot(b, BMDtype = "zSD", by = "trend") 
+
 }
 
 

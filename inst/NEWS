@@ -1,5 +1,12 @@
 === DRomics : Dose response for omics ===
 
+Version 2.0-0 
+=============
+NEW FEATURES
+- Replacement of the function omicdata() by the function 
+microarraydata() and add of two new data importation functions,
+RNAseqdata() and metabolomicdata().
+
 Version 1.1-3 
 =============
 NEW FEATURES

@@ -52,11 +52,11 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# an example on a transcriptomics data set (a subsample of a greater data set) 
+# an example on a microarray data set (a subsample of a greater data set) 
 #
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))

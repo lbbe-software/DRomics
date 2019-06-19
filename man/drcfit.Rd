@@ -95,7 +95,7 @@ dose value at which their extremum is reached is at zero.
    and the corresponding y value (\code{yextrem}).
   }
 
-    \item{omicdata}{ The corresponding object of class \code{"omicdata"} given in input 
+    \item{omicdata}{ The corresponding object of class \code{"microarraydata"} given in input 
     (component of itemselect).}
  
     \item{n.failure}{ The number of previously selected items on which the workflow failed to 
@@ -120,7 +120,7 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# (1) a toy example (a very small subsample of a transcriptomics data set) 
+# (1) a toy example (a very small subsample of a microarray data set) 
 #
 datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", package="DRomics")
 
@@ -128,7 +128,7 @@ datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", package="
 # use the following commented line
 # datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
 (f <- drcfit(s_quad, progressbar = TRUE))
 
@@ -136,12 +136,12 @@ datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", package="
 plot(f)
 
 
-# (2) an example on a transcriptomics data set (a subsample of a greater data set) 
+# (2) an example on a microarray data set (a subsample of a greater data set) 
 #
 \donttest{
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-(o <- omicdata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
 (f <- drcfit(s_quad, progressbar = TRUE))
 
