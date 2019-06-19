@@ -177,7 +177,8 @@ ui <- fluidPage(
                                    sidebarPanel(
                                      style = "background-color: #a7dbd8;",
                                      width = 4,
-                                     icon("exclamation-triangle"), "We recommend you to check that your metabolomic data were correctly pretreated before importation especially so that the hypothesis of Gaussian error model used during the selection and model fitting processes could be considered valid."
+                                     icon("exclamation-triangle"), "We recommend you to check that your metabolomics data were correctly pretreated before importation. In particular data (metabolomic signal) should have been log-transformed, without replacing 0 values by NA values (consider using the half minimum method instead for example).",
+                                     h5("See ", a("here", href = "informations_metabolo_pretreatment.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " more information about metabolomics data pretreatment")
                                    )
                                  )
                                  

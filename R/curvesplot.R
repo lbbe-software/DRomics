@@ -85,7 +85,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
           stop("colorby should be a character string for the name of the column used for coloring curves")
         curves2plot$facetby <- rep(extendedres[, facetby], each = npoints)
         curves2plot$colorby <- rep(extendedres[, colorby], each = npoints)
-        gg <- ggplot(data = curves2plot, mapping = aes(x = quote(x), y = quote(y), group = quote(id), colour = colorby)) +
+        gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id), colour = colorby)) +
           geom_line(size = line.size, alpha = line.alpha) + facet_wrap(~ facetby)  
       }
   if (removelegend) gg <- gg + theme(legend.position = "none") 

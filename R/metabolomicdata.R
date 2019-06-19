@@ -11,16 +11,19 @@ metabolomicdata <- function(file, check = TRUE)
     suffix <- substr(file, le.file - 3, le.file)
     if (suffix != ".txt")
       stop("The argument file must be a character string ending by .txt")
-    warning("We recommend you to check that your metabolomic data were 
-correctly pretreated before importation especially so that 
-the hypothesis of Gaussian error model used during the selection
-and model fitting processes could be considered valid \n")
+    warning("We recommend you to check that your metabolomics data were correctly pretreated 
+            before importation. In particular data (metabolomic signal) 
+            should have been log-transformed, without replacing 0 values by NA values 
+            (consider using the half minimum method instead for example). \n")
   }
   
   d <- read.table(file, header = FALSE)
   nrowd <- nrow(d)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
+  if (any(data) > 100)
+    warning("Your data contain high values (> 100). 
+    Make sure that your data (metabolomic signal) are in log-scale.\n") 
   
   if (check)
   {
@@ -78,11 +81,6 @@ print.metabolomicdata <- function(x, ...)
     cat("Identifiers of the items:\n")
     print(x$item)
   }
-    cat("We recommend you to check that your metabolomic data were 
-        correctly pretreated
-        before importation epecially so that the hypothesis of Gaussian error model 
-        used during the selection and model fitting processes could 
-        be considered valid \n")
 }
 
 plot.metabolomicdata <- function(x, ...) 
