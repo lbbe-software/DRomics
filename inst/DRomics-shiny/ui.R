@@ -220,7 +220,7 @@ ui <- fluidPage(
                                fixedRow(
                                  mainPanel(
                                    width = 12,
-                                   verbatimTextOutput('printItemSelect')
+                                   withSpinner(verbatimTextOutput('printItemSelect'), type = 4, color = '#155450')
                                  )
                                )
                         )

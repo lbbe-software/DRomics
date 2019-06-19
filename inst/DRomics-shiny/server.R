@@ -50,7 +50,9 @@ server <- function(input, output, session) {
   ####################################################################################
   
   observe({
-    if (is.null(input$datafile)) {
+    if ((inTypeData() == 'microarraydata' & is.null(input$datafile_microarray)) |
+        (inTypeData() == 'rnaseqdata' & is.null(input$datafile_rnaseq)) |
+        (inTypeData() == 'metabolomicdata' & is.null(input$datafile_metabolomic))) {
       shinyjs::disable("buttonDrcfit")
     }else{
       shinyjs::enable("buttonDrcfit")
