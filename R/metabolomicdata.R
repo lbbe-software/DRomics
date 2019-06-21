@@ -21,7 +21,7 @@ metabolomicdata <- function(file, check = TRUE)
   nrowd <- nrow(d)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
-  if (any(data) > 100)
+  if (any(data > 100))
     warning("Your data contain high values (> 100). 
     Make sure that your data (metabolomic signal) are in log-scale.\n") 
   
