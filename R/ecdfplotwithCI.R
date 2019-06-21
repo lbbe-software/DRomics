@@ -22,7 +22,7 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
     if (is.factor(CI.col))
     {
       g <- g + 
-        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper), color = CI.col),  
+        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper), color = quote(CI.col)),  
                        alpha = CI.alpha, height = 0)  
     } else
     {
@@ -41,7 +41,7 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
     if (is.factor(CI.col))
     {
       g <- g + 
-        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper), color = CI.col),  
+        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper), color = quote(CI.col)),  
                        alpha = CI.alpha, height = 0)  
     } else
     {
