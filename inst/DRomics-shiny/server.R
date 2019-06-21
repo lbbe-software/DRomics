@@ -170,7 +170,7 @@ server <- function(input, output, session) {
                                      paste0("microarraydata('", input$datafile_microarray$name, "', check = TRUE, norm.method = '", input$normMethod_microarray, "')"), 
                                      ifelse(input$typeData == 'rnaseqdata', 
                                             paste0("RNAseqdata('", input$datafile_rnaseq$name, "', check = TRUE, transfo.method = '", input$transfoMethod_rnaseq, "')"), 
-                                            paste0("metabolomicdata('", input$datafile_metabolomic$datapath, "', check = TRUE)")))),
+                                            paste0("metabolomicdata('", input$datafile_metabolomic$name, "', check = TRUE)")))),
               "print(o)",
               "plot(o)",
               "",
