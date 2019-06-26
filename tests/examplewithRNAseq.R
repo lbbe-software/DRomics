@@ -2,11 +2,9 @@ library(DRomics)
 # importation and check of RNAseq data and normalization
 # with respect to library size and transformation 
 # options to put in shiny : transfo.method (2 methods, rlog or vst)
-datatxt <- system.file("extdata", "Zhou_kidney_pce.txt", package="DRomics")
+datatxt <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
 (o <- RNAseqdata(datatxt, check = TRUE, transfo.method = "rlog"))
 plot(o)
-(o2 <- RNAseqdata(datatxt, check = TRUE, transfo.method = "vst"))
-plot(o2)
 
 # item selection using the quadratic method
 # options to put in shiny : select.method (3 methods), FDR (numerical positive value < 1)
@@ -45,13 +43,10 @@ curvesplot(f$fitres[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose),
 plot(r, BMDtype = "zSD", plottype = "ecdf", by = "none") 
 plot(r, BMDtype = "xfold", plottype = "ecdf", by = "none") 
 
-plot(r, plottype = "hist", by = "none") 
 plot(r, plottype = "hist", by = "none", hist.bins = 10) 
 plot(r, plottype = "density", by = "none") 
 
 plot(r, plottype = "hist", by = "trend", hist.bins = 10) 
-plot(r, plottype = "hist", by = "model", hist.bins = 10) 
-plot(r, plottype = "hist", by = "typology", hist.bins = 10) 
 
 # Calculation of confidence intervals on BMDs by Bootstrap
 b <- bmdboot(r, niter = 100) # niter should be fixed at least at 1000 to get a reasonable precision

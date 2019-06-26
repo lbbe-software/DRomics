@@ -11,6 +11,7 @@ importFrom("grDevices", pdf, dev.off)
 
 #microarraydata class
 export(microarraydata)
+export(omicdata) # deprecated function
 S3method(print, microarraydata)
 S3method(plot, microarraydata)
 

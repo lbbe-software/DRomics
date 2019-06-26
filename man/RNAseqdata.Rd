@@ -7,14 +7,13 @@
 \description{
 RNAseq data in raw counts are imported from a .txt file, checked (see the description 
 of argument \code{file} for the required format
-of data), normalized with respect to library size and tranformed in data in 
+of data), normalized with respect to library size and tranformed in 
 a log2 scale using
 variance stabilizing transformation or regularized logarithm.
 }
 
 \usage{
-RNAseqdata(file, check = TRUE, 
-                     transfo.method = c("rlog", "vst"))
+RNAseqdata(file, check = TRUE, transfo.method = c("rlog", "vst"))
 
 \method{print}{RNAseqdata}(x, \dots)
 \method{plot}{RNAseqdata}(x, \dots)
@@ -86,7 +85,8 @@ and tranformed using functions \code{\link{rlog}} or \code{\link{vst}} of the
 
 \seealso{
     See \code{\link{rlog}} and \code{\link{vst}} for details about the 
-    transformation methods.
+    transformation methods and 
+    \code{\link{microarraydata}} and \code{\link{metabolomicdata}} for other types of data.
 }
 
 \references{ 
@@ -98,15 +98,17 @@ Marie-Laure Delignette-Muller
 
 \examples{
 # (1) import, check, normalization and transformation of RNAseq data 
-# An example on a data set published by Zhou et al. 2017
+# An example on a subsample of a data set published by Zhou et al. 2017
 # (in Toxicological sciences, 160, 95-110)
 # Effect on kidney transcriptomes of tetrachloroethylene
 #
-datatxt <- system.file("extdata", "Zhou_kidney_pce.txt", package="DRomics")
+datatxt <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
 (o <- RNAseqdata(datatxt, check = TRUE, transfo.method = "rlog"))
 plot(o)
 
-# (2) transformation with the other method
+# (2) transformation with the other method on the whole data 
+# (more rapid method)
+datatxt <- system.file("extdata", "Zhou_kidney_pce.txt", package="DRomics")
 (o2 <- RNAseqdata(datatxt, check = TRUE, transfo.method = "vst"))
 plot(o2)
 

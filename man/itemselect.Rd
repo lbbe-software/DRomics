@@ -104,7 +104,7 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# (1) an example on a microarray data (a subsample of a greater data set) 
+# (1) an example on a microarray data set (a subsample of a greater data set) 
 #     
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 

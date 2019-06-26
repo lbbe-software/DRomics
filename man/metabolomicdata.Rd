@@ -9,9 +9,15 @@ Metabolomic data are imported from a .txt file and checked (see the description
 of argument \code{file} for the required format
 of data). No normalization nor transformation is provided in this function.
 The pretreatment of metabolomic data must be done before importation of data, 
-especially so that imported data can be directly modelled using a Gaussian 
+and data must be imported in log scale,
+so that they can be directly modelled using a Gaussian 
 error model. This strong hypothesis is required both for selection of items and 
 for dose-reponse modelling.
+A basic procedure for this pre-treatment of metabolomic data could be as follows:
+i) retrieving of values data using half minimum method (i.e. half of the minimum value found for a metabolite across all samples)
+ii) log-transformation of values
+iii) scaling to the total intensity (i.e. normalization by sum of signals in each sample).
+
 }
 
 \usage{
@@ -67,6 +73,10 @@ of the first 20 items.
   and number of replicates for each dose, the number of items, the identifiers 
   of the first 20 items (for check of good coding of data) and the normalization method.
    The plot of a \code{metabolomic} object shows the data distribution for each dose or concentration and replicate.
+}
+
+\seealso{
+    See  \code{\link{RNAseqdata}} and \code{\link{microarraydata}} for other   types of data}.
 }
 
 \author{ 

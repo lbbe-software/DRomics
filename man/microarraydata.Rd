@@ -1,5 +1,6 @@
 \name{microarraydata}
 \alias{microarraydata}
+\alias{omicdata}
 \alias{print.microarraydata}
 \alias{plot.microarraydata}
 \title{Import, check and normalization of single-channel microarray data}
@@ -7,12 +8,16 @@
 \description{
 Single-channel microarray data in log2 are imported from a .txt file, checked (see the description 
 of argument \code{file} for the required format
-of data) and normalized if required (recommended if a between arrays
-normalization has been done previously on the input data).
+of data) and normalized (between arrays
+normalization).
+\code{omicdata} is a deprecated version of \code{microarraydata}.
 }
 
 \usage{
 microarraydata(file, check = TRUE, 
+  norm.method = c("cyclicloess", "quantile", "scale", "none"))
+  
+omicdata(file, check = TRUE, 
   norm.method = c("cyclicloess", "quantile", "scale", "none"))
 
 \method{print}{microarraydata}(x, \dots)
@@ -80,7 +85,8 @@ data are normalized using the function \code{\link{normalizeBetweenArrays}} of t
 }
 
 \seealso{
-    See \code{\link{normalizeBetweenArrays}} for details about the normalization.
+    See \code{\link{normalizeBetweenArrays}} for details about the normalization and 
+    \code{\link{RNAseqdata}} and \code{\link{metabolomicdata}} for other types of data}.
 }
 
 \references{ 
