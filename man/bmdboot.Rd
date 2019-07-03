@@ -125,7 +125,6 @@ Marie-Laure Delignette-Muller
 }
 
 \examples{
-
 # (1) a toy example (a very small subsample of a microarray data set) 
 #
 datatxt <- system.file("extdata", "transcripto_very_small_sample.txt",
@@ -135,27 +134,36 @@ package="DRomics")
 # use the following commented line
 # datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-set.seed(123)
-(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
-(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
-(f <- drcfit(s_quad, progressbar = TRUE))
-(r <- bmdcalc(f))
-(b <- bmdboot(r, niter = 250)) # niter = 1000 should be better (longer to run)
+o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess")
+s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)
+f <- drcfit(s_quad, progressbar = TRUE)
+r <- bmdcalc(f)
+set.seed(1234) # to get reproducible results with a so small number of iterations
+(b <- bmdboot(r, niter = 5)) # with a non reasonable value for niter 
+# !!!! TO GET CORRECT RESULTS
+# !!!! niter SHOULD BE FIXED FAR LARGER , e.g. to 1000 
+# !!!! but the run will be longer 
 b$res
 plot(b) # plot of BMD.zSD after removing of BMDs with infinite upper bounds
+
+\donttest{
 plot(b, remove.infinite = FALSE) # plot of BMD.zSD without removing of BMDs 
                                  # with infinite upper bounds
+}
+
 
 # bootstrap on only a subsample of items, here those best fitted by the linear model
 # with a greater number of iterations
-(b.lin.95 <- bmdboot(r, items = r$res$id[r$res$model == "linear"],
+\donttest{
+(b.lin.95 <- bmdboot(r, items = r$res$id[r$res$model == "Gauss-probit"],
                        niter = 1000, progressbar = TRUE))
 b.lin.95$res
 
 # same bootstrap but changing the default confidence level (0.95) to 0.90
-(b.lin.90 <- bmdboot(r, items = r$res$id[r$res$model == "linear"],
+(b.lin.90 <- bmdboot(r, items = r$res$id[r$res$model == "Gauss-probit"],
                        niter = 1000, conf.level = 0.9, progressbar = TRUE))
 b.lin.90$res
+}
 
 # (2) an example on a microarray data set (a subsample of a greater data set) 
 #

@@ -135,7 +135,6 @@ datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", package="
 # Default plot
 plot(f)
 
-
 # (2) an example on a microarray data set (a subsample of a greater data set) 
 #
 \donttest{

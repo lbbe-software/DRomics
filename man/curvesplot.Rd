@@ -72,18 +72,24 @@ Marie-Laure Delignette-Muller
 datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", 
 package="DRomics")
 
-(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
-(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
-(f <- drcfit(s_quad, progressbar = TRUE))
+o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess")
+s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01)
+f <- drcfit(s_quad, progressbar = TRUE)
 
 # (1) 
 # Default plot of all the curves 
 #
 curvesplot(f$fitres, xmax = max(f$omicdata$dose))
 
-# the equivalent below using the output of bmdcalc
+# the equivalent using the output of bmdcalc
 (r <- bmdcalc(f))
 curvesplot(r$res, xmax = max(f$omicdata$dose))
+
+# plot of only U-shape curves colored by model
+resU <- r$res[r$res$trend == "U", ]
+curvesplot(resU, xmax = max(f$omicdata$dose), colorby = "model")
+
+\donttest{
 
 # (2) 
 # Plot of all the curves without shifting y0 values to 0
@@ -103,7 +109,6 @@ curvesplot(f$fitres, xmax = max(f$omicdata$dose),
   
 # (4) an example on a microarray data set (a subsample of a greater data set)
 #
-\donttest{
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
 (o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))

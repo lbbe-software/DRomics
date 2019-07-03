@@ -52,8 +52,32 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# an example on a microarray data set (a subsample of a greater data set) 
+# (1) a toy example (a very small subsample of a microarray data set) 
 #
+datatxt <- system.file("extdata", "transcripto_very_small_sample.txt",
+package="DRomics")
+o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess")
+s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)
+f <- drcfit(s_quad, progressbar = TRUE)
+r <- bmdcalc(f)
+set.seed(1234) # to get reproducible results with a so small number of iterations
+(b <- bmdboot(r, niter = 5)) # with a non reasonable value for niter 
+# !!!! TO GET CORRECT RESULTS
+# !!!! niter SHOULD BE FIXED FAR LARGER , e.g. to 1000 
+# !!!! but the run will be longer 
+b$res
+# manual ecdf plot of the bootstrap results as an ecdf distribution 
+# on BMD, plot that could also be obtained with plot(b) 
+# in this simple case
+#
+a <- b$res[is.finite(b$res$BMD.zSD.upper), ]
+ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
+              CI.upper = a$BMD.zSD.upper, CI.col = "red")
+
+
+# (2) an example on a microarray data set (a subsample of a greater data set) 
+#
+\donttest{
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
 (o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
@@ -62,7 +86,7 @@ datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 (r <- bmdcalc(f))
 (b <- bmdboot(r, niter = 100)) # niter to put at 1000 for a better precision
 
-# (1) 
+# (2.a) 
 # manual ecdf plot of the bootstrap results as an ecdf distribution 
 # on BMD for each trend
 # plot that could also be obtained with plot(b, by = "trend") 
@@ -73,7 +97,7 @@ ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower,
               CI.upper = a$BMD.zSD.upper, by = a$trend, CI.col = "red")
 plot(b, by = "trend")
 
-# (2)
+# (2.b)
 # ecdf plot of the bootstrap results as an ecdf distribution 
 # on BMD for each model
 # with the color of the confidence intervals coding for the trend
@@ -86,12 +110,13 @@ ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower,
               CI.upper = a$BMD.zSD.upper, by = a$model, CI.col = a$trend,
               CI.alpha = 0.5, point.size = 0.5)
 
-# (3)
+# (2.c)
 # ecdf plot of the bootstrap results as an ecdf distribution on 
 # on BMD_L (lower value of the confidence interval) for each trend
 # 
 ecdfplotwithCI(variable = a$BMD.zSD.lower, CI.lower = a$BMD.zSD.lower, 
               CI.upper = a$BMD.zSD.upper, by = a$model, CI.col = a$trend, 
               add.point = FALSE)
+  }
 
 }

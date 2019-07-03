@@ -86,7 +86,7 @@ data are normalized using the function \code{\link{normalizeBetweenArrays}} of t
 
 \seealso{
     See \code{\link{normalizeBetweenArrays}} for details about the normalization and 
-    \code{\link{RNAseqdata}} and \code{\link{metabolomicdata}} for other types of data}.
+    \code{\link{RNAseqdata}} and \code{\link{metabolomicdata}} for other types of data.
 }
 
 \references{ 
