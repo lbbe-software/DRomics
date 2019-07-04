@@ -103,8 +103,10 @@ Marie-Laure Delignette-Muller
 # Effect on kidney transcriptomes of tetrachloroethylene
 #
 datatxt <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
+\donttest{
 (o <- RNAseqdata(datatxt, check = TRUE, transfo.method = "rlog"))
 plot(o)
+}
 
 # (2) transformation with the other method on the whole data 
 # (more rapid method)
