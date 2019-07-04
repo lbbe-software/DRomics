@@ -4,7 +4,7 @@
 
 \description{
 Plots the distribution of a variable as an ecdf, with x-error bars for given confidence 
-intervals on this variable
+intervals on this variable.
 }
 
 \usage{
@@ -33,9 +33,10 @@ CI.alpha = 1, add.point = TRUE, point.size = 1)
 
 \details{
 
-A function to plot a variable as an ECDF plot, potentially splitted by the groups coded in the argument 
-\code{by}, with the confidence intervals associated to each value of the variable, given in \code{CI.lower}
-and \code{CI.upper}. 
+A function to plot a variable as an ECDF plot, optionally splitted by the groups coded 
+in the argument \code{by}, with the confidence intervals associated to each value of the variable, given in \code{CI.lower}
+and \code{CI.upper}, and optionally differentially colored according to the factor
+given in the argument \code{CI.col}. 
 }
 
 \value{ 

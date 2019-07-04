@@ -16,7 +16,7 @@ curvesplot(extendedres, xmin = 0, xmax, y0shift = TRUE,
 \item{extendedres}{the dataframe of results provided by bmdcalc (res) or drcfit (fitres) 
  or a subset of this data frame (selected lines) potentially extended with additional columns
  coming for example from the annotation of items. This extended dataframe
- must contain the column giving the identification of each curve (\code{id}),
+ must at least contain the column giving the identification of each curve (\code{id}),
  the column \code{model} naming the fitted model and the values of 
 the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
 

@@ -24,9 +24,8 @@ bmdboot(r, items = r$res$id, niter = 1000,
 \item{r}{An object of class \code{"bmdcalc"} returned by the function \code{bmdcalc}.}
 
 \item{items}{A character vector specifying the identifiers of the items for which you want the
-computation of confidence intervals (for \code{bmdboot}) or the plot of 
-BMD with confidence intervals (for \code{plot.bmdboot}). 
-If omitted the computation or the plot is done for all the items.}
+computation of confidence intervals. 
+If omitted the computation is done for all the items.}
 
 \item{niter}{The number of samples drawn by bootstrap.}
 

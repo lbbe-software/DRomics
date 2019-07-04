@@ -28,8 +28,8 @@ doses or concentrations in a numeric format for the corresponding replicate (for
 
 \item{check}{If TRUE the format of the input file is checked.}
 
-\item{transfo.method}{The method chosen to transform raw counts in 
-pseudocounts using the
+\item{transfo.method}{The method chosen to transform raw counts in a log2 scale
+using the
   \code{DESeq2}: \code{"rlog"} for regularized logarithm or
   \code{"vst"} for variance stabilizing transformation.}
 

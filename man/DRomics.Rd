@@ -22,8 +22,9 @@ that must imported  using the function\code{\link{microarraydata}},
 \item metabolomic data that must imported using the function 
 \code{\link{metabolomicdata}}.
 For metabolomic data, all the pretreatment steps must be done before importation
-of data, especially so that imported data can be directly fitted by least-square regression
-(assuming a Guassian error model valid)
+of data and data should be imported in log scale
+so that data can be directly fitted by least-square regression
+(assuming a Gaussian error model valid)
 without any transformation.
 }
 
@@ -34,7 +35,8 @@ Below is proposed an example including each step or the workflow on microarray d
 \seealso{
     See \code{\link{microarraydata}}, \code{\link{RNAseqdata}},
     \code{\link{metabolomicdata}}, \code{\link{itemselect}},
-    \code{\link{drcfit}}, \code{\link{bmdcalc}} 
+    \code{\link{drcfit}}, \code{\link{bmdcalc}}, 
+    \code{\link{bmdboot}} 
     for details about each function.
 }
 
@@ -88,6 +90,7 @@ plot(r, BMDtype = "xfold", plottype = "hist", by = "typology", hist.bins = 10)
 (b <- bmdboot(r, niter = 100)) # niter to put at 1000 for a reasonable precision
 plot(b, BMDtype = "zSD") 
 plot(b, BMDtype = "zSD", by = "trend") 
+b$res
 
 }
 

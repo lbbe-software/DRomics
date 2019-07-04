@@ -76,7 +76,7 @@ of the first 20 items.
 }
 
 \seealso{
-    See  \code{\link{RNAseqdata}} and \code{\link{microarraydata}} for other   types of data.}
+    See  \code{\link{RNAseqdata}} and \code{\link{microarraydata}} for other types of data.}
 
 \author{ 
 Marie-Laure Delignette-Muller

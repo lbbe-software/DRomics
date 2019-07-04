@@ -36,10 +36,11 @@ an ANOVA-type test (see details for further explaination).}
 The selection of responsive items is performed using the \code{limma} package
 for microarray and metabolomic data and the \code{DESeq2} package for
 RNAseq data. 
-Three methods are proposed (as described below). Within \code{limma} there are implemented using functions \code{\link{lmFit}},  
+Three methods are proposed (as described below). Within \code{limma} those methods are implemented using functions \code{\link{lmFit}},  
 \code{\link{eBayes}} and \code{\link{topTable}} with p-values ajusted for multiple 
 testing using the Benjamini-Hochberg method, with the false discovery rate given in
-input (argument \code{FDR}). Within \code{DESeq2} there are implemented using functions \code{\link{DESeqDataSetFromMatrix}},  
+input (argument \code{FDR}). Within \code{DESeq2} those methods
+are implemented using functions \code{\link{DESeqDataSetFromMatrix}},  
 \code{\link{DESeq}} and \code{\link{results}} with p-values ajusted for multiple 
 testing using the Benjamini-Hochberg method, with the false discovery rate given in
 input (argument \code{FDR}). 

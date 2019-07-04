@@ -71,7 +71,7 @@ chosen model and of its parameter values :
   \item lGP.bell for bell-shape log-Gauss-probit curves.
  }
  
-Each retained is also classified in four classes by its global trend :
+Each retained item is also classified in four classes by its global trend :
   \itemize{
   \item inc for increasing curves,
   \item dec for decreasing curves ,
