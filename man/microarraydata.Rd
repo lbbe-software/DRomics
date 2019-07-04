@@ -86,8 +86,7 @@ data are normalized using the function \code{\link{normalizeBetweenArrays}} of t
 
 \seealso{
     See \code{\link{normalizeBetweenArrays}} for details about the normalization and 
-    \code{\link{RNAseqdata}} and \code{\link{metabolomicdata}} for other types of data.
-}
+    \code{\link{RNAseqdata}} and \code{\link{metabolomicdata}} for other types of data.}
 
 \references{ 
 Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, and Smyth, GK (2015), \emph{limma powers differential expression analyses for RNA-sequencing and microarray studies}. Nucleic Acids Research 43, e47.
