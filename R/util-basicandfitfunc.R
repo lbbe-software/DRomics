@@ -100,7 +100,6 @@ invExpo <- function(y, b, d, e)
 ### Hill model and starting values
 formHill <- as.formula(signal ~ c + (d - c) / (1 + (dose/e)^b ) )
 startvalHillnls2 <- function(x, y, xm, ym, increase) # requires the definition of increase from min and max values
-  # which is the first one
   # inputs
   # - x values of the dose
   # - y values the corresponding signal
@@ -168,7 +167,7 @@ startvalGauss5pnls <- function(xm, ym, Ushape)
   # 
   b <- max(xm) / 4
   # initial value of e (dose corresponding to the maximal (or minimal) signal)
-  xextremum <- xm[which(ym == yextremum)] 
+  xextremum <- median(xm[which(ym == yextremum)]) # just in case there is more than one dose at which ym == yextremum
   e <- min(xextremum - (c - d)*b/(f*sqrt(2*pi)), 1e-6) 
   startval <- list(b = b, c = c, d = d, e = e, f = f)
 }
@@ -191,7 +190,7 @@ startvalGauss4pnls <- function(xm, ym, Ushape)
   # with 2sd between 0 and e -> b = e /2
   b <- max(xm) / 4
   # initial value of e (dose corresponding to the maximal (or minimal) signal)
-  xextremum <- xm[which(ym == yextremum)] 
+  xextremum <- median(xm[which(ym == yextremum)] )# just in case there is more than one dose with ym = yextremum
   e <- min(xextremum, 1e-6)
   startval <- list(b = b, d = d, e = e, f = f)
 }
@@ -230,8 +229,8 @@ startvalLGauss5pnls <- function(xm, ym, Ushape)
   # bell shape extends to the whole dose range so dose max = 4 sd = 4 * b IN LOG SCALE !!!
   b <- (log(max(xm)) - log(min(xm[xm!=0]))) / 4
   # initial value of e (dose corresponding to the maximal (or minimal) signal)
-  xextremum <- xm[which(ym == yextremum)] 
-  e <- xextremum * exp(- (c - d)*b/(f*sqrt(2*pi)))
+  xextremum <- median(xm[which(ym == yextremum)]) # median just in case there is more than one dose with ym = yextremum
+  e <- xextremum * exp(- (c - d)*b/(f*sqrt(2*pi))) 
   startval <- list(b = b, c = c, d = d, e = e, f = f)
 }
 
@@ -245,7 +244,7 @@ startvalLGauss4pnls <- function(xm, ym, Ushape)
   # - Ushape TRUE if U shape FALSE if umbrella shape
 {
   # initial value of d
-  d <- ym[1]# mean of the response at the highest dose
+  d <- ym[1]# mean of the response at the smallest dose
   # initial value of f
   yextremum <- ifelse(Ushape, min(ym), max(ym))
   f <-  yextremum - d # amplitude of the gaussian part
@@ -253,8 +252,8 @@ startvalLGauss4pnls <- function(xm, ym, Ushape)
   # bell shape extends to the whole dose range so dose max = 4 sd = 4 * b IN LOG SCALE !!!
   b <- (log(max(xm)) - log(min(xm[xm!=0]))) / 4
   # initial value of e (dose corresponding to the maximal (or minimal) signal)
-  xextremum <- xm[which(ym == yextremum)] 
-  e <- xextremum
+  xextremum <- median(xm[which(ym == yextremum)]) # just in case there is more than one dose with ym = yextremum
+  e <- xextremum 
   startval <- list(b = b, d = d, e = e, f = f)
 }
 
@@ -282,7 +281,6 @@ startvalLprobitnls1 <- function(xm, ym) # to suppress
 }
 
 startvalLprobitnls2 <- function(x, y, xm, ym, increase) # requires the definition of increase from min and max values
-  # which is the first one
   # inputs
   # - x values of the dose
   # - y values the corresponding signal
