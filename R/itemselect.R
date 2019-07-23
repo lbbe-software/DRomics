@@ -1,5 +1,6 @@
 ### select significantly responsive items 
-itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA"), FDR = 0.05)
+itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA"), FDR = 0.05, 
+                       max.ties.prop = 0.2)
 {
   # Checks
   if (!(inherits(omicdata, "microarraydata") | 
@@ -12,6 +13,9 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
     stop("FDR, the false discovery rate, must a number in ]0; 1[ (generally under 0.1).")
   if ((FDR <=0) | (FDR >=1))
     stop("FDR, the false discovery rate, must in ]0; 1[.")
+  if ((max.ties.prop <=0) | (max.ties.prop >0.5))
+    stop("max.ties.prop, the maximal tolerated proportion of tied values
+         per item, must in ]0; 0.5].")
   
   item <- omicdata$item
   dose <- omicdata$dose
@@ -92,6 +96,22 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
     selectindex <- selectindexnonsorted[irowsortedbypvalue]
     adjpvalue <- adjpvaluenonsorted[irowsortedbypvalue]
   }
+  
+  # elimination of first selected items with a proportion of tied values
+  # above max.tied.values.prop (assuming tied values correspond to the min 
+  # value, at which non detection are imputed
+  nsample <- length(dose)
+  max4nties <- nsample * max.ties.prop
+  check.ties <- function(index)
+  {
+    datai <- data[index, ]
+    mini <- min(datai)
+    nbtiesi <- length(which(datai == mini))
+    return(nbtiesi < max4nties)
+  }
+  tokeep <- sapply(selectindex, check.ties)
+  selectindex <- selectindex[tokeep]
+  adjpvalue <- adjpvalue[tokeep]
   
   reslist <- list(adjpvalue = adjpvalue, selectindex = selectindex, 
                   omicdata = omicdata, select.method = select.method, FDR = FDR)  

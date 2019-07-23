@@ -9,7 +9,8 @@ a quadratic trend test, a linear trend test or an ANOVA-based test.
 }
 
 \usage{
-itemselect(omicdata, select.method = c("quadratic", "linear", "ANOVA"), FDR = 0.05)   
+itemselect(omicdata, select.method = c("quadratic", "linear", "ANOVA"), 
+  FDR = 0.05, max.ties.prop = 0.2)   
 
 \method{print}{itemselect}(x, \dots)
 }
@@ -26,6 +27,10 @@ quadratic trend test on dose ranks, \code{"linear"} for a linear trend test on d
 an ANOVA-type test (see details for further explaination).}
 
 \item{FDR}{The threshold in term of FDR (False Discovery Rate) for selecting responsive items.}
+
+\item{max.ties.prop}{The maximal tolerated proportion of tied values for each item, 
+  above which the item cannot be selected (must be in ]0, 0.5], 
+  and by default fixed at 0.2).}
 
 \item{x}{An object of class \code{"itemselect"}.}
 
@@ -59,6 +64,11 @@ a linear model describing the response as a function of the dose in rank-scale.
 tests the global significance of a quadratic model describing the response as a function of the dose in rank-scale.
 It is a variant of the linear trend method that aims at detecting monotonic and non monotonic trends from a dose-response designs, whatever the number of replicates per dose (default chosen method).
  }
+ 
+A filter on the proportion of tied values is also performed whatever the type of data, assuming 
+tied values correspond to a minimal commonn value at which non detections were imputed. 
+All items having a proportion of such tied minimal values above the input argument
+\code{max.ties.prop} are not selected.
  
 }
 
