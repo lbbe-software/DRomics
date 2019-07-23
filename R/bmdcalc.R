@@ -92,7 +92,7 @@ bmdcalc <- function(f, z = 1, x = 10)
       yext <- dcalc$yextrem[i] <- fGauss5p(xext, b=b, c=c, d=d, e=e, f=g) # g is renamed f
       ydosemax <- dcalc$ydosemax[i] <- fGauss5p(x=dosemax, b=b, c=c, d=d, e=e, f=g)
       
-      deltap <- y0 * xdiv100
+      deltap <- abs(y0) * xdiv100
       deltasd <- z * dfitall$SDres[i]
       
       resBMDp <- calcBMD(y0=y0, delta=deltap, xext=xext, yext=yext, dosemax=dosemax, 
@@ -108,7 +108,7 @@ bmdcalc <- function(f, z = 1, x = 10)
     if(modeli == "log-Gauss-probit") {
       yext <- dcalc$yextrem[i] <- fLGauss5p(xext, b=b, c=c, d=d, e=e, f=g) # g is renamed f
       ydosemax <- dcalc$ydosemax[i] <- fLGauss5p(x=dosemax, b=b, c=c, d=d, e=e, f=g)
-      deltap <- y0 * xdiv100
+      deltap <- abs(y0) * xdiv100
       deltasd <- z * dfitall$SDres[i]
       
       resBMDp <- calcBMD(y0=y0, delta=deltap, xext=xext, yext=yext, dosemax=dosemax, ydosemax=ydosemax, func=fLGauss5pBMR, b=b, c=c, d=d, e=e, g=g)
