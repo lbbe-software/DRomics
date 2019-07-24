@@ -647,7 +647,8 @@ print.drcfit <- function(x, ...)
   print(ttypology)
 }
 
-plot.drcfit <- function(x, items, ...)
+plot.drcfit <- function(x, items, 
+                plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), ...)
 {
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects")
@@ -673,7 +674,8 @@ plot.drcfit <- function(x, items, ...)
                 dose = x$omicdata$dose, 
                 data = x$omicdata$data, 
                 data.mean = x$omicdata$data.mean, 
-                npts = 500) 
+                npts = 500,
+                plot.type = plot.type) 
   
 }
 

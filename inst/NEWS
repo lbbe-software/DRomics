@@ -8,6 +8,8 @@ with a too high proportion of non detected values (assuming they were
 imputed to a common minimum value).
 - Add of an argument point.type that enables the change of point type
 in, ecdfplotwithCI or its coding by a given factor.
+- Add of an argument plot.type in function plot.drcfit() to enable
+residual plots.
 
 Version 2.0-0 
 =============
