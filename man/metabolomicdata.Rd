@@ -11,12 +11,19 @@ of data). No normalization nor transformation is provided in this function.
 The pretreatment of metabolomic data must be done before importation of data, 
 and data must be imported in log scale,
 so that they can be directly modelled using a Gaussian 
-error model. This strong hypothesis is required both for selection of items and 
-for dose-reponse modelling.
-A basic procedure for this pre-treatment of metabolomic data could be as follows:
-i) retrieving of values data using half minimum method (i.e. half of the minimum value found for a metabolite across all samples)
-ii) log-transformation of values
-iii) scaling to the total intensity (i.e. normalization by sum of signals in each sample).
+error model. This strong hypothesis is required both for selection of items and for dose-reponse modelling.
+A basic procedure for this pre-treatment of metabolomic data could follow
+the three steps described thereafter:
+i) removing of metabolites for which the proportion of missing data 
+  (non detections) across all the samples is too high 
+  (more than 20 to 50 percents according to your tolerance level);
+ii) retrieving of missing values data using half minimum method 
+  (i.e. half of the minimum value found for a metabolite across all samples);
+iii) log-transformation of values.
+If a scaling to the total intensity (normalization by sum of signals 
+in each sample) or another normalization is necessary and pertinent, 
+we recommend to do it before those three previously decribed steps.
+
 
 }
 
@@ -86,7 +93,7 @@ Marie-Laure Delignette-Muller
 # (1) import and check of metabolomic data 
 # (an example on a subsample of a greater data set)
 #
-datatxt <- system.file("extdata", "metabolo_norm.txt", package="DRomics")
+datatxt <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
 
 o <- metabolomicdata(datatxt, check = TRUE)
 print(o)

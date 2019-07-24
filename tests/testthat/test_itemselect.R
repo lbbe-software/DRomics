@@ -17,4 +17,11 @@ test_that("itemselect works as expected on the number of selected probes",
     expect_equal(length(s_ANOVA0p001$selectindex), 55)
     (s_ANOVA0p05 <- itemselect(o, select.method = "ANOVA", FDR = 0.05))
     expect_equal(length(s_ANOVA0p05$selectindex), 203)
+    datatxt.m <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
+    o.m <- metabolomicdata(datatxt.m, check = TRUE)
+    (s_quad0p05.m <- itemselect(o.m, select.method = "quadratic", FDR = 0.05))
+    expect_equal(length(s_quad0p05.m$selectindex), 36)
+    (s_quad0p05.mb <- itemselect(o.m, select.method = "quadratic", FDR = 0.05,
+                                max.ties.prop = 0.5))
+    expect_equal(length(s_quad0p05.mb$selectindex), 40)
   })

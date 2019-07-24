@@ -172,7 +172,7 @@ ui <- fluidPage(
                                                'Select an input file',
                                                accept = c('text/csv', 'text/plain')),
                                      h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;"), " information about the format required"),
-                                     h5("See ", a("here", href = "DRomicspkg/metabolo_norm.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;", download = 'metabolo_norm.txt'), " an example file")
+                                     h5("See ", a("here", href = "DRomicspkg/metabolo_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#155450;", download = 'metabolo_norm.txt'), " an example file")
                                    ),
                                    sidebarPanel(
                                      style = "background-color: #a7dbd8;",

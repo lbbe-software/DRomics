@@ -30,7 +30,7 @@ an ANOVA-type test (see details for further explaination).}
 
 \item{max.ties.prop}{The maximal tolerated proportion of tied values for each item, 
   above which the item cannot be selected (must be in ]0, 0.5], 
-  and by default fixed at 0.2).}
+  and by default fixed at 0.2 - see details for a description of this filtering step).}
 
 \item{x}{An object of class \code{"itemselect"}.}
 
@@ -66,7 +66,7 @@ It is a variant of the linear trend method that aims at detecting monotonic and 
  }
  
 A filter on the proportion of tied values is also performed whatever the type of data, assuming 
-tied values correspond to a minimal commonn value at which non detections were imputed. 
+tied values correspond to a minimal common value at which non detections were imputed. 
 All items having a proportion of such tied minimal values above the input argument
 \code{max.ties.prop} are not selected.
  

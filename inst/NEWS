@@ -1,5 +1,12 @@
 === DRomics : Dose response for omics ===
 
+Version 2.0-1 
+=============
+NEW FEATURES
+- Add of a filter in itemselect(), to exclude from the selection items
+with a too high proportion of non detected values (assuming they were
+imputed to a common minimum value).
+
 Version 2.0-0 
 =============
 NEW FEATURES

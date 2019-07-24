@@ -1,7 +1,15 @@
-A basic procedure for the pre-treatment of metabolomic data could be as follows:
-1) retrieving of values data using half minimum method (i.e. half of the minimum value found for a metabolite across all samples)
-2) log-transformation of values
-3) scaling to the total intensity (i.e. normalization by sum of signals in each sample)
+A basic procedure for this pre-treatment of metabolomic data could follow
+the three steps described thereafter:
+i) removing of metabolites for which the proportion of missing data 
+  (non detections) across all the samples is too high 
+  (more than 20 to 50 percents according to your tolerance level);
+ii) retrieving of missing values data using half minimum method 
+  (i.e. half of the minimum value found for a metabolite across all samples);
+iii) log-transformation of values.
+
+If a scaling to the total intensity (normalization by sum of signals 
+in each sample) or another normalization is necessary and pertinent, 
+we recommend to do it before those three previously decribed steps.
 
 For more information and options about pre-treatment of metabolomic data, see for example Liggi et al. 2018.
 

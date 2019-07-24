@@ -1,6 +1,6 @@
 library(DRomics)
 # importation and check of metabolomic data
-datatxt <- system.file("extdata", "metabolo_norm.txt", package="DRomics")
+datatxt <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
 (o <- metabolomicdata(datatxt, check = TRUE))
 plot(o)
 
