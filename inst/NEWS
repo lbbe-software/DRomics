@@ -6,6 +6,8 @@ NEW FEATURES
 - Add of a filter in itemselect(), to exclude from the selection items
 with a too high proportion of non detected values (assuming they were
 imputed to a common minimum value).
+- Add of an argument point.type that enables the change of point type
+in, ecdfplotwithCI or its coding by a given factor.
 
 Version 2.0-0 
 =============
