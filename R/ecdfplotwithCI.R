@@ -1,9 +1,13 @@
 ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI.alpha = 1, 
-                           add.point = TRUE, point.size = 1)
+                           add.point = TRUE, point.size = 1, point.type = 16)
 {
+  d <- data.frame(variable = variable, lower = CI.lower, upper = CI.upper)
+  if (!missing(by)) d$by <- by 
+  if (is.factor(CI.col)) d$CI.col <- CI.col
+  if (is.factor(point.type)) d$point.type <- point.type
+  
   if (!missing(by)) 
   {
-    d <- data.frame(variable = variable, lower = CI.lower, upper = CI.upper, by = by)
     ntot = nrow(d)
     uniqueby <- unique(d$by)
     n.uniqueby <- length(uniqueby)
@@ -16,8 +20,7 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
       # not strictly equivalent with ecdf (i / n)
       # d$ECDF[indi] <- ecdf(d$variable[indi])(d$variable[indi])
     }
-    g <- ggplot(data = d, mapping = aes_(x = variable, y = quote(ECDF))) + 
-      facet_wrap(~ by) 
+    g <- ggplot(data = d, mapping = aes_(x = variable, y = quote(ECDF))) + facet_wrap(~ by) 
     
     if (is.factor(CI.col))
     {
@@ -27,12 +30,11 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
     } else
     {
       g <- g + 
-        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper)), col = CI.col, 
+        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper)), color = CI.col, 
                        alpha = CI.alpha, height = 0)  
     }
   } else
   {
-    d <- data.frame(variable = variable, lower = CI.lower, upper = CI.upper)
     ntot = nrow(d)
     d$ECDF <- (rank(d$variable, ties.method = "first") - 0.5) / ntot
     # not strictly equivalent with ecdf (i / n)
@@ -46,10 +48,21 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
     } else
     {
       g <- g + 
-        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper)), col = CI.col, 
+        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper)), color = CI.col, 
                        alpha = CI.alpha, height = 0)  
     }
   }
-  if (add.point) g <- g + geom_point(size = point.size)
+  if (add.point) 
+  {
+    if (is.factor(point.type)) 
+    {
+      g <- g + geom_point(aes_(shape = quote(point.type)),
+                          size = point.size)
+    } else
+    {
+      g <- g + geom_point(shape = point.type,
+                          size = point.size)
+    }
+  }
   return(g)
 }

@@ -9,7 +9,7 @@ intervals on this variable.
 
 \usage{
 ecdfplotwithCI(variable, CI.lower, CI.upper, by, CI.col = "blue", 
-CI.alpha = 1, add.point = TRUE, point.size = 1)
+CI.alpha = 1, add.point = TRUE, point.size = 1, point.type = 16)
 }
 
 \arguments{
@@ -23,11 +23,15 @@ CI.alpha = 1, add.point = TRUE, point.size = 1)
   
 \item{CI.col}{The color to draw the confidence intervals (unique color) of a factor coding for the color.}
 
-\item{CI.alpha}{Optional transparency of the lines used to draw the confidence intervals}
+\item{CI.alpha}{Optional transparency of the lines used to draw the confidence intervals.}
 
-\item{add.point}{If \code{TRUE} points are added to confidence intervals}
+\item{add.point}{If \code{TRUE} points are added to confidence intervals.}
 
-\item{point.size}{Size of the added points in case \code{add.point} is \code{TRUE}}
+\item{point.size}{Size of the added points in case \code{add.point} is \code{TRUE}.}
+
+\item{point.type}{Shape of the added points in case \code{add.point} is \code{TRUE}
+  defined as an integer coding for a unique common shape or
+  as a factor coding for the shape.}
 
 }
 
@@ -96,7 +100,6 @@ datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 a <- b$res[is.finite(b$res$BMD.zSD.upper), ]
 ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
               CI.upper = a$BMD.zSD.upper, by = a$trend, CI.col = "red")
-plot(b, by = "trend")
 
 # (2.b)
 # ecdf plot of the bootstrap results as an ecdf distribution 
@@ -110,6 +113,12 @@ ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower,
 ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
               CI.upper = a$BMD.zSD.upper, by = a$model, CI.col = a$trend,
               CI.alpha = 0.5, point.size = 0.5)
+
+# with the model coding for the type of points
+ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
+              CI.upper = a$BMD.zSD.upper, CI.col = a$trend,
+              CI.alpha = 0.5, point.size = 0.5, point.type = a$model)
+
 
 # (2.c)
 # ecdf plot of the bootstrap results as an ecdf distribution on 
