@@ -1,0 +1,16 @@
+language: r
+cache: packages
+r: devel
+warnings_are_errors: false
+sudo: required
+
+r_check_args: "--as-cran"
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+env:
+ global:
+   - CRAN: http://cran.rstudio.com
