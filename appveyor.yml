@@ -16,6 +16,7 @@ install:
 
 build_script:
   - travis-tool.sh install_deps
+  - travis-tool.sh install_bioc_deps
   - travis-tool.sh bioc_install limma
   - travis-tool.sh bioc_install DESeq2
 
