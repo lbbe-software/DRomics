@@ -39,7 +39,7 @@ shiny::runApp(system.file("DRomics-shiny", package = "DRomics"))
 ```
 
 or online at:
-<a href="http://lbbe-shiny.univ-lyon1.fr/DRomics-shiny/" target="blank">http://lbbe-shiny.univ-lyon1.fr/DRomics-shiny/</a>
+<a href="http://lbbe-shiny.univ-lyon1.fr/DRomics-shiny/" target="_blank">http://lbbe-shiny.univ-lyon1.fr/DRomics-shiny/</a>
 
 # Authors & Contacts
 - Elise Billoir: elise.billoir@univ-lorraine.fr
@@ -54,4 +54,4 @@ About technical issues, you can contact Aurélie Siberchicot: aurelie.siberchico
 Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). 
 *DRomics : a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment*. 
 Environmental Science & Technology. 
-<a href="https://pubs.acs.org/doi/10.1021/acs.est.8b04752" target="blank">https://pubs.acs.org/doi/10.1021/acs.est.8b04752</a>
+<a href="https://pubs.acs.org/doi/10.1021/acs.est.8b04752" target="_blank">https://pubs.acs.org/doi/10.1021/acs.est.8b04752</a>
