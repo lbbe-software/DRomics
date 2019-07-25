@@ -1,3 +1,5 @@
+[![Travis-CI Build Status](https://travis-ci.org/aursiber/DRomics.svg?branch=master)](https://travis-ci.org/aursiber/DRomics)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/q8o4a1i8t2394054?svg=true)](https://ci.appveyor.com/project/aursiber/DRomics/branch/master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/DRomics)](http://cran.r-project.org/package=DRomics)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/DRomics)](https://cran.r-project.org/package=DRomics)
 
