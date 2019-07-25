@@ -19,5 +19,5 @@ use_bioc: true
 bioc_required: true
 
 bioc_packages:
-  - biomformat
-  - phyloseq
+  - DESeq2
+  - limma
