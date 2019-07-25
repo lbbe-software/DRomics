@@ -267,6 +267,12 @@ ui <- fluidPage(
                                    width = 12,
                                    verbatimTextOutput('printDrcfit'),
                                    br(),
+                                   radioButtons('plottypeDrcfit', 
+                                                'Plot type', inline = TRUE, 
+                                                choices = c('dose / fitted' = 'dose_fitted',
+                                                            'dose / residuals' = 'dose_residuals',
+                                                            'fitted / residuals' = 'fitted_residuals')),
+                                   br(),
                                    withSpinner(plotOutput("plotDrcfit", width = "100%", height = "900px"), type = 4, color = '#155450'),
                                    br(), br()
                                  )

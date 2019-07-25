@@ -66,9 +66,11 @@ server <- function(input, output, session) {
     return(drcfit(signifitems, progressbar = FALSE, sigmoid.model = "Hill", parallel = "no"))
   })
   
+  inPlottypeDrcfit <- reactive({input$plottypeDrcfit})
+  
   output$plotDrcfit <- renderPlot({
     mydrcfit <- rundrcfit()
-    plotdrcfit <- plot(mydrcfit)
+    plotdrcfit <- plot(mydrcfit, plot.type = inPlottypeDrcfit())
     plot(plotdrcfit)
     
     output$okfordowload <- reactive({length(mydrcfit)})
