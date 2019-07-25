@@ -14,3 +14,10 @@ notifications:
 env:
  global:
    - CRAN: http://cran.rstudio.com
+
+use_bioc: true
+bioc_required: true
+
+bioc_packages:
+  - biomformat
+  - phyloseq
