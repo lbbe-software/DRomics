@@ -3,4 +3,5 @@
 drcfitplot.pdf
 ^.*\.tar.gz
 .travis.yml
-.appveyor.yml
+appveyor.yml
+README.md

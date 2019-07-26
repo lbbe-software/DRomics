@@ -11,4 +11,5 @@ Imports: stats, graphics, ggplot2
 Suggests: parallel, shiny, shinyBS, shinyjs, testthat
 License: GPL (>= 2)
 Encoding: UTF-8
+URL: https://github.com/aursiber/DRomics
 Contact: Marie-Laure Delignette-Muller <marielaure.delignettemuller@vetagro-sup.fr>
