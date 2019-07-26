@@ -46,6 +46,8 @@ shiny::runApp(system.file("DRomics-shiny", package = "DRomics"))
 or online at:
 <a href="http://lbbe-shiny.univ-lyon1.fr/DRomics-shiny/" target="_blank">http://lbbe-shiny.univ-lyon1.fr/DRomics-shiny/</a>
 
+This shiny app is runing with the development version of DRomics.
+
 # Authors & Contacts
 - Elise Billoir: elise.billoir@univ-lorraine.fr
 - Marie-Laure Delignette-Muller: marielaure.delignettemuller@vetagro-sup.fr
