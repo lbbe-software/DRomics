@@ -27,6 +27,6 @@ test_that("itemselect works as expected on the number of selected probes",
     datatxt.r <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
     (o.r <- RNAseqdata(datatxt.r, check = TRUE, transfo.method = "rlog"))
     (s_quad.r <- itemselect(o.r, select.method = "quadratic", FDR = 0.05))
-    expect_equal(length(s_quad.r$selectindex) = 43)
+    expect_equal(length(s_quad.r$selectindex), 43)
     
   })
