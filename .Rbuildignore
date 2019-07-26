@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 drcfitplot.pdf
 ^.*\.tar.gz
+.travis.yml
+.appveyor.yml
