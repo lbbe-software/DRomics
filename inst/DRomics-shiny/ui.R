@@ -42,7 +42,9 @@ ui <- fluidPage(
                                         br(),
                                         h4("DRomics Shiny App runs on the ", 
                                            a("shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#34837e;"), "(see here the ",
-                                           a("DRomics tutorial", href = "Dromics_tutorial.pdf", TARGET="_blank", style="color:#34837e;"), ")."),
+                                           a("DRomics tutorial", href = "Dromics_tutorial.pdf", TARGET="_blank", style="color:#34837e;"), "),
+                                           with the develoment version of the DRomics package (available on ", 
+                                           a("Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#34837e;"),")."),
                                         h4("DRomics is also an R package, available on ", 
                                            a("CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#34837e;"), 
                                            " and on ",
@@ -68,7 +70,9 @@ ui <- fluidPage(
                                         br(),
                                         p(strong("Technical maintainer")),
                                         p(a("Aurélie Siberchicot", href = "https://lbbe.univ-lyon1.fr/-Siberchicot-Aurelie-.html", TARGET = "_blank", style="color:#34837e;"), 
-                                          "- aurelie.siberchicot@univ-lyon1.fr - Laboratoire de Biométrie et Biologie Evolutive - Université Lyon 1 - Lyon - France")
+                                          "- aurelie.siberchicot@univ-lyon1.fr - Laboratoire de Biométrie et Biologie Evolutive - Université Lyon 1 - Lyon - France"),
+                                        p("Issues can be reported on", 
+                                          a("https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#34837e;"), ".")
                         )),
                         hr(style='width: 70%;'),
                         fixedRow(column(10, offset = 2,
