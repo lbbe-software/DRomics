@@ -97,7 +97,7 @@ ui <- fluidPage(
              tabPanel(HTML("<font face=verdana size=3 color=#155450>Step 1</font>"),
                       fixedRow(
                         column(12, 
-                               br(), HTML("<font face=verdana size=5 color=#155450><b>IMPORT, CHECK AND NORMALIZATION OF OMICS DATA</b></font>"), br(), br(), br(),
+                               br(), HTML("<font face=verdana size=5 color=#155450><b>IMPORT, CHECK AND PRETREATMENT OF OMICS DATA</b></font>"), br(), br(), br(),
                                
                                fixedRow(
                                  
