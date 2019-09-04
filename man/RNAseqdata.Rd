@@ -5,7 +5,9 @@
 \title{Import, check and normalization and transformation of RNAseq data}
 
 \description{
-RNAseq data in raw counts are imported from a .txt file, checked (see the description 
+RNAseq data in raw counts are imported from a .txt file 
+(internally imported using the function \code{\link{read.table}}), 
+checked (see the description 
 of argument \code{file} for the required format
 of data), normalized with respect to library size and tranformed in 
 a log2 scale using
@@ -20,7 +22,8 @@ RNAseqdata(file, check = TRUE, transfo.method = c("rlog", "vst"))
 }
 
 \arguments{
-\item{file}{The name of the .txt file containing one row per item, with the first column corresponding to the identifier of each item, in a column named 
+\item{file}{The name of the .txt file (e.g. \code{"mydata.txt"})
+containing one row per item, with the first column corresponding to the identifier of each item, in a column named 
 \code{"item"}, and the other columns giving the responses
 of the item for each replicate at each dose or concentration. 
 The names of the corresponding columns must correspond to the tested
@@ -39,7 +42,9 @@ using the
 }
 
 \details{
-This function imports the data from a .txt file, then checks the format of 
+This function imports the data from a .txt file, using the function
+\code{\link{read.table}} with its default field separator (sep argument),
+then checks the format of 
 data (see the description 
 of argument \code{file} for the required format
 of data) and gives in the \code{print} information
@@ -84,7 +89,8 @@ and tranformed using functions \code{\link{rlog}} or \code{\link{vst}} of the
 }
 
 \seealso{
-    See \code{\link{rlog}} and \code{\link{vst}} for details about the 
+    See \code{\link{read.table}} the function used to import data,
+    \code{\link{rlog}} and \code{\link{vst}} for details about the 
     transformation methods and 
     \code{\link{microarraydata}} and \code{\link{metabolomicdata}} for other types of data.
 }
@@ -105,6 +111,16 @@ Marie-Laure Delignette-Muller
 datatxt <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
 (o <- RNAseqdata(datatxt, check = TRUE, transfo.method = "rlog"))
 plot(o)
+
+# If you want to use your own data set just replace datatxt, 
+# the first argument of RNAseqdata(), 
+# by the name of your data file (e.g. "mydata.txt")
+# 
+# You should take care that the field separator of this data file is one
+# of the default field separators recognised by the read.table() function
+# when it is used with its default field separator (sep argument)
+# Tabs are recommended.
+
 
 # (2) transformation with two methods on the whole data set
 \donttest{

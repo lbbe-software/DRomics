@@ -37,7 +37,7 @@ ui <- fluidPage(
                                              predefined family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive a benchmark dose or 
                                              concentration from each fitted curve (step 4).", br(), 
                                              "In the available version, DRomics supports single-channel microarray data (in log2 scale), RNAseq data (in raw counts) or metabolomics data 
-                                             (in log scale). ", 
+                                             (in log scale). It should not be used on other types of data.", 
                                                         style="text-align:justify;"),
                                         br(),
                                         h4("DRomics Shiny App runs on the ", 

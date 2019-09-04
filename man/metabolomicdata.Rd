@@ -5,7 +5,9 @@
 \title{Import and check of metabolomic data}
 
 \description{
-Metabolomic data are imported from a .txt file and checked (see the description 
+Metabolomic data are imported from a .txt file 
+(internally imported using the function \code{\link{read.table}})
+and checked (see the description 
 of argument \code{file} for the required format
 of data). No normalization nor transformation is provided in this function.
 The pretreatment of metabolomic data must be done before importation of data, 
@@ -35,7 +37,8 @@ metabolomicdata(file, check = TRUE)
 }
 
 \arguments{
-\item{file}{The name of the .txt file containing one row per item, with the first column corresponding to the identifier of each item, in a column named 
+\item{file}{The name of the .txt file (e.g. \code{"mydata.txt"})
+containing one row per item, with the first column corresponding to the identifier of each item, in a column named 
 \code{"item"}, and the other columns giving the responses
 of the item for each replicate at each dose or concentration. 
 The names of the corresponding columns must correspond to the tested
@@ -49,7 +52,9 @@ doses or concentrations in a numeric format for the corresponding replicate (for
 }
 
 \details{
-This function imports the data from a .txt file, then checks the format of 
+This function imports the data from a .txt file, using the function
+\code{\link{read.table}} with its default field separator (sep argument),
+then checks the format of 
 data (see the description 
 of argument \code{file} for the required format
 of data) and gives in the \code{print} information
@@ -83,7 +88,8 @@ of the first 20 items.
 }
 
 \seealso{
-    See  \code{\link{RNAseqdata}} and \code{\link{microarraydata}} for other types of data.}
+    See  \code{\link{read.table}} the function used to import data, and
+    \code{\link{RNAseqdata}} and \code{\link{microarraydata}} for other types of data.}
 
 \author{ 
 Marie-Laure Delignette-Muller
@@ -98,5 +104,14 @@ datatxt <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
 o <- metabolomicdata(datatxt, check = TRUE)
 print(o)
 plot(o)
+
+# If you want to use your own data set just replace datatxt, 
+# the first argument of metabolomicdata(), 
+# by the name of your data file (e.g. "mydata.txt")
+# 
+# You should take care that the field separator of this data file is one
+# of the default field separators recognised by the read.table() function
+# when it is used with its default field separator (sep argument)
+# Tabs are recommended.
 
 }

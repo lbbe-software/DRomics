@@ -1,4 +1,6 @@
-The data file must be formated as one row per item (e.g. probes, metabolites),
+The data file must be a .txt file with tabs or spaces as field separators.
+
+It must be formated with one row per item (e.g. probes, metabolites),
 one column per sample (e.g dose/concentration).
 
 The first column must correspond to the identifier of each item (in a column

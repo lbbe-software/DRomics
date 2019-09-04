@@ -6,7 +6,9 @@
 \title{Import, check and normalization of single-channel microarray data}
 
 \description{
-Single-channel microarray data in log2 are imported from a .txt file, checked (see the description 
+Single-channel microarray data in log2 are imported from a .txt file 
+(internally imported using the function \code{\link{read.table}}), 
+checked (see the description 
 of argument \code{file} for the required format
 of data) and normalized (between arrays
 normalization).
@@ -25,7 +27,8 @@ omicdata(file, check = TRUE,
 }
 
 \arguments{
-\item{file}{The name of the .txt file containing one row per item, with the first column corresponding to the identifier of each item, in a column named 
+\item{file}{The name of the .txt file (e.g. \code{"mydata.txt"})
+containing one row per item, with the first column corresponding to the identifier of each item, in a column named 
 \code{"item"}, and the other columns giving the responses
 of the item for each replicate at each dose or concentration. 
 The names of the corresponding columns must correspond to the tested
@@ -43,7 +46,9 @@ normalization is performed using the function normalizeBetweenArrays of the
 }
 
 \details{
-This function imports the data from a .txt file, then checks the format of 
+This function imports the data from a .txt file, using the function
+\code{\link{read.table}} with its default field separator (sep argument),
+then checks the format of 
 data (see the description 
 of argument \code{file} for the required format
 of data) and gives in the \code{print} information
@@ -85,7 +90,8 @@ data are normalized using the function \code{\link{normalizeBetweenArrays}} of t
 }
 
 \seealso{
-    See \code{\link{normalizeBetweenArrays}} for details about the normalization and 
+    See \code{\link{read.table}} the function used to import data, 
+    \code{\link{normalizeBetweenArrays}} for details about the normalization and 
     \code{\link{RNAseqdata}} and \code{\link{metabolomicdata}} for other types of data.}
 
 \references{ 
@@ -101,10 +107,19 @@ Marie-Laure Delignette-Muller
 # (an example on a subsample of a greater data set)
 #
 datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
-
 o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess")
 print(o)
 plot(o)
+
+# If you want to use your own data set just replace datatxt, 
+# the first argument of microarraydata(), 
+# by the name of your data file (e.g. "mydata.txt")
+# 
+# You should take care that the field separator of this data file is one
+# of the default field separators recognised by the read.table() function
+# when it is used with its default field separator (sep argument)
+# Tabs are recommended.
+
 
 # (2) normalization with other methods
 (o.2 <- microarraydata(datatxt, check = TRUE, norm.method = "quantile"))
