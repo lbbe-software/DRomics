@@ -2,8 +2,8 @@ library(DRomics)
 # importation and check of RNAseq data and normalization
 # with respect to library size and transformation 
 # options to put in shiny : transfo.method (2 methods, rlog or vst)
-datatxt <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
-(o <- RNAseqdata(datatxt, check = TRUE, transfo.method = "rlog"))
+datafilename <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
+(o <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog"))
 plot(o)
 
 # item selection using the quadratic method

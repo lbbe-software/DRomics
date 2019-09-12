@@ -3,8 +3,8 @@ test_that("bmdcalc works as expected on the BMD results",
   {
     skip_on_cran()
     skip_on_os(c("mac", "linux", "solaris"))
-    datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
-    o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess")
+    datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+    o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
     s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)
     f <- drcfit(s_quad, progressbar = TRUE)
     r.1 <- bmdcalc(f, z = 1, x = 10)

@@ -99,13 +99,13 @@ Marie-Laure Delignette-Muller
 # (1) import and check of metabolomic data 
 # (an example on a subsample of a greater data set)
 #
-datatxt <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
+datafilename <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
 
-o <- metabolomicdata(datatxt, check = TRUE)
+o <- metabolomicdata(datafilename, check = TRUE)
 print(o)
 plot(o)
 
-# If you want to use your own data set just replace datatxt, 
+# If you want to use your own data set just replace datafilename, 
 # the first argument of metabolomicdata(), 
 # by the name of your data file (e.g. "mydata.txt")
 # 

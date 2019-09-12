@@ -106,12 +106,12 @@ Marie-Laure Delignette-Muller
 # (1) import, check and normalization of microarray data 
 # (an example on a subsample of a greater data set)
 #
-datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
-o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess")
+datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 print(o)
 plot(o)
 
-# If you want to use your own data set just replace datatxt, 
+# If you want to use your own data set just replace datafilename, 
 # the first argument of microarraydata(), 
 # by the name of your data file (e.g. "mydata.txt")
 # 
@@ -122,9 +122,9 @@ plot(o)
 
 
 # (2) normalization with other methods
-(o.2 <- microarraydata(datatxt, check = TRUE, norm.method = "quantile"))
+(o.2 <- microarraydata(datafilename, check = TRUE, norm.method = "quantile"))
 plot(o.2)
-(o.3 <- microarraydata(datatxt, check = TRUE, norm.method = "scale"))
+(o.3 <- microarraydata(datafilename, check = TRUE, norm.method = "scale"))
 plot(o.3)
 
 }

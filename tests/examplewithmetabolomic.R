@@ -1,7 +1,7 @@
 library(DRomics)
 # importation and check of metabolomic data
-datatxt <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
-(o <- metabolomicdata(datatxt, check = TRUE))
+datafilename <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
+(o <- metabolomicdata(datafilename, check = TRUE))
 plot(o)
 
 # item selection using the quadratic method

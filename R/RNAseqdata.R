@@ -21,8 +21,13 @@ RNAseqdata <- function(file, check = TRUE,
   subdata4check <- data[1:min(nrow(data), 10), ]
   subdata4checkT <- trunc(subdata4check)
   if (!identical(subdata4check, subdata4checkT))
-    warning("Your data contain non integer values. 
+    stop("Your data contain non integer values. 
             Make sure that your RNAseq data are imported in raw counts.\n") 
+  if (nrowd < 100)
+    warning("Your dataset contains less than 100 lines. Are you sure you really
+            work on RNAseq data ? This function should
+            not be used with another type of data.")
+  
   
   if (check)
   {

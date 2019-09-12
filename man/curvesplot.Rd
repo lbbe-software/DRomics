@@ -14,8 +14,10 @@ curvesplot(extendedres, xmin = 0, xmax, y0shift = TRUE,
 
 \arguments{
 \item{extendedres}{the dataframe of results provided by bmdcalc (res) or drcfit (fitres) 
- or a subset of this data frame (selected lines) potentially extended with additional columns
- coming for example from the annotation of items. This extended dataframe
+ or a subset of this data frame (selected lines). This dataframe can be extended 
+ with additional columns coming for example from the annotation of items, and some lines 
+ can be duplicated if their corresponding item has more than one annotation. 
+ This extended dataframe
  must at least contain the column giving the identification of each curve (\code{id}),
  the column \code{model} naming the fitted model and the values of 
 the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
@@ -69,10 +71,10 @@ Marie-Laure Delignette-Muller
 
 # A toy example on a very small subsample of a microarray data set) 
 #
-datatxt <- system.file("extdata", "transcripto_very_small_sample.txt", 
+datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", 
 package="DRomics")
 
-o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess")
+o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01)
 f <- drcfit(s_quad, progressbar = TRUE)
 
@@ -109,9 +111,9 @@ curvesplot(f$fitres, xmax = max(f$omicdata$dose),
   
 # (4) an example on a microarray data set (a subsample of a greater data set)
 #
-datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))

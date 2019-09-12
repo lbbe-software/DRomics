@@ -24,6 +24,10 @@ metabolomicdata <- function(file, check = TRUE)
   if (any(data > 100))
     warning("Your data contain high values (> 100). 
     Make sure that your data (metabolomic signal) are in log-scale.\n") 
+  if (nrowd < 100)
+    warning("Your dataset contains less than 100 lines. Are you sure you really
+            work on metabolomics data ? This function should
+            not be used with another type of data.")
   
   if (check)
   {

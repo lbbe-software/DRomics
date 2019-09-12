@@ -108,11 +108,11 @@ Marie-Laure Delignette-Muller
 # (in Toxicological sciences, 160, 95-110)
 # Effect on kidney transcriptomes of tetrachloroethylene
 #
-datatxt <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
-(o <- RNAseqdata(datatxt, check = TRUE, transfo.method = "rlog"))
+datafilename <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
+(o <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog"))
 plot(o)
 
-# If you want to use your own data set just replace datatxt, 
+# If you want to use your own data set just replace datafilename, 
 # the first argument of RNAseqdata(), 
 # by the name of your data file (e.g. "mydata.txt")
 # 
@@ -124,14 +124,14 @@ plot(o)
 
 # (2) transformation with two methods on the whole data set
 \donttest{
-datatxt <- system.file("extdata", "Zhou_kidney_pce.txt", package="DRomics")
+datafilename <- system.file("extdata", "Zhou_kidney_pce.txt", package="DRomics")
 
 # variance stabilizing tranformation
-(o1 <- RNAseqdata(datatxt, check = TRUE, transfo.method = "vst"))
+(o1 <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
 plot(o1)
 
 # regularized logarithm
-(o2 <- RNAseqdata(datatxt, check = TRUE, transfo.method = "vst"))
+(o2 <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
 plot(o2)
 }
 

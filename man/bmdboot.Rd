@@ -126,14 +126,14 @@ Marie-Laure Delignette-Muller
 \examples{
 # (1) a toy example (a very small subsample of a microarray data set) 
 #
-datatxt <- system.file("extdata", "transcripto_very_small_sample.txt",
+datafilename <- system.file("extdata", "transcripto_very_small_sample.txt",
 package="DRomics")
 
 # to test the package on a small but not very small data set
 # use the following commented line
-# datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+# datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess")
+o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)
 f <- drcfit(s_quad, progressbar = TRUE)
 r <- bmdcalc(f)
@@ -167,9 +167,9 @@ b.lin.90$res
 # (2) an example on a microarray data set (a subsample of a greater data set) 
 #
 \donttest{
-datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))

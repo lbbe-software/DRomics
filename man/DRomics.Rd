@@ -13,10 +13,11 @@ DRomics provides several functions for dose-response (or concentration-response)
 \item and \code{\link{bmdcalc}} to derive a benchmark dose or concentration from each fitted curve.
 }
 
-The available version supports three types of data:
+The available version supports three types of data and should not be used 
+with other types of data:
 \itemize{
 \item Single-channel microarray data (previously transformed in log2)
-that must imported  using the function\code{\link{microarraydata}}, 
+that must imported  using the function \code{\link{microarraydata}}, 
 \item RNAseq (in raw counts) that must imported using the function 
 \code{\link{RNAseqdata}} and 
 \item metabolomic data that must imported using the function 
@@ -54,8 +55,8 @@ Marie-Laure Delignette-Muller, Elise Billoir, Floriane Larras and Aurelie Siberc
 ## here cyclicloess normalization of a small microarray data set
 ## (sample of a real data set)
 
-datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
-(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+(o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
 plot(o)
 
 # Step 2: item selection using the quadratic method

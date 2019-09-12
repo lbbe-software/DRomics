@@ -117,9 +117,9 @@ Marie-Laure Delignette-Muller
 
 # (1) an example on a microarray data set (a subsample of a greater data set) 
 #     
-datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+(o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
 
 # 1.a using the quadratic trend test
 #

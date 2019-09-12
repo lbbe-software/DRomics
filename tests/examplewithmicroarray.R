@@ -2,14 +2,14 @@ library(DRomics)
 # importation and check of data and normalization if needed
 # options to put in shiny : norm.method (4 methods)
 ## sample of the transcripto data set
-datatxt <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
-(o <- microarraydata(datatxt, check = TRUE, norm.method = "cyclicloess"))
+datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+(o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
 plot(o)
-(o.2 <- microarraydata(datatxt, check = TRUE, norm.method = "none"))
+(o.2 <- microarraydata(datafilename, check = TRUE, norm.method = "none"))
 plot(o.2)
-(o.3 <- microarraydata(datatxt, check = TRUE, norm.method = "quantile"))
+(o.3 <- microarraydata(datafilename, check = TRUE, norm.method = "quantile"))
 plot(o.3)
-(o.4 <- microarraydata(datatxt, check = TRUE, norm.method = "scale"))
+(o.4 <- microarraydata(datafilename, check = TRUE, norm.method = "scale"))
 plot(o.4)
 
 # item selection using the quadratic method
