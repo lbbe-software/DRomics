@@ -1,4 +1,4 @@
-citHeader("To cite fitdistrplus in publications use:")
+citHeader("To cite DRomics in publications use:")
 
 citEntry(entry = "Article",
   title        = "DRomics: a turnkey tool to support the use of the dose-response 
