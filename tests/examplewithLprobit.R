@@ -8,6 +8,6 @@ plot(f, items = itemslP)
 (r <- bmdcalc(f, z = 1, x = 10))
 r$res[r$res$id %in% itemslP,]
 (b <- bmdboot(r, items = itemslP, tol = 0.05,
-            niter = 1000, conf.level = 0.95, progressbar = TRUE))
+            niter = 1001, conf.level = 0.95, progressbar = TRUE))
 
 b$res
