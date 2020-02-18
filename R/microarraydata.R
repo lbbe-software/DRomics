@@ -49,9 +49,12 @@ microarraydata <- function(file, check = TRUE,
   
   # control of the design
   design <- table(dose, dnn = "")
-  if (length(design) < 5)
+  if (length(design) < 4)
     stop("Dromics cannot be used with a dose-response design 
-         with less than five tested doses/concentrations")
+         with less than four tested doses/concentrations")
+  if (length(design) == 4)
+    warning("Your design contains only four tested doses/concentrations
+              which may be insufficient to correctly fit the more complex models.")
   
   fdose <- as.factor(dose)
   tdata <- t(data)
