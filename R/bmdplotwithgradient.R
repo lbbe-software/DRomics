@@ -155,6 +155,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   {
     gg <- gg + geom_point(data = BMD2plot, size = point.size)
   }
+  gg <- gg + theme_classic()
   
   return(gg)
 }
