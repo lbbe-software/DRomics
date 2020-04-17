@@ -1,0 +1,147 @@
+\name{bmdplotwithgradient}
+\alias{bmdplotwithgradient}
+\title{BMD plot with color gradient}
+
+\description{
+Plots BMD values as an ECDF plot with a horizontal color gradient coding for the theoretical signal
+as a function of the dose (concentration).
+}
+
+\usage{
+bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
+                                   xmin = 0, xmax, y0shift = TRUE, 
+                                   facetby, shapeby, npoints = 50, 
+                                   line.size = 0.2, point.size = 1,
+                                   ncol4faceting, limits4colgradient,
+                                   lowercol = "darkgreen", uppercol = "darkred")
+}
+
+\arguments{
+\item{extendedres}{the dataframe of results provided by bmdcalc (res) 
+ or a subset of this data frame (selected lines). This dataframe can be extended 
+ with additional columns coming for example from the annotation of items, and some lines 
+ can be replicated if their corresponding item has more than one annotation. 
+ This extended dataframe
+ must at least contain the column giving the identification of each curve (\code{id}),
+ the column \code{model} naming the fitted model and the values of 
+the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
+
+\item{BMDtype}{The type of BMD to plot, \code{"zSD"} (default choice) or \code{"xfold"}.}
+
+\item{xmin}{Minimal dose/concentration for definition of the x range (by default 0).}
+
+\item{xmax}{Maximal dose/concentration for definition of the x range (can be defined 
+ as \code{max(f$omicdata$dose)} with \code{f} the output of \code{drcfit()}).}
+
+\item{y0shift}{If \code{TRUE} (default choice) for each item the signal is shifted
+to have the theoretical signal at the control at 0.}
+
+\item{facetby}{optional argument naming the column of \code{extendedres} chosen 
+  to split the plot in facets (no split if omitted).}
+
+\item{shapeby}{optional argument naming the column of \code{extendedres} chosen 
+  to shape the BMD points (no difference if shapeby if omitted).}
+  
+\item{npoints}{Number of points computed on each curve in order to define the 
+  signal color gradient.}
+
+\item{line.size}{Size of the horizontal lines for plotting each signal color gradient.}
+
+\item{point.size}{Size of the BMD points.}
+
+\item{ncol4faceting}{Number or columns for facetting.}
+
+\item{limits4colgradient}{Optional vector giving minimal and maximal value of the signal
+  for the color gradient.}
+
+\item{lowercol}{Chosen color for the lower values of the signal.}
+
+\item{uppercol}{Chosen color for the upper values of the signal.}
+}
+
+\details{
+BMD values are plotted as an ECDF plot, as with \code{\link{plot.bmdcalc}}
+using "ecdf" as plottype, with the add of an horizontal color gradient 
+for each item coding for the signal level at each dose 
+(or concentration). The optionnal use of columns to code for shape and/or 
+facets  is particularly intended to give a view of all the dose-response 
+per group defined from annotation of items (groups tha must coded in a column
+of extendedres). In case where one item is allocated to more than one group
+during the annotation process, the line of this item must be replicated in 
+extendedres as many times as the number of annotation groups in which it was
+allocated.
+
+For each item of the extended dataframe, the name of the model 
+(column \code{model}) and the values of 
+the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f})
+are used to compute theoretical dose-response curves, and so the 
+corresponding signal color gradient, in the range \code{[xmin ; xmax].}
+}
+
+\value{ 
+   a ggplot object.
+}
+
+\seealso{
+    See \code{\link{plot.bmdcalc}} and \code{\link{plot.bmdboot}}.
+}
+
+\author{ 
+Marie-Laure Delignette-Muller
+}
+
+\examples{
+
+# A toy example on a very small subsample of a microarray data set. 
+#
+datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", 
+package="DRomics")
+
+o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
+s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01)
+f <- drcfit(s_quad, progressbar = TRUE)
+r <- bmdcalc(f)
+
+
+# (1) 
+# Plot of all the BMD values with color dose-response gradient 
+# faceted by trend and shaped by model
+#
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      xmax = max(f$omicdata$dose), facetby = "trend", 
+                      shapeby = "model", line.size = 2) 
+
+\donttest{
+
+# (2)                       
+# Same example forcing the limits of the colour gradient at other 
+# values than observed minimal and maximal values of the signal
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      xmax = max(f$omicdata$dose), facetby = "trend", 
+                      shapeby = "model", line.size = 2,
+                      limits4colgradient = c(-4, 4)) 
+
+# (3)                       
+# Same example changing the gradient colors
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      xmax = max(f$omicdata$dose), facetby = "trend", 
+                      shapeby = "model", line.size = 2,
+                      lowercol = "darkblue", uppercol = "orange")  
+
+
+# (4) 
+# An example on a microarray data set (a subsample of a greater data set)
+#
+datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+
+(o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
+(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
+(f <- drcfit(s_quad, progressbar = TRUE))
+(r <- bmdcalc(f))
+
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      xmax = max(f$omicdata$dose), facetby = "trend", 
+                      shapeby = "model", line.size = 2) 
+}
+
+}

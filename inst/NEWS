@@ -1,5 +1,11 @@
 === DRomics : Dose response for omics ===
 
+Version 2.1-0 
+=============
+NEW FEATURES
+- Add of the function bmdplotwithgradient()
+
+
 Version 2.0-1 
 =============
 NEW FEATURES

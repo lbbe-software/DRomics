@@ -47,3 +47,4 @@ S3method(plot, bmdboot)
 
 export(ecdfplotwithCI)
 export(curvesplot)
+export(bmdplotwithgradient)
