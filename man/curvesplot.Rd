@@ -121,4 +121,34 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), facetby = "typology")
 }
 
+
+# (5) An example from data published by Larras et al. 2020
+# in Journal of Hazardous Materials
+# https://doi.org/10.1016/j.jhazmat.2020.122727
+
+# a dataframe with metabolomic results (output $res of bmdcalc() or bmdboot() functions)
+resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
+res <- read.table(resfilename, header = TRUE)
+str(res)
+
+# a dataframe with annotation of each item identified in the previous file
+# each item may have more than one annotation (-> more than one line)
+annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", package="DRomics")
+annot <- read.table(annotfilename, header = TRUE)
+str(annot)
+
+# Merging of both previous dataframes
+# in order to obtain an extenderes dataframe
+# bootstrap results and annotation
+annotres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
+head(annotres)
+
+# Plot of the dose-response curves for a specific pathway
+# in this example the "lipid metabolism" pathclass
+LMres <- annotres[annotres$path_class == "Lipid metabolism", ]
+curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
+           colorby = "trend",
+           xmin = 0, xmax = 8) 
+
+
 }

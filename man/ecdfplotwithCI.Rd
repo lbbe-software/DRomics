@@ -80,7 +80,37 @@ ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower,
               CI.upper = a$BMD.zSD.upper, CI.col = "red")
 
 
-# (2) an example on a microarray data set (a subsample of a greater data set) 
+# (2) An example from data published by Larras et al. 2020
+# in Journal of Hazardous Materials
+# https://doi.org/10.1016/j.jhazmat.2020.122727
+
+# a dataframe with metabolomic results (output $res of bmdcalc() or bmdboot() functions)
+resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
+res <- read.table(resfilename, header = TRUE)
+str(res)
+
+# a dataframe with annotation of each item identified in the previous file
+# each item may have more than one annotation (-> more than one line)
+annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", package="DRomics")
+annot <- read.table(annotfilename, header = TRUE)
+str(annot)
+
+# Merging of both previous dataframes
+# in order to obtain an extenderes dataframe
+# bootstrap results and annotation
+annotres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
+head(annotres)
+
+### an ECDFplot with confidence intervals by pathway
+# with color coding for dose-response trend
+ecdfplotwithCI(variable = annotres$BMD.zSD, 
+               CI.lower = annotres$BMD.zSD.lower, 
+               CI.upper = annotres$BMD.zSD.upper, 
+               by = annotres$path_class,
+               CI.col = annotres$trend) 
+
+
+# (3) an example on a microarray data set (a subsample of a greater data set) 
 #
 \donttest{
 datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
@@ -91,7 +121,7 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 (r <- bmdcalc(f))
 (b <- bmdboot(r, niter = 100)) # niter to put at 1000 for a better precision
 
-# (2.a) 
+# (3.a) 
 # manual ecdf plot of the bootstrap results as an ecdf distribution 
 # on BMD for each trend
 # plot that could also be obtained with plot(b, by = "trend") 
@@ -101,7 +131,7 @@ a <- b$res[is.finite(b$res$BMD.zSD.upper), ]
 ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
               CI.upper = a$BMD.zSD.upper, by = a$trend, CI.col = "red")
 
-# (2.b)
+# (3.b)
 # ecdf plot of the bootstrap results as an ecdf distribution 
 # on BMD for each model
 # with the color of the confidence intervals coding for the trend
@@ -120,7 +150,7 @@ ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower,
               CI.alpha = 0.5, point.size = 0.5, point.type = a$model)
 
 
-# (2.c)
+# (3.c)
 # ecdf plot of the bootstrap results as an ecdf distribution on 
 # on BMD_L (lower value of the confidence interval) for each trend
 # 

@@ -92,6 +92,7 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
+# (1) 
 # A toy example on a very small subsample of a microarray data set. 
 #
 datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", 
@@ -102,34 +103,63 @@ s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01)
 f <- drcfit(s_quad, progressbar = TRUE)
 r <- bmdcalc(f)
 
-
-# (1) 
 # Plot of all the BMD values with color dose-response gradient 
 # faceted by trend and shaped by model
 #
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       xmax = max(f$omicdata$dose), facetby = "trend", 
                       shapeby = "model", line.size = 2) 
+                      
+# (2)
+# Plot of BMD values with color dose-response gradient
+# faceted by pathway (from annotation of the selected items)
+# and shaped by dose-reponse trend
+
+# An example from the paper published by Larras et al. 2020
+# in Journal of Hazardous Materials
+# https://doi.org/10.1016/j.jhazmat.2020.122727
+
+# the dataframe with metabolomic results (output $res of bmdcalc() or bmdboot() functions)
+resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
+res <- read.table(resfilename, header = TRUE)
+str(res)
+
+# the dataframe with annotation of each item identified in the previous file
+# each item may have more than one annotation (-> more than one line)
+annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", package="DRomics")
+annot <- read.table(annotfilename, header = TRUE)
+str(annot)
+
+# Merging of both previous dataframes
+# in order to obtain an extenderes dataframe
+annotres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
+head(annotres)
+
+
+### (2.a) BMDplot with gradient by pathway
+bmdplotwithgradient(annotres, BMDtype = "zSD",
+                      xmax = 8,  facetby = "path_class", 
+                       shapeby = "trend",
+                       line.size = 2) 
+
+# (2.b) The same example forcing the limits of the colour gradient at other 
+# values than observed minimal and maximal values of the signal
+bmdplotwithgradient(annotres, BMDtype = "zSD",
+                      xmax = 8,  facetby = "path_class", 
+                       shapeby = "trend",
+                       line.size = 2, limits4colgradient = c(-1, 1)) 
+
+# (2.c) The same example changing the gradient colors
+bmdplotwithgradient(annotres, BMDtype = "zSD",
+                      xmax = 8,  facetby = "path_class", 
+                       shapeby = "trend",
+                       line.size = 2, 
+                       lowercol = "darkblue", uppercol = "orange") 
+
 
 \donttest{
 
-# (2)                       
-# Same example forcing the limits of the colour gradient at other 
-# values than observed minimal and maximal values of the signal
-bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      xmax = max(f$omicdata$dose), facetby = "trend", 
-                      shapeby = "model", line.size = 2,
-                      limits4colgradient = c(-4, 4)) 
-
-# (3)                       
-# Same example changing the gradient colors
-bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      xmax = max(f$omicdata$dose), facetby = "trend", 
-                      shapeby = "model", line.size = 2,
-                      lowercol = "darkblue", uppercol = "orange")  
-
-
-# (4) 
+# (3) 
 # An example on a microarray data set (a subsample of a greater data set)
 #
 datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
