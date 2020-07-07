@@ -1,9 +1,9 @@
 \name{ecdfquantileplot}
 \alias{ecdfquantileplot}
-\title{ECDF plot of quantiles of a variable calculated by group}
+\title{ECDF plot of a given quantile of a variable calculated by group}
 
 \description{
-Plots the quantiles of a variable calculated by group as an ECDF plot with points sized by the numbers of items per group.
+Plots a given quantile of a variable calculated by group as an ECDF plot with points sized by the numbers of items per group.
 }
 
 \usage{
@@ -11,9 +11,9 @@ ecdfquantileplot(variable, by, quantile.prob = 0.5, title)
 }
 
 \arguments{
-\item{variable}{A numeric vector of the variable on which we want to calculate quantiles by group.}
+\item{variable}{A numeric vector corresponding to the variable on which we want to calculate the given quantile by group.}
 
-\item{by}{A factor of the same length definig the groups.}
+\item{by}{A factor of the same length defining the groups.}
   
 \item{quantile.prob}{The probability (in ]0, 1[) defining the quantile to calculate on each group.}
 
@@ -22,7 +22,8 @@ ecdfquantileplot(variable, by, quantile.prob = 0.5, title)
 
 \details{
 
-The quantiles are calculated for each group using function \code{\link{quantile}} and plotted as an ECDF plot. In this ECDF plot of quantiles each point is sized according to the number of items in the corresponding group.
+The given quantile is calculated for each group (e.g.from all items of a metabolic pathway) 
+using function \code{\link{quantile}} and plotted as an ECDF plot. In this ECDF plot of quantiles each point is sized according to the number of items in the corresponding group (e.g. metabolic pathway).
 }
 
 \value{ 

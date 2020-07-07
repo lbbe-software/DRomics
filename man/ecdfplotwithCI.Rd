@@ -65,8 +65,8 @@ o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)
 f <- drcfit(s_quad, progressbar = TRUE)
 r <- bmdcalc(f)
-set.seed(1234) # to get reproducible results with a so small number of iterations
-(b <- bmdboot(r, niter = 5)) # with a non reasonable value for niter 
+set.seed(1) # to get reproducible results with a so small number of iterations
+(b <- bmdboot(r, niter = 10)) # with a non reasonable value for niter 
 # !!!! TO GET CORRECT RESULTS
 # !!!! niter SHOULD BE FIXED FAR LARGER , e.g. to 1000 
 # !!!! but the run will be longer 

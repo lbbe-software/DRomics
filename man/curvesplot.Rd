@@ -37,7 +37,7 @@ the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
   to color the curves (no color if omitted).}
   
 \item{removelegend}{If \code{TRUE} the color legend is removed (useful if the number
-  of colors is great.}
+  of colors is great).}
 
 \item{npoints}{Number of points computed on each curve to plot it.}
 

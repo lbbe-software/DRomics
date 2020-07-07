@@ -3,8 +3,12 @@
 \title{BMD plot with color gradient}
 
 \description{
-Plots BMD values as an ECDF plot with a horizontal color gradient coding for the theoretical signal
+Plots BMD values as an ECDF plot with a horizontal color gradient coding, for each item,
+for the theoretical signal
 as a function of the dose (concentration).
+The idea is to diplay the amplitude and the intensity of the response of each item
+on the BMD ECDF plot, in addition to the BMD ordered values.
+
 }
 
 \usage{
@@ -19,7 +23,7 @@ bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
 \arguments{
 \item{extendedres}{the dataframe of results provided by bmdcalc (res) 
  or a subset of this data frame (selected lines). This dataframe can be extended 
- with additional columns coming for example from the annotation of items, and some lines 
+ with additional columns coming for example from the functional annotation of items, and some lines 
  can be replicated if their corresponding item has more than one annotation. 
  This extended dataframe
  must at least contain the column giving the identification of each curve (\code{id}),
@@ -43,13 +47,14 @@ to have the theoretical signal at the control at 0.}
   to shape the BMD points (no difference if shapeby if omitted).}
   
 \item{npoints}{Number of points computed on each curve in order to define the 
-  signal color gradient.}
+  signal color gradient (= number of doses or concentrations for which the theoretical
+  signal is computed from the fitted model for each item).}
 
 \item{line.size}{Size of the horizontal lines for plotting each signal color gradient.}
 
 \item{point.size}{Size of the BMD points.}
 
-\item{ncol4faceting}{Number or columns for facetting.}
+\item{ncol4faceting}{Number of columns for facetting.}
 
 \item{limits4colgradient}{Optional vector giving minimal and maximal value of the signal
   for the color gradient.}
@@ -61,12 +66,12 @@ to have the theoretical signal at the control at 0.}
 
 \details{
 BMD values are plotted as an ECDF plot, as with \code{\link{plot.bmdcalc}}
-using "ecdf" as plottype, with the add of an horizontal color gradient 
+using "ecdf" as plottype. In addition is plotted an horizontal color gradient 
 for each item coding for the signal level at each dose 
-(or concentration). The optionnal use of columns to code for shape and/or 
-facets  is particularly intended to give a view of all the dose-response 
-per group defined from annotation of items (groups tha must coded in a column
-of extendedres). In case where one item is allocated to more than one group
+(or concentration). The optional use of columns to code for shape and/or 
+facets for each item is particularly intended to give a view of all the dose-response 
+per group (e.g. metabolic pathways). Those groups must be coded in a column
+of extendedres. In case where one item is allocated to more than one group
 during the annotation process, the line of this item must be replicated in 
 extendedres as many times as the number of annotation groups in which it was
 allocated.
@@ -104,7 +109,7 @@ f <- drcfit(s_quad, progressbar = TRUE)
 r <- bmdcalc(f)
 
 # Plot of all the BMD values with color dose-response gradient 
-# faceted by trend and shaped by model
+# faceted by response trend and shaped by model
 #
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       xmax = max(f$omicdata$dose), facetby = "trend", 
@@ -112,12 +117,14 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
                       
 # (2)
 # Plot of BMD values with color dose-response gradient
-# faceted by pathway (from annotation of the selected items)
-# and shaped by dose-reponse trend
+# faceted by metabolic pathway (from annotation of the selected items)
+# and shaped by dose-response trend
 
 # An example from the paper published by Larras et al. 2020
 # in Journal of Hazardous Materials
 # https://doi.org/10.1016/j.jhazmat.2020.122727
+# A example of plot obtained with this function is in Figure 5 in Larras et al. 2020
+
 
 # the dataframe with metabolomic results (output $res of bmdcalc() or bmdboot() functions)
 resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
