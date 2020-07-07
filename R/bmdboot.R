@@ -12,6 +12,10 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
   # bootmethod <- match.arg(bootmethod, c("nonparam", "param"))
   bootmethod <- "nonparam"
   
+  if (niter < 1000)
+    warning("A small number of iterations (less than 1000) may not be sufficient
+            to ensure a good quality of bootstrap confidence intervals.")
+    
     parallel <- match.arg(parallel, c("no", "snow", "multicore"))
   if (parallel == "multicore" & .Platform$OS.type == "windows")
   {
