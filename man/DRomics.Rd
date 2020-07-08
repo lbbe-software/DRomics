@@ -172,7 +172,7 @@ if(interactive()) {
 
    # code to import the file for this example in our package
 resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
-res <- read.table(resfilename, header = TRUE)
+res <- read.table(resfilename, header = TRUE, stringsAsFactors = TRUE)
 
    # to see the structure of this file
 str(res)
@@ -186,7 +186,7 @@ str(res)
    # code to import the file for this example in our package
 annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", 
                               package="DRomics")
-annot <- read.table(annotfilename, header = TRUE)
+annot <- read.table(annotfilename, header = TRUE, stringsAsFactors = TRUE)
 
    # to see the structure of this file
 str(annot)

@@ -128,13 +128,13 @@ curvesplot(f$fitres, xmax = max(f$omicdata$dose), facetby = "typology")
 
 # a dataframe with metabolomic results (output $res of bmdcalc() or bmdboot() functions)
 resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
-res <- read.table(resfilename, header = TRUE)
+res <- read.table(resfilename, header = TRUE, stringsAsFactors = TRUE)
 str(res)
 
 # a dataframe with annotation of each item identified in the previous file
 # each item may have more than one annotation (-> more than one line)
 annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", package="DRomics")
-annot <- read.table(annotfilename, header = TRUE)
+annot <- read.table(annotfilename, header = TRUE, stringsAsFactors = TRUE)
 str(annot)
 
 # Merging of both previous dataframes

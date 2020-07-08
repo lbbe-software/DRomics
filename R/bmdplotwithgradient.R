@@ -5,7 +5,7 @@
 bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
                                    xmin = 0, xmax, y0shift = TRUE, 
                                    facetby, shapeby, npoints = 50, 
-                                   line.size = 0.2, point.size = 1,
+                                   line.size, point.size = 1,
                                    ncol4faceting, limits4colgradient,
                                    lowercol = "darkgreen", uppercol = "darkred")
 {
@@ -23,9 +23,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     stop("xmax must be given. You can fix it at max(f$omicdata$dose)} 
          with f the output of drcfit()")
   
-  # ajouter un test sur le nom des colonnes de extendedresindispensables !!!!!!!!!!!!!!!!!!!!!!!
-  
-  # mettre une définition par défaut plus intelligente de line.size !!!!!!!!!!!!!!!!!!
+  # ajouter un test sur le nom des colonnes de extendedres !!!!!!!!!!!!!!!!!!!!!!!
   
   if (!missing(shapeby))
   {
@@ -42,6 +40,8 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
       stop("facetby should be a character string for the name of the column used for facetting")
     BMD2plot$facetby <- extendedres[, facetby]
 
+    if (missing(line.size)) line.size <- 24 / max(table(BMD2plot$facetby)) 
+
     uniqueby <- unique(BMD2plot$facetby)
     n.uniqueby <- length(uniqueby)
     BMD2plot$ECDF <- rep(0, ntot) # initialization
@@ -55,6 +55,8 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     
   } else
   {
+    if (missing(line.size)) line.size <- 24 / nrow(BMD2plot) 
+    
     BMD2plot$ECDF <- (rank(BMD2plot$x, ties.method = "first") - 0.5) / ntot
     g <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF)))
   }

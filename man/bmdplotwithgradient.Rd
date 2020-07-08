@@ -15,7 +15,7 @@ on the BMD ECDF plot, in addition to the BMD ordered values.
 bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
                                    xmin = 0, xmax, y0shift = TRUE, 
                                    facetby, shapeby, npoints = 50, 
-                                   line.size = 0.2, point.size = 1,
+                                   line.size, point.size = 1,
                                    ncol4faceting, limits4colgradient,
                                    lowercol = "darkgreen", uppercol = "darkred")
 }
@@ -109,11 +109,17 @@ f <- drcfit(s_quad, progressbar = TRUE)
 r <- bmdcalc(f)
 
 # Plot of all the BMD values with color dose-response gradient 
+#
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      xmax = max(f$omicdata$dose)) 
+
+
+# Plot of all the BMD values with color dose-response gradient 
 # faceted by response trend and shaped by model
 #
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       xmax = max(f$omicdata$dose), facetby = "trend", 
-                      shapeby = "model", line.size = 2) 
+                      shapeby = "model") 
                       
 # (2)
 # Plot of BMD values with color dose-response gradient
@@ -128,13 +134,13 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
 
 # the dataframe with metabolomic results (output $res of bmdcalc() or bmdboot() functions)
 resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
-res <- read.table(resfilename, header = TRUE)
+res <- read.table(resfilename, header = TRUE, stringsAsFactors = TRUE)
 str(res)
 
 # the dataframe with annotation of each item identified in the previous file
 # each item may have more than one annotation (-> more than one line)
 annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", package="DRomics")
-annot <- read.table(annotfilename, header = TRUE)
+annot <- read.table(annotfilename, header = TRUE, stringsAsFactors = TRUE)
 str(annot)
 
 # Merging of both previous dataframes
@@ -146,21 +152,20 @@ head(annotres)
 ### (2.a) BMDplot with gradient by pathway
 bmdplotwithgradient(annotres, BMDtype = "zSD",
                       xmax = 8,  facetby = "path_class", 
-                       shapeby = "trend",
-                       line.size = 2) 
+                       shapeby = "trend") 
 
 # (2.b) The same example forcing the limits of the colour gradient at other 
 # values than observed minimal and maximal values of the signal
 bmdplotwithgradient(annotres, BMDtype = "zSD",
                       xmax = 8,  facetby = "path_class", 
                        shapeby = "trend",
-                       line.size = 2, limits4colgradient = c(-1, 1)) 
+                       limits4colgradient = c(-1, 1)) 
 
-# (2.c) The same example changing the gradient colors
+# (2.c) The same example changing the gradient colors and the line size
 bmdplotwithgradient(annotres, BMDtype = "zSD",
                       xmax = 8,  facetby = "path_class", 
                        shapeby = "trend",
-                       line.size = 2, 
+                       line.size = 1, 
                        lowercol = "darkblue", uppercol = "orange") 
 
 
@@ -178,7 +183,7 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       xmax = max(f$omicdata$dose), facetby = "trend", 
-                      shapeby = "model", line.size = 2) 
+                      shapeby = "model") 
 }
 
 }
