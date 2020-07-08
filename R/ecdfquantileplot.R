@@ -29,7 +29,7 @@ ecdfquantileplot <- function(variable, by, quantile.prob = 0.5, title)
   dnb <- dnb[order(dnb$quantiles), ]
   # fix the order of the modalities of by as in the ordered data set
   dnb$group <- factor(dnb$group, levels = dnb$group)
-  g <- ggplot(dnb, aes(x = group, y = quantiles, size = nb_of_items)) + 
+  g <- ggplot(dnb, aes_(x = quote(group), y = quote(quantiles), size = quote(nb_of_items))) + 
     geom_point(stat = 'identity')  +  
     coord_flip() + labs(title = title)
   return(g)
