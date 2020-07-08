@@ -10,18 +10,34 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
                                    lowercol = "darkgreen", uppercol = "darkred")
 {
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
+
+  if (missing(extendedres) | !is.data.frame(extendedres))
+    stop("The first argument of bmdplotwithgradient must be a dataframe 
+         (see ?bmdplotwithgradient for details).")
+  
+  cnames <- colnames(extendedres)
+ 
   if (BMDtype == "zSD")
-  {
+  {  
+    if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "BMD.zSD"), cnames)))
+      stop("The first argument of bmdplotwithgradient must be a dataframe
+    containing at least columns named id, model, b, c, d, e, f and BMD.zSD.")
+    
     BMD2plot <- data.frame(x = extendedres$BMD.zSD, id = extendedres$id)
   }
   else 
   {
+    if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "BMD.xfold"), cnames)))
+      stop("The first argument of bmdplotwithgradient must be a dataframe
+    containing at least columns named id, model, b, c, d, e, f and BMD.xfold")
+    
     BMD2plot <- data.frame(x = extendedres$BMD.xfold, id = extendedres$id)
   }
   
   if (missing(xmax)) 
     stop("xmax must be given. You can fix it at max(f$omicdata$dose)} 
          with f the output of drcfit()")
+  
   
   # ajouter un test sur le nom des colonnes de extendedres !!!!!!!!!!!!!!!!!!!!!!!
   

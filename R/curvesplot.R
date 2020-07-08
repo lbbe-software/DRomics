@@ -7,8 +7,13 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
   if (missing(extendedres) | !is.data.frame(extendedres))
     stop("The first argument of curvesplot must be a dataframe 
          (see ?curvesplot for details).")
-  # ajouter un test sur le nom des colonnes indispensables !!!!!!!!!!!!!!!!!!!!!!!
-  if (missing(xmax)) 
+
+  cnames <- colnames(extendedres)
+  if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f"), cnames)))
+    stop("The first argument of curvesplot must be a dataframe
+    containing at least columns named id, model, b, c, d, e and f.")
+  
+    if (missing(xmax)) 
     stop("xmax must be given. You can fix it at max(f$omicdata$dose)} 
          with f the output of drcfit()")
   x2plot <- seq(xmin, xmax, length.out = npoints)

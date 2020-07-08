@@ -26,7 +26,8 @@ bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
  with additional columns coming for example from the functional annotation of items, and some lines 
  can be replicated if their corresponding item has more than one annotation. 
  This extended dataframe
- must at least contain the column giving the identification of each curve (\code{id}),
+ must at least contain the column giving the BMD values (\code{BMD.zSD} or \code{BMD.xfold}
+ depending of chosen BMDtype), identification of each curve (\code{id}),
  the column \code{model} naming the fitted model and the values of 
 the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
 
