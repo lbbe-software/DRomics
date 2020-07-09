@@ -5,6 +5,8 @@ Version 2.1-0
 NEW FEATURES
 - Add of the function bmdplotwithgradient()
 - Add of the function ecdfquantileplot()
+- Add of an argument named information.criterion in drcfit() to choose 
+the use of AIC or BIC for the best fit model selection process.
 
 
 Version 2.0-1 
