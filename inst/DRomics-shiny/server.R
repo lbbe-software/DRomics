@@ -24,11 +24,13 @@ server <- function(input, output, session) {
   
   ## Output : print and plot omic data
   output$printOmicData <- renderPrint({ 
-    print(filedata())
+    ff <- filedata()
+    print(ff)
   })
   
   output$plotOmicData <- renderPlot({
-    plot(filedata())
+    ff <- filedata()
+    plot(ff)
   })
   
   
