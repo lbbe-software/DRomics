@@ -9,7 +9,8 @@ Fits dose reponse models to responsive items.
 }
 
 \usage{
-drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"), 
+drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
+                  information.criterion = c("AIC", "BIC"),
                    progressbar = TRUE, saveplot2pdf = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
 
@@ -24,6 +25,9 @@ drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
 
 \item{sigmoid.model}{The chosen sigmoid model, \code{"Hill"} (default
 choice) or \code{"log-probit"}.}
+
+\item{information.criterion}{The information criterion used to select the best fit model, \code{"AIC"} (default
+choice) or \code{"BIC"}.}
 
 \item{progressbar}{If \code{TRUE} a progress bar is used to follow the fitting process.}
 
@@ -57,8 +61,8 @@ choice) or \code{"log-probit"}.}
 For each selected item, five dose-response models (linear, Hill, exponential, 
 Gauss-probit and log-Gauss-probit, see Larras et al. 2018
 for their definition) were fitted by non linear regression,
-using the \code{\link{nls}} function. The best one was chosen as the one giving the lowest AIC value.
-Items with the best AIC value not lower than the AIC value of the null model (constant model) minus 2
+using the \code{\link{nls}} function. The best one was chosen as the one giving the lowest AIC (or BIC) value.
+Items with the best AIC (or BIC) value not lower than the AIC (or BIC) value of the null model (constant model) minus 2
 were eliminated. Items with the best fit showing a global significant quadratic trend of the residuals
 as a function of the dose (in rank-scale) were also eliminated (the best fit is considered as 
 not reliable in such cases). Each retained item is classified in a twelve class typology depending of the
@@ -108,7 +112,9 @@ dose value at which their extremum is reached is at zero.
     \item{n.failure}{ The number of previously selected items on which the workflow failed to 
     fit an acceptable model.}
 
-    \item{AIC.val}{ a data frame reporting AIC values for each selected item (one line per item) and each fitted model (one colum per model with the AIC value fixed at \code{Inf} when the fit failed).}
+    \item{information.criterion}{The information criterion used to select the best fit model as given in input.}
+
+    \item{information.criterion.val}{ a data frame reporting AIC (or BIC) values for each selected item (one line per item) and each fitted model (one colum per model with the AIC (or BIC) value fixed at \code{Inf} when the fit failed).}
 
 }
 

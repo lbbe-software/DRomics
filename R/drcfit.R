@@ -1,5 +1,6 @@
 ### fit different models to each dose-response curve and choose the best fit 
 drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"), 
+                   information.criterion = c("AIC", "BIC"),
                    progressbar = TRUE, saveplot2pdf = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
 {
@@ -42,10 +43,17 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   nptsperDR <- ncol(data)
   nselect <- length(selectindex)
   
+  # Information criterion definition 
   AICdigits <- 2 # number of digits for rounding the AIC values
-  
-  kcrit = 2 # for defining AIC or BIC 
-  
+  information.criterion <- match.arg(information.criterion, c("AIC", "BIC"))
+  if (information.criterion == "AIC")
+  { 
+    kcrit <- 2 
+  } else
+  {
+    kcrit <- log(nptsperDR)
+  }
+
   # progress bar
   if (progressbar)
     pb <- txtProgressBar(min = 0, max = length(selectindex), style = 3)
@@ -624,7 +632,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     dev.off()
   }
   
-  reslist <- list(fitres = dc, omicdata = itemselect$omicdata, n.failure = n.failure, AIC.val = dAIC) 
+  reslist <- list(fitres = dc, omicdata = itemselect$omicdata, n.failure = n.failure, 
+                  information.criterion = information.criterion, information.criterion.val = dAIC) 
   
   return(structure(reslist, class = "drcfit"))
 }

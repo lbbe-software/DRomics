@@ -18,4 +18,13 @@ test_that("drcfit works as expected on the model results",
     expect_equal(round(mean(f$fitres$d, na.rm = TRUE), 4), 7.7127)
     expect_equal(round(mean(f$fitres$e, na.rm = TRUE), 4), 1.5259)
     expect_equal(round(mean(f$fitres$f, na.rm = TRUE), 4), 6.0096)
+    # Select model with BIC
+    f.BIC <- drcfit(s_quad, progressbar = TRUE, information.criterion = "BIC")
+    tmodel.BIC <- table(f.BIC$fitres$model)
+    expect_equal(as.numeric(tmodel.BIC["Hill"]), 0)
+    expect_equal(as.numeric(tmodel.BIC["linear"]), 15)
+    expect_equal(as.numeric(tmodel.BIC["exponential"]), 26)
+    expect_equal(as.numeric(tmodel.BIC["Gauss-probit"]), 24)
+    expect_equal(as.numeric(tmodel.BIC["log-Gauss-probit"]), 2)
+    
   })
