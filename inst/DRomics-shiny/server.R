@@ -68,14 +68,19 @@ server <- function(input, output, session) {
     return(drcfit(signifitems, progressbar = FALSE, sigmoid.model = "Hill", parallel = "no"))
   })
   
-  inPlottypeDrcfit <- reactive({input$plottypeDrcfit})
   
   output$plotDrcfit <- renderPlot({
     mydrcfit <- rundrcfit()
-    plotdrcfit <- plot(mydrcfit, plot.type = inPlottypeDrcfit())
-    plot(plotdrcfit)
-    showElement("buttonDownloadDrcfitplot")
     
+    myplotdrcfit <- reactive({
+      plot(mydrcfit, plot.type = input$plottypeDrcfit )
+    })
+    
+    mpd <- myplotdrcfit()
+    if(!is.null(mpd))
+      plot(mpd)
+    
+    showElement("buttonDownloadDrcfitplot")
     output$buttonDownloadDrcfitplot <- downloadHandler(
       filename = function(){
         "drcfitplot.pdf"
