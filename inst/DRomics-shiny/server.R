@@ -74,9 +74,7 @@ server <- function(input, output, session) {
     mydrcfit <- rundrcfit()
     plotdrcfit <- plot(mydrcfit, plot.type = inPlottypeDrcfit())
     plot(plotdrcfit)
-    
-    output$okfordowload <- reactive({length(mydrcfit)})
-    outputOptions(output, "okfordowload", suspendWhenHidden = FALSE)
+    showElement("buttonDownloadDrcfitplot")
     
     output$buttonDownloadDrcfitplot <- downloadHandler(
       filename = function(){

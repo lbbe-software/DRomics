@@ -254,8 +254,8 @@ ui <- fluidPage(
                                      ),
                                      column(width = 2, actionButton("buttonDrcfit", "Fit", icon = icon("bar-chart-o"), style='font-size:200%')),
                                      column(width = 3,
-                                            conditionalPanel(
-                                              condition = "output.okfordowload",
+                                            useShinyjs(),
+                                            hidden(
                                               downloadButton("buttonDownloadDrcfitplot", HTML("Download all the fitted<br/>dose-response plots"), style = 'background-color:#e6e6e6; color:#000000; border-color:#9d9d9d; font-size:110%;', icon = icon("fas fa-download"))
                                             )
                                      )
