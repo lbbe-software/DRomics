@@ -178,7 +178,6 @@ server <- function(input, output, session) {
                by = input$splitby, 
                hist.bins = input$histbin)
         })
-        # print(plot(mybmdcalc, BMDtype = input$BMDtype, plottype = input$plottype, by = input$splitby))
         dev.off()
       },
       contentType = {"application/pdf"}
@@ -225,10 +224,8 @@ server <- function(input, output, session) {
               if(input$plottype == 'ecdfcolorgradient') {
                 if(input$splitby == 'none') {
                   paste0("bmdplotwithgradient(r$res, BMDtype = '", input$BMDtype, "', xmax = max(f$omicdata$dose))")
-                  # bmdplotwithgradient(mybmdcalc$res, BMDtype =     input$BMDtype, xmax = max(mydrcfit$omicdata$dose))
                 } else {
                   paste0("bmdplotwithgradient(r$res, BMDtype = '", input$BMDtype, "', xmax = max(f$omicdata$dose), facetby = '", input$splitby, "')")
-                  # bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, xmax = max(mydrcfit$omicdata$dose), facetby = input$splitby)
                 }
               } else {
                 paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', by = '", input$splitby, "', hist.bins = ", input$histbin, ")")
