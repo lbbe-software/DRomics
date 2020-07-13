@@ -327,7 +327,8 @@ ui <- fluidPage(
                                                 'plot type',
                                                 choices = c('empirical cumulative distribution' = 'ecdf',
                                                             'histogram' = 'hist' ,
-                                                            'density' = 'density')),
+                                                            'density' = 'density', 
+                                                            'ECDF plot with color gradient' = 'ecdfcolorgradient')),
                                    br(),
                                    conditionalPanel(
                                      condition = "input.plottype == 'hist'",

@@ -118,11 +118,24 @@ server <- function(input, output, session) {
     mybmdcalcdigits[, idx] <- signif(mybmdcalcdigits[, idx], digits = 4)
     print(mybmdcalcdigits)
     
+    myplottype <- input$plottype
     output$plotBmdcalc <- renderPlot({
-      plot(mybmdcalc, BMDtype = input$BMDtype, 
-           plottype = input$plottype, 
-           by = input$splitby, 
-           hist.bins = input$histbin)
+      if(myplottype == 'ecdfcolorgradient') {
+        if(input$splitby == 'none') {
+          bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
+                              xmax = max(mydrcfit$omicdata$dose))
+        } else {
+          bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
+                              xmax = max(mydrcfit$omicdata$dose),
+                              facetby = input$splitby)  
+        }
+        
+      } else {
+        plot(mybmdcalc, BMDtype = input$BMDtype, 
+             plottype = myplottype, 
+             by = input$splitby, 
+             hist.bins = input$histbin)
+      }
     })
     
     # activate the button
@@ -146,8 +159,26 @@ server <- function(input, output, session) {
         paste0("data-", Sys.Date(), ".pdf")
       },
       content = function(file) {
+        myplottype <- input$plottype
         pdf(file, width = 8, height = 8)
-        print(plot(mybmdcalc, BMDtype = input$BMDtype, plottype = input$plottype, by = input$splitby))
+        print(
+        if(myplottype == 'ecdfcolorgradient') {
+          if(input$splitby == 'none') {
+            bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
+                                xmax = max(mydrcfit$omicdata$dose))
+          } else {
+            bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
+                                xmax = max(mydrcfit$omicdata$dose),
+                                facetby = input$splitby)  
+          }
+          
+        } else {
+          plot(mybmdcalc, BMDtype = input$BMDtype, 
+               plottype = myplottype, 
+               by = input$splitby, 
+               hist.bins = input$histbin)
+        })
+        # print(plot(mybmdcalc, BMDtype = input$BMDtype, plottype = input$plottype, by = input$splitby))
         dev.off()
       },
       contentType = {"application/pdf"}
@@ -160,7 +191,6 @@ server <- function(input, output, session) {
   ####################################################################################
 
   output$printRCode <- renderText({
-    # req(input$datafile)
     
     if(inTypeData() == 'microarraydata') {
       req(input$datafile_microarray)
@@ -192,7 +222,18 @@ server <- function(input, output, session) {
               "",
               "# Step 4",
               paste0("r <- bmdcalc(f, z = ", numZbmdcalc(), ", x = ", numXbmdcalc(), ")"),
-              paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', by = '", input$splitby, "', hist.bins = ", input$histbin, ")"))
+              if(input$plottype == 'ecdfcolorgradient') {
+                if(input$splitby == 'none') {
+                  paste0("bmdplotwithgradient(r$res, BMDtype = '", input$BMDtype, "', xmax = max(f$omicdata$dose))")
+                  # bmdplotwithgradient(mybmdcalc$res, BMDtype =     input$BMDtype, xmax = max(mydrcfit$omicdata$dose))
+                } else {
+                  paste0("bmdplotwithgradient(r$res, BMDtype = '", input$BMDtype, "', xmax = max(f$omicdata$dose), facetby = '", input$splitby, "')")
+                  # bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, xmax = max(mydrcfit$omicdata$dose), facetby = input$splitby)
+                }
+              } else {
+                paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', by = '", input$splitby, "', hist.bins = ", input$histbin, ")")
+              }
+    )
     
     output$buttonDownRCode <- downloadHandler(
       filename = function(){
