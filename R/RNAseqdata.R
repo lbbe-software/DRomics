@@ -119,12 +119,12 @@ plot.RNAseqdata <- function(x, ...)
   par(mfrow = c(1,2), xaxt = "n")
   boxplot(x$raw.counts, xlab = "Samples", ylab = "Raw counts", 
           main = paste("Raw data"), 
-          ylim = c(ymin.rc, ymax.rc)) 
+          ylim = c(ymin.rc, ymax.rc), ...) 
   ymin.log <- min(x$data)
   ymax.log <- max(x$data)
   boxplot(x$data, xlab = "Samples", ylab = "Signal", 
           main = paste("Normalized and transformed data"), 
-          ylim = c(ymin.log, ymax.log))   
+          ylim = c(ymin.log, ymax.log), ...)   
   par(def.par)    
 }
 

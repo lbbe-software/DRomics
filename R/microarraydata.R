@@ -110,10 +110,10 @@ plot.microarraydata <- function(x, ...)
     ymax <- max(x$data.beforenorm, x$data)
     par(mfrow = c(1,2), xaxt = "n")
     boxplot(x$data.beforenorm, xlab = "Samples", ylab = "Signal", 
-            main = paste("Microarray data before normalization"), ylim = c(ymin, ymax)) 
+            main = paste("Microarray data before normalization"), ylim = c(ymin, ymax), ...) 
     boxplot(x$data, xlab = "Samples", ylab = "Signal", 
             main = paste("Microarray data after", x$norm.method,"normalization"), 
-            ylim = c(ymin, ymax)) 
+            ylim = c(ymin, ymax), ...) 
     
   } else
   {

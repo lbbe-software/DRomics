@@ -99,7 +99,7 @@ plot.metabolomicdata <- function(x, ...)
   def.par <- par(no.readonly = TRUE)
     par(xaxt = "n")
     boxplot(x$data, xlab = "Samples", ylab = "Signal", 
-            main = paste("Metabolomic data")) 
+            main = paste("Metabolomic data"), ...) 
   par(def.par)    
 }
 
