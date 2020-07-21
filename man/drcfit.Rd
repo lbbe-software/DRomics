@@ -17,7 +17,8 @@ drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
 \method{print}{drcfit}(x, \dots)
 
 \method{plot}{drcfit}(x, items, 
-  plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), \dots)
+  plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
+   x_pseudo_log_transfo = FALSE, \dots)
 }
 
 \arguments{
@@ -53,6 +54,11 @@ choice) or \code{"BIC"}.}
  added as black plain circles, \code{"dose_residuals"} for the plot of the residuals as function
  of the dose, and \code{fitted_residuals} for the plot of the residuals as function of 
  the fitted value.}
+
+\item{x_pseudo_log_transfo}{to put at \code{TRUE} to use a pseudo log transformation
+for the x-axis. See \code{\link{pseudo_log_trans}} of the \code{scales} package
+for details on this
+transformation that enables to plot zero values in a pseudo log scale.}
 
 \item{\dots}{ further arguments passed to graphical or print functions.}
 }
@@ -154,10 +160,16 @@ datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", pack
 # Default plot
 plot(f)
 
+\donttest{
+# Same plot with pseudo log transformation of the doses
+plot(f, x_pseudo_log_transfo = TRUE)
+
 # Plot of residuals as function of the dose
 plot(f, plot.type = "dose_residuals")
 
-\donttest{
+# Same plot of residuals with pseudo log transformation of the doses
+plot(f, plot.type = "dose_residuals", x_pseudo_log_transfo = TRUE)
+
 # plot of residuals as function of the fitted value
 plot(f, plot.type = "fitted_residuals")
 }
@@ -174,7 +186,7 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 # Default plot
 plot(f)
 
-# Plot of the first 12 most responsive items
+# Plot of the fit of the first 12 most responsive items
 plot(f, items = 12)
 
 # Plot of the chosen items in the chosen order

@@ -6,6 +6,7 @@ importFrom("limma", normalizeBetweenArrays, lmFit, eBayes, topTable)
 importFrom("DESeq2", rlog, vst, DESeq, results, DESeqDataSetFromMatrix)
 importFrom("utils", txtProgressBar, setTxtProgressBar, read.table)
 importFrom("grDevices", pdf, dev.off)
+importFrom("scales", pseudo_log_trans)
 
 ### Exports
 
