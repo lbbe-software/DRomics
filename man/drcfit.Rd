@@ -97,7 +97,8 @@ dose value at which their extremum is reached is at zero.
 \value{ 
    \code{drcfit} returns an object of class \code{"drcfit"}, a list with 4 components:
     
-   \item{fitres}{ a data frame reporting the results of the fit on each selected item (one line per item) sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The different columns correspond to the identifier of each item (\code{id}), the row number of this item in the initial data set (\code{irow}), the adjusted p-value of the selection step (\code{adjpvalue}), the name of the best fit model (\code{model}), the number of fitted parameters (\code{nbpar}), the values of the parameters \code{b}, \code{c}, \code{d}, \code{e} and \code{f}, (\code{NA} for non used parameters), the residual standard deviation (\code{SDres}), the typology of the curve (\code{typology}), the
+   \item{fitres}{ a data frame reporting the results of the fit on each selected item 
+   for which a successful fit is reached (one line per item) sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The different columns correspond to the identifier of each item (\code{id}), the row number of this item in the initial data set (\code{irow}), the adjusted p-value of the selection step (\code{adjpvalue}), the name of the best fit model (\code{model}), the number of fitted parameters (\code{nbpar}), the values of the parameters \code{b}, \code{c}, \code{d}, \code{e} and \code{f}, (\code{NA} for non used parameters), the residual standard deviation (\code{SDres}), the typology of the curve (\code{typology}), the
    rough trend of the curve (\code{trend}) defined with four classes (U, bell, increasing or decreasing shape), the
    theoretical value at the control \code{y0}), the theoretical y range for x within the range of 
    tested doses (\code{yrange}), 
@@ -109,12 +110,17 @@ dose value at which their extremum is reached is at zero.
     \item{omicdata}{ The corresponding object of class \code{"microarraydata"} given in input 
     (component of itemselect).}
  
-    \item{n.failure}{ The number of previously selected items on which the workflow failed to 
-    fit an acceptable model.}
-
     \item{information.criterion}{The information criterion used to select the best fit model as given in input.}
 
     \item{information.criterion.val}{ a data frame reporting AIC (or BIC) values for each selected item (one line per item) and each fitted model (one colum per model with the AIC (or BIC) value fixed at \code{Inf} when the fit failed).}
+
+    \item{n.failure}{ The number of previously selected items on which the workflow failed to 
+    fit an acceptable model.}
+
+    \item{unfitres}{A data frame reporting the results on each selected item 
+   for which no successful fit is reached (one line per item) sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The different columns correspond to the identifier of each item (\code{id}), the row number of this item in the initial data set (\code{irow}), the adjusted p-value of the selection step (\code{adjpvalue}), and code for the reason of the fitting failure (\code{cause},
+   equal to \code{"constant.model"} if the best fit model is a constant model or 
+   \code{"trend.in.residuals"} if the best fit model is rejected due to quadratic trend on residuals.)}
 
 }
 
@@ -173,7 +179,14 @@ plot(f, items = 12)
 
 # Plot of the chosen items in the chosen order
 plot(f, items = c("301.2", "363.1", "383.1"))
+
+# Look at the table of results for successful fits
+head(f$fitres)
+
+# Look at the table of results for unsuccessful fits
+head(f$unfitres)
 }
+
 
 # (3) Comparison of parallel and non paralell implementations on a 
 #     larger selection of items

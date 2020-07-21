@@ -443,10 +443,21 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     
   # removing of null models (const, model no 7) and 
   # fits eliminated by the quadratic trend test on residuals
-  dres <- dres[(dres$model != 7) & 
-                 ((dres$trendP > 0.05) | is.na(dres$trendP)) , ]
+  lines.success <- (dres$model != 7) & 
+    ((dres$trendP > 0.05) | is.na(dres$trendP))
   # is.na(trendP because anova of two models with very close RSS
   # may return NA for pvalue)
+  
+  # dres <- dres[(dres$model != 7) & 
+  #                ((dres$trendP > 0.05) | is.na(dres$trendP)) , ]
+  dres.failure <- dres[!lines.success, ]
+  dfail <- dres.failure[, c("id", "irow", "adjpvalue")]
+  dfail$cause <- character(length = nrow(dfail))
+  dfail$cause[dres.failure$model == 7] <- "constant.model"
+  dfail$cause[dres.failure$model != 7] <- "trend.in.residuals"
+  
+  dres <- dres[lines.success, ]
+
   # update of nselect
   nselect <- nrow(dres)
   
@@ -632,8 +643,9 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     dev.off()
   }
   
-  reslist <- list(fitres = dc, omicdata = itemselect$omicdata, n.failure = n.failure, 
-                  information.criterion = information.criterion, information.criterion.val = dAIC) 
+  reslist <- list(fitres = dc, omicdata = itemselect$omicdata,  
+                  information.criterion = information.criterion, information.criterion.val = dAIC,
+                  n.failure = n.failure, unfitres = dfail) 
   
   return(structure(reslist, class = "drcfit"))
 }
