@@ -5,9 +5,12 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
   # Checks
   if (!(inherits(omicdata, "microarraydata") | 
         inherits(omicdata, "RNAseqdata") |
-        inherits(omicdata, "metabolomicdata")))
-    stop("Use only with 'microarraydata', 'RNAseqdata' or 'metabolomicdata' objects, respectively
-         created with functions 'microarraydata', 'RNAseqdata' or 'metabolomicdata' ")
+        inherits(omicdata, "metabolomicdata") |
+        inherits(omicdata, "continuousanchoringdata")))
+    stop("Use only with 'microarraydata', 'RNAseqdata', 'metabolomicdata' or 
+    'continuousanchoringdata' objects, respectively
+         created with functions 'microarraydata()', 'RNAseqdata()', 'metabolomicdata()'
+         and 'continuousanchoringdata()' ")
   select.method <- match.arg(select.method, c("quadratic", "linear", "ANOVA"))
   if (!is.numeric(FDR))
     stop("FDR, the false discovery rate, must a number in ]0; 1[ (generally under 0.1).")
@@ -53,6 +56,50 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
     selectindex <- selectindexnonsorted[irowsortedbypvalue]
     adjpvalue <- adjpvaluenonsorted[irowsortedbypvalue]
   } else
+    
+  if (inherits(omicdata,"continuousanchoringdata"))
+  {
+    data <- omicdata$data
+    nitem <- nrow(data)
+    pvalue <- numeric(length = nitem)
+    # Selection using lm    
+    if (select.method == "quadratic")
+    {
+      for (i in 1:nitem) # to write in a sapply in case there are a lot of endpoints
+      {
+        lmFit <- lm(data[i, ] ~ doseranks + doseranks2)
+        lmFitconst <- lm(data[i, ] ~ 1)
+        a <- anova(lmFit, lmFitconst)
+        pvalue[i] <- a[["Pr(>F)"]][2]
+      }
+    } else
+    if (select.method == "linear")
+    {
+      lmFit <- lm(data[i, ] ~ doseranks)
+      lmFitconst <- lm(data[i, ] ~ 1)
+      a <- anova(lmFit, lmFitconst)
+      pvalue[i] <- a[["Pr(>F)"]][2]
+    } else
+    if (select.method == "ANOVA")
+    {
+      lmFit <- lm(data[i, ] ~ fdose)
+      lmFitconst <- lm(data[i, ] ~ 1)
+      a <- anova(lmFit, lmFitconst)
+      pvalue[i] <- a[["Pr(>F)"]][2]
+    } 
+      
+    # all adjusted pvalues without sorting after Benjamini Hochberg procedure
+    wholeadjpvalue <- p.adjust(pvalue, method = "BH") 
+
+    selectindexnonsorted <- irow[wholeadjpvalue < FDR]
+    adjpvaluenonsorted <- wholeadjpvalue[selectindexnonsorted]
+    irowsortedbypvalue <- order(adjpvaluenonsorted, decreasing = FALSE)
+    selectindex <- selectindexnonsorted[irowsortedbypvalue]
+    adjpvalue <- adjpvaluenonsorted[irowsortedbypvalue]
+    
+  } else
+      
+    
   if (inherits(omicdata,"RNAseqdata"))
   {
     data <- omicdata$raw.counts

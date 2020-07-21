@@ -16,13 +16,12 @@ itemselect(omicdata, select.method = c("quadratic", "linear", "ANOVA"),
 }
 
 \arguments{
-\item{omicdata}{An object of class \code{"microarray"}, \code{"RNAseq"} or
-\code{"metabolomic"} respectively returned by 
-functions \code{microarraydata}, \code{RNAseqdata} or 
-\code{metabolomicdata}.}
+\item{omicdata}{An object of class \code{"microarraydata"}, \code{"RNAseqdata"},
+\code{"metabolomicdata"} or \code{"continuousanchoringdata"} respectively returned by 
+functions \code{microarraydata}, \code{RNAseqdata}, 
+\code{metabolomicdata} or \code{continuousanchoringdata}.}
 
-\item{select.method}{The chosen method for selecting items using the \code{limma} package for microarray and metabolomic data and the \code{DESeq2}
-package for RNAseq data : \code{"quadratic"} for a 
+\item{select.method}{\code{"quadratic"} for a 
 quadratic trend test on dose ranks, \code{"linear"} for a linear trend test on dose ranks and \code{"ANOVA"} for 
 an ANOVA-type test (see details for further explaination).}
 
@@ -39,16 +38,20 @@ an ANOVA-type test (see details for further explaination).}
 
 \details{
 The selection of responsive items is performed using the \code{limma} package
-for microarray and metabolomic data and the \code{DESeq2} package for
-RNAseq data. 
+for microarray and metabolomic data, the \code{DESeq2} package for
+RNAseq data and the \code{lm} function for continuous anchoring data. 
 Three methods are proposed (as described below). Within \code{limma} those methods are implemented using functions \code{\link{lmFit}},  
 \code{\link{eBayes}} and \code{\link{topTable}} with p-values ajusted for multiple 
 testing using the Benjamini-Hochberg method, with the false discovery rate given in
-input (argument \code{FDR}). Within \code{DESeq2} those methods
+input (argument \code{FDR}). 
+Within \code{DESeq2} those methods
 are implemented using functions \code{\link{DESeqDataSetFromMatrix}},  
 \code{\link{DESeq}} and \code{\link{results}} with p-values ajusted for multiple 
 testing using the Benjamini-Hochberg method, with the false discovery rate given in
 input (argument \code{FDR}). 
+For continuous anchoring data, the \code{lm} and \code{anova} functions are used 
+to fit the model and compare it to the null model, and the pvalues are then corrected using
+the function \code{p.adjust} with the Benjamini-Hochberg method.
 
  \itemize{
 \item The ANOVA_based test (\code{"ANOVA"}) is classically used for 
@@ -81,7 +84,8 @@ All items having a proportion of such tied minimal values above the input argume
   \item{ selectindex }{ the corresponding vector of row indices of selected items in the object omicdata }
 
   \item{omicdata}{The corresponding object of class \code{"microarraydata"},
-  \code{"RNAseqdata"} or \code{"metabolomicdata"} given in input.}
+  \code{"RNAseqdata"}, \code{"metabolomicdata"} or \code{"continuousanchoringdata"}
+  given in input.}
 
   \item{select.method}{The selection method given in input.}
 

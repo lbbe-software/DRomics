@@ -25,6 +25,10 @@ export(metabolomicdata)
 S3method(print, metabolomicdata)
 S3method(plot, metabolomicdata)
 
+#continuousanchoringdata class
+export(continuousanchoringdata)
+S3method(print, continuousanchoringdata)
+S3method(plot, continuousanchoringdata)
 
 #itemselect class
 export(itemselect)
