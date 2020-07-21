@@ -9,7 +9,8 @@ RNAseq data in raw counts are imported from a .txt file
 (internally imported using the function \code{\link{read.table}}), 
 checked (see the description 
 of argument \code{file} for the required format
-of data), normalized with respect to library size and tranformed in 
+of data) or from a R object of class \code{data.frame}, 
+normalized with respect to library size and tranformed in 
 a log2 scale using
 variance stabilizing transformation or regularized logarithm.
 }
@@ -23,11 +24,11 @@ RNAseqdata(file, check = TRUE, transfo.method = c("rlog", "vst"))
 
 \arguments{
 \item{file}{The name of the .txt file (e.g. \code{"mydata.txt"})
-containing one row per item, with the first column corresponding to the identifier of each item, in a column named 
-\code{"item"}, and the other columns giving the responses
+containing one row per item, with the first column corresponding to the identifier of each item, and the other columns giving the responses
 of the item for each replicate at each dose or concentration. 
-The names of the corresponding columns must correspond to the tested
-doses or concentrations in a numeric format for the corresponding replicate (for example, if there are triplicates for each treatment, column names can be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.}
+In the first line, after a name for the identifiers column, we must have the tested
+doses or concentrations in a numeric format for the corresponding replicate (for example, if there are triplicates for each treatment, the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc. Alternatively an R object of class \code{data.frame} can be directly given for this argument, corresponding to the output
+of \code{read.table(file, header = FALSE)} on a file described as above.}
 
 \item{check}{If TRUE the format of the input file is checked.}
 
@@ -105,8 +106,8 @@ Marie-Laure Delignette-Muller
 \examples{
 # (1) import, check, normalization and transformation of RNAseq data 
 # An example on a subsample of a data set published by Zhou et al. 2017
-# (in Toxicological sciences, 160, 95-110)
-# Effect on kidney transcriptomes of tetrachloroethylene
+# Effect on mouse kidney transcriptomes of tetrachloroethylene
+# (see ? Zhou for details)
 #
 datafilename <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
 (o <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog"))
@@ -121,17 +122,25 @@ plot(o)
 # when it is used with its default field separator (sep argument)
 # Tabs are recommended.
 
+# Use of an R object of class data.frame
+# below the same example taking a subsample of the data set
+# Zhou_kidney_pce (see ?Zhou for details)
+data(Zhou_kidney_pce)
+subsample <- Zhou_kidney_pce[1:1000, ]
+(o <- RNAseqdata(subsample, check = TRUE, transfo.method = "rlog"))
+plot(o)
+
 
 # (2) transformation with two methods on the whole data set
 \donttest{
-datafilename <- system.file("extdata", "Zhou_kidney_pce.txt", package="DRomics")
+data(Zhou_kidney_pce)
 
 # variance stabilizing tranformation
-(o1 <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
+(o1 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "vst"))
 plot(o1)
 
 # regularized logarithm
-(o2 <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
+(o2 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "rlog"))
 plot(o2)
 }
 

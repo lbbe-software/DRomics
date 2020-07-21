@@ -3,18 +3,24 @@
 RNAseqdata <- function(file, check = TRUE, 
                      transfo.method = c("rlog", "vst"))
 {
-  if (check)
+  if (is.data.frame(file))
   {
-    # check argument file
-    if (!is.character(file))
-      stop("The argument file must be a character string")
-    le.file <- nchar(file)
-    suffix <- substr(file, le.file - 3, le.file)
-    if (suffix != ".txt")
-      stop("The argument file must be a character string ending by .txt")
+    d <- file
+  } else
+  {
+    if (check)
+    {
+      # check argument file
+      if (!is.character(file))
+        stop("The argument file must be a character string")
+      le.file <- nchar(file)
+      suffix <- substr(file, le.file - 3, le.file)
+      if (suffix != ".txt")
+        stop("The argument file must be a character string ending by .txt")
+    }
+    d <- read.table(file, header = FALSE)
+    
   }
-  
-  d <- read.table(file, header = FALSE)
   nrowd <- nrow(d)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
