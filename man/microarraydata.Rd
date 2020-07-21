@@ -8,9 +8,10 @@
 \description{
 Single-channel microarray data in log2 are imported from a .txt file 
 (internally imported using the function \code{\link{read.table}}), 
-checked (see the description 
+checked or from a R object of class \code{data.frame} 
+(see the description 
 of argument \code{file} for the required format
-of data) and normalized (between arrays
+of data)and normalized (between arrays
 normalization).
 \code{omicdata} is a deprecated version of \code{microarraydata}.
 }
@@ -28,11 +29,18 @@ omicdata(file, check = TRUE,
 
 \arguments{
 \item{file}{The name of the .txt file (e.g. \code{"mydata.txt"})
-containing one row per item, with the first column corresponding to the identifier of each item, in a column named 
-\code{"item"}, and the other columns giving the responses
+containing one row per item, with the first column corresponding to the identifier of each item, 
+and the other columns giving the responses
 of the item for each replicate at each dose or concentration. 
-The names of the corresponding columns must correspond to the tested
-doses or concentrations in a numeric format for the corresponding replicate (for example, if there are triplicates for each treatment, column names can be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.}
+In the first line, after a name for the identifier column, we must have the tested
+doses or concentrations in a numeric format for the corresponding replicate 
+(for example, if there are triplicates for each treatment, 
+the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). 
+This file is imported within the function using the function
+\code{\link{read.table}} with its default field separator (sep argument).
+Alternatively an R object of class \code{data.frame} can be directly given in input, 
+corresponding to the output
+of \code{read.table(file, header = FALSE)} on a file described as above. }
 
 \item{check}{If TRUE the format of the input file is checked.}
 
@@ -46,10 +54,7 @@ normalization is performed using the function normalizeBetweenArrays of the
 }
 
 \details{
-This function imports the data from a .txt file, using the function
-\code{\link{read.table}} with its default field separator (sep argument),
-then checks the format of 
-data (see the description 
+This function imports the data, checks their format (see the description 
 of argument \code{file} for the required format
 of data) and gives in the \code{print} information
 that should help the user to check that the coding of data is correct : the tested doses (or concentrations) 
@@ -104,7 +109,8 @@ Marie-Laure Delignette-Muller
 
 \examples{
 # (1) import, check and normalization of microarray data 
-# (an example on a subsample of a greater data set)
+# (an example on a subsample of a greater data set published in Larras et al. 2018
+# Transcriptomic effect of triclosan in the chlorophyte Scenedesmus vacuolatus)
 #
 datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")

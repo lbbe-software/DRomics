@@ -7,6 +7,9 @@ NEW FEATURES
 - Add of the function ecdfquantileplot()
 - Add of an argument named information.criterion in drcfit() to choose 
 the use of AIC or BIC for the best fit model selection process.
+- Add of the possibility to enter data as an R object of class data.frame
+- Add of published datasets (Zhou et al. 2017, Larras etal. 2020) and 
+corresponding help pages
 
 
 Version 2.0-1 

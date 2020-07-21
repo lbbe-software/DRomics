@@ -23,9 +23,8 @@ data(Zhou_liver_tce)
 %- maybe also 'usage' for other objects documented here.
 
 \format{ 
-\code{Zhou_kidney_pce},  \code{Zhou_kidney_tce}, \code{Zhou_liver_pce}  nd \code{Zhou_liver_tce} each contains one row per transcript, with the first column corresponding to the identifier of each transcript, and the other columns giving the count of reads for each replicate at each dose. 
-The names of the corresponding columns correspond to the tested
-doses.}
+\code{Zhou_kidney_pce},  \code{Zhou_kidney_tce}, \code{Zhou_liver_pce}  nd \code{Zhou_liver_tce} each contains one row per transcript, with the first column corresponding to the identifier of each transcript, and the other columns giving the count of reads for each replicate at each dose. In the first line, after the name for the identifier column, we have the tested doses for each corresponding replicate.
+}
 
 \source{ 
 Zhou, Y. H., Cichocki, J. A., Soldatow, V. Y., Scholl, E. H., Gallins, P. J., Jima, D., ... & Rusyn, I. 2017. Comparative dose-response analysis of liver and kidney transcriptomic effects of trichloroethylene and tetrachloroethylene in B6C3F1 mouse. \emph{Toxicological sciences}, \bold{160(1)}, 95-110.

@@ -2,22 +2,27 @@
 
 metabolomicdata <- function(file, check = TRUE)
 {
-  if (check)
+  if (is.data.frame(file))
   {
-    # check argument file
-    if (!is.character(file))
-      stop("The argument file must be a character string")
-    le.file <- nchar(file)
-    suffix <- substr(file, le.file - 3, le.file)
-    if (suffix != ".txt")
-      stop("The argument file must be a character string ending by .txt")
-    warning("We recommend you to check that your metabolomics data were correctly pretreated 
+    d <- file
+  } else
+  {
+    if (check)
+    {
+      # check argument file
+      if (!is.character(file))
+        stop("The argument file must be a character string")
+      le.file <- nchar(file)
+      suffix <- substr(file, le.file - 3, le.file)
+      if (suffix != ".txt")
+        stop("The argument file must be a character string ending by .txt")
+      warning("We recommend you to check that your metabolomics data were correctly pretreated 
             before importation. In particular data (metabolomic signal) 
             should have been log-transformed, without replacing 0 values by NA values 
             (consider using the half minimum method instead for example). \n")
-  }
-  
-  d <- read.table(file, header = FALSE)
+    }
+    d <- read.table(file, header = FALSE)
+  } 
   nrowd <- nrow(d)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 

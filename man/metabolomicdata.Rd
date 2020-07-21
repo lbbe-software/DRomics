@@ -7,9 +7,11 @@
 \description{
 Metabolomic data are imported from a .txt file 
 (internally imported using the function \code{\link{read.table}})
-and checked (see the description 
+and checked or from a R object of class \code{data.frame}
+(see the description 
 of argument \code{file} for the required format
-of data). No normalization nor transformation is provided in this function.
+of data). 
+No normalization nor transformation is provided in this function.
 The pretreatment of metabolomic data must be done before importation of data, 
 and data must be imported in log scale,
 so that they can be directly modelled using a Gaussian 
@@ -38,11 +40,19 @@ metabolomicdata(file, check = TRUE)
 
 \arguments{
 \item{file}{The name of the .txt file (e.g. \code{"mydata.txt"})
-containing one row per item, with the first column corresponding to the identifier of each item, in a column named 
-\code{"item"}, and the other columns giving the responses
+containing one row per item, with the first column corresponding to the identifier of each item, 
+and the other columns giving the responses
 of the item for each replicate at each dose or concentration. 
-The names of the corresponding columns must correspond to the tested
-doses or concentrations in a numeric format for the corresponding replicate (for example, if there are triplicates for each treatment, column names can be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.}
+In the first line, after a name for the identifier column, we must have the tested
+doses or concentrations in a numeric format for the corresponding replicate 
+(for example, if there are triplicates for each treatment, 
+the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). 
+This file is imported within the function using the function
+\code{\link{read.table}} with its default field separator (sep argument).
+Alternatively an R object of class \code{data.frame} can be directly given in input, 
+corresponding to the output
+of \code{read.table(file, header = FALSE)} on a file described as above. The two
+alternatives are illustrated below in examples.}
 
 \item{check}{If TRUE the format of the input file is checked.}
 
@@ -52,10 +62,8 @@ doses or concentrations in a numeric format for the corresponding replicate (for
 }
 
 \details{
-This function imports the data from a .txt file, using the function
-\code{\link{read.table}} with its default field separator (sep argument),
-then checks the format of 
-data (see the description 
+This function imports the data, checks their format  
+(see the description 
 of argument \code{file} for the required format
 of data) and gives in the \code{print} information
 that should help the user to check that the coding of data is correct : the tested doses (or concentrations) 
@@ -97,9 +105,9 @@ Marie-Laure Delignette-Muller
 
 \examples{
 # (1) import and check of metabolomic data 
-# (an example on a subsample of a greater data set)
+# (an example on a subsample of a greater data set given in the package (see ?Scenedesmus))
 #
-datafilename <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
+datafilename <- system.file("extdata", "metabolo_sample.txt", package = "DRomics")
 
 o <- metabolomicdata(datafilename, check = TRUE)
 print(o)
@@ -113,5 +121,13 @@ plot(o)
 # of the default field separators recognised by the read.table() function
 # when it is used with its default field separator (sep argument)
 # Tabs are recommended.
+
+# Use of an R object of class data.frame
+# An example using the complete data set
+# Scenedesmus_metab (see ?Scenedesmus for details)
+data(Scenedesmus_metab)
+(o <- metabolomicdata(Scenedesmus_metab))
+plot(o)
+
 
 }
