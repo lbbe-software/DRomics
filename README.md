@@ -58,7 +58,15 @@ About technical issues, you can contact Aurélie Siberchicot: aurelie.siberchico
 
 
 # Citation
+If you use Dromics, you should cite: <br />
 Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). 
 *DRomics : a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment*. 
 Environmental Science & Technology. 
 <a href="https://pubs.acs.org/doi/10.1021/acs.est.8b04752" target="_blank">https://pubs.acs.org/doi/10.1021/acs.est.8b04752</a>
+
+
+You can also look at the following citation for a complete example of use: <br />
+Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020). 
+*A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus*.
+Journal of Hazardous Materials. 
+<a href="https://doi.org/10.1016/j.jhazmat.2020.122727." target="_blank">https://doi.org/10.1016/j.jhazmat.2020.122727.</a>
