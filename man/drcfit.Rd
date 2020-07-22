@@ -131,7 +131,8 @@ dose value at which their extremum is reached is at zero.
 }
 
 \seealso{
-    See \code{\link{nls}} for details about the non linear regression function.
+    See \code{\link{nls}} for details about the non linear regression function and 
+    \code{\link{targetplot}} to plot target items (even if non responsive or unfitted).
 }
 
 \references{ 

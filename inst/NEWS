@@ -14,6 +14,9 @@ corresponding help pages
 to enable the selection of significant responses on continuous anchoring data.
 - Add an argument x_pseudo_log_transfo in plot.drcfit to enable the use of
 pseudo log tranformation of the x-axis.
+- Add of a function to plot raw data on target items optionally with fitted curves 
+for items which have be selected in step 2 and for which step 3 was successful
+(new function targetplot()).
 
 
 Version 2.0-1 
