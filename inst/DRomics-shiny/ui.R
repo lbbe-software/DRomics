@@ -63,7 +63,10 @@ ui <- fluidPage(
                                           a("https://doi.org/10.1021/acs.est.8b04752", href = "https://pubs.acs.org/doi/10.1021/acs.est.8b04752", TARGET = "_blank", style="color:#f28d0f;")),
                                         
                                         br(),
-                                        p(("You can also look at the following citation for a complete example of use:")),
+                                        p("You can find this article at: ", a("https://hal.archives-ouvertes.fr/hal-02309919", href = "https://hal.archives-ouvertes.fr/hal-02309919", TARGET = "_blank", style="color:#f28d0f;")),
+                                        
+                                        br(),
+                                        p("You can also look at the following citation for a complete example of use:"),
                                         p("Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020).", br(),
                                           em("A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus."), br(),
                                           "Journal of Hazardous Materials.",
