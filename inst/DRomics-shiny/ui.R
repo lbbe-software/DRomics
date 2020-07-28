@@ -166,7 +166,7 @@ ui <- fluidPage(
                                                'Select an input file',
                                                accept = c('text/csv', 'text/plain')),
                                      h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
-                                     h5("See ", a("here", href = "DRomicspkg/Zhou_kidney_pce.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'Zhou_kidney_pce.txt'), " an example file")
+                                     h5("See ", a("here", href = "DRomicspkg/RNAseq_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'RNAseq_sample.txt'), " an example file")
                                    ),
                                    sidebarPanel(
                                      style = "background-color: #F5aa4c;",
