@@ -52,12 +52,29 @@ head(Zhou_liver_tce)
 # of one of those datasets
 #
 d <- Zhou_kidney_pce[1:501, ]
-
-# to work on the whole data set use the following code
-# d <- Zhou_kidney_pce
-
 (o_kidney_pce <- RNAseqdata(d))
 plot(o_kidney_pce)
+
+# (3) analysis of the whole dataset (kidney and PCE)
+# (may be long to run)
+
+\donttest{
+d <- Zhou_kidney_pce
+(o <- RNAseqdata(d))
+plot(o)
+(s <- itemselect(o, select.method = "quadratic", FDR = 0.01))
+(f <- drcfit(s, progressbar = TRUE))
+head(f$fitres)
+
+plot(f) 
+plot(f, x_pseudo_log_trans = TRUE)
+plot(f, plot.type = "dose_residuals")
+r <- bmdcalc(f, z = 1)
+plot(r)
+plot(r, by = "trend")
+head(r$res)
+
+}
 
 }
 

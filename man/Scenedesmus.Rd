@@ -13,6 +13,7 @@ Metabolomic and apical data sets for the effect of triclosan in the chlorophyte 
 
 \usage{
 data(Scenedesmus_metab)
+data(Scenedesmus_apical)
 }
 %- maybe also 'usage' for other objects documented here.
 
@@ -66,7 +67,8 @@ plot(o_apical)
 (f_apical <- drcfit(s_apical, progressbar = TRUE))
 f_apical$fitres
 plot(f_apical) 
-plot(f_apical, plot.type = "fitted_residuals")
+plot(f_apical, x_pseudo_log_trans = TRUE)
+plot(f_apical, plot.type = "dose_residuals")
 
 # (2.5) Benchmark dose calculation on apical data
 #
