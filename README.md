@@ -3,7 +3,7 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/DRomics)](http://cran.r-project.org/package=DRomics)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/DRomics)](https://cran.r-project.org/package=DRomics)
 
-All informations about DRomics can also be found at <a href="https://lbbe.univ-lyon1.fr/-DRomics-.html" target="_blank">https://lbbe.univ-lyon1.fr/-DRomics-.html</a>
+All informations about DRomics can also be found at <a href="https://lbbe.univ-lyon1.fr/-DRomics-.html" target="_blank">https://lbbe.univ-lyon1.fr/-DRomics-.html</a>.
 
 
 # Overview
