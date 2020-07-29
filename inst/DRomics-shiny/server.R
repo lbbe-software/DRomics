@@ -19,6 +19,9 @@ server <- function(input, output, session) {
     } else if(inTypeData() == 'metabolomicdata') {
       req(input$datafile_metabolomic)
       metabolomicdata(input$datafile_metabolomic$datapath, check = TRUE)
+    } else if(inTypeData() == 'continuousanchoringdata') {
+      req(input$datafile_anchoring)
+      continuousanchoringdata(input$datafile_anchoring$datapath, check = TRUE)
     }
   })
   

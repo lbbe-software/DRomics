@@ -124,7 +124,8 @@ ui <- fluidPage(
                                                 "What kind of data do you use?",
                                                 choices = c('microarray data (in log scale)' = 'microarraydata', 
                                                             'RNAseq data (in raw counts)' = 'rnaseqdata',
-                                                            'metabolomics data (in log scale)' = 'metabolomicdata'),
+                                                            'metabolomics data (in log scale)' = 'metabolomicdata',
+                                                            'anchoring continuous data (in a scale that unables the use of a Gaussian error model)' = 'continuousanchoringdata'),
                                                 selected = 'microarraydata'), 
                                    br(), br()),
                                  
@@ -198,6 +199,27 @@ ui <- fluidPage(
                                      width = 4,
                                      icon("exclamation-triangle"), "We recommend you to check that your metabolomics data were correctly pretreated before importation. In particular data (metabolomic signal) should have been log-transformed, without replacing 0 values by NA values (consider using the half minimum method instead for example).",
                                      h5("See ", a("here", href = "informations_metabolo_pretreatment.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " more information about metabolomics data pretreatment")
+                                   )
+                                 ),
+                                 
+                                 ###### For continuous anchoring data
+                                 conditionalPanel(
+                                   condition = "input.typeData == 'continuousanchoringdata'",
+                                   sidebarPanel(
+                                     style = "background-color: #F5aa4c;",
+                                     width = 4,
+                                     fileInput('datafile_anchoring', 
+                                               'Select an input file',
+                                               accept = c('text/csv', 'text/plain')),
+                                     h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
+                                     h5("See ", a("here", href = "DRomicspkg/apical_anchoring.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'apical_anchoring.txt'), " an example file")
+                                   ),
+                                   sidebarPanel(
+                                     style = "background-color: #F5aa4c;",
+                                     width = 4,
+                                     icon("exclamation-triangle"), 
+                                     # "We recommend you to check that your metabolomics data were correctly pretreated before importation. In particular data (metabolomic signal) should have been log-transformed, without replacing 0 values by NA values (consider using the half minimum method instead for example).",
+                                     # h5("See ", a("here", href = "informations_metabolo_pretreatment.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " more information about metabolomics data pretreatment")
                                    )
                                  )
                                  
