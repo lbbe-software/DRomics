@@ -1,12 +1,14 @@
 The data file must be a .txt file with tabs or spaces as field separators.
 
-It must be formated with one row per item (e.g. probes, metabolites),
+It must be formated with one row per item (e.g. probes, metabolites for omics
+data or endpoints for anchoring data),
 one column per sample (e.g dose/concentration).
 
 The first column must correspond to the identifier of each item (in a column
 named "item"), and the other columns must give the responses of the item for 
 each sample (i.e. each replicate at each dose or concentration). 
 
-The names of the columns must correspond to the tested doses or concentrations
+The first line must give, after the name of the first column,
+the tested doses or concentrations
 in a numeric format (for example, if there are triplicates for each treatment, 
 column names can be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc).
