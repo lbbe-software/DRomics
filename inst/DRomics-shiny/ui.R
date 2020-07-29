@@ -218,8 +218,7 @@ ui <- fluidPage(
                                      style = "background-color: #F5aa4c;",
                                      width = 4,
                                      icon("exclamation-triangle"), 
-                                     # "We recommend you to check that your metabolomics data were correctly pretreated before importation. In particular data (metabolomic signal) should have been log-transformed, without replacing 0 values by NA values (consider using the half minimum method instead for example).",
-                                     # h5("See ", a("here", href = "informations_metabolo_pretreatment.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " more information about metabolomics data pretreatment")
+                                     "We recommend you to check that your anchoring data are continuous and expressed in a scale that enables the use of a Gaussian error model (a transformation of data may be needed for some endpoints). If this assumption is not respected, results of selection and further steps may be inaccurate."
                                    )
                                  )
                                  
@@ -317,8 +316,8 @@ ui <- fluidPage(
                                                                      'fitted / residuals' = 'fitted_residuals'),
                                                          selected = "dose_fitted")),
                                      column(3,
-                                            radioButtons('pseudologxscale',
-                                                         'Pseudo-log x-scale', inline = TRUE,
+                                            radioButtons('pseudologdosescale',
+                                                         'Pseudo-log dose-scale', inline = TRUE,
                                                          choices = c('yes' = 'TRUE',
                                                                      'no' = 'FALSE'),
                                                          selected = "FALSE"))

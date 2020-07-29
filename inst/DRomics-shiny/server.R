@@ -76,7 +76,7 @@ server <- function(input, output, session) {
     mydrcfit <- rundrcfit()
     
     myplotdrcfit <- reactive({
-      plot(mydrcfit, plot.type = input$plottypeDrcfit, dose_pseudo_log_transfo = input$pseudologxscale)
+      plot(mydrcfit, plot.type = input$plottypeDrcfit, dose_pseudo_log_transfo = input$pseudologdosescale)
     })
     
     mpd <- myplotdrcfit()
@@ -220,7 +220,7 @@ server <- function(input, output, session) {
               "# Step 3",
               paste0("f <- drcfit(s, progressbar = FALSE, sigmoid.model = 'Hill', parallel = 'no')"),
               "# This computation time can be reduced using parallel computing (see ?drcfit)",
-              "plot(f)",
+              paste0("plot(f, plot.type = '", input$plottypeDrcfit, "', dose_pseudo_log_transfo = ", input$pseudologdosescale, ")"),
               "",
               "# Step 4",
               paste0("r <- bmdcalc(f, z = ", numZbmdcalc(), ", x = ", numXbmdcalc(), ")"),
