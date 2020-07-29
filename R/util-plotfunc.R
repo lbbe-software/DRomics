@@ -1,3 +1,5 @@
+# Function used in plot.drcfit()
+# uses ggplot2
 plotfitsubset <- function(subd, dose, data, data.mean, npts = 100, 
                         plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"),
                         x_pseudo_log_transfo = FALSE)
@@ -91,12 +93,18 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 100,
   }
   if (x_pseudo_log_transfo)
   {
+    if (plot.type == "fitted_residuals")
+    {
+      warning("The pseudo-log transformation of the dose axis cannot be used for 
+              this type of plot: residuals as fonction of fitted values")
+    } else
     g <- g + scale_x_continuous(trans = pseudo_log_trans(base = 10))
   }
   return(g)
 }
 
-# Deprecated function no more used in the package
+# Function used to generate the pdf file in drcfit when saveplot2pdf == TRUE
+# uses graphics
 plotfit <- function(subd, dose, data, data.mean, pmfrow = c(7,5), pmar = c(2.2, 2.2, 2.2, 0.7),
                     xlog10 = FALSE, npts = 100, allpoints = TRUE, 
                     addBMD.xfold = FALSE, addBMD.SD = FALSE, view.axes = TRUE)

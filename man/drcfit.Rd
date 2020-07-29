@@ -52,11 +52,12 @@ choice) or \code{"BIC"}.}
 \item{plot.type}{the type of plot, by default \code{"dose_fitted"} for the plot of 
  fitted curves with the observed points added to the plot and the observed means at each dose
  added as black plain circles, \code{"dose_residuals"} for the plot of the residuals as function
- of the dose, and \code{fitted_residuals} for the plot of the residuals as function of 
+ of the dose, and \code{"fitted_residuals"} for the plot of the residuals as function of 
  the fitted value.}
 
 \item{x_pseudo_log_transfo}{to put at \code{TRUE} to use a pseudo log transformation
-for the x-axis. See \code{\link{pseudo_log_trans}} of the \code{scales} package
+for the dose axis (only available if the dose is in x-axis, so not available
+for \code{plot.type} \code{"fitted_residuals"}). See \code{\link{pseudo_log_trans}} of the \code{scales} package
 for details on this
 transformation that enables to plot zero values in a pseudo log scale.}
 

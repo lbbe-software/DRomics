@@ -23,12 +23,21 @@ plot(o.4)
 # no options in shiny
 (f <- drcfit(s_quad, progressbar = TRUE))
 f$fitres
+f$unfitres
 plot(f)
 # Alternative plots
 # with a chosen number of first items
 plot(f, items = 12) 
 # with chosen items in a specified order
 plot(f, items = c("301.2", "363.1", "383.1"))
+# residual plots
+plot(f, items = 12, plot.type = "fitted_residuals") 
+plot(f, items = 12, plot.type = "dose_residuals") 
+# plot with dose in log
+plot(f, items = 12, plot.type = "dose_fitted", x_pseudo_log_transfo = TRUE) 
+plot(f, items = 12, plot.type = "dose_residuals", x_pseudo_log_transfo = TRUE) 
+plot(f, items = 12, plot.type = "fitted_residuals", x_pseudo_log_transfo = TRUE) 
+
 
 # calculation of benchmark doses
 # options in shiny : z (numerical positive value), x (numerical positive value : percentage)
