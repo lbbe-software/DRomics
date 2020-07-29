@@ -34,9 +34,9 @@ plot(f, items = c("301.2", "363.1", "383.1"))
 plot(f, items = 12, plot.type = "fitted_residuals") 
 plot(f, items = 12, plot.type = "dose_residuals") 
 # plot with dose in log
-plot(f, items = 12, plot.type = "dose_fitted", x_pseudo_log_transfo = TRUE) 
-plot(f, items = 12, plot.type = "dose_residuals", x_pseudo_log_transfo = TRUE) 
-plot(f, items = 12, plot.type = "fitted_residuals", x_pseudo_log_transfo = TRUE) 
+plot(f, items = 12, plot.type = "dose_fitted", dose_pseudo_log_transfo = TRUE) 
+plot(f, items = 12, plot.type = "dose_residuals", dose_pseudo_log_transfo = TRUE) 
+plot(f, items = 12, plot.type = "fitted_residuals", dose_pseudo_log_transfo = TRUE) 
 
 
 # calculation of benchmark doses

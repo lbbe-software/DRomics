@@ -2,7 +2,7 @@
 # uses ggplot2
 plotfitsubset <- function(subd, dose, data, data.mean, npts = 100, 
                         plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"),
-                        x_pseudo_log_transfo = FALSE)
+                        dose_pseudo_log_transfo = FALSE)
 {
   plot.type <- match.arg(plot.type, c("dose_fitted", "dose_residuals", "fitted_residuals"))
   if (plot.type == "dose_fitted")
@@ -91,7 +91,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 100,
       
     }
   }
-  if (x_pseudo_log_transfo)
+  if (dose_pseudo_log_transfo)
   {
     if (plot.type == "fitted_residuals")
     {

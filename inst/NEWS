@@ -12,7 +12,7 @@ the use of AIC or BIC for the best fit model selection process.
 corresponding help pages
 - Add of function continuousanchoringdata and modification of itemselect()
 to enable the selection of significant responses on continuous anchoring data.
-- Add an argument x_pseudo_log_transfo in plot.drcfit to enable the use of
+- Add an argument dose_pseudo_log_transfo in plot.drcfit to enable the use of
 pseudo log tranformation of the x-axis.
 - Add an element in the list of drcfit() output : unfitres giving some 
 information on selected items for which the modelling step is not successful
