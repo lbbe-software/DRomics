@@ -75,17 +75,23 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
     } else
     if (select.method == "linear")
     {
-      lmFit <- lm(data[i, ] ~ doseranks)
-      lmFitconst <- lm(data[i, ] ~ 1)
-      a <- anova(lmFit, lmFitconst)
-      pvalue[i] <- a[["Pr(>F)"]][2]
+      for (i in 1:nitem) # to write in a sapply in case there are a lot of endpoints
+      {
+        lmFit <- lm(data[i, ] ~ doseranks)
+        lmFitconst <- lm(data[i, ] ~ 1)
+        a <- anova(lmFit, lmFitconst)
+        pvalue[i] <- a[["Pr(>F)"]][2]
+      }
     } else
     if (select.method == "ANOVA")
     {
-      lmFit <- lm(data[i, ] ~ fdose)
-      lmFitconst <- lm(data[i, ] ~ 1)
-      a <- anova(lmFit, lmFitconst)
-      pvalue[i] <- a[["Pr(>F)"]][2]
+      for (i in 1:nitem) # to write in a sapply in case there are a lot of endpoints
+      {
+        lmFit <- lm(data[i, ] ~ fdose)
+        lmFitconst <- lm(data[i, ] ~ 1)
+        a <- anova(lmFit, lmFitconst)
+        pvalue[i] <- a[["Pr(>F)"]][2]
+      }
     } 
       
     # all adjusted pvalues without sorting after Benjamini Hochberg procedure
