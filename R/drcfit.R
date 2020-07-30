@@ -436,7 +436,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
                       "AIC.L", "AIC.E", "AIC.H", "AIC.lP", "AIC.lGP", "AIC.GP",
                       "trendP")
 
-  dres <- cbind(data.frame(id = row.names(data[selectindex,]), 
+  dres <- cbind(data.frame(id = row.names(data)[selectindex], 
                            irow = selectindex, 
                            adjpvalue = adjpvalue),
                            dres)
