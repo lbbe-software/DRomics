@@ -3,11 +3,10 @@
 \title{BMD plot with color gradient}
 
 \description{
-Plots BMD values as an ECDF plot with a horizontal color gradient coding, for each item,
-for the theoretical signal
-as a function of the dose (concentration).
-The idea is to diplay the amplitude and the intensity of the response of each item
-on the BMD ECDF plot, in addition to the BMD ordered values.
+Provides an ECDF plot of BMD values with a horizontal color gradient coding, for each item,
+for the theoretical signal as a function of the dose (concentration).
+The idea is to display the amplitude and the intensity of the response of each item
+on the BMD ECDF plot, in addition to the BMD ordered values. This plot is of interest especially when not too much items are presented. To maximize the lisibility of the plot, one can manually pre-select items based on its own criteria (e.g. functional group of interest).
 
 }
 

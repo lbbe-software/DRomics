@@ -3,7 +3,8 @@
 \title{Dose-reponse plot for target items}
 
 \description{
-Plots dose-response raw data of target items with fitted curves if available.
+Plots dose-response raw data of target items (whether or not their response is considered significant)
+with fitted curves if available.
 }
 
 \usage{
@@ -16,7 +17,7 @@ targetplot(items, f, add.fit = TRUE)
 
 \item{f}{An object of class \code{"drcfit"}.}
 
-\item{add.fit}{If \code{TRUE} the fitted curve is added for items that were selected as responsive items 
+\item{add.fit}{If \code{TRUE} the fitted curve is added for items which were selected as responsive items 
 and for which a best fit model was obtained.}
 
 }

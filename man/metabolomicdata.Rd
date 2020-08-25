@@ -66,8 +66,9 @@ This function imports the data, checks their format
 (see the description 
 of argument \code{file} for the required format
 of data) and gives in the \code{print} information
-that should help the user to check that the coding of data is correct : the tested doses (or concentrations) 
-the number of replicates for each dose, the number of items, the identifiers 
+that should help the user to check that the coding of data is correct : 
+the tested doses (or concentrations), 
+the number of replicates for each dose, the number of items and the identifiers 
 of the first 20 items. 
 }
 

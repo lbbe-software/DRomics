@@ -3,8 +3,11 @@
 \title{ECDF plot of a variable with given confidence intervals on this variable}
 
 \description{
-Plots the distribution of a variable as an ecdf, with x-error bars for given confidence 
-intervals on this variable.
+Provides an ECDF plot of a variable, with x-error bars for given confidence 
+intervals on this variable, possibly partitioned by groups. 
+In the context of this package this function is intended to be
+used with the BMD as the variable and with groups defined by the user
+from functional annotation.
 }
 
 \usage{
@@ -13,13 +16,16 @@ CI.alpha = 1, add.point = TRUE, point.size = 1, point.type = 16)
 }
 
 \arguments{
-\item{variable}{A numeric vector of the variable to plot.}
+\item{variable}{A numeric vector of the variable to plot. In the context of the package this variable
+may be a BMD.}
 
 \item{CI.lower}{A corresponding numeric vector (same length) with the lower bounds of the confidence intervals.}
 
 \item{CI.upper}{A corresponding numeric vector (same length) with the upper bounds of the confidence intervals.}
 
-\item{by}{A factor of the same length for split of the plot by this factor (no split if omitted).}
+\item{by}{A factor of the same length for split of the plot by this factor (no split if omitted).
+In the context of this package this factor may code for groups defined by the user from functional
+annotation.}
   
 \item{CI.col}{The color to draw the confidence intervals (unique color) of a factor coding for the color.}
 
@@ -35,13 +41,6 @@ CI.alpha = 1, add.point = TRUE, point.size = 1, point.type = 16)
 
 }
 
-\details{
-
-A function to plot a variable as an ECDF plot, optionally splitted by the groups coded 
-in the argument \code{by}, with the confidence intervals associated to each value of the variable, given in \code{CI.lower}
-and \code{CI.upper}, and optionally differentially colored according to the factor
-given in the argument \code{CI.col}. 
-}
 
 \value{ 
    a ggplot object.
@@ -84,12 +83,21 @@ ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower,
 # in Journal of Hazardous Materials
 # https://doi.org/10.1016/j.jhazmat.2020.122727
 
-# a dataframe with metabolomic results (output $res of bmdcalc() or bmdboot() functions)
+# This function can also be used to go deeper in the exploration of the biological 
+# meaning of the responses. Here is an example linking the DRomics outputs 
+# with the functional annotation of the responding metabolites of the microalgae 
+# Scenedesmus vacuolatus to the biocide triclosan. 
+# This extra step uses a dataframe previously built by the user which links the items
+# to the biological information of interest (e.g. KEGG pathways).
+
+# importation of a dataframe with metabolomic results 
+# (output $res of bmdcalc() or bmdboot() functions)
 resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
 res <- read.table(resfilename, header = TRUE, stringsAsFactors = TRUE)
 str(res)
 
-# a dataframe with annotation of each item identified in the previous file
+# importation of a dataframe with annotation of each item
+# identified in the previous file (this dataframe must be previously built by the user)
 # each item may have more than one annotation (-> more than one line)
 annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", package="DRomics")
 annot <- read.table(annotfilename, header = TRUE, stringsAsFactors = TRUE)

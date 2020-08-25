@@ -4,6 +4,10 @@
 
 \description{
 Plots a given quantile of a variable calculated by group as an ECDF plot with points sized by the numbers of items per group.
+In the context of this package this function is intended to be
+used with the BMD as the variable and with groups defined by the user
+from functional annotation.
+
 }
 
 \usage{
@@ -11,9 +15,10 @@ ecdfquantileplot(variable, by, quantile.prob = 0.5, title)
 }
 
 \arguments{
-\item{variable}{A numeric vector corresponding to the variable on which we want to calculate the given quantile by group.}
+\item{variable}{A numeric vector corresponding to the variable on which we want to calculate the given quantile by group. In the context of the package this variable
+may be a BMD.}
 
-\item{by}{A factor of the same length defining the groups.}
+\item{by}{A factor of the same length defining the groups. In the context of this package this factor may code for groups defined by the user from functional annotation.}
   
 \item{quantile.prob}{The probability (in ]0, 1[) defining the quantile to calculate on each group.}
 

@@ -3,8 +3,9 @@
 \title{Plot of fitted curves}
 
 \description{
-Plots fitted curves from an extended dataframe of the fitted results
-}
+Provides a plot of all the fitted curves from a dataframe of the main workflow
+results, possibly extended with 
+additional information (e.g. groups from functional annotation) used to color and/or split the curves. }
 
 \usage{
 curvesplot(extendedres, xmin = 0, xmax, y0shift = TRUE,

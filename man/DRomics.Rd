@@ -4,33 +4,57 @@
 \title{Overview of the \pkg{DRomics} package}
 
 \description{
-DRomics provides several functions for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 5, and the more the better) rather than a great number of replicates (no need of three replicates). For the moment DRomics deals with transcriptomics and metabolomics data.
+DRomics provides several functions for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 5, and the more the better) rather than a great number of replicates (no need of three replicates)
+DRomics deals with transcriptomics and metabolomics data, and with 
+apical data (as long as they are continuous and follow a Gaussian distribution for each dose or concentration, with a common standard error) in order to offer the possibility to link the responses across biological levels (from molecular to apical observations) using a common method.
 
-DRomics provides seven main functions described as follows:
+DRomics provides eight functions for the main workflow:
 \itemize{
-\item \code{\link{microarraydata}}, \code{\link{RNAseqdata}} and 
-\code{\link{metabolomicdata}} to check the conformity of the dataset, 
-normalize and transform data depending of the type of omics data (see next paragraph for details),
-\item \code{\link{itemselect}} to select monotonic or biphasic significant responses,
+\item \code{\link{microarraydata}}, \code{\link{RNAseqdata}}, 
+\code{\link{metabolomicdata}} and \code{\link{continuousanchoringdata}} 
+to check the conformity of the dataset, 
+normalize and transform data depending of the type of data (see next paragraph for details),
+\item \code{\link{itemselect}} to select monotonic and biphasic significant responses,
 \item \code{\link{drcfit}} to choose the best-fit model among a predefined family of monotonic and biphasic models to describe each significant response and classify it in a typology of response, 
 \item and \code{\link{bmdcalc}} to derive a benchmark dose or concentration from each fitted curve.
+\item and \code{\link{bmdboot}} to estimate the uncertainty on benchmark doses using bootstrap.
 }
-and other functions to help the biological interpretation of the workflow results.
+and other functions to help the biological interpretation of the workflow results and especially
+the analysis of results by groups, with groups defined from functional annotation:
+\itemize{
+\item \code{\link{ecdfplotwithCI}} to plot BMD values with confidence intervals as an 
+ECDF plot partitionned by groups,
+\item \code{\link{bmdplotwithgradient}} to plot BMD values as an ECDF plot, with a horizontal
+color gradient coding for the signal, partitioned by groups,
+\item \code{\link{ecdfquantileplot}} to plot a defined quantile of the BMD values (e.g.
+the median) per group,
+\item \code{\link{curvesplot}} to plot fitted curves of significant items splitted and/or colored
+by group and
+\item \code{\link{targetplot}} to plot dose-response raw data of target items (whether or not their response is considered significant) with fitted curves
+if available.
+}
 
-The available version supports three types of data and should not be used 
+The available version supports four types of data and should not be used 
 with other types of data:
 \itemize{
 \item Single-channel microarray data (previously transformed in log2)
 that must be imported  using the function \code{\link{microarraydata}}, 
-\item RNAseq (in raw counts) that must be imported using the function 
-\code{\link{RNAseqdata}} and 
+\item RNAseq (in raw counts, of class integer) that must be imported using the function 
+\code{\link{RNAseqdata}}, 
 \item metabolomic data that must be imported using the function 
-\code{\link{metabolomicdata}}.
+\code{\link{metabolomicdata}} and
+\item anchoring apical data that must be imported using the function 
+\code{\link{continuousanchoringdata}}.
+
 For metabolomic data, all the pretreatment steps must be done before their importation
 and they should be imported in log scale
 so that they can be directly fitted by least-square regression
 (assuming a Gaussian error model valid)
-without any transformation.
+without any transformation. 
+
+Anchoring apical data must be continuous and imported
+in a scale that enables the use of least-square regression
+(assuming a Gaussian error model valid).
 }
 
 
@@ -44,11 +68,12 @@ the workflow results with the biological meaning of selected items.
 
 \seealso{
     See \code{\link{microarraydata}}, \code{\link{RNAseqdata}},
-    \code{\link{metabolomicdata}}, \code{\link{itemselect}},
+    \code{\link{metabolomicdata}}, \code{\link{continuousanchoringdata}}, 
+    \code{\link{itemselect}},
     \code{\link{drcfit}}, \code{\link{bmdcalc}}, 
     \code{\link{bmdboot}}, \code{\link{bmdplotwithgradient}},
     \code{\link{ecdfplotwithCI}}, \code{\link{ecdfquantileplot}},
-    \code{\link{curvesplot}} 
+    \code{\link{curvesplot}, \code{\link{targetplot}}} 
     for details about each function.
 }
 
