@@ -4,5 +4,6 @@ install.packages("ggplot2", dependencies = TRUE, repos = "http://cran.univ-lyon1
 install.packages("shiny", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 install.packages("shinyjs", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 install.packages("shinyBS", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+install.packages("shinycssloaders", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 install.packages("remotes", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 remotes::install_github("aursiber/DRomics")

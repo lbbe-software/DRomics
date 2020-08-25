@@ -156,7 +156,7 @@ print.bmdcalc <- function(x, ...)
         (coded NA as the BMR stands within the range of response values defined by the model 
         but outside the range of tested doses).\n")
   
-  if ((nNA.BMD.zSD = 0) &  (nNA.BMD.xfold = 0) & (nNaN.BMD.zSD = 0) &  (nNaN.BMD.xfold = 0))
+  if ((nNA.BMD.zSD == 0) &  (nNA.BMD.xfold == 0) & (nNaN.BMD.zSD == 0) &  (nNaN.BMD.xfold == 0))
     cat("BMD-xfold and BMD-SD values could be calculated on all the curves
         (the BMR always stands within the range of response values defined by the model
         and within the range of tested doses).\n")
