@@ -189,23 +189,6 @@ plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"),
   if (nremoved > 0)
     warning(nremoved," BMD coded NA or NaN were removed before plotting")
   
-  # previous version splitted by typology and colored by typology
-  # if (plottype == "hist") 
-  # {
-  #   g <- ggplot(data = d, mapping = aes_(x = quote(BMD), fill = quote(typology))) +
-  #       geom_histogram(bins = hist.bins) + facet_wrap(~ typology)
-  # } else
-  #   if (plottype == "density") 
-  #   {
-  #     g <- ggplot(data = d, mapping = aes_(x = quote(BMD), fill = quote(typology))) + 
-  #         geom_density() + facet_wrap(~ typology)
-  #     } else
-  #       if (plottype == "ecdf") 
-  #       {
-  #         g <- ggplot(data = d, mapping = aes_(x = quote(BMD), col = quote(typology))) +
-  #           stat_ecdf(geom = "step") + facet_wrap(~ typology) + ylab("ECDF")
-  #       } 
-    
   if (plottype == "hist") 
   {
     g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) +
