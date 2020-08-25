@@ -73,7 +73,7 @@ the workflow results with the biological meaning of selected items.
     \code{\link{drcfit}}, \code{\link{bmdcalc}}, 
     \code{\link{bmdboot}}, \code{\link{bmdplotwithgradient}},
     \code{\link{ecdfplotwithCI}}, \code{\link{ecdfquantileplot}},
-    \code{\link{curvesplot}, \code{\link{targetplot}}} 
+    \code{\link{curvesplot}}, \code{\link{targetplot}}
     for details about each function.
 }
 
