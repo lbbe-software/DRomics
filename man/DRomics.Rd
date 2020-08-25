@@ -39,7 +39,7 @@ with other types of data:
 \itemize{
 \item Single-channel microarray data (previously transformed in log2)
 that must be imported  using the function \code{\link{microarraydata}}, 
-\item RNAseq (in raw counts, of class integer) that must be imported using the function 
+\item RNAseq (in raw counts, so integer values) that must be imported using the function 
 \code{\link{RNAseqdata}}, 
 \item metabolomic data that must be imported using the function 
 \code{\link{metabolomicdata}} and

@@ -5,7 +5,7 @@
 \title{Import, check and normalization and transformation of RNAseq data}
 
 \description{
-RNAseq data in raw counts are imported from a .txt file 
+RNAseq data in raw counts (integer values) are imported from a .txt file 
 (internally imported using the function \code{\link{read.table}}), 
 checked or from a R object of class \code{data.frame} 
 (see the description 
