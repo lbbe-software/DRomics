@@ -16,9 +16,6 @@ continuousanchoringdata <- function(file, check = TRUE)
       suffix <- substr(file, le.file - 3, le.file)
       if (suffix != ".txt")
         stop("The argument file must be a character string ending by .txt")
-      warning("We recommend you to check that your anchoring data are continuous and
-      defined in a scale that enable the use of a Gaussian error model (needed at each step
-      of the workflow including the selection step). \n")
     }
     d <- read.table(file, header = FALSE)
   } 
@@ -33,6 +30,10 @@ continuousanchoringdata <- function(file, check = TRUE)
       stop("All the columns except the first one must be numeric with the numeric 
            dose in the firt line and the numeric response of each endpoint in the other
            lines.")
+    warning("We recommend you to check that your anchoring data are continuous and
+      defined in a scale that enable the use of a Gaussian error model (needed at each step
+      of the workflow including the selection step). \n")
+    
   }
   
   # definition of doses and endpoint identifiers

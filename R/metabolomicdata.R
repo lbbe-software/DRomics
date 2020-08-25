@@ -16,10 +16,6 @@ metabolomicdata <- function(file, check = TRUE)
       suffix <- substr(file, le.file - 3, le.file)
       if (suffix != ".txt")
         stop("The argument file must be a character string ending by .txt")
-      warning("We recommend you to check that your metabolomics data were correctly pretreated 
-            before importation. In particular data (metabolomic signal) 
-            should have been log-transformed, without replacing 0 values by NA values 
-            (consider using the half minimum method instead for example). \n")
     }
     d <- read.table(file, header = FALSE)
   } 
@@ -41,6 +37,11 @@ metabolomicdata <- function(file, check = TRUE)
       stop("All the columns except the first one must be numeric with the numeric 
            dose in the firt line and the numeric response of each item in the other
            lines.")
+    warning("We recommend you to check that your metabolomics data were correctly pretreated 
+            before importation. In particular data (metabolomic signal) 
+            should have been log-transformed, without replacing 0 values by NA values 
+            (consider using the half minimum method instead for example). \n")
+    
   }
   
   # definition of doses and item identifiers
