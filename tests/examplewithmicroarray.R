@@ -1,4 +1,6 @@
 library(DRomics)
+visualize <- FALSE # put to TRUE for a manual check of plots
+
 # importation and check of data and normalization if needed
 # options to put in shiny : norm.method (4 methods)
 ## sample of the transcripto data set
@@ -6,11 +8,15 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 (o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
 plot(o)
 (o.2 <- microarraydata(datafilename, check = TRUE, norm.method = "none"))
-plot(o.2)
 (o.3 <- microarraydata(datafilename, check = TRUE, norm.method = "quantile"))
-plot(o.3)
 (o.4 <- microarraydata(datafilename, check = TRUE, norm.method = "scale"))
-plot(o.4)
+if (visualize) 
+{
+  plot(o.2)
+  plot(o.3)
+  plot(o.4)
+}
+
 
 # item selection using the quadratic method
 # options to put in shiny : select.method (3 methods), FDR (numerical positive value < 1)
@@ -25,18 +31,21 @@ plot(o.4)
 f$fitres
 f$unfitres
 plot(f)
-# Alternative plots
-# with a chosen number of first items
-plot(f, items = 12) 
-# with chosen items in a specified order
-plot(f, items = c("301.2", "363.1", "383.1"))
-# residual plots
-plot(f, items = 12, plot.type = "fitted_residuals") 
-plot(f, items = 12, plot.type = "dose_residuals") 
-# plot with dose in log
-plot(f, items = 12, plot.type = "dose_fitted", dose_pseudo_log_transfo = TRUE) 
-plot(f, items = 12, plot.type = "dose_residuals", dose_pseudo_log_transfo = TRUE) 
-plot(f, items = 12, plot.type = "fitted_residuals", dose_pseudo_log_transfo = TRUE) 
+if (visualize) 
+{
+  # Alternative plots
+  # with a chosen number of first items
+  plot(f, items = 12) 
+  # with chosen items in a specified order
+  plot(f, items = c("301.2", "363.1", "383.1"))
+  # residual plots
+  plot(f, items = 12, plot.type = "fitted_residuals") 
+  plot(f, items = 12, plot.type = "dose_residuals") 
+  # plot with dose in log
+  plot(f, items = 12, plot.type = "dose_fitted", dose_pseudo_log_transfo = TRUE) 
+  plot(f, items = 12, plot.type = "dose_residuals", dose_pseudo_log_transfo = TRUE) 
+  plot(f, items = 12, plot.type = "fitted_residuals", dose_pseudo_log_transfo = TRUE) 
+}
 
 
 # calculation of benchmark doses
@@ -49,16 +58,21 @@ plot(f, items = 12, plot.type = "fitted_residuals", dose_pseudo_log_transfo = TR
 # options in shiny : BMDtype (2 possibilities), plottype (3 possibilities), by (3 possibilities)
 # hist.bins (integer for hist only)
 plot(r, BMDtype = "zSD", plottype = "ecdf", by = "none") 
-plot(r, BMDtype = "xfold", plottype = "ecdf", by = "none") 
-
-plot(r, plottype = "hist", by = "none") 
-plot(r, plottype = "hist", by = "none", hist.bins = 10) 
-plot(r, plottype = "density", by = "none") 
-
-plot(r, plottype = "hist", by = "trend", hist.bins = 10) 
-plot(r, plottype = "hist", by = "model", hist.bins = 10) 
-plot(r, plottype = "hist", by = "typology", hist.bins = 10) 
+if (visualize) 
+{
+  plot(r, BMDtype = "xfold", plottype = "ecdf", by = "none") 
+  
+  plot(r, plottype = "hist", by = "none") 
+  plot(r, plottype = "hist", by = "none", hist.bins = 10) 
+  plot(r, plottype = "density", by = "none") 
+  
+  plot(r, plottype = "hist", by = "trend", hist.bins = 10) 
+  plot(r, plottype = "hist", by = "model", hist.bins = 10) 
+  plot(r, plottype = "hist", by = "typology", hist.bins = 10) 
+}
 
 # Calculation of confidence intervals on BMDs by Bootstrap
-b <- bmdboot(r, niter = 100) # niter should be fixed at least at 1000 to get a reasonable precision
+niter <- 1000
+niter <- 50
+b <- bmdboot(r, niter = niter) # niter should be fixed at least at 1000 to get a reasonable precision
 plot(b) 

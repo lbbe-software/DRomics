@@ -1,4 +1,6 @@
 library(DRomics)
+visualize <- FALSE # put to TRUE for a manual check of plots
+
 # importation and check of RNAseq data and normalization
 # with respect to library size and transformation 
 # options to put in shiny : transfo.method (2 methods, rlog or vst)
@@ -22,14 +24,20 @@ plot(f)
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
            facetby = "model", colorby = "model")
 
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
-           facetby = "typology")
+if (visualize) 
+{
+  curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+             facetby = "typology")
+}
 
 # plot of selection of curves
 curvesplot(f$fitres[f$fitres$trend == "bell", ], xmax = max(f$omicdata$dose), 
            facetby = "id")
-curvesplot(f$fitres[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose), 
-           facetby = "id")
+if (visualize) 
+{
+  curvesplot(f$fitres[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose), 
+             facetby = "id")
+}
 
 
 # calculation of benchmark doses
@@ -41,13 +49,18 @@ curvesplot(f$fitres[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose),
 # options in shiny : BMDtype (2 possibilities), plottype (3 possibilities), by (3 possibilities)
 # hist.bins (integer for hist only)
 plot(r, BMDtype = "zSD", plottype = "ecdf", by = "none") 
-plot(r, BMDtype = "xfold", plottype = "ecdf", by = "none") 
-
-plot(r, plottype = "hist", by = "none", hist.bins = 10) 
-plot(r, plottype = "density", by = "none") 
-
-plot(r, plottype = "hist", by = "trend", hist.bins = 10) 
+if (visualize) 
+{
+  plot(r, BMDtype = "xfold", plottype = "ecdf", by = "none") 
+  
+  plot(r, plottype = "hist", by = "none", hist.bins = 10) 
+  plot(r, plottype = "density", by = "none") 
+  
+  plot(r, plottype = "hist", by = "trend", hist.bins = 10) 
+}
 
 # Calculation of confidence intervals on BMDs by Bootstrap
-b <- bmdboot(r, niter = 100) # niter should be fixed at least at 1000 to get a reasonable precision
+niter <- 1000
+niter <- 50
+b <- bmdboot(r, niter = niter) # niter should be fixed at least at 1000 to get a reasonable precision
 plot(b)

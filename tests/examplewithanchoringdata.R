@@ -1,4 +1,6 @@
 library(DRomics)
+visualize <- FALSE # put to TRUE for a manual check of plots
+
 # importation and check of apical anchoring data
 # datafilename <- system.file("extdata", "apical_anchoring.txt", package="DRomics")
 # (o <- continuousanchoringdata(datafilename, check = TRUE))
@@ -19,34 +21,38 @@ plot(o)
 (f <- drcfit(s_quad, progressbar = TRUE))
 f$fitres
 plot(f)
-plot(f, dose_pseudo_log_transfo = TRUE)
-plot(f, plot.type = "dose_residuals")
+if (visualize)
+{
+  plot(f, dose_pseudo_log_transfo = TRUE)
+  plot(f, plot.type = "dose_residuals")
+  
+}
 
 # various plot of fitted curves (without data)
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
            facetby = "model", colorby = "model")
 
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
-           facetby = "typology")
-
-# plot of selection of curves
-curvesplot(f$fitres[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose), 
-           facetby = "id")
+{
+  curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+             facetby = "typology")
+  
+  # plot of selection of curves
+  curvesplot(f$fitres[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose), 
+             facetby = "id")
+  
+}
 
 
 # calculation of benchmark doses
 # options in shiny : z (numerical positive value), x (numerical positive value : percentage)
 (r <- bmdcalc(f, z = 1, x = 10))
 r$res
-# (r.2 <- bmdcalc(f, z = 2, x = 50))
-# r.2$res
 
 # plot of BMD with gradient
 bmdplotwithgradient(r$res, xmax = max(f$omicdata$dose))
 
 # Calculation of confidence intervals on BMDs by Bootstrap
-(b <- bmdboot(r, niter = 100)) # niter should be fixed at least at 1000 to get a reasonable precision
+niter <- 1000
+niter <- 50
+(b <- bmdboot(r, niter = niter)) # niter should be fixed at least at 1000 to get a reasonable precision
 plot(b)
-# 
-# b.2 <- bmdboot(r.2, niter = 100) # niter should be fixed at least at 1000 to get a reasonable precision
-# plot(b.2)
