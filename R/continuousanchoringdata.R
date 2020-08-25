@@ -16,10 +16,9 @@ continuousanchoringdata <- function(file, check = TRUE)
       suffix <- substr(file, le.file - 3, le.file)
       if (suffix != ".txt")
         stop("The argument file must be a character string ending by .txt")
-      warning("We recommend you to check that your metabolomics data were correctly pretreated 
-            before importation. In particular data (metabolomic signal) 
-            should have been log-transformed, without replacing 0 values by NA values 
-            (consider using the half minimum method instead for example). \n")
+      warning("We recommend you to check that your anchoring data are continuous and
+      defined in a scale that enable the use of a Gaussian error model (needed at each step
+      of the workflow including the selection step). \n")
     }
     d <- read.table(file, header = FALSE)
   } 
