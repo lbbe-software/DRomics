@@ -19,6 +19,7 @@ information on selected items for which the modelling step is not successful
 - Add of a function to plot raw data on target items optionally with fitted curves 
 for items which have be selected in step 2 and for which step 3 was successful
 (new function targetplot()).
+- Add of an argument transfo.blind in RNAseqdata().
 
 
 Version 2.0-1 

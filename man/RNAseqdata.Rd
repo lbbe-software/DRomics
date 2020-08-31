@@ -17,7 +17,8 @@ variance stabilizing transformation or regularized logarithm.
 }
 
 \usage{
-RNAseqdata(file, check = TRUE, transfo.method = c("rlog", "vst"))
+RNAseqdata(file, check = TRUE, transfo.method = c("rlog", "vst"), 
+          transfo.blind = FALSE)
 
 \method{print}{RNAseqdata}(x, \dots)
 \method{plot}{RNAseqdata}(x, \dots)
@@ -46,7 +47,11 @@ using the
   \code{DESeq2}: \code{"rlog"} for regularized logarithm or
   \code{"vst"} for variance stabilizing transformation.}
 
+\item{transfo.blind}{Argument given to function \code{\link{rlog}} or \code{\link{vst}}
+  to enable tranformation blind to experimental design.}
+
 \item{x}{An object of class \code{"RNAseqdata"}.}
+
 
 \item{\dots}{ further arguments passed to print or plot functions.}
 }
@@ -148,6 +153,18 @@ plot(o1)
 # regularized logarithm
 (o2 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "rlog"))
 plot(o2)
+
+# variance stabilizing tranformation (blind to the experimental design)
+(o3 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "vst",
+      transfo.blind = TRUE))
+plot(o3)
+
+# regularized logarithm
+(o4 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "rlog",
+      transfo.blind = TRUE))
+plot(o4)
+
+
 }
 
 }

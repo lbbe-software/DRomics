@@ -8,6 +8,36 @@ datafilename <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
 (o <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog"))
 plot(o)
 
+(o.blind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog",
+                       transfo.blind = TRUE))
+plot(o.blind)
+
+
+if(FALSE) # too long computation !
+{
+  data(Zhou_kidney_pce)
+  
+  # variance stabilizing tranformation
+  (o1 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "vst"))
+  plot(o1)
+  
+  # regularized logarithm
+  (o2 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "rlog"))
+  plot(o2)
+  
+  # variance stabilizing tranformation (blind to the experimental design)
+  (o3 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "vst",
+                    transfo.blind = TRUE))
+  plot(o3)
+  
+  # regularized logarithm
+  (o4 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "rlog",
+                    transfo.blind = TRUE))
+  plot(o4)
+  
+}
+
+
 # item selection using the quadratic method
 # options to put in shiny : select.method (3 methods), FDR (numerical positive value < 1)
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))

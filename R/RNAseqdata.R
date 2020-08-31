@@ -1,7 +1,7 @@
 ### import, check normalize and transform RNAseq data
 
 RNAseqdata <- function(file, check = TRUE, 
-                     transfo.method = c("rlog", "vst"))
+                     transfo.method = c("rlog", "vst"), transfo.blind = FALSE)
 {
   if (is.data.frame(file))
   {
@@ -49,17 +49,42 @@ RNAseqdata <- function(file, check = TRUE,
   if(transfo.method == "rlog")
     cat("Just wait, the transformation using regularized logarithm (rlog)
         may take a few minutes.\n")
+  
   raw.counts <- data
+  (dose <- as.vector(unlist(d[1, 2:ncold])))
+  fdose <- as.factor(dose)
+  
+  if(!transfo.blind)
+  {
+    coldata <- data.frame(fdose = fdose)
+    rownames(coldata) <- colnames(data)
+    dds <- DESeqDataSetFromMatrix(
+      countData = raw.counts,
+      colData = coldata,
+      design = ~ fdose)
+  }
+    
   if (transfo.method == "rlog")
   {
-    data <- rlog(data)  
-  } else
+    if (transfo.blind) 
+      {
+        data <- rlog(raw.counts)
+      } else
+      {
+        data <- assay(rlog(dds, blind = FALSE))  
+      }
+  } else # transfo.method == "vst"
   {
-    data <- vst(data)  
+    if (transfo.blind) 
+    {
+      data <- vst(raw.counts)
+    } else
+    {
+      data <- assay(vst(dds, blind = FALSE))  
+    }
   }
   
   # definition of doses and item identifiers
-  (dose <- as.vector(unlist(d[1, 2:ncold])))
   row.names(data) <- item <- as.character(d[2:nrowd, 1])
   (nitems <- nrow(data))
   
@@ -73,7 +98,7 @@ RNAseqdata <- function(file, check = TRUE,
             it is recommended to check after the modelling step that all selected models have no more 
             than 4 parameters")  
 
-  fdose <- as.factor(dose)
+  # calculation of the means per dose
   tdata <- t(data)
   calcmean <- function(i)
   {
