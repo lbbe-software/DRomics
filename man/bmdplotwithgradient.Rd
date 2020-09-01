@@ -16,7 +16,8 @@ bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
                                    facetby, shapeby, npoints = 50, 
                                    line.size, point.size = 1,
                                    ncol4faceting, limits4colgradient,
-                                   lowercol = "darkgreen", uppercol = "darkred")
+                                   lowercol = "darkgreen", uppercol = "darkred",
+                                   add.label, labe.size = 0.2)
 }
 
 \arguments{
@@ -62,6 +63,10 @@ to have the theoretical signal at the control at 0.}
 \item{lowercol}{Chosen color for the lower values of the signal.}
 
 \item{uppercol}{Chosen color for the upper values of the signal.}
+
+\item{add.label}{Points are replaced  by labels of items if TRUE.}
+
+\item{label.size}{Size of labels if add.label is TRUE.}
 }
 
 \details{
@@ -145,29 +150,36 @@ str(annot)
 
 # Merging of both previous dataframes
 # in order to obtain an extenderes dataframe
-annotres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
-head(annotres)
+extendedres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
+head(extendedres)
 
 
 ### (2.a) BMDplot with gradient by pathway
-bmdplotwithgradient(annotres, BMDtype = "zSD",
+bmdplotwithgradient(extendedres, BMDtype = "zSD",
                       xmax = 8,  facetby = "path_class", 
                        shapeby = "trend") 
 
 # (2.b) The same example forcing the limits of the colour gradient at other 
 # values than observed minimal and maximal values of the signal
-bmdplotwithgradient(annotres, BMDtype = "zSD",
+bmdplotwithgradient(extendedres, BMDtype = "zSD",
                       xmax = 8,  facetby = "path_class", 
                        shapeby = "trend",
                        limits4colgradient = c(-1, 1)) 
 
 # (2.c) The same example changing the gradient colors and the line size
-bmdplotwithgradient(annotres, BMDtype = "zSD",
+bmdplotwithgradient(extendedres, BMDtype = "zSD",
                       xmax = 8,  facetby = "path_class", 
                        shapeby = "trend",
-                       line.size = 1, 
+                       line.size = 3, 
                        lowercol = "darkblue", uppercol = "orange") 
 
+# (2.d) The same example with only lipid metabolism pathclass
+# and identification of the metabolites
+LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
+bmdplotwithgradient(LMres, BMDtype = "zSD",
+                      xmax = 8, 
+                       line.size = 3, 
+                       add.label = TRUE, label.size = 3) 
 
 \donttest{
 
@@ -184,6 +196,9 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       xmax = max(f$omicdata$dose), facetby = "trend", 
                       shapeby = "model") 
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      xmax = max(f$omicdata$dose), facetby = "trend", 
+                      shapeby = "model", add.label = TRUE, label.size = 2) 
 }
 
 }

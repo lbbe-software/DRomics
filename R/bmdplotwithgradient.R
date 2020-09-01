@@ -7,7 +7,8 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
                                    facetby, shapeby, npoints = 50, 
                                    line.size, point.size = 1,
                                    ncol4faceting, limits4colgradient,
-                                   lowercol = "darkgreen", uppercol = "darkred")
+                                   lowercol = "darkgreen", uppercol = "darkred",
+                                   add.label = FALSE, label.size = 2)
 {
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
 
@@ -67,14 +68,16 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
       ntoti <- length(indi)
       BMD2plot$ECDF[indi] <- (rank(BMD2plot$x[indi], ties.method = "first") - 0.5) / ntoti
     }
-    g <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF))) + facet_wrap(~ facetby) 
+    g <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF), 
+                                                label = quote(id))) + facet_wrap(~ facetby) 
     
   } else
   {
     if (missing(line.size)) line.size <- 24 / nrow(BMD2plot) 
     
     BMD2plot$ECDF <- (rank(BMD2plot$x, ties.method = "first") - 0.5) / ntot
-    g <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF)))
+    g <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF),
+                                                label = quote(id)))
   }
 
   # Calculation of theoretical signal to color the lines
@@ -174,6 +177,11 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     gg <- gg + geom_point(data = BMD2plot, size = point.size)
   }
   gg <- gg + theme_classic()
+  
+  if(add.label)
+  {
+    gg <- gg + geom_label(size = label.size)
+  }
   
   return(gg)
 }

@@ -176,6 +176,8 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 (b <- bmdboot(r, niter = 100)) # niter to put at 1000 for a better precision
 
 # different plots of BMD-zSD
+plot(b)
+if (require(ggplot2)) plot(b) + scale_x_log10() # in BMD log10 scale
 plot(b, by = "trend") 
 plot(b, by = "model") 
 plot(b, by = "typology") 

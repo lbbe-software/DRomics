@@ -8,7 +8,7 @@ with fitted curves if available.
 }
 
 \usage{
-targetplot(items, f, add.fit = TRUE)
+targetplot(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE)
 }
 
 \arguments{
@@ -19,6 +19,11 @@ targetplot(items, f, add.fit = TRUE)
 
 \item{add.fit}{If \code{TRUE} the fitted curve is added for items which were selected as responsive items 
 and for which a best fit model was obtained.}
+
+\item{dose_pseudo_log_transfo}{to put at \code{TRUE} to use a pseudo log transformation
+for the dose axis. See \code{\link{pseudo_log_trans}} of the \code{scales} package
+for details on this
+transformation that enables to plot zero values in a pseudo log scale.}
 
 }
 
@@ -49,6 +54,7 @@ f <- drcfit(s_quad, progressbar = TRUE)
 #
 targetitems <- c("88.1", "1", "3", "15")
 targetplot(targetitems, f = f)
+targetplot(targetitems, f = f, dose_pseudo_log_transfo = TRUE)
 
 # Same plot without fitted curves 
 #

@@ -1,5 +1,5 @@
 # Plot of raw data and fitted curves if there is for target items 
-targetplot <- function(items, f, add.fit = TRUE)
+targetplot <- function(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE)
 {
   if (!inherits(f, "drcfit"))
     stop("Use only with 'drcfit' objects, created with the function drcfit")
@@ -59,6 +59,12 @@ targetplot <- function(items, f, add.fit = TRUE)
     facet_wrap(~ id, scales = "free_y") +
     geom_point(data = dataobsmean, shape = 19) 
   if (add.fit) g <- g + geom_line(data = datatheo, colour = "red")
+  
+  if (dose_pseudo_log_transfo)
+  {
+    g <- g + scale_x_continuous(trans = pseudo_log_trans(base = 10))
+  }
+  
   
   return(g)
 }

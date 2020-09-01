@@ -1,8 +1,8 @@
 # Plot of fitted curves using columns of on extended dataframe to optionnally code 
 # for color and or facet 
 curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE, 
-                       facetby, colorby, removelegend = FALSE,  
-                        npoints = 50, line.size = 0.2, line.alpha = 1)
+                       facetby, free.y.scales = FALSE, colorby, removelegend = FALSE,  
+                        npoints = 500, line.size = 0.2, line.alpha = 1)
 {
   if (missing(extendedres) | !is.data.frame(extendedres))
     stop("The first argument of curvesplot must be a dataframe 
@@ -19,6 +19,14 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
   x2plot <- seq(xmin, xmax, length.out = npoints)
   ns <- nrow(extendedres)
   N <- ns * npoints
+  
+  if (free.y.scales)
+  {
+    scales.arg <- "free_y"
+  } else
+  {
+    scales.arg <- "fixed"
+  }
   
   curves2plot <- data.frame(x = rep(x2plot, ns), 
                             id = rep(extendedres$id, each = npoints),
@@ -71,7 +79,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
       curves2plot$facetby <- rep(extendedres[, facetby], each = npoints)
       gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id))) +
         geom_line(size = line.size, alpha = line.alpha) + 
-        facet_wrap(~ facetby) 
+        facet_wrap(~ facetby, scales = scales.arg) 
     } else
       # color only
       if (missing(facetby))
@@ -91,7 +99,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
         curves2plot$facetby <- rep(extendedres[, facetby], each = npoints)
         curves2plot$colorby <- rep(extendedres[, colorby], each = npoints)
         gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id), colour = quote(colorby))) +
-          geom_line(size = line.size, alpha = line.alpha) + facet_wrap(~ facetby)  
+          geom_line(size = line.size, alpha = line.alpha) + facet_wrap(~ facetby, scales = scales.arg)  
       }
   if (removelegend) gg <- gg + theme(legend.position = "none") 
   return(gg)

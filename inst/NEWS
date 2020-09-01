@@ -19,7 +19,9 @@ information on selected items for which the modelling step is not successful
 - Add of a function to plot raw data on target items optionally with fitted curves 
 for items which have be selected in step 2 and for which step 3 was successful
 (new function targetplot()).
-- Add of an argument transfo.blind in RNAseqdata().
+- Add of the argument transfo.blind in RNAseqdata().
+- Add of the argument free.y.scales in curvesplot() to enbale free y scales in facets.
+- Add of examples in DRomics.Rd to help a multi-omics approach
 
 
 Version 2.0-1 

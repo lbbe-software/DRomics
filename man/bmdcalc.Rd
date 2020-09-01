@@ -138,6 +138,8 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))
 plot(r) 
+if (require(ggplot2))
+  plot(r, plottype = "ecdf") + scale_x_log10() # with log10 dose scale 
 
 # different plots of BMD-zSD
 

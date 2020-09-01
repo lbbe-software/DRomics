@@ -9,8 +9,8 @@ additional information (e.g. groups from functional annotation) used to color an
 
 \usage{
 curvesplot(extendedres, xmin = 0, xmax, y0shift = TRUE,
-                       facetby, colorby, removelegend = FALSE,  
-                        npoints = 50, line.size = 0.2, 
+                       facetby, free.y.scales = FALSE, colorby, removelegend = FALSE,  
+                        npoints = 500, line.size = 0.2, 
                         line.alpha = 1)}
 
 \arguments{
@@ -33,6 +33,8 @@ the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
 
 \item{facetby}{optional argument naming the column of \code{extendedres} chosen 
   to split the plot in facets (no split if omitted).}
+
+\item{free.y.scales}{if TRUE the y scales are free in the different facets.}
 
 \item{colorby}{optional argument naming the column of \code{extendedres} chosen 
   to color the curves (no color if omitted).}
@@ -83,14 +85,20 @@ f <- drcfit(s_quad, progressbar = TRUE)
 # Default plot of all the curves 
 #
 curvesplot(f$fitres, xmax = max(f$omicdata$dose))
+if (require(ggplot2))
+  curvesplot(f$fitres, xmax = max(f$omicdata$dose)) + scale_x_log10()
 
 # the equivalent using the output of bmdcalc
 (r <- bmdcalc(f))
 curvesplot(r$res, xmax = max(f$omicdata$dose))
 
-# plot of only U-shape curves colored by model
-resU <- r$res[r$res$trend == "U", ]
-curvesplot(resU, xmax = max(f$omicdata$dose), colorby = "model")
+# plot of curves colored by models
+curvesplot(r$res, xmax = max(f$omicdata$dose), colorby = "model")
+
+# plot of curves facetted by trends
+curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend")
+curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend",
+  free.y.scales =  TRUE)
 
 \donttest{
 
@@ -141,12 +149,12 @@ str(annot)
 # Merging of both previous dataframes
 # in order to obtain an extenderes dataframe
 # bootstrap results and annotation
-annotres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
-head(annotres)
+extendedres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
+head(extendedres)
 
 # Plot of the dose-response curves for a specific pathway
 # in this example the "lipid metabolism" pathclass
-LMres <- annotres[annotres$path_class == "Lipid metabolism", ]
+LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
            colorby = "trend",
            xmin = 0, xmax = 8) 
