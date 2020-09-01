@@ -52,10 +52,11 @@ head(Zhou_liver_tce)
 # of one of those datasets
 #
 d <- Zhou_kidney_pce[1:501, ]
-(o_kidney_pce <- RNAseqdata(d))
-plot(o_kidney_pce)
+(o <- RNAseqdata(d))
+plot(o)
 
-# (3) analysis of the whole dataset (kidney and PCE)
+
+# (3) analysis of the whole dataset (for kidney and PCE)
 # (may be long to run)
 
 \donttest{
@@ -67,10 +68,13 @@ plot(o)
 head(f$fitres)
 
 plot(f) 
-plot(f, x_pseudo_log_trans = TRUE)
+plot(f, dose_pseudo_log_trans = TRUE)
 plot(f, plot.type = "dose_residuals")
+
 r <- bmdcalc(f, z = 1)
-plot(r)
+plot(r) 
+if (require(ggplot2))
+  plot(r) + scale_x_log10() # same plot in log scale of BMD
 plot(r, by = "trend")
 head(r$res)
 

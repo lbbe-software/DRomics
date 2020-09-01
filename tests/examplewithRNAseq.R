@@ -94,3 +94,26 @@ niter <- 1000
 niter <- 50
 b <- bmdboot(r, niter = niter) # niter should be fixed at least at 1000 to get a reasonable precision
 plot(b)
+
+if(FALSE) # too long computation !
+{
+  # exploration of an extreme case (BMD at 0)
+  d <- Zhou_kidney_pce
+  (o <- RNAseqdata(d))
+  plot(o)
+  (s <- itemselect(o, select.method = "quadratic", FDR = 0.01))
+  (f <- drcfit(s, progressbar = TRUE))
+  head(f$fitres)
+  
+  r <- bmdcalc(f, z = 1)
+  plot(r) 
+  if (require(ggplot2))
+    plot(r) + scale_x_log10() # same plot in log scale of BMD
+
+  res0 <- r$res[r$res$BMD.zSD == 0, ]
+  if (require(ggplot2))
+    curvesplot(res0, xmax = max(f$omicdata$dose), colorby = "model", npoints = 1000) + 
+      scale_x_log10()
+  plot(f, items = r$res[r$res$BMD.zSD == 0, ]$id)
+  plot(f, items = r$res[r$res$BMD.zSD == 0, ]$id, dose_pseudo_log_trans = TRUE)
+}

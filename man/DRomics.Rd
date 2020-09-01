@@ -196,11 +196,11 @@ if(interactive()) {
 # that took a long time to run but from which results are stored in the package
 
    # code to import the file for this example in our package
-resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
-res <- read.table(resfilename, header = TRUE, stringsAsFactors = TRUE)
+metabresfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
+metabres <- read.table(metabresfilename, header = TRUE, stringsAsFactors = TRUE)
 
    # to see the structure of this file
-str(res)
+str(metabres)
 
 # 2. Import the dataframe with functional annotation (or any other
 # descriptor/category you want to use, here KEGG metabolic pathway)
@@ -209,51 +209,136 @@ str(res)
 # Each item may have more than one annotation (-> more than one line)
 
    # code to import the file for this example in our package
-annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", 
+metabannotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", 
                               package="DRomics")
-annot <- read.table(annotfilename, header = TRUE, stringsAsFactors = TRUE)
+metabannot <- read.table(metabannotfilename, header = TRUE, stringsAsFactors = TRUE)
 
    # to see the structure of this file
-str(annot)
+str(metabannot)
 
 # 3. Merging of both previous dataframes
 # in order to obtain a so-called 'extenderes' dataframe
 # gathering for each item metrics derived from the DRomics workflow and 
 # functional annotation
 
-annotres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
-head(annotres)
+metabextendedres <- merge(x = metabres, y = metabannot, by.x = "id", by.y = "metab.code")
+str(metabextendedres)
 
 
 # 4. Graphical representations provided in the package
 
    # BMDplot with gradient splitted here by metabolic pathway
-bmdplotwithgradient(annotres, BMDtype = "zSD",
+bmdplotwithgradient(metabextendedres, BMDtype = "zSD",
                       xmax = 8,  facetby = "path_class", 
                        shapeby = "trend") 
+                       
+   # the same representation with labels of items
+bmdplotwithgradient(metabextendedres, BMDtype = "zSD",
+                      xmax = 8,  facetby = "path_class", 
+                       shapeby = "trend", add.label = TRUE) 
                        
    # an ECDFplot of BMD_zSD with confidence intervals splitted 
    # here by metabolic pathway
    # with color coding for dose-response trend
-ecdfplotwithCI(variable = annotres$BMD.zSD, 
-               CI.lower = annotres$BMD.zSD.lower, 
-               CI.upper = annotres$BMD.zSD.upper, 
-               by = annotres$path_class,
-               CI.col = annotres$trend) 
+ecdfplotwithCI(variable = metabextendedres$BMD.zSD, 
+               CI.lower = metabextendedres$BMD.zSD.lower, 
+               CI.upper = metabextendedres$BMD.zSD.upper, 
+               by = metabextendedres$path_class,
+               CI.col = metabextendedres$trend) 
 
 
    # an ECDFplot of quantiles of BMD-zSD calculated 
    # here by metabolic pathway
-ecdfquantileplot(variable = annotres$BMD.zSD, 
-               by = annotres$path_class,
+ecdfquantileplot(variable = metabextendedres$BMD.zSD, 
+               by = metabextendedres$path_class,
                quantile.prob = 0.25) 
 
    # Plot of the dose-response curves for a specific metabolic pathway
    # in this example the "lipid metabolism" pathclass
-LMres <- annotres[annotres$path_class == "Lipid metabolism", ]
-curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
+LMmetabextendedres <- metabextendedres[metabextendedres$path_class == "Lipid metabolism", ]
+curvesplot(LMmetabextendedres, facetby = "id", npoints = 100, line.size = 1,
            colorby = "trend",
            xmin = 0, xmax = 8) 
 
+#### Help for multiomics approach                               ####
+#### an example with metabolomics and transcriptomics           ####
+#### data for Scenedesmus and triclosan (cf. Larras et al. 2020 ####
+
+# 5. following the same steps described before for metabolomics
+# import and merge the results for microarray data
+
+contigresfilename <- system.file("extdata", "triclosanSVcontigres.txt", package="DRomics")
+contigres <- read.table(contigresfilename, header = TRUE, stringsAsFactors = TRUE)
+str(contigres)
+
+contigannotfilename <- system.file("extdata", "triclosanSVcontigannot.txt", 
+                              package="DRomics")
+contigannot <- read.table(contigannotfilename, header = TRUE, stringsAsFactors = TRUE)
+str(contigannot)
+
+contigextendedres <- merge(x = contigres, y = contigannot, by.x = "id", by.y = "contig")
+str(contigextendedres)
+
+
+# 6. Comparison of results obtained at both molecular levels (metabolites and contigs)
+
+   # Binding of dataframes at both levels adding a variable coding
+   # for the level
+extendedres <- rbind(metabextendedres, contigextendedres)
+extendedres$level <- factor(c(rep("metabolites", nrow(metabextendedres)),
+                              rep("contigs", nrow(contigextendedres))))
+str(extendedres)
+
+   # Frequencies of pathways by molecular levels
+(t.pathways <- table(extendedres$path_class, extendedres$level)) 
+original.par <- par()
+par(las = 2, mar = c(4,13,1,1))
+barplot(t(t.pathways), beside = TRUE, horiz = TRUE, 
+      cex.names = 0.7, legend.text = TRUE, 
+      main = "Frequencies of pathways")
+      
+   # Proportions of pathways by molecular levels
+(t.prop.pathways <- prop.table(t.pathways, margin = 2)) 
+barplot(t(t.prop.pathways), beside = TRUE, horiz = TRUE, 
+      cex.names = 0.7, legend.text = TRUE, 
+      main = "Proportion of pathways")
+par(original.par)
+
+if (require(ggplot2))
+{
+      # an ECDF plot of BMD_zSD by pathways
+      # using color
+   ggplot(extendedres, aes(x = BMD.zSD, color = level)) +
+      stat_ecdf(geom = "step") + ylab("ECDF")
+      
+      # or using facets
+   ggplot(extendedres, aes(x = BMD.zSD)) + facet_wrap(~ level) +
+      stat_ecdf(geom = "step") + ylab("ECDF")
+
+}
+
+   # an ECDF plot of BMD_zSD with confidence intervals splitted 
+   # here by metabolic pathway 
+   # with color coding for molecular level
+ecdfplotwithCI(variable = extendedres$BMD.zSD, 
+               CI.lower = extendedres$BMD.zSD.lower, 
+               CI.upper = extendedres$BMD.zSD.upper, 
+               by = extendedres$path_class,
+               CI.col = extendedres$level) + labs(col = "Molecular level")
+
+   # an ECDFplot of BMD_zSD with confidence intervals splitted 
+   # here by molecular level
+ecdfplotwithCI(variable = extendedres$BMD.zSD, 
+               CI.lower = extendedres$BMD.zSD.lower, 
+               CI.upper = extendedres$BMD.zSD.upper, 
+               by = extendedres$level)
+
+
+   # Plot of the dose-response curves for a specific metabolic pathway
+   # in this example the "lipid metabolism" pathclass
+LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
+curvesplot(LMres, facetby = "level", free.y.scales = TRUE, npoints = 100, line.size = 1,
+           colorby = "trend",
+           xmin = 0, xmax = 8) + labs(col = "DR_trend")
 
 }
