@@ -180,6 +180,9 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   
   if(add.label)
   {
+    if (!missing(shapeby))
+      warning("The type of points will not be seen when points are replaced by labels.
+              You should omit it in this case.")
     gg <- gg + geom_label(size = label.size)
   }
   
