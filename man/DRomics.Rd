@@ -232,10 +232,10 @@ bmdplotwithgradient(metabextendedres, BMDtype = "zSD",
                       xmax = 8,  facetby = "path_class", 
                        shapeby = "trend") 
                        
-   # the same representation with labels of items
+   # the same representation with labels of items (so without shapeby)
 bmdplotwithgradient(metabextendedres, BMDtype = "zSD",
                       xmax = 8,  facetby = "path_class", 
-                       shapeby = "trend", add.label = TRUE) 
+                       add.label = TRUE) 
                        
    # an ECDFplot of BMD_zSD with confidence intervals splitted 
    # here by metabolic pathway
