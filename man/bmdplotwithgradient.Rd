@@ -17,7 +17,7 @@ bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
                                    line.size, point.size = 1,
                                    ncol4faceting, limits4colgradient,
                                    lowercol = "darkgreen", uppercol = "darkred",
-                                   add.label, label.size = 0.2)
+                                   add.label, label.size = 2)
 }
 
 \arguments{
