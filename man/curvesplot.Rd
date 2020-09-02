@@ -86,7 +86,7 @@ f <- drcfit(s_quad, progressbar = TRUE)
 #
 curvesplot(f$fitres, xmax = max(f$omicdata$dose))
 if (require(ggplot2))
-  curvesplot(f$fitres, xmax = max(f$omicdata$dose)) + scale_x_log10()
+  curvesplot(f$fitres, xmin = 0.1, xmax = max(f$omicdata$dose)) + scale_x_log10()
 
 # the equivalent using the output of bmdcalc
 (r <- bmdcalc(f))
