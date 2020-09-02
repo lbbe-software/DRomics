@@ -18,7 +18,7 @@ variance stabilizing transformation or regularized logarithm.
 
 \usage{
 RNAseqdata(file, check = TRUE, transfo.method = c("rlog", "vst"), 
-          transfo.blind = FALSE)
+          transfo.blind = TRUE, round.counts = FALSE)
 
 \method{print}{RNAseqdata}(x, \dots)
 \method{plot}{RNAseqdata}(x, \dots)
@@ -47,8 +47,13 @@ using the
   \code{DESeq2}: \code{"rlog"} for regularized logarithm or
   \code{"vst"} for variance stabilizing transformation.}
 
-\item{transfo.blind}{Argument given to function \code{\link{rlog}} or \code{\link{vst}}
-  to enable tranformation blind to experimental design.}
+\item{transfo.blind}{Argument given to function \code{\link{rlog}} or \code{\link{vst}},
+  see \code{\link{rlog}} and \code{\link{vst}} for an explaination, by default
+  at \code{TRUE} as in the \code{DESeq2} package .}
+
+\item{round.counts}{Put it to TRUE if your counts come from Kallisto or Salmon
+  in order to round them before treatment with \code{DESeq2}.}
+
 
 \item{x}{An object of class \code{"RNAseqdata"}.}
 

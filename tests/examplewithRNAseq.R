@@ -8,9 +8,9 @@ datafilename <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
 (o <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog"))
 plot(o)
 
-(o.blind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog",
-                       transfo.blind = TRUE))
-plot(o.blind)
+(o.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog",
+                       transfo.blind = FALSE))
+plot(o.notblind)
 
 
 if(FALSE) # too long computation !
