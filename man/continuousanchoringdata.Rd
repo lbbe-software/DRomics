@@ -2,10 +2,10 @@
 \alias{continuousanchoringdata}
 \alias{print.continuousanchoringdata}
 \alias{plot.continuousanchoringdata}
-\title{Import and check of continuous anhoring data}
+\title{Import and check of continuous anchoring apical data}
 
 \description{
-Continuous anchoring data are imported from a .txt file 
+Continuous anchoring apical data are imported from a .txt file 
 (internally imported using the function \code{\link{read.table}})
 and checked or from a R object of class \code{data.frame}
 (see the description 
