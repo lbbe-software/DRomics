@@ -1,6 +1,6 @@
 # Function used in plot.drcfit()
 # uses ggplot2
-plotfitsubset <- function(subd, dose, data, data.mean, npts = 100, 
+plotfitsubset <- function(subd, dose, data, data.mean, npts = 50, 
                         plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"),
                         dose_pseudo_log_transfo = FALSE)
 {
@@ -10,7 +10,16 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 100,
     nobs <- length(dose)
     doseu <- as.numeric(colnames(data.mean)) # sorted unique doses
     ndose <- length(doseu)
-    xplot <- seq(0, max(dose), length.out = npts)
+    
+    if (dose_pseudo_log_transfo)
+    {
+      minx <- min(dose[dose != 0]) / 10
+      maxx <- max(dose)
+      xplot <- c(0, 10^seq(log10(minx), log10(maxx), length.out = npts - 1))
+    } else
+    {
+      xplot <- seq(0, max(dose), length.out = npts)
+    }
     nitems <- nrow(subd)
     dataobs <- data.frame(dose = numeric(), signal = numeric(), 
                           id = character())
@@ -93,12 +102,14 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 100,
   }
   if (dose_pseudo_log_transfo)
   {
+    sigma4pseudo_log_trans <- min(doseu[doseu != 0])
     if (plot.type == "fitted_residuals")
     {
       warning("The pseudo-log transformation of the dose axis cannot be used for 
               this type of plot: residuals as fonction of fitted values")
     } else
-    g <- g + scale_x_continuous(trans = pseudo_log_trans(base = 10))
+    g <- g + scale_x_continuous(trans = pseudo_log_trans(base = 10,
+                                                         sigma = sigma4pseudo_log_trans))
   }
   return(g)
 }

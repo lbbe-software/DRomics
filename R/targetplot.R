@@ -15,7 +15,15 @@ targetplot <- function(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE
   doseu <- as.numeric(colnames(o$data.mean)) # sorted unique doses
   ndose <- length(doseu)
   npts <- 100
-  xplot <- seq(0, max(dose), length.out = npts)
+  if (dose_pseudo_log_transfo)
+  {
+    minx <- min(dose[dose != 0]) / 10
+    maxx <- max(dose)
+    xplot <- c(0, 10^seq(log10(minx), log10(maxx), length.out = npts - 1))
+  } else
+  {
+    xplot <- seq(0, max(dose), length.out = npts)
+  }
   nitems <- length(irowitems)
   dataobs <- data.frame(dose = numeric(), signal = numeric(), 
                         id = character())
@@ -62,7 +70,9 @@ targetplot <- function(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE
   
   if (dose_pseudo_log_transfo)
   {
-    g <- g + scale_x_continuous(trans = pseudo_log_trans(base = 10))
+    sigma4pseudo_log_trans <- min(doseu[doseu != 0])
+    g <- g + scale_x_continuous(trans = pseudo_log_trans(base = 10,
+                                                           sigma = sigma4pseudo_log_trans))
   }
   
   
