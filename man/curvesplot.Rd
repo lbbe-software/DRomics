@@ -90,7 +90,7 @@ f <- drcfit(s_quad, progressbar = TRUE)
 curvesplot(f$fitres, xmax = max(f$omicdata$dose))
 
 # the same plot with dose in log scale (need x != 0 in input)
-curvesplot(r$res, xmin = 0.1, xmax = max(f$omicdata$dose),
+curvesplot(f$fitres, xmin = 0.1, xmax = max(f$omicdata$dose),
   dose_log_transfo = TRUE)
 
 # the equivalent using the output of bmdcalc

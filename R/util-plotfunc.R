@@ -102,7 +102,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
   }
   if (dose_pseudo_log_transfo)
   {
-    sigma4pseudo_log_trans <- min(doseu[doseu != 0])
+    sigma4pseudo_log_trans <- min(dose[dose != 0])
     if (plot.type == "fitted_residuals")
     {
       warning("The pseudo-log transformation of the dose axis cannot be used for 
