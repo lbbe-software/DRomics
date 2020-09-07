@@ -111,9 +111,8 @@ if(FALSE) # too long computation !
     plot(r) + scale_x_log10() # same plot in log scale of BMD
 
   res0 <- r$res[r$res$BMD.zSD == 0, ]
-  if (require(ggplot2))
-    curvesplot(res0, xmax = max(f$omicdata$dose), colorby = "model", npoints = 1000) + 
-      scale_x_log10()
+  curvesplot(res0, xmin =0.001, xmax = max(f$omicdata$dose), 
+             colorby = "model", dose_log_transfo = TRUE)
   plot(f, items = r$res[r$res$BMD.zSD == 0, ]$id)
   plot(f, items = r$res[r$res$BMD.zSD == 0, ]$id, dose_pseudo_log_trans = TRUE)
 }

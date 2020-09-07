@@ -11,7 +11,7 @@ additional information (e.g. groups from functional annotation) used to color an
 curvesplot(extendedres, xmin = 0, xmax, y0shift = TRUE,
                        facetby, free.y.scales = FALSE, colorby, removelegend = FALSE,  
                         npoints = 500, line.size = 0.2, 
-                        line.alpha = 1)}
+                        line.alpha = 1, dose_log_transfo = FALSE)}
 
 \arguments{
 \item{extendedres}{the dataframe of results provided by bmdcalc (res) or drcfit (fitres) 
@@ -47,6 +47,9 @@ the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
 \item{line.size}{Size of the lines for plotting curves.}
 
 \item{line.alpha}{Transparency of the lines for plotting curves.}
+
+\item{dose_log_transfo}{If TRUE a log transformation of the dose is used in the plot. 
+  This option needs a definition of a strictly positive value of xmin in input.}
 
 }
 
@@ -85,8 +88,10 @@ f <- drcfit(s_quad, progressbar = TRUE)
 # Default plot of all the curves 
 #
 curvesplot(f$fitres, xmax = max(f$omicdata$dose))
-if (require(ggplot2))
-  curvesplot(f$fitres, xmin = 0.1, xmax = max(f$omicdata$dose)) + scale_x_log10()
+
+# the same plot with dose in log scale (need x != 0 in input)
+curvesplot(r$res, xmin = 0.1, xmax = max(f$omicdata$dose),
+  dose_log_transfo = TRUE)
 
 # the equivalent using the output of bmdcalc
 (r <- bmdcalc(f))
@@ -97,8 +102,11 @@ curvesplot(r$res, xmax = max(f$omicdata$dose), colorby = "model")
 
 # plot of curves facetted by trends
 curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend")
+
+# the same plot with free y scales
 curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend",
   free.y.scales =  TRUE)
+  
 
 \donttest{
 
