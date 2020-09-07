@@ -8,13 +8,21 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
                                    line.size, point.size = 1,
                                    ncol4faceting, limits4colgradient,
                                    lowercol = "darkgreen", uppercol = "darkred",
-                                   add.label = FALSE, label.size = 2)
+                                   add.label = FALSE, label.size = 2,
+                                    BMD.log.transfo = FALSE)
 {
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
 
   if (missing(extendedres) | !is.data.frame(extendedres))
     stop("The first argument of bmdplotwithgradient must be a dataframe 
          (see ?bmdplotwithgradient for details).")
+  
+  if (BMD.log.transfo)
+  {
+    if (xmin == 0)
+      stop("When using a log scale for the BMD plot, a strictly positive value must be given for xmin.")
+  }
+    
   
   cnames <- colnames(extendedres)
  
@@ -81,7 +89,13 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   }
 
   # Calculation of theoretical signal to color the lines
-  x2plot <- seq(xmin, xmax, length.out = npoints)
+  if (BMD.log.transfo)
+  {
+    x2plot <- 10^seq(log10(xmin), log10(xmax), length.out = npoints)
+  } else
+  {
+    x2plot <- seq(xmin, xmax, length.out = npoints)
+  }
   ns <- nrow(extendedres)
   N <- ns * npoints
   
@@ -186,5 +200,8 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     gg <- gg + geom_label(size = label.size)
   }
   
+  if (BMD.log.transfo)
+    gg <- gg + scale_x_log10()
+    
   return(gg)
 }

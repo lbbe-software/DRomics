@@ -17,7 +17,8 @@ bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
                                    line.size, point.size = 1,
                                    ncol4faceting, limits4colgradient,
                                    lowercol = "darkgreen", uppercol = "darkred",
-                                   add.label, label.size = 2)
+                                   add.label, label.size = 2,
+                                   BMD.log.transfo = FALSE)
 }
 
 \arguments{
@@ -67,6 +68,11 @@ to have the theoretical signal at the control at 0.}
 \item{add.label}{Points are replaced  by labels of items if TRUE.}
 
 \item{label.size}{Size of labels if add.label is TRUE.}
+
+\item{BMD.log.transfo}{If TRUE a log transformation of the BMD is used in the plot. 
+  This option needs a definition of a strictly positive value of xmin in input.}
+
+
 }
 
 \details{
@@ -117,6 +123,13 @@ r <- bmdcalc(f)
 #
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       xmax = max(f$omicdata$dose)) 
+
+# The same plot in log scale (we have to define xmin in this case) 
+#
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      xmin =  min(f$omicdata$dose[f$omicdata$dose != 0] / 2), 
+                      xmax = max(f$omicdata$dose),
+                      BMD.log.transfo = TRUE) 
 
 
 # Plot of all the BMD values with color dose-response gradient 
