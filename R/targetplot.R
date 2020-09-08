@@ -1,5 +1,5 @@
 # Plot of raw data and fitted curves if there is for target items 
-targetplot <- function(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE)
+targetplot <- function(items, f, add.fit = TRUE, dose_log_transfo = FALSE)
 {
   if (!inherits(f, "drcfit"))
     stop("Use only with 'drcfit' objects, created with the function drcfit")
@@ -15,7 +15,7 @@ targetplot <- function(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE
   doseu <- as.numeric(colnames(o$data.mean)) # sorted unique doses
   ndose <- length(doseu)
   npts <- 100
-  if (dose_pseudo_log_transfo)
+  if (dose_log_transfo)
   {
     minx <- min(dose[dose != 0]) 
     maxx <- max(dose)
@@ -33,7 +33,7 @@ targetplot <- function(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE
   {
     datatheo <- data.frame(dose = numeric(), signal = numeric(), 
                            id = character())
-    if (dose_pseudo_log_transfo)
+    if (dose_log_transfo)
     {
       datatheo0 <- data.frame(dose = numeric(), signal = numeric(), 
                              id = character())
@@ -61,7 +61,7 @@ targetplot <- function(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE
         if (rowfitres$model == "Gauss-probit") datapred <- fGauss5p(x = xplot, c = rowfitres$c, d = rowfitres$d, b = rowfitres$b, e = rowfitres$e, f = rowfitres$f)
         if (rowfitres$model == "linear") datapred <- xplot * rowfitres$b + rowfitres$d
         
-        if (dose_pseudo_log_transfo)
+        if (dose_log_transfo)
         {
           datatheo <- rbind(datatheo,
                             data.frame(dose = xplot[-1], signal = datapred[-1], id = rep(ident, npts)))
@@ -87,7 +87,7 @@ targetplot <- function(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE
   if (add.fit) 
   {
     datatheo$id <- factor(datatheo$id, levels = items)
-    if (dose_pseudo_log_transfo) 
+    if (dose_log_transfo) 
     {
       datatheo0$id <- factor(datatheo0$id, levels = items)
       g <- g + geom_line(data = datatheo, colour = "red") +

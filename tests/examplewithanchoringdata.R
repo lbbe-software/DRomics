@@ -23,7 +23,7 @@ f$fitres
 plot(f)
 if (visualize)
 {
-  plot(f, dose_pseudo_log_transfo = TRUE)
+  plot(f, dose_log_transfo = TRUE)
   plot(f, plot.type = "dose_residuals")
   
 }

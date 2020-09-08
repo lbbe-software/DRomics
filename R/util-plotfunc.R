@@ -2,11 +2,11 @@
 # uses ggplot2
 plotfitsubset <- function(subd, dose, data, data.mean, npts = 50, 
                         plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"),
-                        dose_pseudo_log_transfo = FALSE)
+                        dose_log_transfo = FALSE)
 {
   plot.type <- match.arg(plot.type, c("dose_fitted", "dose_residuals", "fitted_residuals"))
   
-  if ((dose_pseudo_log_transfo) & (plot.type == "fitted_residuals"))
+  if ((dose_log_transfo) & (plot.type == "fitted_residuals"))
   {
     warning("The pseudo-log transformation of the dose axis cannot be used for 
               this type of plot: residuals as fonction of fitted values")
@@ -19,7 +19,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
     doseu <- as.numeric(colnames(data.mean)) # sorted unique doses
     ndose <- length(doseu)
     
-    if (dose_pseudo_log_transfo)
+    if (dose_log_transfo)
     {
       minx <- min(dose[dose != 0]) 
       maxx <- max(dose)
@@ -35,7 +35,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
                               id = character())
     datatheo <- data.frame(dose = numeric(), signal = numeric(), 
                            id = character())
-    if (dose_pseudo_log_transfo)
+    if (dose_log_transfo)
     {
       datatheo0 <- data.frame(dose = numeric(), signal = numeric(), 
                               id = character())
@@ -60,7 +60,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
       dataobsmean <- rbind(dataobsmean, 
                            data.frame(dose = doseu, signal = datameani, id = rep(ident, ndose)))
       
-      if (dose_pseudo_log_transfo)
+      if (dose_log_transfo)
       {
         datatheo <- rbind(datatheo,
                           data.frame(dose = xplot[-1], signal = datapred[-1], id = rep(ident, npts)))
@@ -83,7 +83,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
     
     
     datatheo$id <- factor(datatheo$id, levels = subd$id)
-    if (dose_pseudo_log_transfo) 
+    if (dose_log_transfo) 
     {
       datatheo0$id <- factor(datatheo0$id, levels = subd$id)
       g <- g + geom_line(data = datatheo, colour = "red") +
@@ -126,7 +126,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
         geom_point(shape = 1) +
         facet_wrap(~ id) + 
         geom_hline(yintercept = 0, linetype = "dashed", color = "red")
-      if (dose_pseudo_log_transfo)
+      if (dose_log_transfo)
       {
         g <- g + scale_x_log10()
       }

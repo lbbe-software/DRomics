@@ -670,7 +670,7 @@ print.drcfit <- function(x, ...)
 
 plot.drcfit <- function(x, items, 
                 plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
-                dose_pseudo_log_transfo = FALSE, ...)
+                dose_log_transfo = FALSE, ...)
 {
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects")
@@ -698,7 +698,7 @@ plot.drcfit <- function(x, items,
                 data.mean = x$omicdata$data.mean, 
                 npts = 500,
                 plot.type = plot.type, 
-                dose_pseudo_log_transfo = dose_pseudo_log_transfo) 
+                dose_log_transfo = dose_log_transfo) 
   
 }
 

@@ -18,7 +18,7 @@ drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
 
 \method{plot}{drcfit}(x, items, 
   plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
-   dose_pseudo_log_transfo = FALSE, \dots)
+   dose_log_transfo = FALSE, \dots)
 }
 
 \arguments{
@@ -55,7 +55,7 @@ choice) or \code{"BIC"}.}
  of the dose, and \code{"fitted_residuals"} for the plot of the residuals as function of 
  the fitted value.}
 
-\item{dose_pseudo_log_transfo}{to put at \code{TRUE} to use a pseudo log transformation
+\item{dose_log_transfo}{to put at \code{TRUE} to use a pseudo log transformation
 for the dose axis (only available if the dose is in x-axis, so not available
 for \code{plot.type} \code{"fitted_residuals"}). See \code{\link{pseudo_log_trans}} of the \code{scales} package
 for details on this
@@ -164,13 +164,13 @@ plot(f)
 
 \donttest{
 # Same plot with pseudo log transformation of the doses
-plot(f, dose_pseudo_log_transfo = TRUE)
+plot(f, dose_log_transfo = TRUE)
 
 # Plot of residuals as function of the dose
 plot(f, plot.type = "dose_residuals")
 
 # Same plot of residuals with pseudo log transformation of the doses
-plot(f, plot.type = "dose_residuals", dose_pseudo_log_transfo = TRUE)
+plot(f, plot.type = "dose_residuals", dose_log_transfo = TRUE)
 
 # plot of residuals as function of the fitted value
 plot(f, plot.type = "fitted_residuals")
