@@ -17,9 +17,9 @@ targetplot <- function(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE
   npts <- 100
   if (dose_pseudo_log_transfo)
   {
-    minx <- min(dose[dose != 0]) / 10
+    minx <- min(dose[dose != 0]) 
     maxx <- max(dose)
-    xplot <- c(0, 10^seq(log10(minx), log10(maxx), length.out = npts - 1))
+    xplot <- c(0, 10^seq(log10(minx), log10(maxx), length.out = npts))
   } else
   {
     xplot <- seq(0, max(dose), length.out = npts)
@@ -29,8 +29,16 @@ targetplot <- function(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE
                         id = character())
   dataobsmean <- data.frame(dose = numeric(), signal = numeric(), 
                             id = character())
-  if (add.fit) datatheo <- data.frame(dose = numeric(), signal = numeric(), 
-                          id = character())
+  if (add.fit)
+  {
+    datatheo <- data.frame(dose = numeric(), signal = numeric(), 
+                           id = character())
+    if (dose_pseudo_log_transfo)
+    {
+      datatheo0 <- data.frame(dose = numeric(), signal = numeric(), 
+                             id = character())
+    }
+  }
   for (i in 1:nitems)
   {
     irow <- irowitems[i]
@@ -52,29 +60,44 @@ targetplot <- function(items, f, add.fit = TRUE, dose_pseudo_log_transfo = FALSE
         if (rowfitres$model == "log-Gauss-probit" | rowfitres$model== "log-probit") datapred <- fLGauss5p(x = xplot, c = rowfitres$c, d = rowfitres$d, b = rowfitres$b, e = rowfitres$e, f = rowfitres$f)
         if (rowfitres$model == "Gauss-probit") datapred <- fGauss5p(x = xplot, c = rowfitres$c, d = rowfitres$d, b = rowfitres$b, e = rowfitres$e, f = rowfitres$f)
         if (rowfitres$model == "linear") datapred <- xplot * rowfitres$b + rowfitres$d
-        datatheo <- rbind(datatheo,
-                          data.frame(dose = xplot, signal = datapred, id = rep(ident, npts)))
         
-      }
+        if (dose_pseudo_log_transfo)
+        {
+          datatheo <- rbind(datatheo,
+                            data.frame(dose = xplot[-1], signal = datapred[-1], id = rep(ident, npts)))
+          datatheo0 <- rbind(datatheo0,
+                            data.frame(dose = xplot[1], signal = datapred[1], id = ident))
+          
+        } else
+        {
+          datatheo <- rbind(datatheo,
+                            data.frame(dose = xplot, signal = datapred, id = rep(ident, npts)))
+        }
+       }
     }
   }
   
   dataobs$id <- factor(dataobs$id, levels = items)
   dataobsmean$id <- factor(dataobsmean$id, levels = items)
-  if (add.fit) datatheo$id <- factor(datatheo$id, levels = items)
-  
+
   g <- ggplot(dataobs, aes_(x = quote(dose), y = quote(signal))) + geom_point(shape = 1) +
     facet_wrap(~ id, scales = "free_y") +
-    geom_point(data = dataobsmean, shape = 19) 
-  if (add.fit) g <- g + geom_line(data = datatheo, colour = "red")
+    geom_point(data = dataobsmean, shape = 19)
   
-  if (dose_pseudo_log_transfo)
+  if (add.fit) 
   {
-    sigma4pseudo_log_trans <- min(doseu[doseu != 0])
-    g <- g + scale_x_continuous(trans = pseudo_log_trans(base = 10,
-                                                           sigma = sigma4pseudo_log_trans))
+    datatheo$id <- factor(datatheo$id, levels = items)
+    if (dose_pseudo_log_transfo) 
+    {
+      datatheo0$id <- factor(datatheo0$id, levels = items)
+      g <- g + geom_line(data = datatheo, colour = "red") +
+        geom_point(data = datatheo0, colour = "red") 
+      g <- g + scale_x_log10()
+    } else
+    {
+      g <- g + geom_line(data = datatheo, colour = "red") 
+    }
   }
-  
   
   return(g)
 }

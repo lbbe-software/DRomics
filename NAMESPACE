@@ -7,7 +7,6 @@ importFrom("DESeq2", rlog, vst, DESeq, results, DESeqDataSetFromMatrix)
 importFrom("SummarizedExperiment", assay)
 importFrom("utils", txtProgressBar, setTxtProgressBar, read.table)
 importFrom("grDevices", pdf, dev.off)
-importFrom("scales", pseudo_log_trans)
 
 ### Exports
 
