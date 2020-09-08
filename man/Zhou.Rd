@@ -68,7 +68,7 @@ plot(o)
 head(f$fitres)
 
 plot(f) 
-plot(f, dose_pseudo_log_trans = TRUE)
+plot(f, dose_log_trans = TRUE)
 plot(f, plot.type = "dose_residuals")
 
 r <- bmdcalc(f, z = 1)

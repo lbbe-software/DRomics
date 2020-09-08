@@ -20,10 +20,8 @@ targetplot(items, f, add.fit = TRUE, dose_log_transfo = FALSE)
 \item{add.fit}{If \code{TRUE} the fitted curve is added for items which were selected as responsive items 
 and for which a best fit model was obtained.}
 
-\item{dose_log_transfo}{to put at \code{TRUE} to use a pseudo log transformation
-for the dose axis. See \code{\link{pseudo_log_trans}} of the \code{scales} package
-for details on this
-transformation that enables to plot zero values in a pseudo log scale.}
+\item{dose_log_transfo}{to put at \code{TRUE} to use a log transformation
+for the dose axis.}
 
 }
 

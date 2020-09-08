@@ -55,11 +55,9 @@ choice) or \code{"BIC"}.}
  of the dose, and \code{"fitted_residuals"} for the plot of the residuals as function of 
  the fitted value.}
 
-\item{dose_log_transfo}{to put at \code{TRUE} to use a pseudo log transformation
+\item{dose_log_transfo}{to put at \code{TRUE} to use a log transformation
 for the dose axis (only available if the dose is in x-axis, so not available
-for \code{plot.type} \code{"fitted_residuals"}). See \code{\link{pseudo_log_trans}} of the \code{scales} package
-for details on this
-transformation that enables to plot zero values in a pseudo log scale.}
+for \code{plot.type} \code{"fitted_residuals"}).}
 
 \item{\dots}{ further arguments passed to graphical or print functions.}
 }

@@ -67,7 +67,7 @@ plot(o_apical)
 (f_apical <- drcfit(s_apical, progressbar = TRUE))
 f_apical$fitres
 plot(f_apical) 
-plot(f_apical, dose_pseudo_log_trans = TRUE)
+plot(f_apical, dose_log_trans = TRUE)
 plot(f_apical, plot.type = "dose_residuals")
 
 # (2.5) Benchmark dose calculation on apical data
