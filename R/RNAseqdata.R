@@ -36,7 +36,7 @@ RNAseqdata <- function(file, check = TRUE,
     if (!identical(subdata4check, subdata4checkT))
       stop("Your data contain non integer values. 
             Make sure that your RNAseq data are imported in raw counts.
-           If your counts came from Kallisto or Salmon put the argument round.counts
+           If your counts come from Kallisto or Salmon put the argument round.counts
           of RNAseqdata at TRUE to round them.\n") 
   }
   if (nrowd < 100)

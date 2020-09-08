@@ -23,6 +23,8 @@ for items which have be selected in step 2 and for which step 3 was successful
 - Add of the argument free.y.scales in curvesplot() to enable free y scales in facets
 and dose_log_transfo to use an x log scale for plot and calculation of signal.
 - Add of examples in DRomics.Rd to help a multi-omics approach
+- Add of the argument round.counts to enable rounding of read counts that would come
+from Kallisto or Salmon.
 
 
 Version 2.0-1 
