@@ -316,8 +316,8 @@ ui <- fluidPage(
                                                                      'fitted / residuals' = 'fitted_residuals'),
                                                          selected = "dose_fitted")),
                                      column(3,
-                                            radioButtons('pseudologdosescale',
-                                                         'Pseudo-log dose-scale', inline = TRUE,
+                                            radioButtons('logdosescale',
+                                                         'Log dose-scale', inline = TRUE,
                                                          choices = c('yes' = 'TRUE',
                                                                      'no' = 'FALSE'),
                                                          selected = "FALSE"))
