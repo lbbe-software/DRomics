@@ -76,7 +76,7 @@ server <- function(input, output, session) {
     mydrcfit <- rundrcfit()
     
     myplotdrcfit <- reactive({
-      plot(mydrcfit, plot.type = input$plottypeDrcfit, dose_log_transfo = input$logdosescale)
+      plot(mydrcfit, plot.type = input$plottypeDrcfit, dose_log_transfo = as.logical(input$logdosescale))
     })
     
     mpd <- myplotdrcfit()
