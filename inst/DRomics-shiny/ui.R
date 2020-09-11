@@ -35,13 +35,15 @@ ui <- fluidPage(
                         fixedRow(column(8, offset = 2,
                                         tags$blockquote("DRomics is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data.
                                              It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses 
-                                             (or concentrations, at least 6, and the more the better) rather than a great number of replicates (no need of three replicates).", br(), 
+                                             rather than a great number of replicates (no need of three replicates).", br(), 
                                              "After a first optional step which consists to import, check and if needed normalize/transform the data (step 1), the aim of the proposed workflow 
                                              is to select monotonic and/or biphasic significantly responsive items (e.g. probes, metabolites) (step 2), to choose the best-fit model among a 
                                              predefined family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive a benchmark dose or 
                                              concentration from each fitted curve (step 4).", br(), 
                                              "In the available version, DRomics supports single-channel microarray data (in log2 scale), RNAseq data (in raw counts) or metabolomics data 
-                                             (in log scale). It should not be used on other types of data.", 
+                                             (in log scale). In order to link responses across biological levels based on a common method, DRomics also handles apical data as long as they are continuous and
+                                             follow a Gaussian distribution for each dose or concentration, with a common standard error.
+                                             DRomics should not be used on other types of data.", 
                                                         style="text-align:justify;"),
                                         br(),
                                         h4("DRomics Shiny App runs on the ", 
