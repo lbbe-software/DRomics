@@ -366,10 +366,10 @@ ui <- fluidPage(
                                    br(),
                                    radioButtons('plottype', 
                                                 'plot type',
-                                                choices = c('empirical cumulative distribution' = 'ecdf',
+                                                choices = c('ECDF (Empirical Cumulative Distribution)' = 'ecdf',
+                                                            'ECDF plot with color gradient' = 'ecdfcolorgradient',
                                                             'histogram' = 'hist' ,
-                                                            'density' = 'density', 
-                                                            'ECDF plot with color gradient' = 'ecdfcolorgradient')),
+                                                            'density' = 'density')),
                                    br(),
                                    conditionalPanel(
                                      condition = "input.plottype == 'hist'",
