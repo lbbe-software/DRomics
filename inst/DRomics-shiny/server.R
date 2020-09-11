@@ -33,7 +33,7 @@ server <- function(input, output, session) {
   
   output$plotOmicData <- renderPlot({
     ff <- filedata()
-    plot(ff)
+    plot(ff, range = 1e10)
   })
   
   
