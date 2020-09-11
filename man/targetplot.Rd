@@ -52,9 +52,16 @@ f <- drcfit(s_quad, progressbar = TRUE)
 #
 targetitems <- c("88.1", "1", "3", "15")
 targetplot(targetitems, f = f)
+
+# The same plot in x log scale
+#
 targetplot(targetitems, f = f, dose_log_transfo = TRUE)
 
-# Same plot without fitted curves 
+# The same plot in x log scale choosing x limits for plot
+targetplot(targetitems, f = f, dose_log_transfo = TRUE) + 
+        scale_x_log10(limits = c(0.1, 10))
+
+# The same plot without fitted curves 
 #
 targetplot(targetitems, f = f, add.fit = FALSE)
 

@@ -8,7 +8,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
   
   if ((dose_log_transfo) & (plot.type == "fitted_residuals"))
   {
-    warning("The pseudo-log transformation of the dose axis cannot be used for 
+    warning("The log transformation of the dose axis cannot be used for 
               this type of plot: residuals as fonction of fitted values")
   }
   

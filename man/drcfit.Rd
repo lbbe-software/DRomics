@@ -161,13 +161,17 @@ datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", pack
 plot(f)
 
 \donttest{
-# Same plot with pseudo log transformation of the doses
+# The same plot with log transformation of the doses
 plot(f, dose_log_transfo = TRUE)
+
+# The same plot in x log scale choosing x limits for plot
+plot(f, dose_log_transfo = TRUE) + 
+        scale_x_log10(limits = c(0.1, 10))
 
 # Plot of residuals as function of the dose
 plot(f, plot.type = "dose_residuals")
 
-# Same plot of residuals with pseudo log transformation of the doses
+# Same plot of residuals with log transformation of the doses
 plot(f, plot.type = "dose_residuals", dose_log_transfo = TRUE)
 
 # plot of residuals as function of the fitted value
