@@ -58,6 +58,7 @@ targetplot(targetitems, f = f)
 targetplot(targetitems, f = f, dose_log_transfo = TRUE)
 
 # The same plot in x log scale choosing x limits for plot
+if (require(ggplot2))
 targetplot(targetitems, f = f, dose_log_transfo = TRUE) + 
         scale_x_log10(limits = c(0.1, 10))
 
