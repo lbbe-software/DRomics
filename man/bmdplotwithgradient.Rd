@@ -123,6 +123,11 @@ r <- bmdcalc(f)
 #
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       xmax = max(f$omicdata$dose)) 
+                      
+# Add of item labels
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      xmax = max(f$omicdata$dose), add.label = TRUE) 
+
 
 # The same plot in log scale (we have to define xmin in this case) 
 #
@@ -138,6 +143,7 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       xmax = max(f$omicdata$dose), facetby = "trend", 
                       shapeby = "model") 
+                      
                       
 # (2)
 # Plot of BMD values with color dose-response gradient
