@@ -104,7 +104,7 @@ RNAseqdata <- function(file, check = TRUE,
         data <- varianceStabilizingTransformation(raw.counts, blind = FALSE)
       } else
       {
-        data <- assay(varianceStabilizingTransformation(dds, nsub = nsub, blind = FALSE))  
+        data <- assay(vst(dds, nsub = nsub, blind = FALSE))  
       }
     }
   }

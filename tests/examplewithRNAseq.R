@@ -15,6 +15,10 @@ plot(o.notblind)
 (o.vst <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
 plot(o.vst)
 
+(o.vst.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst",
+                     transfo.blind = FALSE))
+plot(o.vst.notblind)
+
 if(FALSE) # too long computation !
 {
   data(Zhou_kidney_pce)
@@ -32,7 +36,7 @@ if(FALSE) # too long computation !
                     transfo.blind = TRUE))
   plot(o3)
   
-  # regularized logarithm
+  # regularized logarithm (blind to the experimental design)
   (o4 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "rlog",
                     transfo.blind = TRUE))
   plot(o4)
