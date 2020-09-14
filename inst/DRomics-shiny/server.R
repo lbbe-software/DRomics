@@ -132,12 +132,14 @@ server <- function(input, output, session) {
         if(input$splitby == 'none') {
           bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
                               xmin = xmin, xmax = max(mydrcfit$omicdata$dose),
-                              BMD_log_transfo = as.logical(input$logbmd_ecdfgradient))
+                              BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
+                              add.label = as.logical(input$label_ecdfgradient))
         } else {
           bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
                               xmin = xmin, xmax = max(mydrcfit$omicdata$dose),
                               facetby = input$splitby,
-                              BMD_log_transfo = as.logical(input$logbmd_ecdfgradient))
+                              BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
+                              add.label = as.logical(input$label_ecdfgradient))
         }
         
         ##### ecdf #####
@@ -194,12 +196,14 @@ server <- function(input, output, session) {
             if(input$splitby == 'none') {
               bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
                                   xmin = xmin, xmax = max(mydrcfit$omicdata$dose),
-                                  BMD_log_transfo = as.logical(input$logbmd_ecdfgradient))
+                                  BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
+                                  add.label = as.logical(input$label_ecdfgradient))
             } else {
               bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
                                   xmin = xmin, xmax = max(mydrcfit$omicdata$dose),
                                   facetby = input$splitby,
-                                  BMD_log_transfo = as.logical(input$logbmd_ecdfgradient))
+                                  BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
+                                  add.label = as.logical(input$label_ecdfgradient))
             }
             
           } else if(myplottype == 'ecdf') {
@@ -269,11 +273,12 @@ server <- function(input, output, session) {
                 if(input$splitby == 'none') {
                   paste0("bmdplotwithgradient(r$res, BMDtype = '", input$BMDtype, "', xmin = ", 
                          ifelse(as.logical(input$logbmd_ecdfgradient), "min(f$omicdata$dose[f$omicdata$dose != 0] / 2)", "0"), 
-                         ", xmax = max(f$omicdata$dose), BMD_log_transfo = ", as.logical(input$logbmd_ecdfgradient), ")")
+                         ", xmax = max(f$omicdata$dose), BMD_log_transfo = ", as.logical(input$logbmd_ecdfgradient), ", add.label = ", as.logical(input$label_ecdfgradient), ")")
                 } else {
                   paste0("bmdplotwithgradient(r$res, BMDtype = '", input$BMDtype, "', xmin = ", 
                          ifelse(as.logical(input$logbmd_ecdfgradient), "min(f$omicdata$dose[f$omicdata$dose != 0] / 2)", "0"),
-                         ", xmax = max(f$omicdata$dose), BMD_log_transfo = ", as.logical(input$logbmd_ecdfgradient), ", facetby = '", input$splitby, "')")
+                         ", xmax = max(f$omicdata$dose), BMD_log_transfo = ", as.logical(input$logbmd_ecdfgradient), ", add.label = ", as.logical(input$label_ecdfgradient), 
+                         ", facetby = '", input$splitby, "')")
                 }
               } else if(input$plottype == 'ecdf') {
                 if(as.logical(input$logbmd_ecdf)) {
