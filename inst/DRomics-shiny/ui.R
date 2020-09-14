@@ -34,7 +34,7 @@ ui <- fluidPage(
                         br(), br(),
                         fixedRow(column(8, offset = 2,
                                         tags$blockquote("DRomics is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data.
-                                             It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses 
+                                             It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations)
                                              rather than a great number of replicates (no need of three replicates).", br(), 
                                                         "After a first optional step which consists to import, check and if needed normalize/transform the data (step 1), the aim of the proposed workflow 
                                              is to select monotonic and/or biphasic significantly responsive items (e.g. probes, metabolites) (step 2), to choose the best-fit model among a 
