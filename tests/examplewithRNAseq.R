@@ -103,6 +103,8 @@ plot(b)
 
 if(FALSE) # too long computation !
 {
+  data(Zhou_kidney_pce)
+  
   # exploration of an extreme case (BMD at 0)
   d <- Zhou_kidney_pce
   (o <- RNAseqdata(d))
@@ -115,7 +117,10 @@ if(FALSE) # too long computation !
   plot(r) 
   if (require(ggplot2))
     plot(r) + scale_x_log10() # same plot in log scale of BMD
-
+  
+  bmdplotwithgradient(r$res, BMDtype = "zSD") 
+  bmdplotwithgradient(r$res, BMDtype = "zSD", BMD_log_transfo = TRUE) 
+  
   res0 <- r$res[r$res$BMD.zSD == 0, ]
   curvesplot(res0, xmin =0.001, xmax = max(f$omicdata$dose), 
              colorby = "model", dose_log_transfo = TRUE)
