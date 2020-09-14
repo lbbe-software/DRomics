@@ -12,7 +12,7 @@ on the BMD ECDF plot, in addition to the BMD ordered values. This plot is of int
 
 \usage{
 bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
-                                   xmin = 0, xmax, y0shift = TRUE, 
+                                   xmin, xmax, y0shift = TRUE, 
                                    facetby, shapeby, npoints = 50, 
                                    line.size, point.size = 1,
                                    ncol4faceting, limits4colgradient,
@@ -34,10 +34,10 @@ the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
 
 \item{BMDtype}{The type of BMD to plot, \code{"zSD"} (default choice) or \code{"xfold"}.}
 
-\item{xmin}{Minimal dose/concentration for definition of the x range (by default 0).}
+\item{xmin}{Optional minimal dose/concentration for definition of the x range.}
 
-\item{xmax}{Maximal dose/concentration for definition of the x range (can be defined 
- as \code{max(f$omicdata$dose)} with \code{f} the output of \code{drcfit()}).}
+\item{xmax}{Optional maximal dose/concentration for definition of the x range (can be defined 
+ as \code{max(f$omicdata$dose)} with \code{f} the output of \code{drcfit()} for example).}
 
 \item{y0shift}{If \code{TRUE} (default choice) for each item the signal is shifted
 to have the theoretical signal at the control at 0.}
@@ -70,7 +70,7 @@ to have the theoretical signal at the control at 0.}
 \item{label.size}{Size of labels if add.label is TRUE.}
 
 \item{BMD_log_transfo}{If TRUE a log transformation of the BMD is used in the plot. 
-  This option needs a definition of a strictly positive value of xmin in input.}
+  This option cannot be used with a null value of xmin in input.}
 
 
 }
@@ -121,28 +121,36 @@ r <- bmdcalc(f)
 
 # Plot of all the BMD values with color dose-response gradient 
 #
+bmdplotwithgradient(r$res, BMDtype = "zSD") 
+
+# Plot of all the BMD values with color dose-response gradient 
+# with definition of xmax from the maximal tested dose
+#
 bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      xmax = max(f$omicdata$dose)) 
-                      
+                    xmax = max(f$omicdata$dose)) 
+
 # Add of item labels
 bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      xmax = max(f$omicdata$dose), add.label = TRUE) 
-
+                    xmax = max(f$omicdata$dose), add.label = TRUE) 
 
 # The same plot in log scale (we have to define xmin in this case) 
 #
 bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      xmin =  min(f$omicdata$dose[f$omicdata$dose != 0] / 2), 
-                      xmax = max(f$omicdata$dose),
-                      BMD_log_transfo = TRUE) 
+                    BMD_log_transfo = TRUE) 
 
+
+# The same plot in log scale with defining xmin and xmax at a chosen values 
+#
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                    xmin =  min(f$omicdata$dose[f$omicdata$dose != 0] / 2), 
+                    xmax = max(f$omicdata$dose),
+                    BMD_log_transfo = TRUE) 
 
 # Plot of all the BMD values with color dose-response gradient 
 # faceted by response trend and shaped by model
 #
 bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      xmax = max(f$omicdata$dose), facetby = "trend", 
-                      shapeby = "model") 
+                      facetby = "trend", shapeby = "model") 
                       
                       
 # (2)
@@ -175,19 +183,19 @@ head(extendedres)
 
 ### (2.a) BMDplot with gradient by pathway
 bmdplotwithgradient(extendedres, BMDtype = "zSD",
-                      xmax = 8,  facetby = "path_class", 
+                     facetby = "path_class", 
                        shapeby = "trend") 
 
 # (2.b) The same example forcing the limits of the colour gradient at other 
 # values than observed minimal and maximal values of the signal
 bmdplotwithgradient(extendedres, BMDtype = "zSD",
-                      xmax = 8,  facetby = "path_class", 
+                      facetby = "path_class", 
                        shapeby = "trend",
                        limits4colgradient = c(-1, 1)) 
 
 # (2.c) The same example changing the gradient colors and the line size
 bmdplotwithgradient(extendedres, BMDtype = "zSD",
-                      xmax = 8,  facetby = "path_class", 
+                      facetby = "path_class", 
                        shapeby = "trend",
                        line.size = 3, 
                        lowercol = "darkblue", uppercol = "orange") 
@@ -196,7 +204,6 @@ bmdplotwithgradient(extendedres, BMDtype = "zSD",
 # and identification of the metabolites
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 bmdplotwithgradient(LMres, BMDtype = "zSD",
-                      xmax = 8, 
                        line.size = 3, 
                        add.label = TRUE, label.size = 3) 
 
@@ -213,11 +220,11 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 (r <- bmdcalc(f))
 
 bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      xmax = max(f$omicdata$dose), facetby = "trend", 
+                      facetby = "trend", 
                       shapeby = "model") 
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       xmax = max(f$omicdata$dose), facetby = "trend", 
-                      shapeby = "model", add.label = TRUE, label.size = 2) 
+                      shapeby = "model") 
 }
 
 }

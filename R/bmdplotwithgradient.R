@@ -3,7 +3,7 @@
 # form an extended results dataframe (e.g. with annotation of items)
 # with optionnal use of columns for shape and or facet 
 bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
-                                   xmin = 0, xmax, y0shift = TRUE, 
+                                   xmin, xmax, y0shift = TRUE, 
                                    facetby, shapeby, npoints = 50, 
                                    line.size, point.size = 1,
                                    ncol4faceting, limits4colgradient,
@@ -16,13 +16,6 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   if (missing(extendedres) | !is.data.frame(extendedres))
     stop("The first argument of bmdplotwithgradient must be a dataframe 
          (see ?bmdplotwithgradient for details).")
-  
-  if (BMD_log_transfo)
-  {
-    if (xmin == 0)
-      stop("When using a log scale for the BMD plot, a strictly positive value must be given for xmin.")
-  }
-    
   
   cnames <- colnames(extendedres)
  
@@ -43,12 +36,30 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     BMD2plot <- data.frame(x = extendedres$BMD.xfold, id = extendedres$id)
   }
   
-  if (missing(xmax)) 
-    stop("xmax must be given. You can fix it at max(f$omicdata$dose)} 
-         with f the output of drcfit()")
+  if (BMD_log_transfo)
+  {
+    if (missing(xmin))
+    {
+      xmin <- min(BMD2plot$x[is.finite(BMD2plot$x) & BMD2plot$x != 0])
+    } else
+    {
+      if (xmin == 0)
+      {
+        warning("When using a log scale for the BMD plot, it is not possible to fix xmin at 0. 
+              If the default value does not suit you, you can define a strictly positive value for xmin.")
+        xmin <- min(BMD2plot$x[is.finite(BMD2plot$x) & BMD2plot$x != 0])
+      }
+    }
+  } else
+  {
+    if (missing(xmin)) xmin <- 0
+  }
   
-  
-  # ajouter un test sur le nom des colonnes de extendedres !!!!!!!!!!!!!!!!!!!!!!!
+  if (missing(xmax))
+  {
+    xmax <- max(BMD2plot$x[is.finite(BMD2plot$x)])
+  }
+
   
   if (!missing(shapeby))
   {

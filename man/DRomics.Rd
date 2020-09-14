@@ -154,8 +154,7 @@ plot(r, BMDtype = "zSD", plottype = "ecdf", by = "trend")
    # the intensity of the signal (after shift of the control signal at 0)
    # as a function of the dose
 bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      xmax = max(f$omicdata$dose), facetby = "trend", 
-                      shapeby = "model")
+                       facetby = "trend", shapeby = "model")
 
 # Step 5: calculation of confidence intervals on the BMDs by bootstrap 
 #
@@ -229,12 +228,10 @@ str(metabextendedres)
 
    # BMDplot with gradient splitted here by metabolic pathway
 bmdplotwithgradient(metabextendedres, BMDtype = "zSD",
-                      xmax = 8,  facetby = "path_class", 
-                       shapeby = "trend") 
+                      facetby = "path_class", shapeby = "trend") 
                        
    # the same representation with labels of items (so without shapeby)
-bmdplotwithgradient(metabextendedres, BMDtype = "zSD",
-                      xmax = 8,  facetby = "path_class", 
+bmdplotwithgradient(metabextendedres, BMDtype = "zSD", facetby = "path_class", 
                        add.label = TRUE) 
                        
    # an ECDFplot of BMD_zSD with confidence intervals splitted 
