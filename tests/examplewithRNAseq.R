@@ -12,6 +12,8 @@ plot(o)
                        transfo.blind = FALSE))
 plot(o.notblind)
 
+(o.vst <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
+plot(o.vst)
 
 if(FALSE) # too long computation !
 {

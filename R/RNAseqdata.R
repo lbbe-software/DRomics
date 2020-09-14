@@ -25,13 +25,14 @@ RNAseqdata <- function(file, check = TRUE,
   nrowd <- nrow(d)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
+  nrowdata <- nrowd - 1
   
   if (round.counts)
   {
     data <- round(data)
   } else
   {
-    subdata4check <- data[1:min(nrow(data), 10), ]
+    subdata4check <- data[1:min(nrowdata, 10), ]
     subdata4checkT <- trunc(subdata4check)
     if (!identical(subdata4check, subdata4checkT))
       stop("Your data contain non integer values. 
@@ -39,7 +40,7 @@ RNAseqdata <- function(file, check = TRUE,
            If your counts come from Kallisto or Salmon put the argument round.counts
           of RNAseqdata at TRUE to round them.\n") 
   }
-  if (nrowd < 100)
+  if (nrowdata < 100)
     warning("Your dataset contains less than 100 lines. Are you sure you really
             work on RNAseq data ? This function should
             not be used with another type of data.")
@@ -86,12 +87,25 @@ RNAseqdata <- function(file, check = TRUE,
       }
   } else # transfo.method == "vst"
   {
+    nsub <- 1000 # parameter of vst to speed computation
     if (transfo.blind) 
     {
-      data <- vst(raw.counts)
+      if (nrowdata < nsub)
+      {
+        data <- varianceStabilizingTransformation(raw.counts)
+      } else
+      {
+        data <- vst(raw.counts, nsub = nsub)
+      }
     } else
     {
-      data <- assay(vst(dds, blind = FALSE))  
+      if (nrowdata < nsub)
+      {
+        data <- varianceStabilizingTransformation(raw.counts, blind = FALSE)
+      } else
+      {
+        data <- assay(varianceStabilizingTransformation(dds, nsub = nsub, blind = FALSE))  
+      }
     }
   }
   
