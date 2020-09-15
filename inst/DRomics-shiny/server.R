@@ -15,7 +15,7 @@ server <- function(input, output, session) {
       microarraydata(input$datafile_microarray$datapath, check = TRUE, norm.method = input$normMethod_microarray)
     } else if(inTypeData() == 'rnaseqdata') {
       req(input$datafile_rnaseq)
-      RNAseqdata(input$datafile_rnaseq$datapath, check = TRUE, transfo.method = input$transfoMethod_rnaseq)
+      RNAseqdata(input$datafile_rnaseq$datapath, check = TRUE, transfo.method = input$transfoMethod_rnaseq, round.counts = TRUE)
     } else if(inTypeData() == 'metabolomicdata') {
       req(input$datafile_metabolomic)
       metabolomicdata(input$datafile_metabolomic$datapath, check = TRUE)
@@ -243,7 +243,7 @@ server <- function(input, output, session) {
               paste0("o <- ", ifelse(input$typeData == 'microarraydata', 
                                      paste0("microarraydata('", input$datafile_microarray$name, "', check = TRUE, norm.method = '", input$normMethod_microarray, "')"), 
                                      ifelse(input$typeData == 'rnaseqdata', 
-                                            paste0("RNAseqdata('", input$datafile_rnaseq$name, "', check = TRUE, transfo.method = '", input$transfoMethod_rnaseq, "')"), 
+                                            paste0("RNAseqdata('", input$datafile_rnaseq$name, "', check = TRUE, transfo.method = '", input$transfoMethod_rnaseq, "', round.counts = TRUE)"), 
                                             paste0("metabolomicdata('", input$datafile_metabolomic$name, "', check = TRUE)")))),
               "print(o)",
               "plot(o)",

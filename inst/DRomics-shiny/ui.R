@@ -129,7 +129,7 @@ ui <- fluidPage(
                                                             'metabolomics data (in log scale)' = 'metabolomicdata',
                                                             'anchoring continuous data (in a scale that unables the use of a Gaussian error model)' = 'continuousanchoringdata'),
                                                 selected = 'microarraydata'), 
-                                   br(), br()),
+                                   br()),
                                  
                                  ###### For micro-array data (default)
                                  conditionalPanel(
@@ -169,7 +169,8 @@ ui <- fluidPage(
                                                'Select an input file',
                                                accept = c('text/csv', 'text/plain')),
                                      h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
-                                     h5("See ", a("here", href = "DRomicspkg/RNAseq_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'RNAseq_sample.txt'), " an example file")
+                                     h5("See ", a("here", href = "DRomicspkg/RNAseq_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'RNAseq_sample.txt'), " an example file"),
+                                     icon("exclamation-triangle"), "Be aware that counts are automatically rounded to ensure compatibility of counts from Kallisto or Salmon with the tool."
                                    ),
                                    sidebarPanel(
                                      style = "background-color: #F5aa4c;",
