@@ -139,6 +139,7 @@ plot(f, plot.type = "fitted_residuals")
    # Distribution of benchmark doses as an ECDF plot
    # (ECDF = Empirical Cumulative Density Function)
 plot(r, BMDtype = "zSD", plottype = "ecdf") 
+
 plot(r, BMDtype = "xfold", plottype = "ecdf") 
 
    # Histogram of benchmark doses
@@ -153,6 +154,7 @@ plot(r, BMDtype = "zSD", plottype = "ecdf", by = "trend")
    # Same plot with the add of a color gradient for each item coding for
    # the intensity of the signal (after shift of the control signal at 0)
    # as a function of the dose
+
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                        facetby = "trend", shapeby = "model")
 
@@ -184,6 +186,7 @@ if(interactive()) {
 
 #### Help for biological interpretation of DRomics outputs ####
 #### based on an example with metabolomic data             ####
+  \donttest{
 
 # 1. Import the dataframe with metabolomic results to use:
 # the output $res of bmdcalc() or bmdboot() functions)
@@ -337,5 +340,5 @@ LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "level", free.y.scales = TRUE, npoints = 100, line.size = 1,
            colorby = "trend",
            xmin = 0, xmax = 8) + labs(col = "DR_trend")
-
+}
 }

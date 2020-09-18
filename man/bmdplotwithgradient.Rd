@@ -123,6 +123,8 @@ r <- bmdcalc(f)
 #
 bmdplotwithgradient(r$res, BMDtype = "zSD") 
 
+\donttest{
+
 # Plot of all the BMD values with color dose-response gradient 
 # with definition of xmax from the maximal tested dose
 #
@@ -138,7 +140,6 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                     BMD_log_transfo = TRUE) 
 
-
 # The same plot in log scale with defining xmin and xmax at a chosen values 
 #
 bmdplotwithgradient(r$res, BMDtype = "zSD",
@@ -151,7 +152,7 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
 #
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       facetby = "trend", shapeby = "model") 
-                      
+}                      
                       
 # (2)
 # Plot of BMD values with color dose-response gradient
@@ -186,6 +187,7 @@ bmdplotwithgradient(extendedres, BMDtype = "zSD",
                      facetby = "path_class", 
                        shapeby = "trend") 
 
+\donttest{
 # (2.b) The same example forcing the limits of the colour gradient at other 
 # values than observed minimal and maximal values of the signal
 bmdplotwithgradient(extendedres, BMDtype = "zSD",
@@ -207,7 +209,6 @@ bmdplotwithgradient(LMres, BMDtype = "zSD",
                        line.size = 3, 
                        add.label = TRUE, label.size = 3) 
 
-\donttest{
 
 # (3) 
 # An example on a microarray data set (a subsample of a greater data set)
