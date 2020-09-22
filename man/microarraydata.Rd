@@ -112,7 +112,8 @@ Marie-Laure Delignette-Muller
 # (an example on a subsample of a greater data set published in Larras et al. 2018
 # Transcriptomic effect of triclosan in the chlorophyte Scenedesmus vacuolatus)
 #
-datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", 
+  package="DRomics")
 o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 print(o)
 plot(o)
@@ -126,6 +127,7 @@ plot(o)
 # when it is used with its default field separator (sep argument)
 # Tabs are recommended.
 
+\donttest{
 
 # (2) normalization with other methods
 (o.2 <- microarraydata(datafilename, check = TRUE, norm.method = "quantile"))
@@ -133,4 +135,5 @@ plot(o.2)
 (o.3 <- microarraydata(datafilename, check = TRUE, norm.method = "scale"))
 plot(o.3)
 
+}
 }

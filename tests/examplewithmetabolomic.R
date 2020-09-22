@@ -1,5 +1,6 @@
 library(DRomics)
 visualize <- FALSE # put to TRUE for a manual check of plots
+doboot <- FALSE
 
 # importation and check of metabolomic data
 datafilename <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
@@ -60,11 +61,15 @@ if (visualize)
   
 }
 
-niter <- 1000
-niter <- 10
-
-# Calculation of confidence intervals on BMDs by Bootstrap
-b <- bmdboot(r, niter = niter) # niter should be fixed at least at 1000 to get a reasonable precision
-if (visualize)
-plot(b)
+if (doboot)
+{
+  niter <- 1000
+  niter <- 10
+  
+  # Calculation of confidence intervals on BMDs by Bootstrap
+  b <- bmdboot(r, niter = niter) # niter should be fixed at least at 1000 to get a reasonable precision
+  if (visualize)
+    plot(b)
+  
+}
 

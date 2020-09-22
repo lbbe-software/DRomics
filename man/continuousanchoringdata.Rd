@@ -98,8 +98,9 @@ datafilename <- system.file("extdata", "apical_anchoring.txt", package = "DRomic
 
 o <- continuousanchoringdata(datafilename, check = TRUE)
 print(o)
+\donttest{
 plot(o)
-
+}
 # If you want to use your own data set just replace datafilename, 
 # the first argument of continuousanchoringdata(), 
 # by the name of your data file (e.g. "mydata.txt")
@@ -112,8 +113,11 @@ plot(o)
 # Use of an R object of class data.frame
 # on the same example (see ?Scenedesmus for details)
 data(Scenedesmus_apical)
-(o <- continuousanchoringdata(Scenedesmus_apical))
+o <- continuousanchoringdata(Scenedesmus_apical)
+print(o)
+\donttest{
 plot(o)
+}
 
 
 }

@@ -121,8 +121,10 @@ datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", pack
 plot(r) 
 
 # changing the values of z and x for BMD calculation
+\donttest{
 (rb <- bmdcalc(f, z = 2, x = 50))
-plot(rb) 
+plot(rb)
+}
 
 # (2) an example on a microarray data set (a subsample of a greater data set) 
 #

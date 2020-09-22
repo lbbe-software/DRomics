@@ -129,6 +129,8 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 #
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
 
+\donttest{
+
 # 1.b using the linear trend test
 #
 (s_lin <- itemselect(o, select.method = "linear", FDR = 0.05))
@@ -141,4 +143,5 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 #
 (s_quad.2 <- itemselect(o, select.method = "quadratic", FDR = 0.001))
 
+}
 }

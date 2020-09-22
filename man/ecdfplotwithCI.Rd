@@ -65,11 +65,11 @@ s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)
 f <- drcfit(s_quad, progressbar = TRUE)
 r <- bmdcalc(f)
 set.seed(1) # to get reproducible results with a so small number of iterations
-(b <- bmdboot(r, niter = 10)) # with a non reasonable value for niter 
+b <- bmdboot(r, niter = 5) # with a non reasonable value for niter 
 # !!!! TO GET CORRECT RESULTS
 # !!!! niter SHOULD BE FIXED FAR LARGER , e.g. to 1000 
 # !!!! but the run will be longer 
-b$res
+
 # manual ecdf plot of the bootstrap results as an ecdf distribution 
 # on BMD, plot that could also be obtained with plot(b) 
 # in this simple case
@@ -78,6 +78,7 @@ a <- b$res[is.finite(b$res$BMD.zSD.upper), ]
 ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
               CI.upper = a$BMD.zSD.upper, CI.col = "red")
 
+\donttest{
 
 # (2) An example from data published by Larras et al. 2020
 # in Journal of Hazardous Materials
@@ -120,7 +121,6 @@ ecdfplotwithCI(variable = annotres$BMD.zSD,
 
 # (3) an example on a microarray data set (a subsample of a greater data set) 
 #
-\donttest{
 datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
 (o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))

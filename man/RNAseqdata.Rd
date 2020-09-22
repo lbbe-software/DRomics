@@ -126,8 +126,8 @@ Marie-Laure Delignette-Muller
 # (see ? Zhou for details)
 #
 datafilename <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
-(o <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog"))
-plot(o)
+(o <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
+plot(o, range = 1e6)
 
 # If you want to use your own data set just replace datafilename, 
 # the first argument of RNAseqdata(), 
@@ -143,8 +143,8 @@ plot(o)
 # Zhou_kidney_pce (see ?Zhou for details)
 data(Zhou_kidney_pce)
 subsample <- Zhou_kidney_pce[1:1000, ]
-(o <- RNAseqdata(subsample, check = TRUE, transfo.method = "rlog"))
-plot(o)
+(o <- RNAseqdata(subsample, check = TRUE, transfo.method = "vst"))
+plot(o, range = 1e6)
 
 
 # (2) transformation with two methods on the whole data set

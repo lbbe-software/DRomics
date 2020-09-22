@@ -1,5 +1,6 @@
 library(DRomics)
 visualize <- FALSE # put to TRUE for a manual check of plots
+doboot <- FALSE
 
 # importation and check of data and normalization if needed
 # options to put in shiny : norm.method (4 methods)
@@ -7,11 +8,12 @@ visualize <- FALSE # put to TRUE for a manual check of plots
 datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", package="DRomics")
 (o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
 plot(o)
-(o.2 <- microarraydata(datafilename, check = TRUE, norm.method = "none"))
-(o.3 <- microarraydata(datafilename, check = TRUE, norm.method = "quantile"))
-(o.4 <- microarraydata(datafilename, check = TRUE, norm.method = "scale"))
 if (visualize) 
 {
+  (o.2 <- microarraydata(datafilename, check = TRUE, norm.method = "none"))
+  (o.3 <- microarraydata(datafilename, check = TRUE, norm.method = "quantile"))
+  (o.4 <- microarraydata(datafilename, check = TRUE, norm.method = "scale"))
+  
   plot(o.2)
   plot(o.3)
   plot(o.4)
@@ -76,9 +78,13 @@ if (visualize)
 }
 
 # Calculation of confidence intervals on BMDs by Bootstrap
-niter <- 1000
-niter <- 10
-b <- bmdboot(r, niter = niter) # niter should be fixed at least at 1000 to get a reasonable precision
-
-if (visualize)
-plot(b) 
+if (doboot)
+{
+  niter <- 1000
+  niter <- 10
+  b <- bmdboot(r, niter = niter) # niter should be fixed at least at 1000 to get a reasonable precision
+  
+  if (visualize)
+    plot(b) 
+  
+}

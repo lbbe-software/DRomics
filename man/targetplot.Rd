@@ -53,6 +53,8 @@ f <- drcfit(s_quad, progressbar = TRUE)
 targetitems <- c("88.1", "1", "3", "15")
 targetplot(targetitems, f = f)
 
+\donttest{
+
 # The same plot in x log scale
 #
 targetplot(targetitems, f = f, dose_log_transfo = TRUE)
@@ -66,4 +68,5 @@ targetplot(targetitems, f = f, dose_log_transfo = TRUE) +
 #
 targetplot(targetitems, f = f, add.fit = FALSE)
 
+}
 }

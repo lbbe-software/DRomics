@@ -152,7 +152,6 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
 #
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       facetby = "trend", shapeby = "model") 
-}                      
                       
 # (2)
 # Plot of BMD values with color dose-response gradient
@@ -187,7 +186,6 @@ bmdplotwithgradient(extendedres, BMDtype = "zSD",
                      facetby = "path_class", 
                        shapeby = "trend") 
 
-\donttest{
 # (2.b) The same example forcing the limits of the colour gradient at other 
 # values than observed minimal and maximal values of the signal
 bmdplotwithgradient(extendedres, BMDtype = "zSD",

@@ -153,9 +153,9 @@ datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", pack
 # use the following commented line
 # datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
-(o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
-(s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
-(f <- drcfit(s_quad, progressbar = TRUE))
+o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
+s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05)
+f <- drcfit(s_quad, progressbar = TRUE)
 
 # Default plot
 plot(f)
@@ -177,11 +177,11 @@ plot(f, plot.type = "dose_residuals", dose_log_transfo = TRUE)
 
 # plot of residuals as function of the fitted value
 plot(f, plot.type = "fitted_residuals")
-}
+
 
 # (2) an example on a microarray data set (a subsample of a greater data set) 
 #
-\donttest{
+
 datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
 (o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
@@ -202,15 +202,15 @@ head(f$fitres)
 
 # Look at the table of results for unsuccessful fits
 head(f$unfitres)
-}
 
 
 # (3) Comparison of parallel and non paralell implementations on a 
 #     larger selection of items
 #
-  \donttest{
+
    s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05)
     system.time(f1 <- drcfit(s_quad, progressbar = TRUE))
    system.time(f2 <- drcfit(s_quad, progressbar = FALSE, parallel = "snow", ncpus = 2))
+   
    }
 }

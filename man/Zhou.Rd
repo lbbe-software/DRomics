@@ -48,6 +48,8 @@ head(Zhou_liver_pce)
 data(Zhou_liver_tce)
 head(Zhou_liver_tce)
 
+\donttest{
+
 # (2) import, check, normalization and transformation of a sample
 # of one of those datasets
 #
@@ -59,7 +61,6 @@ plot(o)
 # (3) analysis of the whole dataset (for kidney and PCE)
 # (may be long to run)
 
-\donttest{
 d <- Zhou_kidney_pce
 (o <- RNAseqdata(d))
 plot(o)

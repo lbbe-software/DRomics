@@ -89,6 +89,8 @@ f <- drcfit(s_quad, progressbar = TRUE)
 #
 curvesplot(f$fitres, xmax = max(f$omicdata$dose))
 
+\donttest{
+
 # the same plot with dose in log scale (need x != 0 in input)
 curvesplot(f$fitres, xmin = 0.1, xmax = max(f$omicdata$dose),
   dose_log_transfo = TRUE)
@@ -107,9 +109,6 @@ curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend")
 curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend",
   free.y.scales =  TRUE)
   
-
-\donttest{
-
 # (2) 
 # Plot of all the curves without shifting y0 values to 0
 #
@@ -136,7 +135,6 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 (r <- bmdcalc(f))
 
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), facetby = "typology")
-}
 
 
 # (5) An example from data published by Larras et al. 2020
@@ -168,4 +166,5 @@ curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
            xmin = 0, xmax = 8) 
 
 
+}
 }

@@ -42,6 +42,8 @@ data(Scenedesmus_metab)
 head(Scenedesmus_metab)
 str(Scenedesmus_metab)
 
+\donttest{
+
 # (1.2) import and check of metabolomics data
 #
 (o_metab <- metabolomicdata(Scenedesmus_metab))
@@ -76,7 +78,7 @@ r_apical <- bmdcalc(f_apical, z = 1)
 r_apical$res
 
 
-
+}
 }
 
 \keyword{ datasets }% at least one, from doc/KEYWORDS
