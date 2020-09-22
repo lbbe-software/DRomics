@@ -5,21 +5,25 @@ visualize <- FALSE # put to TRUE for a manual check of plots
 # with respect to library size and transformation 
 # options to put in shiny : transfo.method (2 methods, rlog or vst)
 datafilename <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
-(o <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog"))
+(o <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
 plot(o)
 
-(o.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog",
-                       transfo.blind = FALSE))
-plot(o.notblind)
+if (visualize) # too long computation !
+{
+  (o.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst",
+                            transfo.blind = FALSE))
+  plot(o.notblind)
+  
+  (o.vst <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog"))
+  plot(o.vst)
+  
+  (o.vst.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog",
+                                transfo.blind = FALSE))
+  plot(o.vst.notblind)
+  
+}
 
-(o.vst <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
-plot(o.vst)
-
-(o.vst.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst",
-                     transfo.blind = FALSE))
-plot(o.vst.notblind)
-
-if(FALSE) # too long computation !
+if(visualize) # too long computation !
 {
   data(Zhou_kidney_pce)
   
@@ -47,28 +51,36 @@ if(FALSE) # too long computation !
 # item selection using the quadratic method
 # options to put in shiny : select.method (3 methods), FDR (numerical positive value < 1)
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
-
-(s_lin <- itemselect(o, select.method = "linear", FDR = 0.001))
-(s_ANOVA <- itemselect(o, select.method = "ANOVA", FDR = 0.001))
+if (visualize)
+{
+  (s_lin <- itemselect(o, select.method = "linear", FDR = 0.001))
+  (s_ANOVA <- itemselect(o, select.method = "ANOVA", FDR = 0.001))
+}
 
 # no options in shiny
 (f <- drcfit(s_quad, progressbar = TRUE))
-f$fitres
-plot(f)
+if (visualize)
+{
+  f$fitres
+  plot(f)
+  
+}
 
-# various plot of fitted curves (without data)
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
-           facetby = "model", colorby = "model")
 
 if (visualize) 
 {
+  # various plot of fitted curves (without data)
+  curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+             facetby = "model", colorby = "model")
+  
   curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
              facetby = "typology")
+  # plot of selection of curves
+  curvesplot(f$fitres[f$fitres$trend == "bell", ], xmax = max(f$omicdata$dose), 
+             facetby = "id")
+  
 }
 
-# plot of selection of curves
-curvesplot(f$fitres[f$fitres$trend == "bell", ], xmax = max(f$omicdata$dose), 
-           facetby = "id")
 if (visualize) 
 {
   curvesplot(f$fitres[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose), 
@@ -79,14 +91,16 @@ if (visualize)
 # calculation of benchmark doses
 # options in shiny : z (numerical positive value), x (numerical positive value : percentage)
 (r <- bmdcalc(f, z = 1, x = 10))
+if (visualize)
 (r.2 <- bmdcalc(f, z = 2, x = 50))
 
 # plot of BMD
 # options in shiny : BMDtype (2 possibilities), plottype (3 possibilities), by (3 possibilities)
 # hist.bins (integer for hist only)
-plot(r, BMDtype = "zSD", plottype = "ecdf", by = "none") 
 if (visualize) 
 {
+  plot(r, BMDtype = "zSD", plottype = "ecdf", by = "none") 
+  
   plot(r, BMDtype = "xfold", plottype = "ecdf", by = "none") 
   
   plot(r, plottype = "hist", by = "none", hist.bins = 10) 
@@ -97,11 +111,11 @@ if (visualize)
 
 # Calculation of confidence intervals on BMDs by Bootstrap
 niter <- 1000
-niter <- 50
+niter <- 10
 b <- bmdboot(r, niter = niter) # niter should be fixed at least at 1000 to get a reasonable precision
-plot(b)
+if (visualize) plot(b)
 
-if(FALSE) # too long computation !
+if(visualize) # too long computation !
 {
   data(Zhou_kidney_pce)
   
