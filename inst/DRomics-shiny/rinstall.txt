@@ -1,10 +1,10 @@
 if(!requireNamespace("DESeq2", quietly = TRUE)) {
     if(!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
-    BiocManager::install("DESeq2")
+    BiocManager::install("DESeq2", ask = FALSE)
 }
 if(!requireNamespace("limma", quietly = TRUE)) {
     if(!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
-    BiocManager::install("limma")
+    BiocManager::install("limma", ask = FALSE)
 }
 if(!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 if(!requireNamespace("shiny", quietly = TRUE)) install.packages("shiny", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
