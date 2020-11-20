@@ -127,7 +127,7 @@ ui <- fluidPage(
                                                 choices = c('microarray data (in log scale)' = 'microarraydata', 
                                                             'RNAseq data (in raw counts)' = 'rnaseqdata',
                                                             'metabolomics data (in log scale)' = 'metabolomicdata',
-                                                            'anchoring continuous data (in a scale that enables the use of a Gaussian error model)' = 'continuousanchoringdata'),
+                                                            'anchoring continuous data (in a scale that enables the use of a normal error model)' = 'continuousanchoringdata'),
                                                 selected = 'microarraydata'), 
                                    br()),
                                  
