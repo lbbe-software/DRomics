@@ -52,12 +52,15 @@ or online at:
 This shiny app is runing with the development version of DRomics.
 
 # Authors & Contacts
+If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at dromics@univ-lyon1.fr .
+
+Issues can be reported on https://github.com/aursiber/DRomics/issues .
+
 - Elise Billoir: elise.billoir@univ-lorraine.fr
 - Marie-Laure Delignette-Muller: marielaure.delignettemuller@vetagro-sup.fr
 - Floriane Larras: floriane.larras@ufz.de
 - Mechthild Schmitt-Jansen: mechthild.schmitt@ufz.de
-
-About technical issues, you can contact Aurélie Siberchicot: aurelie.siberchicot@univ-lyon1.fr
+- Aurélie Siberchicot: aurelie.siberchicot@univ-lyon1.fr
 
 
 # Citation
