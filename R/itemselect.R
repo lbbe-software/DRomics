@@ -9,16 +9,15 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
         inherits(omicdata, "continuousanchoringdata")))
     stop("Use only with 'microarraydata', 'RNAseqdata', 'metabolomicdata' or 
     'continuousanchoringdata' objects, respectively
-         created with functions 'microarraydata()', 'RNAseqdata()', 'metabolomicdata()'
-         and 'continuousanchoringdata()' ")
+    created with functions 'microarraydata()', 'RNAseqdata()', 'metabolomicdata()'
+    and 'continuousanchoringdata()'.")
   select.method <- match.arg(select.method, c("quadratic", "linear", "ANOVA"))
   if (!is.numeric(FDR))
     stop("FDR, the false discovery rate, must a number in ]0; 1[ (generally under 0.1).")
   if ((FDR <=0) | (FDR >=1))
     stop("FDR, the false discovery rate, must in ]0; 1[.")
   if ((max.ties.prop <=0) | (max.ties.prop >0.5))
-    stop("max.ties.prop, the maximal tolerated proportion of tied values
-         per item, must in ]0; 0.5].")
+    stop("max.ties.prop, the maximal tolerated proportion of tied values per item, must in ]0; 0.5].")
   
   item <- omicdata$item
   dose <- omicdata$dose
@@ -175,7 +174,7 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
 print.itemselect <- function(x, ...)
 {
   if (!inherits(x, "itemselect"))
-    stop("Use only with 'itemselect' objects")
+    stop("Use only with 'itemselect' objects.")
   
   if (x$select.method == "ANOVA")
   {

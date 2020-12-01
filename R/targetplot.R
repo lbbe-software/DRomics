@@ -2,7 +2,7 @@
 targetplot <- function(items, f, add.fit = TRUE, dose_log_transfo = FALSE)
 {
   if (!inherits(f, "drcfit"))
-    stop("Use only with 'drcfit' objects, created with the function drcfit")
+    stop("Use only with 'drcfit' objects, created with the function drcfit.")
 
     if(!(is.character(items)) )
     stop("Wrong argument 'items'. It must be a character vector indicating the identifiers of the items who want to plot.")

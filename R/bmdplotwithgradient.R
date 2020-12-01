@@ -15,7 +15,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
 
   if (missing(extendedres) | !is.data.frame(extendedres))
     stop("The first argument of bmdplotwithgradient must be a dataframe 
-         (see ?bmdplotwithgradient for details).")
+    (see ?bmdplotwithgradient for details).")
   
   cnames <- colnames(extendedres)
  
@@ -23,7 +23,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   {  
     if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "BMD.zSD"), cnames)))
       stop("The first argument of bmdplotwithgradient must be a dataframe
-    containing at least columns named id, model, b, c, d, e, f and BMD.zSD.")
+      containing at least columns named id, model, b, c, d, e, f and BMD.zSD.")
     
     BMD2plot <- data.frame(x = extendedres$BMD.zSD, id = extendedres$id)
   }
@@ -31,7 +31,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   {
     if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "BMD.xfold"), cnames)))
       stop("The first argument of bmdplotwithgradient must be a dataframe
-    containing at least columns named id, model, b, c, d, e, f and BMD.xfold")
+      containing at least columns named id, model, b, c, d, e, f and BMD.xfold.")
     
     BMD2plot <- data.frame(x = extendedres$BMD.xfold, id = extendedres$id)
   }
@@ -45,8 +45,9 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     {
       if (xmin == 0)
       {
-        warning("When using a log scale for the BMD plot, it is not possible to fix xmin at 0. 
-              If the default value does not suit you, you can define a strictly positive value for xmin.")
+        warning(strwrap(prefix = "\n", initial = "\n",
+          "When using a log scale for the BMD plot, it is not possible to fix xmin at 0. 
+          If the default value does not suit you, you can define a strictly positive value for xmin."))
         xmin <- min(BMD2plot$x[is.finite(BMD2plot$x) & BMD2plot$x != 0])
       }
     }
@@ -64,7 +65,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   if (!missing(shapeby))
   {
     if (!is.character(shapeby)) 
-      stop("shapeby should be a character string for the name of the column coding for the point shape")
+      stop("shapeby should be a character string for the name of the column coding for the point shape.")
     BMD2plot$shapeby <- extendedres[, shapeby]
   }
   
@@ -73,7 +74,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   if (!missing(facetby)) 
   {
     if (!is.character(facetby)) 
-      stop("facetby should be a character string for the name of the column used for facetting")
+      stop("facetby should be a character string for the name of the column used for facetting.")
     BMD2plot$facetby <- extendedres[, facetby]
 
     if (missing(line.size)) line.size <- 24 / max(table(BMD2plot$facetby)) 
@@ -206,8 +207,9 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   if(add.label)
   {
     if (!missing(shapeby))
-      warning("The type of points will not be seen when points are replaced by labels.
-              You should omit it in this case.")
+      warning(strwrap(prefix = "\n", initial = "\n",
+        "The type of points will not be seen when points are replaced by labels.
+        You should omit it in this case."))
     gg <- gg + geom_label(size = label.size)
   }
   

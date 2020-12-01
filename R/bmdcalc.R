@@ -33,7 +33,7 @@ bmdcalc <- function(f, z = 1, x = 10)
 {
   # Checks
   if (!inherits(f, "drcfit"))
-    stop("Use only with 'drcfit' objects, created with the function drcfit")
+    stop("Use only with 'drcfit' objects, created with the function drcfit.")
   
   dfitall <- f$fitres
   nselect <- length(dfitall$irow)
@@ -135,7 +135,7 @@ bmdcalc <- function(f, z = 1, x = 10)
 print.bmdcalc <- function(x, ...) 
 {
   if (!inherits(x, "bmdcalc"))
-    stop("Use only with 'bmdcalc' objects")
+    stop("Use only with 'bmdcalc' objects.")
   
   # count of cases where BMD cannot be reached 
   # being outside the range of response values defined by the model
@@ -168,7 +168,7 @@ plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"),
                          hist.bins = 30, ...) 
 {
   if (!inherits(x, "bmdcalc"))
-    stop("Use only with 'bmdcalc' objects")
+    stop("Use only with 'bmdcalc' objects.")
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
   plottype <- match.arg(plottype, c("ecdf", "hist", "density"))  
   by <- match.arg(by, c("none", "trend", "model", "typology"))  
@@ -187,7 +187,8 @@ plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"),
   d <- dwithNANaN[!is.na(dwithNANaN$BMD) & !is.nan(dwithNANaN$BMD), ]
   nremoved <- nrow(dwithNANaN) - nrow(d)
   if (nremoved > 0)
-    warning(nremoved," BMD coded NA or NaN were removed before plotting")
+    warning(strwrap(prefix = "\n", initial = "\n", paste0(nremoved,
+      " BMD coded NA or NaN were removed before plotting.")))
   
   if (plottype == "hist") 
   {

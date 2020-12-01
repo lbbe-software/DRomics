@@ -127,11 +127,11 @@ Marie-Laure Delignette-Muller
 # (1) a toy example (a very small subsample of a microarray data set) 
 #
 datafilename <- system.file("extdata", "transcripto_very_small_sample.txt",
-package="DRomics")
+package = "DRomics")
 
 # to test the package on a small but not very small data set
 # use the following commented line
-# datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+# datafilename <- system.file("extdata", "transcripto_sample.txt", package = "DRomics")
 
 o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)

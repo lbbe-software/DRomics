@@ -7,7 +7,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
 {
   if (missing(extendedres) | !is.data.frame(extendedres))
     stop("The first argument of curvesplot must be a dataframe 
-         (see ?curvesplot for details).")
+    (see ?curvesplot for details).")
 
   cnames <- colnames(extendedres)
   if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f"), cnames)))
@@ -16,7 +16,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
   
     if (missing(xmax)) 
     stop("xmax must be given. You can fix it at max(f$omicdata$dose)} 
-         with f the output of drcfit()")
+    with f the output of drcfit().")
   if (dose_log_transfo)
   {
     if (xmin == 0)
@@ -85,7 +85,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
     if (missing(colorby))
     { 
       if (!is.character(facetby)) 
-        stop("facetby should be a character string for the name of the column used for facetting")
+        stop("facetby should be a character string for the name of the column used for facetting.")
       curves2plot$facetby <- rep(extendedres[, facetby], each = npoints)
       gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id))) +
         geom_line(size = line.size, alpha = line.alpha) + 
@@ -95,7 +95,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
       if (missing(facetby))
       {
         if (!is.character(colorby)) 
-          stop("colorby should be a character string for the name of the column used for coloring curves")
+          stop("colorby should be a character string for the name of the column used for coloring curves.")
         curves2plot$colorby <- rep(extendedres[, colorby], each = npoints)
         gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id), colour = quote(colorby))) +
           geom_line(size = line.size, alpha = line.alpha)  
@@ -103,9 +103,9 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
         # color and facet
       {
         if (!is.character(facetby)) 
-          stop("facetby should be a character string for the name of the column used for facetting")
+          stop("facetby should be a character string for the name of the column used for facetting.")
         if (!is.character(colorby)) 
-          stop("colorby should be a character string for the name of the column used for coloring curves")
+          stop("colorby should be a character string for the name of the column used for coloring curves.")
         curves2plot$facetby <- rep(extendedres[, facetby], each = npoints)
         curves2plot$colorby <- rep(extendedres[, colorby], each = npoints)
         gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id), colour = quote(colorby))) +

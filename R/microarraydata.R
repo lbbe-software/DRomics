@@ -12,11 +12,11 @@ microarraydata <- function(file, check = TRUE,
     {
       # check argument file
       if (!is.character(file))
-        stop("The argument file must be a character string")
+        stop("The argument file must be a character string.")
       le.file <- nchar(file)
       suffix <- substr(file, le.file - 3, le.file)
       if (suffix != ".txt")
-        stop("The argument file must be a character string ending by .txt")
+        stop("The argument file must be a character string ending by .txt.")
     }
     d <- read.table(file, header = FALSE)
   }  
@@ -24,20 +24,21 @@ microarraydata <- function(file, check = TRUE,
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
   if (any(data > 100))
-    warning("Your data contain high values (> 100). 
-            Make sure that your data (microarray signal) are in log-scale.\n") 
+    warning(strwrap(prefix = "\n", initial = "\n",
+      "Your data contain high values (> 100). 
+      Make sure that your data (microarray signal) are in log-scale.\n"))
   if (nrowd < 100)
-    warning("Your dataset contains less than 100 lines. Are you sure you really
-            work on microarray data ? This function should
-            not be used with another type of data.")
+    warning(strwrap(prefix = "\n", initial = "\n",
+      "Your dataset contains less than 100 lines. Are you sure you really
+      work on microarray data ? This function should
+      not be used with another type of data."))
   
   if (check)
   {
     # check that doses and responses are numeric
     if (!is.numeric(as.matrix(d[,2:ncold])))
       stop("All the columns except the first one must be numeric with the numeric 
-           dose in the firt line and the numeric response of each item in the other
-           lines.")
+      dose in the firt line and the numeric response of each item in the other lines.")
   }
   
   # Normalization using limma
@@ -56,11 +57,12 @@ microarraydata <- function(file, check = TRUE,
   design <- table(dose, dnn = "")
   if (length(design) < 4)
     stop("Dromics cannot be used with a dose-response design 
-         with less than four tested doses/concentrations")
+    with less than four tested doses/concentrations.")
   if (length(design) == 4)
-    warning("When using DRomics with a dose-response design with only four tested doses/concentrations, 
-            it is recommended to check after the modelling step that all selected models have no more 
-            than 4 parameters")  
+    warning(strwrap(prefix = "\n", initial = "\n",
+      "When using DRomics with a dose-response design with only four tested doses/concentrations, 
+      it is recommended to check after the modelling step that all selected models have no more 
+      than 4 parameters."))
   
   fdose <- as.factor(dose)
   tdata <- t(data)
@@ -83,7 +85,7 @@ microarraydata <- function(file, check = TRUE,
 print.microarraydata <- function(x, ...)
 {
   if (!inherits(x, "microarraydata"))
-    stop("Use only with 'microarraydata' objects")
+    stop("Use only with 'microarraydata' objects.")
   
   cat("Elements of the experimental design in order to check the coding of the data :\n")
   cat("Tested doses and number of replicates for each dose:\n")
@@ -106,7 +108,7 @@ print.microarraydata <- function(x, ...)
 plot.microarraydata <- function(x, ...) 
 {
   if (!inherits(x, "microarraydata"))
-    stop("Use only with 'microarraydata' objects")
+    stop("Use only with 'microarraydata' objects.")
 
   def.par <- par(no.readonly = TRUE)
   if (x$norm.method != "none")

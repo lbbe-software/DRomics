@@ -6,18 +6,19 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
 {
   # Checks
   if (!inherits(itemselect, "itemselect"))
-    stop("Use only with 'itemselect' objects, created with the function itemselect")
+    stop("Use only with 'itemselect' objects, created with the function itemselect.")
   
   parallel <- match.arg(parallel, c("no", "snow", "multicore"))
   if (parallel == "multicore" & .Platform$OS.type == "windows")
   {
     parallel <- "snow"
-    warning("As the multicore option is not supported on Windows it was replaced by snow")
+    warning(strwrap(prefix = "\n", initial = "\n",
+      "As the multicore option is not supported on Windows it was replaced by snow."))
   }
   if ((parallel == "snow" | parallel == "multicore") & missing(ncpus)) 
-    stop("You have to specify the number of available processors to parallelize 
-         the fitting")
-  if (parallel != "no") progressbar <- FALSE
+    stop("You have to specify the number of available processors to parallelize the fitting.")
+  if (parallel != "no") 
+    progressbar <- FALSE
   
   if (progressbar)
     cat("The fitting may be long if the number of selected items is high.\n")
@@ -633,7 +634,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   {
     pathToFigs <- tempdir()
     pdf(paste0(pathToFigs, "/drcfitplot.pdf"), width = 7, height = 10) # w and h in inches
-    message("Figures are stored in ", pathToFigs, ". This directory is temporary. It will be removed when the R session is closed.")
+    message(strwrap(prefix = "\n", initial = "\n",
+      paste0("Figures are stored in ", pathToFigs, ". This directory is temporary. It will be removed when the R session is closed.")))
     plotfit(dc, 
             dose = dose, 
             data = data, 
@@ -653,7 +655,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
 print.drcfit <- function(x, ...)
 {
   if (!inherits(x, "drcfit"))
-    stop("Use only with 'drcfit' objects")
+    stop("Use only with 'drcfit' objects.")
   
   ttrend <- table(x$fitres$trend)
   tfit <- table(x$fitres$model)
@@ -676,7 +678,7 @@ plot.drcfit <- function(x, items,
                 dose_log_transfo = FALSE, ...)
 {
   if (!inherits(x, "drcfit"))
-    stop("Use only with 'drcfit' objects")
+    stop("Use only with 'drcfit' objects.")
   
   # a ggplot alternative
   if(missing(items))
@@ -685,7 +687,7 @@ plot.drcfit <- function(x, items,
   }
   if(!( is.numeric(items) | is.character(items)) )
     stop("Wrong argument 'items'. It must be a number inferior or equal to 20 or
-         a character vector indicating the identifiers of the items who want to plot.")
+    a character vector indicating the identifiers of the items who want to plot.")
   if (is.numeric(items))
   {
     subd <- x$fitres[1:min(nrow(x$fitres),items), ]

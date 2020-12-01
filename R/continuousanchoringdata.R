@@ -11,11 +11,11 @@ continuousanchoringdata <- function(file, check = TRUE)
     {
       # check argument file
       if (!is.character(file))
-        stop("The argument file must be a character string")
+        stop("The argument file must be a character string.")
       le.file <- nchar(file)
       suffix <- substr(file, le.file - 3, le.file)
       if (suffix != ".txt")
-        stop("The argument file must be a character string ending by .txt")
+        stop("The argument file must be a character string ending by .txt.")
     }
     d <- read.table(file, header = FALSE)
   } 
@@ -28,12 +28,11 @@ continuousanchoringdata <- function(file, check = TRUE)
     # check that doses and responses are numeric
     if (!is.numeric(as.matrix(d[,2:ncold])))
       stop("All the columns except the first one must be numeric with the numeric 
-           dose in the firt line and the numeric response of each endpoint in the other
-           lines.")
-    warning("We recommend you to check that your anchoring data are continuous and
+      dose in the firt line and the numeric response of each endpoint in the other lines.")
+    warning(strwrap(prefix = "\n", initial = "\n",
+      "We recommend you to check that your anchoring data are continuous and
       defined in a scale that enable the use of a Gaussian error model (needed at each step
-      of the workflow including the selection step). \n")
-    
+      of the workflow including the selection step). \n"))
   }
   
   # definition of doses and endpoint identifiers
@@ -45,11 +44,12 @@ continuousanchoringdata <- function(file, check = TRUE)
   design <- table(dose, dnn = "")
   if (length(design) < 4)
     stop("Dromics cannot be used with a dose-response design 
-         with less than four tested doses/concentrations")
+    with less than four tested doses/concentrations.")
   if (length(design) == 4)
-    warning("When using DRomics with a dose-response design with only four tested doses/concentrations, 
-            it is recommended to check after the modelling step that all selected models have no more 
-            than 4 parameters")  
+    warning(strwrap(prefix = "\n", initial = "\n",
+      "When using DRomics with a dose-response design with only four tested doses/concentrations, 
+      it is recommended to check after the modelling step that all selected models have no more 
+      than 4 parameters."))
   
   fdose <- as.factor(dose)
   tdata <- t(data)
@@ -71,7 +71,7 @@ continuousanchoringdata <- function(file, check = TRUE)
 print.continuousanchoringdata <- function(x, ...)
 {
   if (!inherits(x, "continuousanchoringdata"))
-    stop("Use only with 'continuousanchoringdata' objects")
+    stop("Use only with 'continuousanchoringdata' objects.")
   
   cat("Elements of the experimental design in order to check the coding of the data :\n")
   cat("Tested doses and number of replicates for each dose:\n")
@@ -92,7 +92,7 @@ print.continuousanchoringdata <- function(x, ...)
 plot.continuousanchoringdata <- function(x, ...) 
 {
   if (!inherits(x, "continuousanchoringdata"))
-    stop("Use only with 'continuousanchoringdata' objects")
+    stop("Use only with 'continuousanchoringdata' objects.")
 
   nitems <- nrow(x$data)
   dataobs <- data.frame(dose = numeric(), measure = numeric(), 

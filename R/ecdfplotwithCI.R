@@ -2,17 +2,17 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
                            add.point = TRUE, point.size = 1, point.type = 16)
 {
   if (!is.numeric(variable))
-    stop("Arguments variable, CI.lower and CI.upper must be numeric vectors of the same size")
+    stop("Arguments variable, CI.lower and CI.upper must be numeric vectors of the same size.")
   leng <- length(variable)
   if (!is.numeric(CI.lower) | (length(CI.lower) != leng) |
       !is.numeric(CI.upper) | (length(CI.upper) != leng))
-    stop("Arguments variable, CI.lower and CI.upper must be numeric vectors of the same size")
+    stop("Arguments variable, CI.lower and CI.upper must be numeric vectors of the same size.")
   d <- data.frame(variable = variable, lower = CI.lower, upper = CI.upper)
   
   if (!missing(by)) 
   {
     if (length(by) != leng)
-      stop("Argument by must be a factor of the same length as argument variable")
+      stop("Argument by must be a factor of the same length as argument variable.")
     d$by <- as.factor(by)
   } 
   if (is.factor(CI.col)) d$CI.col <- CI.col

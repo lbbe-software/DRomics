@@ -7,39 +7,41 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
 {
   # Checks
   if (!inherits(r, "bmdcalc"))
-    stop("Use only with 'bmdcalc' objects, created with the function bmdcalc")
+    stop("Use only with 'bmdcalc' objects, created with the function bmdcalc.")
   
   # bootmethod <- match.arg(bootmethod, c("nonparam", "param"))
   bootmethod <- "nonparam"
   
   if (niter < 1000)
-    warning("A small number of iterations (less than 1000) may not be sufficient
-            to ensure a good quality of bootstrap confidence intervals.")
-    
+    warning(strwrap(prefix = "\n", initial = "\n", 
+      "A small number of iterations (less than 1000) may not be sufficient
+      to ensure a good quality of bootstrap confidence intervals."))
+  
     parallel <- match.arg(parallel, c("no", "snow", "multicore"))
   if (parallel == "multicore" & .Platform$OS.type == "windows")
   {
     parallel <- "snow"
-    warning("As the multicore option is not supported on Windows it was replaced by snow")
+    warning(strwrap(prefix = "\n", initial = "\n", 
+      "As the multicore option is not supported on Windows it was replaced by snow."))
   }
   if ((parallel == "snow" | parallel == "multicore") & missing(ncpus)) 
-    stop("You have to specify the number of available processors to parallelize 
-         the bootstrap")
+    stop("You have to specify the number of available processors to parallelize the bootstrap.")
   if (parallel != "no") progressbar <- FALSE
   
   if (progressbar)
-    cat("The bootstrap may be long if the number of items and the number of bootstrap iterations is high.\n")
+    cat(strwrap(prefix = "\n", initial = "\n",
+      "The bootstrap may be long if the number of items and the number of bootstrap iterations is high.\n"))
 
   i.items <- match(items, r$res$id)
   nitems <- length(items)
   
   if (!is.numeric(tol) | (tol > 1) | (tol < 0))
     stop("Wrong argument 'tol'. If not omitted it must be a number between 0 and 1 (the proportion
-         of failure of model fit among bootstrap samples).")
+    of failure of model fit among bootstrap samples).")
 
   if (!is.numeric(conf.level) | (conf.level >= 1) | (conf.level <= 0))
     stop("Wrong argument 'conf.level'. If not omitted it must be a number between 0 and 1 
-         (the confidence level of the bootstrap confidence intervals).")
+    (the confidence level of the bootstrap confidence intervals).")
   prob.lower <- (1 - conf.level) / 2
   prob.upper <- conf.level + prob.lower
   
@@ -387,8 +389,8 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
     nboot.successful <- niter - sum(sapply(l1, is.null))
     if(nboot.successful < niter * tol) 
     {
-      # warning(paste("Procedure aborted: the fit only converged for", nboot.successful, 
-      #               "iterations during bootstrapping for item ", items[i]))
+      # warning(strwrap(prefix = "\n", initial = "\n", paste0("Procedure aborted: the fit only converged for ", nboot.successful, 
+      #               " iterations during bootstrapping for item ", items[i], ".")))
       return(c(NA, NA, NA, NA, nboot.successful))
     } else
     {
@@ -447,7 +449,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
 print.bmdboot <- function(x, ...) 
 {
   if (!inherits(x, "bmdboot"))
-    stop("Use only with 'bmdboot' objects")
+    stop("Use only with 'bmdboot' objects.")
   
   ntot <- nrow(x$res)
   nNA.BMDboot <- sum(x$res$nboot.successful < x$tol * x$niter)
@@ -476,7 +478,7 @@ plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
                          by = c("none", "trend", "model", "typology"), CI.col = "blue",  ...) 
 {
   if (!inherits(x, "bmdboot"))
-    stop("Use only with 'bmdboot' objects")
+    stop("Use only with 'bmdboot' objects.")
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
   by <- match.arg(by, c("none", "trend", "model", "typology"))  
   
@@ -536,12 +538,12 @@ plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
   {
     if (remove.infinite)
     {
-      warning(nremoved,
-    " BMD values for which lower and upper bounds were coded NA or with lower or upper infinite bounds were removed before plotting")
+      warning(strwrap(prefix = "\n", initial = "\n", paste0(nremoved,
+        " BMD values for which lower and upper bounds were coded NA or with lower or upper infinite bounds were removed before plotting.")))
     } else
     {
-      warning(nremoved,
-    " BMD values for which lower and upper bounds were coded NA or with lower and upper infinite bounds were removed before plotting")
+      warning(strwrap(prefix = "\n", initial = "\n", paste0(nremoved,
+        " BMD values for which lower and upper bounds were coded NA or with lower and upper infinite bounds were removed before plotting.")))
     }
   }
   

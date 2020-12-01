@@ -1,17 +1,17 @@
 ecdfquantileplot <- function(variable, by, quantile.prob = 0.5, title)
 {
   if (!is.numeric(variable))
-    stop("Arguments variable must be a numeric vector")
+    stop("Arguments variable must be a numeric vector.")
   leng <- length(variable)
   if (missing(by))
-    stop("Argument 'by' is mandatory and must be a factor of the same length as argument 'variable' ")
+    stop("Argument 'by' is mandatory and must be a factor of the same length as argument 'variable'.")
   if (length(by) != leng)
-    stop("Argument 'by' must be a factor of the same length as argument 'variable' ")
+    stop("Argument 'by' must be a factor of the same length as argument 'variable'.")
   group <- as.factor(by)
   
   if (!is.numeric(quantile.prob) | (quantile.prob >= 1) | (quantile.prob <= 0))
     stop("Wrong argument 'quantile.prob'. If not omitted it must be a number between 0 and 1 
-         (the probability defining the quantile).")
+    e(the probability defining the quantile).")
   
   # faire un titre par défaut incluant quantile.prob
   quantilepc <- quantile.prob * 100

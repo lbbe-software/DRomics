@@ -13,11 +13,11 @@ RNAseqdata <- function(file, check = TRUE,
     {
       # check argument file
       if (!is.character(file))
-        stop("The argument file must be a character string")
+        stop("The argument file must be a character string.")
       le.file <- nchar(file)
       suffix <- substr(file, le.file - 3, le.file)
       if (suffix != ".txt")
-        stop("The argument file must be a character string ending by .txt")
+        stop("The argument file must be a character string ending by .txt.")
     }
     d <- read.table(file, header = FALSE)
     
@@ -35,25 +35,21 @@ RNAseqdata <- function(file, check = TRUE,
     subdata4check <- data[1:min(nrowdata, 10), ]
     subdata4checkT <- trunc(subdata4check)
     if (!identical(subdata4check, subdata4checkT))
-      stop("Your data contain non integer values. 
-            Make sure that your RNAseq data are imported in raw counts.
-           If your counts come from Kallisto or Salmon put the argument round.counts
-          of RNAseqdata at TRUE to round them.\n") 
+      stop("Your data contain non integer values. Make sure that your RNAseq data are imported in raw counts.
+      If your counts come from Kallisto or Salmon put the argument round.counts of RNAseqdata at TRUE to round them.\n") 
   }
   if (nrowdata < 100)
-    warning("Your dataset contains less than 100 lines. Are you sure you really
-            work on RNAseq data ? This function should
-            not be used with another type of data.")
-  
-  
+    warning(strwrap(prefix = "\n", initial = "\n",
+      "Your dataset contains less than 100 lines. Are you sure you really
+      work on RNAseq data ? This function should
+      not be used with another type of data."))
   
   if (check)
   {
     # check that doses and responses are numeric
     if (!is.numeric(as.matrix(d[,2:ncold])))
-      stop("All the columns except the first one must be numeric with the numeric 
-           dose in the firt line and the read counts (integer values corresponding 
-            to raw counts) of each item in the other lines.")
+      stop("All the columns except the first one must be numeric with the numeric dose in the firt line 
+      and the read counts (integer values corresponding to raw counts) of each item in the other lines.")
   }
   
   # Normalization and count data transformation using DESeq2
@@ -117,11 +113,12 @@ RNAseqdata <- function(file, check = TRUE,
   design <- table(dose, dnn = "")
   if (length(design) < 4)
     stop("Dromics cannot be used with a dose-response design 
-         with less than four tested doses/concentrations")
+    with less than four tested doses/concentrations.")
   if (length(design) == 4)
-    warning("When using DRomics with a dose-response design with only four tested doses/concentrations, 
-            it is recommended to check after the modelling step that all selected models have no more 
-            than 4 parameters")  
+    warning(strwrap(prefix = "\n", initial = "\n",
+      "When using DRomics with a dose-response design with only four tested doses/concentrations, 
+      it is recommended to check after the modelling step that all selected models have no more 
+      than 4 parameters"))
 
   # calculation of the means per dose
   tdata <- t(data)
@@ -144,7 +141,7 @@ RNAseqdata <- function(file, check = TRUE,
 print.RNAseqdata <- function(x, ...)
 {
   if (!inherits(x, "RNAseqdata"))
-    stop("Use only with 'RNAseqdata' objects")
+    stop("Use only with 'RNAseqdata' objects.")
   
   cat("Elements of the experimental design in order to check the coding of the data :\n")
   cat("Tested doses and number of replicates for each dose:\n")
@@ -167,7 +164,7 @@ print.RNAseqdata <- function(x, ...)
 plot.RNAseqdata <- function(x, ...) 
 {
   if (!inherits(x, "RNAseqdata"))
-    stop("Use only with 'RNAseqdata' objects")
+    stop("Use only with 'RNAseqdata' objects.")
 
   def.par <- par(no.readonly = TRUE)
   ymin.rc <- min(x$raw.counts)
