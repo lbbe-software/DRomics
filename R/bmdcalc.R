@@ -111,17 +111,9 @@ bmdcalc <- function(f, z = 1, x = 10, minBMD, ratio2switchinlog = 100)
   
   if (missing(minBMD)) minBMD <- dosemin / 100 # could be changed
   
-  if ((minBMD == 0) & (dosemax/dosemin > ratio2switchinlog))
-  {
-    warning(strwrap(prefix = "\n", initial = "\n", 
-                    "Fixing minBMD to 0 prevents the use of the log scale of dose 
-                    to improve the computation of low BMD values on data sets
-                    with a high ratio between maximal and minimal tested doses.
-                    ratio2switchinlog will thus be forced to a value above the 
-                    dosemax/dosemin ratio of your design.
-                     You should try to fix it at a low but non null value."))
-    ratio2switchinlog <- dosemax/dosemin * 10
-  }
+  if (minBMD <= 0)
+    stop("minBMD should be a stricly positive value.")
+
   dcalc <- data.frame(xextrem = dfitall$xextrem, 
                       yextrem = rep(NA,nselect), 
                       y0 = dfitall$y0,
