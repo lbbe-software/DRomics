@@ -210,6 +210,15 @@ fGauss5pBMR <- function(x, b, c, d, e, g, threshold)
   
 }
 
+fGauss5pBMR_xinlog <- function(xinlog, b, c, d, e, g, threshold)
+{
+  x <- exp(xinlog)
+  g * exp(-0.5 * ((x-e)/b)^2) + # gaussian part
+    d + (c - d) * pnorm((x-e)/b) - threshold # probit part
+  
+}
+
+
 ### Gaussian model 5 p and starting values in log scale
 formLGauss5p <- as.formula(signal ~ f * exp(-0.5 * (log(dose/e)/b)^2) + d + (c - d) * pnorm(log(dose/e)/b)) 
 startvalLGauss5pnls <- function(xm, ym, Ushape)
@@ -323,6 +332,14 @@ fLGauss5pBMR <- function(x, b, c, d, e, g, threshold)
     d + (c - d) * pnorm(log(x/e)/b) - threshold # probit part
   
 }
+
+fLGauss5pBMR_xinlog <- function(xinlog, b, c, d, e, g, threshold)
+{
+  g * exp(-0.5 * ((xinlog - log(e))/b)^2) + # gaussian part
+    d + (c - d) * pnorm((xinlog - log(e))/b) - threshold # probit part
+  
+}
+
 
 fLprobit <- function(x, b, c, d, e)
 {

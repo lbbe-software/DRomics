@@ -50,7 +50,10 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
   xdiv100 <- r$x/100
     
   dose <- r$omicdata$dose
+  dosemin <- min(dose[dose != 0])
   dosemax <- max(dose)
+  minBMD <- r$minBMD
+  ratio2switchinlog <- r$ratio2switchinlog
   
   # progress bar
   if (progressbar)
@@ -116,9 +119,9 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           y0boot <- dboot
           ydosemaxboot <- fExpo(x = dosemax, b = bboot, d = dboot, e = eboot)
           ypboot <- y0boot * ( 1 + xdiv100*sign(eboot * bboot))
-          BMDpboot <- invExpo(ypboot, b= bboot, d = dboot, e = eboot)
+          BMDpboot <- pmax(invExpo(ypboot, b= bboot, d = dboot, e = eboot), minBMD)
           ysdboot <- y0boot + z*SDresboot * sign(eboot * bboot)
-          BMDsdboot <- invExpo(ysdboot, b= bboot, d = dboot, e = eboot)
+          BMDsdboot <- pmax(invExpo(ysdboot, b= bboot, d = dboot, e = eboot), minBMD)
           return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
         }
       } # end fboot
@@ -159,9 +162,9 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           y0boot <- dboot
           ydosemaxboot <- fHill(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot)
           ypboot <- y0boot * ( 1 + xdiv100*sign(cboot * dboot))
-          BMDpboot <- invHill(ypboot, b= bboot, c = cboot, d = dboot, e = eboot)
+          BMDpboot <- pmax(invHill(ypboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
           ysdboot <- y0boot + z*SDresboot * sign(cboot * dboot)
-          BMDsdboot <- invHill(ysdboot, b= bboot, c = cboot, d = dboot, e = eboot)
+          BMDsdboot <- pmax(invHill(ysdboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
 
           return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
         }
@@ -203,9 +206,9 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           y0boot <- dboot
           ydosemaxboot <- fLGauss5p(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot, f = 0)
           ypboot <- y0boot * ( 1 + xdiv100*sign(cboot * dboot))
-          BMDpboot <- invLprobit(ypboot, b= bboot, c = cboot, d = dboot, e = eboot)
+          BMDpboot <- pmax(invLprobit(ypboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
           ysdboot <- y0boot + z*SDresboot * sign(cboot * dboot)
-          BMDsdboot <- invLprobit(ysdboot, b= bboot, c = cboot, d = dboot, e = eboot)
+          BMDsdboot <- pmax(invLprobit(ysdboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
           
           return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
         }
@@ -240,9 +243,9 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
         y0boot <- dboot
         ydosemaxboot <- flin(x = dosemax, b = bboot, d = dboot)
         ypboot <- y0boot * ( 1 + xdiv100*sign(bboot))
-        BMDpboot <- invlin(ypboot, b= bboot, d = dboot)
+        BMDpboot <- pmax(invlin(ypboot, b= bboot, d = dboot), minBMD)
         ysdboot <- y0boot + z*SDresboot * sign(bboot)
-        BMDsdboot <- invlin(ysdboot, b= bboot, d = dboot)
+        BMDsdboot <- pmax(invlin(ysdboot, b= bboot, d = dboot), minBMD)
           
         return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
       } # end fboot
@@ -302,13 +305,17 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           deltasdboot <- z * SDresboot
             
           resBMDp <- calcBMD(y0=y0boot, delta=deltapboot, xext=xextrboot, yext=yextrboot, 
-                               dosemax = dosemax, ydosemax = ydosemaxboot, func = fGauss5pBMR, 
-                               b = bboot, c = cboot, d = dboot, e = eboot, g = fboot)
+                               dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemaxboot, 
+                             func = fGauss5pBMR, func_xinlog = fGauss5pBMR_xinlog,
+                               b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
+                             minBMD = minBMD, ratio2switchinlog = ratio2switchinlog)
           BMDpboot <- resBMDp$BMD
             
           resBMDsd <- calcBMD(y0=y0boot, delta=deltasdboot, xext=xextrboot, yext=yextrboot, 
-                                dosemax = dosemax, ydosemax = ydosemaxboot, func = fGauss5pBMR, 
-                                b = bboot, c = cboot, d = dboot, e = eboot, g = fboot)
+                                dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemaxboot, 
+                              func = fGauss5pBMR, func_xinlog = fGauss5pBMR_xinlog,
+                                b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
+                              minBMD = minBMD, ratio2switchinlog = ratio2switchinlog)
           BMDsdboot <- resBMDsd$BMD
           return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
         }
@@ -369,13 +376,17 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           deltasdboot <- z * SDresboot
           
           resBMDp <- calcBMD(y0=y0boot, delta=deltapboot, xext=xextrboot, yext=yextrboot, 
-                             dosemax = dosemax, ydosemax = ydosemaxboot, func = fLGauss5pBMR, 
-                             b = bboot, c = cboot, d = dboot, e = eboot, g = fboot)
+                             dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemaxboot, 
+                             func = fLGauss5pBMR, func_xinlog = fLGauss5pBMR_xinlog,
+                             b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
+                             minBMD = minBMD, ratio2switchinlog = ratio2switchinlog)
           BMDpboot <- resBMDp$BMD
           
           resBMDsd <- calcBMD(y0=y0boot, delta=deltasdboot, xext=xextrboot, yext=yextrboot, 
-                              dosemax = dosemax, ydosemax = ydosemaxboot, func = fLGauss5pBMR, 
-                              b = bboot, c = cboot, d = dboot, e = eboot, g = fboot)
+                              dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemaxboot, 
+                              func = fLGauss5pBMR, func_xinlog = fLGauss5pBMR_xinlog,
+                              b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
+                              minBMD = minBMD, ratio2switchinlog = ratio2switchinlog)
           BMDsdboot <- resBMDsd$BMD
           return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
         }

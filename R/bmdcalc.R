@@ -1,35 +1,104 @@
 # internally used function
-calcBMD <- function(y0, delta, xext, yext, dosemax, ydosemax, func, b, c, d, e, g){
-  BMD <- NA
-  if(g > 0){ # Umbrella shape
+calcBMD <- function(y0, delta, xext, yext, dosemin, dosemax, ydosemax, func, 
+                    func_xinlog, b, c, d, e, g, minBMD, ratio2switchinlog){
+  if ((dosemax / dosemin) > ratio2switchinlog)
+  {
+    workwithxinlog <- TRUE
+    func4uniroot <- func_xinlog
+    firstinterval <- c(log(minBMD), log(xext)) 
+    secondinterval <- c(log(max(xext, minBMD)), log(dosemax))
+  }
+  else
+  {
+    workwithxinlog <- FALSE
+    func4uniroot <- func
+    firstinterval <- c(minBMD, xext)
+    secondinterval <- c(max(xext, minBMD), dosemax)
+  }
+  finalroot <- NA
+  if (g > 0)
+  { # Umbrella shape
     threshold <- y0 + delta # we first seek the BMR above d
-    if(y0 < threshold & threshold < yext){
-      BMD <- uniroot(func, interval=c(0,xext), b=b, c=c, d=d, e=e, g=g, threshold=threshold)$root
-    }
-    else  {
+    #value of y - threshold at minBMD
+    funcatminBMD <- 
+      func(minBMD, b=b, c=c, d=d, e=e, g=g, threshold=threshold) 
+    if (y0 < threshold & threshold < yext & xext!=0) # BMR in first phase
+      # xext != 0 is for some rare Gaussprobit models with e = 0 so 
+      # with ext = 0 and thus increasing
+    {
+      if ((xext <= minBMD) | (funcatminBMD >= 0))
+      {
+        finalroot <- workwithxinlog * log(minBMD) + (1 - workwithxinlog) * minBMD
+      } else
+      { # then we seek the BMR above y0 
+        finalroot <- uniroot(func4uniroot, interval=firstinterval, b=b, c=c, 
+                             d=d, e=e, g=g, threshold=threshold)$root
+      }
+    } else # BMR may be in the second phase 
+    {
       threshold <- y0 - delta
-      if(c < y0 & threshold > ydosemax){  # then we seek the BMR below y0 (possible only if c<y0) 
-        BMD <- uniroot(func, interval=c(xext, dosemax), b=b, c=c, d=d, e=e, g=g, threshold=threshold)$root
+      funcatminBMD <- 
+        func(minBMD, b=b, c=c, d=d, e=e, g=g, threshold=threshold) 
+      if (funcatminBMD <= 0)
+      {
+        finalroot <- workwithxinlog * log(minBMD) + (1 - workwithxinlog) * minBMD
+      } else
+      {
+        if(c < y0 & threshold > ydosemax)
+        {  # then we seek the BMR below y0 (possible only if c<y0) 
+          finalroot <- uniroot(func4uniroot, interval=secondinterval, b=b, c=c, 
+                               d=d, e=e, g=g, threshold=threshold)$root
+        }
       }
     }
   }
-  if(g < 0){ # U shape
+  if(g < 0)
+  { # U shape
     threshold <- y0 - delta # we first seek the BMR below y0
-    if(y0 > threshold & threshold > yext){
-      BMD <- uniroot(func, interval=c(0,xext), b=b, c=c, d=d, e=e, g=g, threshold=threshold)$root
+    funcatminBMD <- 
+      func(minBMD, b=b, c=c, d=d, e=e, g=g, threshold=threshold) 
+    if(y0 > threshold & threshold > yext & xext!=0) # BMR in first phase
+      # xext != 0 is for some rare Gaussprobit models with e = 0 so 
+      # with ext = 0 and thus decreasing
+    {
+      if ((xext <= minBMD) | (funcatminBMD <= 0))
+      {
+        finalroot <- workwithxinlog * log(minBMD) + (1 - workwithxinlog) * minBMD
+      } else
+      {
+        finalroot <- uniroot(func4uniroot, interval=firstinterval, b=b, c=c, 
+                             d=d, e=e, g=g, threshold=threshold)$root
+      }  
     }
-    else  {
+    else  # BMR may be in the second phase
+    {
       threshold <- y0 + delta
-      if(c > y0 & threshold < ydosemax){  # then we seek the BMR above y0 (possible only if c>y0) 
-        BMD <- uniroot(func, interval=c(xext, dosemax), b=b, c=c, d=d, e=e, g=g, threshold=threshold)$root
+      funcatminBMD <- 
+        func(minBMD, b=b, c=c, d=d, e=e, g=g, threshold=threshold) 
+      if (funcatminBMD >= 0)
+      {
+        finalroot <- workwithxinlog * log(minBMD) + (1 - workwithxinlog) * minBMD
+      } else
+      {
+        if(c > y0 & threshold < ydosemax)
+        {  # then we seek the BMR above y0 (possible only if c > y0) 
+          finalroot <- uniroot(func4uniroot, interval=secondinterval, b=b, c=c, 
+                               d=d, e=e, g=g, threshold=threshold)$root
+        }
       }
     }
   }
-  return(list(threshold=threshold, BMD=BMD))
+  if (workwithxinlog)
+  {
+    return(list(threshold = threshold, BMD = exp(finalroot)))
+  } else
+  {
+    return(list(threshold = threshold, BMD = finalroot))
+  }
 }
 
 ### Calculation of BMD values (x-fold or z-SD) from fitted dose-response curves
-bmdcalc <- function(f, z = 1, x = 10)
+bmdcalc <- function(f, z = 1, x = 10, minBMD, ratio2switchinlog = 100)
 {
   # Checks
   if (!inherits(f, "drcfit"))
@@ -37,7 +106,10 @@ bmdcalc <- function(f, z = 1, x = 10)
   
   dfitall <- f$fitres
   nselect <- length(dfitall$irow)
-  dosemax <- max(f$omicdata$dose) 
+  dosemax <- max(f$omicdata$dose)
+  dosemin <- min(f$omicdata$dose[f$omicdata$dose != 0])
+  
+  if (missing(minBMD)) minBMD <- dosemin / 100 # could be changed
   dcalc <- data.frame(xextrem = dfitall$xextrem, 
                       yextrem = rep(NA,nselect), 
                       y0 = dfitall$y0,
@@ -95,13 +167,19 @@ bmdcalc <- function(f, z = 1, x = 10)
       deltap <- abs(y0) * xdiv100
       deltasd <- z * dfitall$SDres[i]
       
-      resBMDp <- calcBMD(y0=y0, delta=deltap, xext=xext, yext=yext, dosemax=dosemax, 
-                         ydosemax=ydosemax, func=fGauss5pBMR, b=b, c=c, d=d, e=e, g=g)
+      resBMDp <- calcBMD(y0=y0, delta=deltap, xext=xext, yext=yext, 
+                         dosemin = dosemin, dosemax=dosemax, ydosemax=ydosemax, 
+                         func=fGauss5pBMR, func_xinlog=fGauss5pBMR_xinlog,
+                         b=b, c=c, d=d, e=e, g=g, minBMD = minBMD, 
+                         ratio2switchinlog = ratio2switchinlog)
       dcalc$yp[i] <- resBMDp$threshold
       dcalc$BMDp[i] <- resBMDp$BMD
       
-      resBMDsd <- calcBMD(y0=y0, delta=deltasd, xext=xext, yext=yext, dosemax=dosemax, 
-                          ydosemax=ydosemax, func=fGauss5pBMR, b=b, c=c, d=d, e=e, g=g)
+      resBMDsd <- calcBMD(y0=y0, delta=deltasd, xext=xext, yext=yext, 
+                          dosemin = dosemin, dosemax= dosemax, ydosemax = ydosemax, 
+                          func = fGauss5pBMR, func_xinlog = fGauss5pBMR_xinlog,
+                          b=b, c=c, d=d, e=e, g=g, minBMD = minBMD, 
+                          ratio2switchinlog = ratio2switchinlog)
       dcalc$ysd[i] <- resBMDsd$threshold
       dcalc$BMDsd[i] <- resBMDsd$BMD
     } else
@@ -111,21 +189,33 @@ bmdcalc <- function(f, z = 1, x = 10)
       deltap <- abs(y0) * xdiv100
       deltasd <- z * dfitall$SDres[i]
       
-      resBMDp <- calcBMD(y0=y0, delta=deltap, xext=xext, yext=yext, dosemax=dosemax, ydosemax=ydosemax, func=fLGauss5pBMR, b=b, c=c, d=d, e=e, g=g)
+      resBMDp <- calcBMD(y0 = y0, delta = deltap, xext = xext, yext = yext, 
+                         dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemax, 
+                         func = fLGauss5pBMR, func_xinlog = fLGauss5pBMR_xinlog,
+                         b=b, c=c, d=d, e=e, g=g, minBMD = minBMD, 
+                         ratio2switchinlog = ratio2switchinlog)
       dcalc$yp[i] <- resBMDp$threshold
       dcalc$BMDp[i] <- resBMDp$BMD
       
-      resBMDsd <- calcBMD(y0=y0, delta=deltasd, xext=xext, yext=yext, dosemax=dosemax, ydosemax=ydosemax, func=fLGauss5pBMR, b=b, c=c, d=d, e=e, g=g)
+      resBMDsd <- calcBMD(y0=y0, delta=deltasd, xext=xext, yext=yext, 
+                          dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemax, 
+                          func = fLGauss5pBMR,  func_xinlog = fLGauss5pBMR_xinlog,
+                          b=b, c=c, d=d, e=e, g=g, minBMD = minBMD, 
+                          ratio2switchinlog = ratio2switchinlog)
       dcalc$ysd[i] <- resBMDsd$threshold
       dcalc$BMDsd[i] <- resBMDsd$BMD
     }
+    dcalc$BMDsd[i] <- max(dcalc$BMDsd[i], minBMD)
+    dcalc$BMDp[i] <- max(dcalc$BMDp[i], minBMD)
   }
   dcalc$BMDp[dcalc$BMDp > dosemax] <- NA
   dcalc$BMDsd[dcalc$BMDsd > dosemax] <- NA
   
   reslist <- list(res = as.data.frame(cbind(dfitall,
-                                            data.frame(BMD.zSD = dcalc$BMDsd, BMD.xfold = dcalc$BMDp))), 
-                  z = z, x = x, omicdata = f$omicdata) 
+                            data.frame(BMD.zSD = dcalc$BMDsd, BMR.zSD = dcalc$ysd,
+                                BMD.xfold = dcalc$BMDp, BMR.xfold = dcalc$yp))), 
+                  z = z, x = x, minBMD = minBMD,
+                  ratio2switchinlog = ratio2switchinlog, omicdata = f$omicdata) 
   
   return(structure(reslist, class = "bmdcalc"))
   

@@ -9,7 +9,7 @@ Computes x-fold and z-SD benchmark doses for each responsive item using the best
 }
 
 \usage{
-bmdcalc(f, z = 1, x = 10)
+bmdcalc(f, z = 1, x = 10, minBMD, ratio2switchinlog = 100)
 
 \method{print}{bmdcalc}(x, \dots)
 
@@ -31,6 +31,15 @@ the dose at which the response is reaching
 y0 +/- (x/100) * y0, with y0 the level at the control given by the dose-response fitted model.
 
 For \code{print} and \code{plot} functions, an object of class \code{"bmdcalc"}.}
+
+\item{minBMD}{minimal value for calculated BMDs, so a value considered negligible
+compared to the tested doses. If not given by the user this argument is fixed
+at the minimal non null tested dose divided by 100.}
+
+\item{ratio2switchinlog}{ratio between maximal and minimal tested doses above which
+the numerical computation (when the use of \code{\link{uniroot}} is necessary) 
+of the BMD is performed 
+on a log scale of dose.}
 
 \item{BMDtype}{The type of BMD to plot, \code{"zSD"} (default choice) or \code{"xfold"}.}
 
@@ -77,14 +86,22 @@ In cases where the BMD is not reached at the highest tested dose, \code{NA} is r
    (\code{yrange}) and 
    for biphasic curves 
    the x value at which their extremum is reached (\code{xextrem})
-   and the corresponding y value (\code{yextrem}), the BMD-zSD value (\code{BMD.zSD}) and 
-   the BMD-xfold value (\code{BMD.xfold}).}
+   and the corresponding y value (\code{yextrem}), the BMD-zSD value (\code{BMD.zSD})
+   with the corresponding BMR-zSD value (reached or not, (\code{BMR.zSD})) and 
+   the BMD-xfold value (\code{BMD.xfold})
+   with the corresponding BMR-xfold value (reached or not, (\code{BMR.xfold})).}
 
   \item{z}{Value of z given in input to define the BMD-zSD.}
 
   \item{x}{Value of x given in input as a percentage to define the BMD-xfold.}
+  
+  \item{minBMD}{minimal value for calculated BMDs given in input or fixed
+  at the minimal non null tested dose divided by 100.}
+  
+  \item{ratio2switchinlog}{ratio between maximal and minimal tested doses above which
+the numerical computations are performed in a log scale (as given in input).}
 
-    \item{microarraydata}{ The corresponding object of class \code{"microarraydata"} given in input 
+  \item{omicdata}{ The corresponding object given in input 
     (component of itemselect).}
  
 }

@@ -125,10 +125,11 @@ if(visualize) # too long computation !
   
   bmdplotwithgradient(r$res, BMDtype = "zSD") 
   bmdplotwithgradient(r$res, BMDtype = "zSD", BMD_log_transfo = TRUE) 
-  
-  res0 <- r$res[r$res$BMD.zSD == 0, ]
-  curvesplot(res0, xmin =0.001, xmax = max(f$omicdata$dose), 
-             colorby = "model", dose_log_transfo = TRUE)
-  plot(f, items = r$res[r$res$BMD.zSD == 0, ]$id)
-  plot(f, items = r$res[r$res$BMD.zSD == 0, ]$id, dose_log_trans = TRUE)
+ 
+  # no more 0 BMD values using argument minBMD 
+  # res0 <- r$res[r$res$BMD.zSD == 0, ]
+  # curvesplot(res0, xmin =0.0000000001, xmax = max(f$omicdata$dose), 
+  #            colorby = "model", dose_log_transfo = TRUE)
+  # plot(f, items = r$res[r$res$BMD.zSD == 0, ]$id)
+  # plot(f, items = r$res[r$res$BMD.zSD == 0, ]$id, dose_log_trans = TRUE)
 }

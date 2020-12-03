@@ -1,5 +1,13 @@
 === DRomics : Dose response for omics ===
 
+Version 2.2-0 
+=============
+NEW FEATURES
+- Improvement of the computation of low BMD values for designs with a high
+ratio between the maximal and minimal (non null) tested doses, with the add
+of two arguments to bmdcalc, minBMD and ratio2switchinlog.
+- Add of two columns in the output of bmdcalc (BMR.zSD and BMR.xfold)
+
 Version 2.1-0 
 =============
 NEW FEATURES
