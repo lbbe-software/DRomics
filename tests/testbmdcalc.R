@@ -23,6 +23,15 @@ if(visualize)
   (r <- bmdcalc(f, minBMD = 2, ratio2switchinlog = 1))
   plot(r)
   
+  # check of defensive prog
+  (r <- bmdcalc(f, minBMD = 0))
+  plot(r) 
+  (r <- bmdcalc(f, minBMD = 0,  ratio2switchinlog = 1))
+  plot(r) 
+  r$ratio2switchinlog
+  r$minBMD
+  
+  
   # look at BMR in the output
   (r <- bmdcalc(f, z = 2, x = 20))
   r$res
