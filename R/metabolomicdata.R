@@ -51,6 +51,8 @@ metabolomicdata <- function(file, check = TRUE)
   (nitems <- nrow(data))
   
   # control of the design
+  if (any(dose) < 0)
+    stop("DRomics cannot be used with negative values of doses.")
   design <- table(dose, dnn = "")
   if (length(design) < 4)
     stop("Dromics cannot be used with a dose-response design 
