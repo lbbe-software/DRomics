@@ -42,7 +42,7 @@ ui <- fluidPage(
                                              concentration from each fitted curve (step 4).", br(), 
                                                         "In the available version, DRomics supports single-channel microarray data (in log2 scale), RNAseq data (in raw counts) or metabolomics data 
                                              (in log scale). In order to link responses across biological levels based on a common method, DRomics also handles apical data as long as they are continuous and
-                                             follow a Gaussian distribution for each dose or concentration, with a common standard error.
+                                             follow a normal distribution for each dose or concentration, with a common standard error.
                                              DRomics should not be used on other types of data.", 
                                                         style="text-align:justify;"),
                                         br(),
@@ -224,7 +224,7 @@ ui <- fluidPage(
                                      style = "background-color: #F5aa4c;",
                                      width = 4,
                                      icon("exclamation-triangle"), 
-                                     "We recommend you to check that your anchoring data are continuous and expressed in a scale that enables the use of a Gaussian error model (a transformation of data may be needed for some endpoints). If this assumption is not respected, results of selection and further steps may be inaccurate."
+                                     "We recommend you to check that your anchoring data are continuous and expressed in a scale that enables the use of a normal error model (a transformation of data may be needed for some endpoints). If this assumption is not respected, results of selection and further steps may be inaccurate."
                                    )
                                  )
                                  

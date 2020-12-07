@@ -13,7 +13,7 @@ of argument \code{file} for the required format
 of data). 
 No transformation is provided in this function.
 If needed the pretreatment of data must be done before importation of data, 
-so that they can be directly modelled using a Gaussian 
+so that they can be directly modelled using a normal 
 error model. This strong hypothesis is required both for selection of responsive endpoints
 and for dose-reponse modelling.
 

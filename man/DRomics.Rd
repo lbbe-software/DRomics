@@ -6,7 +6,7 @@
 \description{
 DRomics provides several functions for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 5, and the more the better) rather than a great number of replicates (no need of three replicates)
 DRomics deals with transcriptomics and metabolomics data, and with 
-apical data (as long as they are continuous and follow a Gaussian distribution for each dose or concentration, with a common standard error) in order to offer the possibility to link the responses across biological levels (from molecular to apical observations) using a common method.
+apical data (as long as they are continuous and follow a normal distribution for each dose or concentration, with a common standard error) in order to offer the possibility to link the responses across biological levels (from molecular to apical observations) using a common method.
 
 DRomics provides eight functions for the main workflow:
 \itemize{
@@ -49,12 +49,12 @@ that must be imported  using the function \code{\link{microarraydata}},
 For metabolomic data, all the pretreatment steps must be done before their importation
 and they should be imported in log scale
 so that they can be directly fitted by least-square regression
-(assuming a Gaussian error model valid)
+(assuming a normal error model valid)
 without any transformation. 
 
 Anchoring apical data must be continuous and imported
 in a scale that enables the use of least-square regression
-(assuming a Gaussian error model valid).
+(assuming a normal error model valid).
 }
 
 
@@ -128,7 +128,7 @@ f$fitres
    # Default plot provides fitted curves with observed points
 plot(f) 
 
-   # Plot of residuals is also recommended to validate the Gaussian error model
+   # Plot of residuals is also recommended to validate the normal error model
 plot(f, plot.type = "fitted_residuals")
 
 # Step 4: calculation of x-fold and z-SD benchmark doses 

@@ -31,7 +31,7 @@ continuousanchoringdata <- function(file, check = TRUE)
       dose in the firt line and the numeric response of each endpoint in the other lines.")
     warning(strwrap(prefix = "\n", initial = "\n",
       "We recommend you to check that your anchoring data are continuous and
-      defined in a scale that enable the use of a Gaussian error model (needed at each step
+      defined in a scale that enable the use of a normal error model (needed at each step
       of the workflow including the selection step). \n"))
   }
   

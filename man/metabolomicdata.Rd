@@ -14,7 +14,7 @@ of data).
 No normalization nor transformation is provided in this function.
 The pretreatment of metabolomic data must be done before importation of data, 
 and data must be imported in log scale,
-so that they can be directly modelled using a Gaussian 
+so that they can be directly modelled using a normal 
 error model. This strong hypothesis is required both for selection of items and for dose-reponse modelling.
 A basic procedure for this pre-treatment of metabolomic data could follow
 the three steps described thereafter:
