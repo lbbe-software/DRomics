@@ -203,6 +203,13 @@ head(f$fitres)
 # Look at the table of results for unsuccessful fits
 head(f$unfitres)
 
+# count the number of unsuccessful fits for each cause
+table(f$unfitres$cause)
+
+# Plot of the data corresponding to unsuccessful fits
+# due to selected constant model
+targetplot(f$unfitres$id[f$unfitres$cause == "constant.model"], f)
+targetplot(f$unfitres$id[f$unfitres$cause == "trend.in.residuals"], f)
 
 # (3) Comparison of parallel and non paralell implementations on a 
 #     larger selection of items

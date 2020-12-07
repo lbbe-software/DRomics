@@ -68,10 +68,11 @@ tests the global significance of a quadratic model describing the response as a 
 It is a variant of the linear trend method that aims at detecting monotonic and non monotonic trends from a dose-response designs, whatever the number of replicates per dose (default chosen method).
  }
  
-A filter on the proportion of tied values is also performed whatever the type of data, assuming 
+After the use of one this previously described tests, 
+a filter based on the proportion of tied values is also performed whatever the type of data, assuming 
 tied values correspond to a minimal common value at which non detections were imputed. 
 All items having a proportion of such tied minimal values above the input argument
-\code{max.ties.prop} are not selected.
+\code{max.ties.prop} are eliminated from the selection.
  
 }
 
