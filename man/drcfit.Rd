@@ -2,6 +2,7 @@
 \alias{drcfit}
 \alias{print.drcfit}
 \alias{plot.drcfit}
+\alias{plotfit2pdf}
 \title{Dose response modelling for responsive items}
 
 \description{
@@ -19,6 +20,10 @@ drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
 \method{plot}{drcfit}(x, items, 
   plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
    dose_log_transfo = FALSE, \dots)
+   
+plotfit2pdf(x, items, 
+  plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
+   dose_log_transfo = FALSE, nrowperpage = 6, ncolperpage = 4)
 }
 
 \arguments{
@@ -58,6 +63,12 @@ choice) or \code{"BIC"}.}
 \item{dose_log_transfo}{to put at \code{TRUE} to use a log transformation
 for the dose axis (only available if the dose is in x-axis, so not available
 for \code{plot.type} \code{"fitted_residuals"}).}
+
+\item{nrowperpage}{Number of rows of plots when plots are saved in a pdf file using
+  plotfit2pdf() (passed to \code{facet_wrap()}).}
+
+\item{ncolperpage}{Number of columns of plots when plots are saved in a pdf file using
+  plotfit2pdf() (passed to \code{facet_wrap()}).}
 
 \item{\dots}{ further arguments passed to graphical or print functions.}
 }
@@ -190,6 +201,12 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 
 # Default plot
 plot(f)
+
+# save all plots to pdf using plotfit2pdf()
+plotfit2pdf(f)
+plotfit2pdf(f, plot.type = "fitted_residuals", 
+  nrowperpage = 9, ncolperpage = 6)
+
 
 # Plot of the fit of the first 12 most responsive items
 plot(f, items = 12)

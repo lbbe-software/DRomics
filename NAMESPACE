@@ -50,6 +50,7 @@ export(bmdboot)
 S3method(print, bmdboot)
 S3method(plot, bmdboot)
 
+export(plotfit2pdf)
 export(ecdfplotwithCI)
 export(curvesplot)
 export(targetplot)

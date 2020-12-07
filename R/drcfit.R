@@ -709,4 +709,58 @@ plot.drcfit <- function(x, items,
   
 }
 
+plotfit2pdf <- function(x, items, 
+                        plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
+                        dose_log_transfo = FALSE, nrowperpage = 6, ncolperpage = 4)
+{
+  if (!inherits(x, "drcfit"))
+    stop("Use only with 'drcfit' objects.")
+  
+  # a ggplot alternative
+  if(missing(items))
+  {
+    items <- x$fitres$id
+  }
+  if(!( is.numeric(items) | is.character(items)) )
+    stop("Wrong argument 'items'. It must be a number inferior or equal to 20 or
+    a character vector indicating the identifiers of the items who want to plot.")
+  if (is.numeric(items))
+  {
+    subd <- x$fitres[1:min(nrow(x$fitres),items), ]
+  } else
+  if (is.character(items))
+  {
+    inditems <- match(items, x$fitres$id)
+    if (any(is.na(inditems)))
+        stop("At least one of the chosen items was not selected as responding. You should use targetplot() in that case.")
+      subd <- x$fitres[inditems, ]
+  }
+  
+  pathToFigs <- tempdir()
+  file2plot <- paste0(pathToFigs, "/drcfitplot.pdf")
+  message(strwrap(prefix = "\n", initial = "\n",
+                  paste0("Figures are stored in ", pathToFigs, ". This directory is temporary. It will be removed when the R session is closed.")))
+  pdf(file2plot, width = 7, height = 10, onefile = TRUE) # w and h in inches
+  
+  nplotsperpage = nrowperpage * ncolperpage
+  npage <- ceiling(nrow(subd) / nplotsperpage)
+  
+  for (i in 1:npage)
+  {
+    if (i == npage) indmax <- nrow(subd) else indmax <- i*nplotsperpage
+    g <- plotfitsubset(subd[seq((i-1)*nplotsperpage + 1,indmax, 1), ], 
+                                 dose = x$omicdata$dose, 
+                                 data = x$omicdata$data, 
+                                 data.mean = x$omicdata$data.mean, 
+                                 npts = 500,
+                                 plot.type = plot.type, 
+                                 dose_log_transfo = dose_log_transfo, 
+                                  nr = nrowperpage, 
+                                  nc = ncolperpage) 
+    print(g)
+  }
+  dev.off()
+  
+}
+
 
