@@ -7,20 +7,31 @@ server <- function(input, output, session) {
   
   inTypeData <- reactive({input$typeData})
   
+  validateFile <- function(filename){
+    extFile <- tools::file_ext(filename)
+    validate(
+      need(extFile == "txt" | extFile == "csv", "Only .txt or .csv files are allowed.")
+    )
+  }
+  
   ## Input: file data
   filedata <- reactive({
     
     if(inTypeData() == 'microarraydata') {
       req(input$datafile_microarray)
+      validateFile(input$datafile_microarray)
       microarraydata(input$datafile_microarray$datapath, check = TRUE, norm.method = input$normMethod_microarray)
     } else if(inTypeData() == 'rnaseqdata') {
       req(input$datafile_rnaseq)
+      validateFile(input$datafile_rnaseq)
       RNAseqdata(input$datafile_rnaseq$datapath, check = TRUE, transfo.method = input$transfoMethod_rnaseq, round.counts = TRUE)
     } else if(inTypeData() == 'metabolomicdata') {
       req(input$datafile_metabolomic)
+      validateFile(input$datafile_metabolomic)
       metabolomicdata(input$datafile_metabolomic$datapath, check = TRUE)
     } else if(inTypeData() == 'continuousanchoringdata') {
       req(input$datafile_anchoring)
+      validateFile(input$datafile_anchoring)
       continuousanchoringdata(input$datafile_anchoring$datapath, check = TRUE)
     }
   })
