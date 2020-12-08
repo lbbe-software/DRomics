@@ -1,6 +1,7 @@
 ### fit different models to each dose-response curve and choose the best fit 
 drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"), 
                    information.criterion = c("AIC", "BIC"),
+                   postfitfilter = TRUE,
                    progressbar = TRUE, saveplot2pdf = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
 {
@@ -397,10 +398,18 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     }
     
     # diagnostics on residuals (quadratic trend on residuals) 
+    # correct mean function ?
     resi <- residuals(fit)
     modquad.resi <- lm(resi ~ doseranks + I(doseranks^2))
     mod0.resi <- lm(resi ~ 1)
     trendPi <- anova(modquad.resi, mod0.resi)[[6]][2]
+ 
+    # diagnostics on absolute value of residuals - homoscedasticity ?
+    # (quadratic trend on abs(residuals)) 
+    absresi <-abs(resi)
+    modquad.absresi <- lm(absresi ~ doseranks + I(doseranks^2))
+    mod0.absresi <- lm(absresi ~ 1)
+    trendabsPi <- anova(modquad.absresi, mod0.absresi)[[6]][2]
     
     
     if (progressbar)
@@ -410,7 +419,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     
     return(c(indmodeli, nbpari, b.i, c.i, d.i, e.i, f.i, SDres.i,
              AIClini, AICExpoi, AICHilli, AICLprobiti, AICLGaussi, 
-             AICGaussi,trendPi))
+             AICGaussi,trendPi,trendabsPi))
     
   } ##################################### and of fitoneitem
   
@@ -435,22 +444,33 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   dres <- as.data.frame(t(res))
   colnames(dres) <- c("model", "nbpar", "b", "c", "d", "e", "f", "SDres",
                       "AIC.L", "AIC.E", "AIC.H", "AIC.lP", "AIC.lGP", "AIC.GP",
-                      "trendP")
+                      "trendP", "trendabsP")
 
   dres <- cbind(data.frame(id = row.names(data)[selectindex], 
                            irow = selectindex, 
                            adjpvalue = adjpvalue),
                            dres)
+  # correction of dres$trendP and dres$trendabsP
+  # using Bejamini Hochberg method
+  # !!!!!!!!!!!!!!!!!! This correction should be in filter !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  dres$resimeantrendadjP <- p.adjust(dres$trendP, method = "BH")
+  dres$resivartrendadjP <- p.adjust(dres$trendabsP, method = "BH")
+  
     
   # removing of null models (const, model no 7) and 
   # fits eliminated by the quadratic trend test on residuals
-  lines.success <- (dres$model != 7) & 
-    ((dres$trendP > 0.05) | is.na(dres$trendP))
-  # is.na(trendP because anova of two models with very close RSS
-  # may return NA for pvalue)
+  if (postfitfilter)
+  {
+    lines.success <- (dres$model != 7) & 
+      ((dres$trendP > 0.05) | is.na(dres$trendP))
+    # is.na(trendP because anova of two models with very close RSS
+    # may return NA for pvalue)
+  } else
+  {
+    lines.success <- (dres$model != 7) 
+  }
   
-  # dres <- dres[(dres$model != 7) & 
-  #                ((dres$trendP > 0.05) | is.na(dres$trendP)) , ]
+  
   dres.failure <- dres[!lines.success, ]
   dfail <- dres.failure[, c("id", "irow", "adjpvalue")]
   dfail$cause <- character(length = nrow(dfail))
@@ -463,8 +483,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   nselect <- nrow(dres)
   
   dc <- dres[, c("id", "irow", "adjpvalue", "model", "nbpar", "b", "c", "d", "e", "f", "SDres")]
-
-  # Model names in the order of indmodel
+  dresitests <- dres[, c("resimeantrendadjP", "resivartrendadjP")]
   modelnames <- c("Gauss-probit", "log-Gauss-probit", "Hill", "log-probit", "exponential", "linear")
   dc$model <- modelnames[dc$model] 
   
@@ -647,7 +666,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   
   reslist <- list(fitres = dc, omicdata = itemselect$omicdata,  
                   information.criterion = information.criterion, information.criterion.val = dAIC,
-                  n.failure = n.failure, unfitres = dfail) 
+                  n.failure = n.failure, unfitres = dfail, 
+                  residualtrendtests = dresitests ) 
   
   return(structure(reslist, class = "drcfit"))
 }

@@ -12,6 +12,7 @@ Fits dose reponse models to responsive items.
 \usage{
 drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
                   information.criterion = c("AIC", "BIC"),
+                  postfitfilter = TRUE,
                    progressbar = TRUE, saveplot2pdf = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
 
@@ -34,6 +35,10 @@ choice) or \code{"log-probit"}.}
 
 \item{information.criterion}{The information criterion used to select the best fit model, \code{"AIC"} (default
 choice) or \code{"BIC"}.}
+
+\item{postfitfilter}{If \code{TRUE} fits with significant trends on residuals 
+(showing a global significant quadratic trend of the residuals
+as a function of the dose (in rank-scale)) are considered as failures and so eliminated.}
 
 \item{progressbar}{If \code{TRUE} a progress bar is used to follow the fitting process.}
 
@@ -137,6 +142,10 @@ dose value at which their extremum is reached is at zero.
    for which no successful fit is reached (one line per item) sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The different columns correspond to the identifier of each item (\code{id}), the row number of this item in the initial data set (\code{irow}), the adjusted p-value of the selection step (\code{adjpvalue}), and code for the reason of the fitting failure (\code{cause},
    equal to \code{"constant.model"} if the best fit model is a constant model or 
    \code{"trend.in.residuals"} if the best fit model is rejected due to quadratic trend on residuals.)}
+   
+    \item{residualtrendtests}{ Benjamini Hochberg adjusted p-values of the trend test performed on residuals,
+    on the mean trend and on the variance trend. The first one tests a global significant quadratic trend of the         residuals as a function of the dose in rank-scale and the second one a global significant quadratic trend of       the residuals in absolute value as a function of the dose in rank-scale.}
+   
 
 }
 
@@ -226,6 +235,7 @@ table(f$unfitres$cause)
 # Plot of the data corresponding to unsuccessful fits
 # due to selected constant model
 targetplot(f$unfitres$id[f$unfitres$cause == "constant.model"], f)
+# due to trend in residuals
 targetplot(f$unfitres$id[f$unfitres$cause == "trend.in.residuals"], f)
 
 # (3) Comparison of parallel and non paralell implementations on a 
