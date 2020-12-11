@@ -38,7 +38,8 @@ choice) or \code{"BIC"}.}
 
 \item{postfitfilter}{If \code{TRUE} fits with significant trends on residuals 
 (showing a global significant quadratic trend of the residuals
-as a function of the dose (in rank-scale)) are considered as failures and so eliminated.}
+as a function of the dose (in rank-scale)) are considered as failures and so eliminated.
+It is strongly recommended to let it at \code{TRUE}, its default value.}
 
 \item{progressbar}{If \code{TRUE} a progress bar is used to follow the fitting process.}
 
@@ -143,8 +144,10 @@ dose value at which their extremum is reached is at zero.
    equal to \code{"constant.model"} if the best fit model is a constant model or 
    \code{"trend.in.residuals"} if the best fit model is rejected due to quadratic trend on residuals.)}
    
-    \item{residualtrendtests}{ Benjamini Hochberg adjusted p-values of the trend test performed on residuals,
-    on the mean trend and on the variance trend. The first one tests a global significant quadratic trend of the         residuals as a function of the dose in rank-scale and the second one a global significant quadratic trend of       the residuals in absolute value as a function of the dose in rank-scale.}
+    \item{residualtests}{A data frame of P-values of the tests performed on residuals,
+    on the mean trend (\code{resimeantrendP} ) and on the variance trend (\code{resivartrendP}). The first one tests a global significant quadratic trend of the residuals as a function of the dose in rank-scale (used to
+    eliminate unreliable fits) and the second one a global significant quadratic trend of the residuals in absolute value as a function of the dose in rank-scale
+    (used to alert in case of heteroscedasticity).}
    
 
 }

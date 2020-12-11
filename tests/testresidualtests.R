@@ -4,6 +4,7 @@ visualize <- FALSE # put to TRUE for a manual check of plots
 
 if (visualize)
 {
+  ### test on microarray data ######################
   datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
   
   (o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
@@ -38,13 +39,38 @@ if (visualize)
   
   targetplot(itemseliminatedinf, f2)
   
-  f2$residualtrendtests
+  f2$residualtests
   (itemswithmeantrendinf2 <- 
-      f2$fitres$id[f2$residualtrendtests$resimeantrendadjP < 0.05])
-  targetplot(itemswithmeantrendinf2, f2)
+      f2$fitres$id[f2$residualtests$resimeantrendP < 0.05])
+  targetplot(itemswithmeantrendinf2[1:20], f2)
   
   (itemswithvartrendinf2 <- 
-      f2$fitres$id[f2$residualtrendtests$resivartrendadjP < 0.05])
-  targetplot(itemswithvartrendinf2, f2)
+      f2$fitres$id[f2$residualtests$resivartrendP < 0.05])
+  targetplot(itemswithvartrendinf2[1:20], f2)
   
+  (itemsbothPB <- f2$fitres$id[f2$residualtests$resimeantrendP < 0.05 
+                              & f2$residualtests$resivartrendP < 0.05])
+  ### test on RNAseq data #################
+  data(Zhou_kidney_pce)
+  d <- Zhou_kidney_pce
+  (o <- RNAseqdata(d))
+  (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
+  (f <- drcfit(s_quad, progressbar = TRUE))
+  # (f <- drcfit(s_quad, progressbar = FALSE, parallel = "snow", ncpus = 4))
+  
+  # count the number of unsuccessful fits for each cause
+  table(f$unfitres$cause)
+  
+  # Plot of the data corresponding to unsuccessful fits
+  targetplot(f$unfitres$id[f$unfitres$cause == "constant.model"], f)
+  targetplot(f$unfitres$id[f$unfitres$cause == "trend.in.residuals"], f)
+  nrow(f$fitres)
+  nrow(f$unfitres)
+  
+  which(f$residualtests$resivartrendP < 0.05)
+  # (itemswithvartrendinf <- 
+  #     f$fitres$id[f$residualtests$resivartrendP < 0.05])
+  # targetplot(itemswithvartrendinf, f)
+  
+ 
 }

@@ -402,14 +402,14 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     resi <- residuals(fit)
     modquad.resi <- lm(resi ~ doseranks + I(doseranks^2))
     mod0.resi <- lm(resi ~ 1)
-    trendPi <- anova(modquad.resi, mod0.resi)[[6]][2]
+    resimeantrendPi <- anova(modquad.resi, mod0.resi)[[6]][2]
  
     # diagnostics on absolute value of residuals - homoscedasticity ?
     # (quadratic trend on abs(residuals)) 
     absresi <-abs(resi)
     modquad.absresi <- lm(absresi ~ doseranks + I(doseranks^2))
     mod0.absresi <- lm(absresi ~ 1)
-    trendabsPi <- anova(modquad.absresi, mod0.absresi)[[6]][2]
+    resivartrendPi <- anova(modquad.absresi, mod0.absresi)[[6]][2]
     
     
     if (progressbar)
@@ -419,7 +419,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     
     return(c(indmodeli, nbpari, b.i, c.i, d.i, e.i, f.i, SDres.i,
              AIClini, AICExpoi, AICHilli, AICLprobiti, AICLGaussi, 
-             AICGaussi,trendPi,trendabsPi))
+             AICGaussi,resimeantrendPi,resivartrendPi))
     
   } ##################################### and of fitoneitem
   
@@ -444,17 +444,19 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   dres <- as.data.frame(t(res))
   colnames(dres) <- c("model", "nbpar", "b", "c", "d", "e", "f", "SDres",
                       "AIC.L", "AIC.E", "AIC.H", "AIC.lP", "AIC.lGP", "AIC.GP",
-                      "trendP", "trendabsP")
+                      "resimeantrendP", "resivartrendP")
 
   dres <- cbind(data.frame(id = row.names(data)[selectindex], 
                            irow = selectindex, 
                            adjpvalue = adjpvalue),
                            dres)
-  # correction of dres$trendP and dres$trendabsP
-  # using Bejamini Hochberg method
-  # !!!!!!!!!!!!!!!!!! This correction should be in filter !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  dres$resimeantrendadjP <- p.adjust(dres$trendP, method = "BH")
-  dres$resivartrendadjP <- p.adjust(dres$trendabsP, method = "BH")
+  
+  # correction of dres$resimeantrendP and dres$resivartrendP
+  # using Benjamini Hochberg method
+  # not done to be more cautious and alert about potential heteroscedasticity pb
+  # and eliminate bad fits
+  # dres$resimeantrendadjP <- p.adjust(dres$resimeantrendP, method = "BH")
+  # dres$resivartrendadjP <- p.adjust(dres$resivartrendP, method = "BH")
   
     
   # removing of null models (const, model no 7) and 
@@ -462,8 +464,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   if (postfitfilter)
   {
     lines.success <- (dres$model != 7) & 
-      ((dres$trendP > 0.05) | is.na(dres$trendP))
-    # is.na(trendP because anova of two models with very close RSS
+      ((dres$resimeantrendP > 0.05) | is.na(dres$resimeantrendP))
+    # is.na(resimeantrendP because anova of two models with very close RSS
     # may return NA for pvalue)
   } else
   {
@@ -483,7 +485,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   nselect <- nrow(dres)
   
   dc <- dres[, c("id", "irow", "adjpvalue", "model", "nbpar", "b", "c", "d", "e", "f", "SDres")]
-  dresitests <- dres[, c("resimeantrendadjP", "resivartrendadjP")]
+  dresitests <- dres[, c("resimeantrendP", "resivartrendP")]
   modelnames <- c("Gauss-probit", "log-Gauss-probit", "Hill", "log-probit", "exponential", "linear")
   dc$model <- modelnames[dc$model] 
   
@@ -667,7 +669,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   reslist <- list(fitres = dc, omicdata = itemselect$omicdata,  
                   information.criterion = information.criterion, information.criterion.val = dAIC,
                   n.failure = n.failure, unfitres = dfail, 
-                  residualtrendtests = dresitests ) 
+                  residualtests = dresitests ) 
   
   return(structure(reslist, class = "drcfit"))
 }
@@ -684,6 +686,12 @@ print.drcfit <- function(x, ...)
   if (x$n.failure > 0)
     cat(x$n.failure,"dose-response curves out of ",nfirstselect, " previously selected were removed
         because no model could be fitted reliably.\n")
+  ncaseheterosced <- length(which(x$residualtests$resivartrendP < 0.05))
+  ntot <- nrow(x$residualtests)
+  pc.heterosced <- round(ncaseheterosced / ntot * 100)
+  if (pc.heterosced > 20)
+    cat(pc.heterosced,"% of the fitted dose-response curves show a significant heteroscedasticity. 
+        (non constant variance).\n")
   cat("Distribution of the chosen models among the ",nsucces," fitted dose-response curves :\n")
   print(tfit)
   cat("Distribution of the trends (curve shapes) among the ",nsucces," fitted dose-response curves :\n")
