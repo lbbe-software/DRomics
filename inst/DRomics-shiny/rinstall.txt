@@ -1,4 +1,4 @@
-update.packages(ask = FALSE, checkBuild = TRUE)
+update.packages(repos = "http://cran.univ-lyon1.fr", ask = FALSE, checkBuild = TRUE)
 if(!requireNamespace("DESeq2", quietly = TRUE)) {
     if(!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
     BiocManager::install("DESeq2", ask = FALSE)
