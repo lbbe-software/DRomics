@@ -1,22 +1,23 @@
-\name{metabolomicdata}
+\name{continuousomicdata}
+\alias{continuousomicdata}
 \alias{metabolomicdata}
-\alias{print.metabolomicdata}
-\alias{plot.metabolomicdata}
-\title{Import and check of metabolomic data}
+\alias{print.continuousomicdata}
+\alias{plot.continuousomicdata}
+\title{Import and check of continuous omic data (e.g. metabolomic data)}
 
 \description{
-Metabolomic data are imported from a .txt file 
+Metabolomic or other continuous omics data are imported from a .txt file 
 (internally imported using the function \code{\link{read.table}})
 and checked or from a R object of class \code{data.frame}
 (see the description 
 of argument \code{file} for the required format
 of data). 
 No normalization nor transformation is provided in this function.
-The pretreatment of metabolomic data must be done before importation of data, 
-and data must be imported in log scale,
+The pretreatment of such continuous omic data data must be done before importation of data, 
+and data must be imported in log scale if needed (imperative for example for metabolomic data),
 so that they can be directly modelled using a normal 
 error model. This strong hypothesis is required both for selection of items and for dose-reponse modelling.
-A basic procedure for this pre-treatment of metabolomic data could follow
+As an example, a basic procedure for this pre-treatment of metabolomic data could follow
 the three steps described thereafter:
 i) removing of metabolites for which the proportion of missing data 
   (non detections) across all the samples is too high 
@@ -32,10 +33,11 @@ we recommend to do it before those three previously decribed steps.
 }
 
 \usage{
+continuousomicdata(file, check = TRUE)
 metabolomicdata(file, check = TRUE)
 
-\method{print}{metabolomicdata}(x, \dots)
-\method{plot}{metabolomicdata}(x, \dots)
+\method{print}{continuousomicdata}(x, \dots)
+\method{plot}{continuousomicdata}(x, \dots)
 }
 
 \arguments{
@@ -56,7 +58,7 @@ alternatives are illustrated below in examples.}
 
 \item{check}{If TRUE the format of the input file is checked.}
 
-\item{x}{An object of class \code{"metabolomic"}.}
+\item{x}{An object of class \code{"continuousomicdata"}.}
 
 \item{\dots}{ further arguments passed to print or plot functions.}
 }
@@ -70,10 +72,20 @@ that should help the user to check that the coding of data is correct :
 the tested doses (or concentrations), 
 the number of replicates for each dose, the number of items and the identifiers 
 of the first 20 items. 
+
+\code{metabolomicdata()} is the first name we gave to this function. 
+We renamed it \code{continuousomicdata} (while keeping the first name available) 
+to offer its use to other
+continuous omic data such as proteomics data or RT-QPCR data. Nevertheless
+one should take care of the scale in which such data are imported in DRomics.
+A transformation may be needed to enable the use of a normal error model 
+in each step of the DRomics workflow (from selection of items to modelling and 
+BMD calculation)
 }
 
 \value{ 
-   \code{metabolomicdata} returns an object of class "metabolomicdata", a list with 5 components:
+   \code{continuousomicdata()} returns an object of class "continuousomicdata", 
+   a list with 5 components:
     \item{data}{ the numeric matrix of responses of each item in each replicate
   (one line per item, one column per replicate)  }
 
@@ -90,15 +102,16 @@ of the first 20 items.
     of the corresponding replicates) (one line per item, one column per unique value 
     of the dose}
 
-  The print of a \code{metabolomic} object gives the tested doses (or concentrations) 
+  The print of a \code{continuousomicdata} object gives the tested doses (or concentrations) 
   and number of replicates for each dose, the number of items, the identifiers 
   of the first 20 items (for check of good coding of data) and the normalization method.
-   The plot of a \code{metabolomic} object shows the data distribution for each dose or concentration and replicate.
+   The plot of a \code{continuousomicdata} object shows the data distribution for each dose or concentration and replicate.
 }
 
 \seealso{
     See  \code{\link{read.table}} the function used to import data, and
-    \code{\link{RNAseqdata}} and \code{\link{microarraydata}} for other types of data.}
+    \code{\link{RNAseqdata}}, \code{\link{microarraydata}} and
+    \code{\link{continuousanchoringdata}}for other types of data.}
 
 \author{ 
 Marie-Laure Delignette-Muller
@@ -110,9 +123,15 @@ Marie-Laure Delignette-Muller
 #
 datafilename <- system.file("extdata", "metabolo_sample.txt", package = "DRomics")
 
-o <- metabolomicdata(datafilename, check = TRUE)
+o <- metabolomicdata(datafilename)
+# equivalent code
+o <- continuousomicdata(datafilename)
 print(o)
 plot(o)
+
+# if you want to skip the check of data
+o <- continuousomicdata(datafilename, check = FALSE)
+
 
 # If you want to use your own data set just replace datafilename, 
 # the first argument of metabolomicdata(), 
@@ -127,7 +146,7 @@ plot(o)
 # An example using the complete data set
 # Scenedesmus_metab (see ?Scenedesmus for details)
 data(Scenedesmus_metab)
-(o <- metabolomicdata(Scenedesmus_metab))
+(o <- continuousomicdata(Scenedesmus_metab))
 plot(o)
 
 

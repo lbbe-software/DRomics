@@ -9,6 +9,9 @@ of two arguments to bmdcalc, minBMD and ratio2switchinlog.
 - Add of two columns in the output of bmdcalc (BMR.zSD and BMR.xfold)
 - Add of a function plotfit2pdf() to plot all fits (or residual plots)
 in a pdf file, using the raw scale or the log scale of the dose
+- Replacement of the class 'metabolomicdata' by the class 'continuousomicdata'
+and add of a function continuousomicdata() that is called by metabolomicdata()
+but could be used on other types of continuous omics data such as proteomics data.
 
 Version 2.1-0 
 =============

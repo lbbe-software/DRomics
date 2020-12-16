@@ -1,6 +1,12 @@
 ### import, check metabolomic data
+### or other continuous omic data
 
 metabolomicdata <- function(file, check = TRUE)
+{
+  continuousomicdata(file, check = check)
+}
+  
+continuousomicdata <- function(file, check = TRUE)
 {
   if (is.data.frame(file))
   {
@@ -25,12 +31,13 @@ metabolomicdata <- function(file, check = TRUE)
   if (any(data > 100))
     warning(strwrap(prefix = "\n", initial = "\n",
       "Your data contain high values (> 100). 
-      Make sure that your data (metabolomic signal) are in log-scale.\n"))
+      Make sure that your data are in a reasonable scale 
+      (e.g. log-scale for metabolomic signal).\n"))
   if (nrowd < 100)
     warning(strwrap(prefix = "\n", initial = "\n",
       "Your dataset contains less than 100 lines. Are you sure you really
-      work on metabolomics data ? This function should
-      not be used with another type of data."))
+      work on omic data ? If the different lines of your data set contain
+      different endpoints you should use the function continuousanchoringdata()."))
   
   if (check)
   {
@@ -39,8 +46,8 @@ metabolomicdata <- function(file, check = TRUE)
       stop("All the columns except the first one must be numeric with the numeric 
       dose in the firt line and the numeric response of each item in the other lines.")
     warning(strwrap(prefix = "\n", initial = "\n", 
-      "We recommend you to check that your metabolomics data were correctly pretreated
-      before importation. In particular data (metabolomic signal)
+      "We recommend you to check that your omic data were correctly pretreated
+      before importation. In particular data (e.g. metabolomic signal)
       should have been log-transformed, without replacing 0 values by NA values
       (consider using the half minimum method instead for example). \n"))
   }
@@ -51,7 +58,7 @@ metabolomicdata <- function(file, check = TRUE)
   (nitems <- nrow(data))
   
   # control of the design
-  if (any(dose) < 0)
+  if (any(dose < 0))
     stop("DRomics cannot be used with negative values of doses.")
   design <- table(dose, dnn = "")
   if (length(design) < 4)
@@ -76,14 +83,14 @@ metabolomicdata <- function(file, check = TRUE)
   reslist <- list(data = data, dose = dose, item = item, 
                   design = design, data.mean = data.mean)  
   
-  return(structure(reslist, class = "metabolomicdata"))
+  return(structure(reslist, class = "continuousomicdata"))
 }
 
 
-print.metabolomicdata <- function(x, ...)
+print.continuousomicdata <- function(x, ...)
 {
-  if (!inherits(x, "metabolomicdata"))
-    stop("Use only with 'metabolomic' objects.")
+  if (!inherits(x, "continuousomicdata"))
+    stop("Use only with 'continuousomicdata' objects.")
   
   cat("Elements of the experimental design in order to check the coding of the data :\n")
   cat("Tested doses and number of replicates for each dose:\n")
@@ -101,15 +108,15 @@ print.metabolomicdata <- function(x, ...)
   }
 }
 
-plot.metabolomicdata <- function(x, ...) 
+plot.continuousomicdata <- function(x, ...) 
 {
-  if (!inherits(x, "metabolomicdata"))
-    stop("Use only with 'metabolomicdata' objects.")
+  if (!inherits(x, "continuousomicdata"))
+    stop("Use only with 'continuousomicdata' objects.")
 
   def.par <- par(no.readonly = TRUE)
     par(xaxt = "n")
     boxplot(x$data, xlab = "Samples", ylab = "Signal", 
-            main = paste("Metabolomic data"), ...) 
+            main = paste("Continuous omics data"), ...) 
   par(def.par)    
 }
 

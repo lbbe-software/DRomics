@@ -1,4 +1,4 @@
-### import, check metabolomic data
+### import, check continuous anchoring data
 
 continuousanchoringdata <- function(file, check = TRUE)
 {
@@ -41,7 +41,7 @@ continuousanchoringdata <- function(file, check = TRUE)
   (nitems <- nrow(data))
   
   # control of the design
-  if (any(dose) < 0)
+  if (any(dose < 0))
     stop("DRomics cannot be used with negative values of doses.")
   design <- table(dose, dnn = "")
   if (length(design) < 4)

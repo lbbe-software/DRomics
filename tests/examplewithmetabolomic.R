@@ -4,7 +4,7 @@ doboot <- FALSE
 
 # importation and check of metabolomic data
 datafilename <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
-(o <- metabolomicdata(datafilename, check = TRUE))
+(o <- continuousomicdata(datafilename, check = TRUE))
 if (visualize)
 plot(o)
 

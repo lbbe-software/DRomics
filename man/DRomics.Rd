@@ -4,14 +4,16 @@
 \title{Overview of the \pkg{DRomics} package}
 
 \description{
-DRomics provides several functions for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 5, and the more the better) rather than a great number of replicates (no need of three replicates)
-DRomics deals with transcriptomics and metabolomics data, and with 
+DRomics provides several functions for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 5, and the more the better) rather than a great number of replicates (no need of replicates).
+DRomics deals with transcriptomics (microarray and RNAseq) and metabolomics data
+(or other continuous omics data such as proteomics data), and with 
 apical data (as long as they are continuous and follow a normal distribution for each dose or concentration, with a common standard error) in order to offer the possibility to link the responses across biological levels (from molecular to apical observations) using a common method.
 
 DRomics provides eight functions for the main workflow:
 \itemize{
 \item \code{\link{microarraydata}}, \code{\link{RNAseqdata}}, 
-\code{\link{metabolomicdata}} and \code{\link{continuousanchoringdata}} 
+\code{\link{metabolomicdata}} that is equivalent to 
+\code{\link{continuousomicdata}} and \code{\link{continuousanchoringdata}} 
 to check the conformity of the dataset, 
 normalize and transform data depending of the type of data (see next paragraph for details),
 \item \code{\link{itemselect}} to select monotonic and biphasic significant responses,
@@ -34,27 +36,33 @@ by group and
 if available.
 }
 
-The available version supports four types of data and should not be used 
-with other types of data:
+The available version supports four types of data :
 \itemize{
 \item Single-channel microarray data (previously transformed in log2)
 that must be imported  using the function \code{\link{microarraydata}}, 
 \item RNAseq (in raw counts, so integer values) that must be imported using the function 
 \code{\link{RNAseqdata}}, 
-\item metabolomic data that must be imported using the function 
-\code{\link{metabolomicdata}} and
+\item continuous omics data such as metabolomic data that must be imported using the function 
+\code{\link{metabolomicdata}} or \code{\link{continuousomicdata}} and
 \item anchoring apical data that must be imported using the function 
 \code{\link{continuousanchoringdata}}.
 
-For metabolomic data, all the pretreatment steps must be done before their importation
-and they should be imported in log scale
-so that they can be directly fitted by least-square regression
-(assuming a normal error model valid)
-without any transformation. 
+For metabolomics or other continuous omics data, all the pretreatment steps must be done before their importation
+and they should be imported in a scale that enables a direct fit by least-square regression
+(assuming a normal error model valid). For example the metabolomic data should
+imperatively be imported in log scale. 
 
-Anchoring apical data must be continuous and imported
+Anchoring apical data must be continuous and also imported
 in a scale that enables the use of least-square regression
 (assuming a normal error model valid).
+
+The difference between continuous omics data and continuous anchoring data
+is that in omics data the different lines correspond to the measurements of the
+same variable (same type of signal) on different items, while in 
+anchoring data the different lines may correspond to measurements of different
+variables (different continuous endpoints), that in particular may have very 
+different standard deviations.
+
 }
 
 
@@ -68,7 +76,8 @@ the workflow results with the biological meaning of selected items.
 
 \seealso{
     See \code{\link{microarraydata}}, \code{\link{RNAseqdata}},
-    \code{\link{metabolomicdata}}, \code{\link{continuousanchoringdata}}, 
+    \code{\link{metabolomicdata}}, \code{\link{continuousomicdata}},
+    \code{\link{continuousanchoringdata}}, 
     \code{\link{itemselect}},
     \code{\link{drcfit}}, \code{\link{bmdcalc}}, 
     \code{\link{bmdboot}}, \code{\link{bmdplotwithgradient}},

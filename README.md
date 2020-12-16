@@ -9,7 +9,9 @@ All informations about DRomics can also be found at <a href="https://lbbe.univ-l
 # Overview
 `DRomics` is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 6, and the more the better) rather than a great number of replicates (no need of three replicates). After a first optional step which consists to import, check and if needed normalize/transform the data (step 1), the aim of the proposed workflow is to select monotonic and/or biphasic significantly responsive items (e.g. probes, metabolites) (step 2), to choose the best-fit model among a predefined family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive a benchmark dose or concentration from each fitted curve (step 4).
 
-In the available version, `DRomics` supports single-channel microarray data (in log2 scale), RNAseq data (in raw counts) or metabolomics data (in log scale).
+In the available version, `DRomics` supports single-channel microarray data (in log2 scale), RNAseq data (in raw counts), metabolomics data or other continuous
+omics data and continuous anchoring data (for continuous omics or anchoring data,
+in log scale or a scale that enables the use of a normal error model).
 
 
 # The package 

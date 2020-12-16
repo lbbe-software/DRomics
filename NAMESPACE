@@ -21,10 +21,11 @@ export(RNAseqdata)
 S3method(print, RNAseqdata)
 S3method(plot, RNAseqdata)
 
-#metabolomicdata class
+#continuousomicdata class
 export(metabolomicdata)
-S3method(print, metabolomicdata)
-S3method(plot, metabolomicdata)
+export(continuousomicdata)
+S3method(print, continuousomicdata)
+S3method(plot, continuousomicdata)
 
 #continuousanchoringdata class
 export(continuousanchoringdata)

@@ -109,7 +109,8 @@ and tranformed using functions \code{\link{rlog}} or \code{\link{vst}} of the
     See \code{\link{read.table}} the function used to import data,
     \code{\link{rlog}} and \code{\link{vst}} for details about the 
     transformation methods and 
-    \code{\link{microarraydata}} and \code{\link{metabolomicdata}} for other types of data.
+    \code{\link{microarraydata}}, \code{\link{continuousomicdata}} and
+    \code{\link{continuousanchoringdata}} for other types of data.
 }
 
 \references{ 

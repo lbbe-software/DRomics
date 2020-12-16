@@ -46,7 +46,7 @@ str(Scenedesmus_metab)
 
 # (1.2) import and check of metabolomics data
 #
-(o_metab <- metabolomicdata(Scenedesmus_metab))
+(o_metab <- continuousomicdata(Scenedesmus_metab))
 plot(o_metab)
 
 # (2.1) load of apical data

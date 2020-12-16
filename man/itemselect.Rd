@@ -38,7 +38,7 @@ an ANOVA-type test (see details for further explaination).}
 
 \details{
 The selection of responsive items is performed using the \code{limma} package
-for microarray and metabolomic data, the \code{DESeq2} package for
+for microarray and continuous omics data (such as metabolomics), the \code{DESeq2} package for
 RNAseq data and the \code{lm} function for continuous anchoring data. 
 Three methods are proposed (as described below). Within \code{limma} those methods are implemented using functions \code{\link{lmFit}},  
 \code{\link{eBayes}} and \code{\link{topTable}} with p-values ajusted for multiple 
@@ -85,7 +85,7 @@ All items having a proportion of such tied minimal values above the input argume
   \item{ selectindex }{ the corresponding vector of row indices of selected items in the object omicdata }
 
   \item{omicdata}{The corresponding object of class \code{"microarraydata"},
-  \code{"RNAseqdata"}, \code{"metabolomicdata"} or \code{"continuousanchoringdata"}
+  \code{"RNAseqdata"}, \code{"continuousomicdata"} or \code{"continuousanchoringdata"}
   given in input.}
 
   \item{select.method}{The selection method given in input.}

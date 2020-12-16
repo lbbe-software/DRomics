@@ -5,11 +5,12 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
   # Checks
   if (!(inherits(omicdata, "microarraydata") | 
         inherits(omicdata, "RNAseqdata") |
-        inherits(omicdata, "metabolomicdata") |
+        inherits(omicdata, "continuousomicdata") |
         inherits(omicdata, "continuousanchoringdata")))
-    stop("Use only with 'microarraydata', 'RNAseqdata', 'metabolomicdata' or 
+    stop("Use only with 'microarraydata', 'RNAseqdata', 'continuousomicdata' or 
     'continuousanchoringdata' objects, respectively
     created with functions 'microarraydata()', 'RNAseqdata()', 'metabolomicdata()'
+    or 'continuousomicdata()'
     and 'continuousanchoringdata()'.")
   select.method <- match.arg(select.method, c("quadratic", "linear", "ANOVA"))
   if (!is.numeric(FDR))
@@ -27,7 +28,7 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
   irow <- 1:length(item)
   
   if (inherits(omicdata,"microarraydata") | 
-      inherits(omicdata,"metabolomicdata"))
+      inherits(omicdata,"continuousomicdata"))
   {
     data <- omicdata$data
     if (select.method == "quadratic")
