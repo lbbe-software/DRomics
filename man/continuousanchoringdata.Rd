@@ -84,7 +84,7 @@ the number of replicates for each dose, the number of endpoints.
 
 \seealso{
     See  \code{\link{read.table}} the function used to import data, and
-    \code{\link{microarraydata}}, \code{\link{RNAseqdata}} and \code{\link{microarraydata}} for other types of data.}
+    \code{\link{microarraydata}}, \code{\link{RNAseqdata}} and \code{\link{continuousomicdata}} for other types of data.}
 
 \author{ 
 Marie-Laure Delignette-Muller

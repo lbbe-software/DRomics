@@ -110,8 +110,8 @@ BMD calculation)
 
 \seealso{
     See  \code{\link{read.table}} the function used to import data, and
-    \code{\link{RNAseqdata}}, \code{\link{microarraydata}} and
-    \code{\link{continuousanchoringdata}}for other types of data.}
+    \code{\link{microarraydata}}, \code{\link{RNAseqdata}} and
+    \code{\link{continuousanchoringdata}} for other types of data.}
 
 \author{ 
 Marie-Laure Delignette-Muller
