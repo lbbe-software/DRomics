@@ -16,7 +16,7 @@ bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
                                    facetby, shapeby, npoints = 50, 
                                    line.size, point.size = 1,
                                    ncol4faceting, limits4colgradient,
-                                   lowercol = "darkgreen", uppercol = "darkred",
+                                   lowercol = "darkblue", uppercol = "darkred",
                                    add.label, label.size = 2,
                                    BMD_log_transfo = FALSE)
 }
@@ -198,7 +198,7 @@ bmdplotwithgradient(extendedres, BMDtype = "zSD",
                       facetby = "path_class", 
                        shapeby = "trend",
                        line.size = 3, 
-                       lowercol = "darkblue", uppercol = "orange") 
+                       lowercol = "darkgreen", uppercol = "orange") 
 
 # (2.d) The same example with only lipid metabolism pathclass
 # and identification of the metabolites
