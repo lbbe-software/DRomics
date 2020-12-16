@@ -68,7 +68,8 @@ server <- function(input, output, session) {
   observe({
     if ((inTypeData() == 'microarraydata' & is.null(input$datafile_microarray)) |
         (inTypeData() == 'rnaseqdata' & is.null(input$datafile_rnaseq)) |
-        (inTypeData() == 'metabolomicdata' & is.null(input$datafile_metabolomic))) {
+        (inTypeData() == 'metabolomicdata' & is.null(input$datafile_metabolomic)) |
+        (inTypeData() == 'continuousanchoringdata' & is.null(input$datafile_anchoring))) {
       shinyjs::disable("buttonDrcfit")
     }else{
       shinyjs::enable("buttonDrcfit")
@@ -246,6 +247,8 @@ server <- function(input, output, session) {
       req(input$datafile_rnaseq)
     } else if(inTypeData() == 'metabolomicdata') {
       req(input$datafile_metabolomic)
+    } else if(inTypeData() == 'continuousanchoringdata') {
+      req(input$datafile_anchoring)
     }
     
     text <- c("library(DRomics)",
@@ -255,7 +258,10 @@ server <- function(input, output, session) {
                                      paste0("microarraydata('", input$datafile_microarray$name, "', check = TRUE, norm.method = '", input$normMethod_microarray, "')"), 
                                      ifelse(input$typeData == 'rnaseqdata', 
                                             paste0("RNAseqdata('", input$datafile_rnaseq$name, "', check = TRUE, transfo.method = '", input$transfoMethod_rnaseq, "', round.counts = TRUE)"), 
-                                            paste0("metabolomicdata('", input$datafile_metabolomic$name, "', check = TRUE)")))),
+                                            ifelse(input$typeData == 'metabolomicdata', 
+                                                   paste0("metabolomicdata('", input$datafile_metabolomic$name, "', check = TRUE)"),
+                                                   paste0("continuousanchoringdata('", input$datafile_anchoring$name, "', check = TRUE)")
+                                                   )))),
               "print(o)",
               "plot(o)",
               "",
@@ -312,6 +318,8 @@ server <- function(input, output, session) {
       req(input$datafile_rnaseq)
     } else if(inTypeData() == 'metabolomicdata') {
       req(input$datafile_metabolomic)
+    } else if(inTypeData() == 'continuousanchoringdata') {
+      req(input$datafile_anchoring)
     }
     
     text <- c("# Few lines of R script to go further using the package",
