@@ -689,7 +689,7 @@ print.drcfit <- function(x, ...)
   ncaseheterosced <- length(which(x$residualtests$resivartrendP < 0.05))
   ntot <- nrow(x$residualtests)
   pc.heterosced <- round(ncaseheterosced / ntot * 100)
-  if (pc.heterosced > 20)
+  if (pc.heterosced > 50)
     cat(pc.heterosced,"% of the fitted dose-response curves show a significant heteroscedasticity. 
         (non constant variance).\n")
   cat("Distribution of the chosen models among the ",nsucces," fitted dose-response curves :\n")

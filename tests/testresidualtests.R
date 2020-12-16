@@ -72,5 +72,33 @@ if (visualize)
   #     f$fitres$id[f$residualtests$resivartrendP < 0.05])
   # targetplot(itemswithvartrendinf, f)
   
- 
+  ### test on metabolomic data #################
+  data(Scenedesmus_metab)
+  (o <- continuousomicdata(Scenedesmus_metab))
+  plot(o)
+  (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
+  (f <- drcfit(s_quad, progressbar = TRUE))
+  f$unfitres
+  
+  which(f$residualtests$resivartrendP < 0.05)
+  (itemswithvartrendinf <- 
+       f$fitres$id[f$residualtests$resivartrendP < 0.05])
+   targetplot(itemswithvartrendinf, f)
+  
+   ### test on metabolomic data not in log scale #################
+   data(Scenedesmus_metab)
+   metabnotinlog <- Scenedesmus_metab
+   metabnotinlog[-1, -1] <- exp(metabnotinlog[-1, -1]) 
+   
+   (o <- continuousomicdata(metabnotinlog))
+   plot(o)
+   (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
+   (f <- drcfit(s_quad, progressbar = TRUE))
+   f$unfitres
+   
+   which(f$residualtests$resivartrendP < 0.05)
+   (itemswithvartrendinf <- 
+       f$fitres$id[f$residualtests$resivartrendP < 0.05])
+   targetplot(itemswithvartrendinf, f)
+   
 }
