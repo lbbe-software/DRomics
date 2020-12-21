@@ -1,0 +1,590 @@
+---
+title: Overview of the DRomics package
+author: Marie Laure Delignette Muller, Elise Billoir, Floriane Larras
+date: '`r Sys.Date()`'
+output:
+  html_vignette:
+    toc: yes
+    number_sections: yes
+
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Overview of the DRomics package} 
+  %!\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+# bonne entete !!!!!!!!!!!!
+# output:
+#  html_vignette
+require(DRomics)
+set.seed(1234)
+options(digits = 3)
+knitr::opts_chunk$set(echo = TRUE,
+                      eval = TRUE, 
+                      message=FALSE, 
+                      warning=FALSE,
+                      cache=FALSE,
+                      fig.width = 7, 
+                      fig.height = 5)
+```
+
+# Main workflow 
+
+## Step 1: importation, check and normalization / transformation of data if needed
+
+### General format of imported data
+
+Whatever the type of data imported in DRomics,
+data can be imported from a .txt file (e.g. "mydata.txt") containing one row per item,
+with the first column corresponding to the identifier of each item (identifier of the probe, transcript, metabolite, ..., or name of the endpoint for anchoring data), 
+and the other columns giving the responses of the item for each sample. In the first line, after a name for the identifier column, we must have the tested doses or concentrations in a numeric format for the corresponding sample
+(for example, if there are triplicates for each treatment, the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). This file is imported within each DRomics function using the function read.table() with its default field separator (sep argument). Alternatively an R object of class data.frame 
+can be directly given in input, corresponding to the output of read.table(file, header = FALSE) on a file described as above. 
+
+You can see below an example of a RNAseq data set that is available in DRomics both as an R object (named Zhou_kidney_pce) and as a text file named "RNAseq_sample.txt" containing just
+a sample of the previous one.
+
+```{r}
+# Load and look at the first line of the R object
+data(Zhou_kidney_pce)
+nrow(Zhou_kidney_pce)
+head(Zhou_kidney_pce)
+
+# Import the text file just to see what will be automatically imported
+datafilename <- system.file("extdata", "RNAseq_sample.txt", 
+                            package = "DRomics")
+# for your local file datafilename would be just "yourchosenname.txt"
+d <- read.table(file = datafilename, header = FALSE)
+nrow(d)
+head(d)
+```
+
+### Types of data that may be imported in DRomics
+
+DRomics offers the possibility to work on different types of omics
+data (see next paragraph for their description) 
+but also on continuous anchoring data.
+**When working on omics data, all the lines of the dataframe**
+(except the first one coding for the doses or concentrations)
+**correspond the same type of data** 
+(e.g. raw counts for RNAseq data).
+**When working on anchoring data, the different lines** 
+(except the first one coding for the doses or concentrations)
+**correspond to different endpoints that may correspond to different
+types of data** (e.g. biomass, length,..), but all are assumed continuous data
+compatible with a normal error distribution for the 
+selection and modelling steps.
+
+Three types of omics data may be may imported in DRomics using the following functions:
+
++ **RNAseqdata() should be used to import RNAseq as counts of reads**,
++ **microarraydata() should be used to import single-channel microarray data in log2 scale**,
++ **continuousomicdata() should be used to import other continuous omics data** such as metabolomics, proteomics,..., **in a scale that enables the use of a normal error model** 
+in Steps 2 and 3. metabolomicdata() is the former name, but still available, of this function.
+
+In Steps 1 and 2 **count data** are internally analysed using 
+functions of 
+the Bioconductor package **DESeq2** while continuous data 
+(**microarray data and other continuous omics data**) are internally analysed using functions
+of the Bioconductor package **limma**. 
+
+
+### An example with RNAseq data 
+
+```{r}
+RNAseqfilename <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
+```
+
+For RNAseq data, imperatively imported in raw counts, you have to choose the transformation
+method used to stabilize the variance 
+("rlog" or "vst"). "rlog" is recommended and chosen by default but more computer intensive than "vst" (see ?RNAseqdata for details). Whatever the chosen method, data are automatically normalized with respect to library size and transformed in a log2 scale.
+
+
+```{r}
+(o.RNAseq <- RNAseqdata(RNAseqfilename, transfo.method = "rlog"))
+plot(o.RNAseq, cex.main = 0.8, col = "green", range = 1e6)
+```
+
+In the previous example the argument range (internally passed to boxplot)
+is put to a high value just to plot true minimum and maximum
+values and to prevent the automatic plot of many outliers 
+as individual points in the plot of raw counts.
+
+### An example with microarray data 
+
+For single-channel microarray data, imperatively imported in log
+scale (classically log2 scale), you can choose the between array 
+normalization method ("cyclicloess", "quantile", "scale" or "none"). "cyclicloess" is recommended and chosen by default but more computer intensive than the others (see ?microarraydata for details).
+
+
+```{r}
+microarrayfilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+```
+
+
+```{r}
+(o.microarray <- microarraydata(microarrayfilename, norm.method = "cyclicloess"))
+plot(o.microarray, cex.main = 0.8, col = "green")
+
+```
+
+### An example with metabolomic data
+
+```{r}
+metabolofilename <- system.file("extdata", "metabolo_sample.txt", package = "DRomics")
+```
+
+No normalization nor transformation is provided in function continuousomicdata(). The pre-treatment of metabolomic data must be done before importation of data, and data must be imported in log scale, so that they can be directly modelled using a normal error model. This strong hypothesis is required both for selection of items and for dose-reponse modelling.
+
+As an example, a basic procedure for this pre-treatment of metabolomic data could follow the three steps described thereafter: i) removing of metabolites for which the proportion of missing data (non detections) across all the samples is too high (more than 20 to 50 percents according to your tolerance level); ii) retrieving of missing values data using half minimum method (i.e. half of the minimum value found for a metabolite across all samples); iii) log-transformation of values. If a scaling to the total intensity (normalization by sum of signals in each sample) or another normalization is necessary and pertinent, we recommend to do it before those three previously decribed steps.
+
+```{r}
+(o.metabolo <- continuousomicdata(metabolofilename))
+plot(o.metabolo, col = "green",)
+```
+
+We renamed metabolomicdata() to continuousomicdata() (while keeping the first name available) to offer its use to other continuous omic data such as proteomics data or RT-QPCR data. 
+As for metabolomic data, the pretreatment of other continuous omic data data must be done before importation of data, and data must be imported in a scale that enables the use of a 
+normal error model. This strong hypothesis is required both for selection of items and for dose-reponse modelling.
+
+### An example with continuous anchoring apical data 
+
+```{r}
+anchoringfilename <- system.file("extdata", "apical_anchoring.txt", package = "DRomics")
+```
+
+No transformation is provided in function continuousanchoringdata(). If needed the pretreatment of data must be done before importation of data, so that they can be directly modelled using a normal error model. This strong hypothesis is required both for selection of responsive endpoints and for dose-reponse modelling. 
+
+```{r}
+(o.anchoring <- continuousanchoringdata(anchoringfilename))
+plot(o.anchoring)
+```
+
+For such data the plot() function provides a dose-response plot for each endpoint.
+
+## Step 2: selection of significantly responding items
+
+For the second step of the workflow, function itemselect() must be used with the output of the function used in Step 1 as first argument (output of RNAseqdata(), microarraydata(), continuousomicdata() or continuousanchoringdata()). Below is an example with microarray data.
+
+The false discovery rate (FDR) must be chosen (we recommend a value between 0.001 and 0.1 depending of the initial number of items). 
+
+Concerning the method used for selection, we recommend the default choice ("quadratic") for a typical omics dose-response design (many doses/concentrations with few replicates
+per condition). It enables the selection of both monotonic and 
+biphasic dose-responses. If you want to focus on monotonic dose-responses, the "linear" method could be chosen. For a design with a small number of doses/concentrations and many replicates 
+(not an optimal for dose-response modelling), the "ANOVA" method could be preferable.
+
+See ?itemselect and Larras et al. 2018 for details.
+
+```{r}
+(s_quad <- itemselect(o.microarray, select.method = "quadratic", FDR = 0.01))
+
+```
+
+## Step 3: fit of dose-response models, choice of the best fit for each curve
+
+### Fit
+
+For Step 3 the function drcfit() must be simply used with the output of itemselect() as first argument. Description of the fitted models and of the procedure to select the best fit are described in Larras et al. 2018 and in ?drcfit.
+
+As the call to this function may take time, by default a progressbar is provided.
+Some arguments of this function can be used to specify parallel computing to
+accelerate the computation (see ?drcfit for details). 
+
+```{r}
+(f <- drcfit(s_quad, progressbar = FALSE))
+```
+
+In the following you can see the first ten lines of the output dataframe 
+on our example (see ?drcfit for a complete description
+of the columns of the output dataframe.) This output dataframe provides information such as best-fit model, parameter value, coordinates of particular points, and the trend of the curve (among increasing, decreasing, U-shaped, bell-shaped) 
+
+```{r}
+head(f$fitres, 10)
+```
+
+### Plot of fitted curves
+
+By default the plot() function used on the output of the drcfit() function 
+provides the first 20 fitted curves (or the ones you specify using the argument items) with observed points. Fitted curves are represented in red, replicates are
+represented in open circles and means of replicates at each dose/concentration
+are represented by solid circles. All the fitted curves are
+saved in a pdf file (see argument saveplot2pdf in ?drcfit).
+
+```{r}
+plot(f) 
+```
+
+The fitted curves may be represented using a log
+scale for the dose/concentration using argument dose_log_transfo (see ?drcfit for details and examples).
+
+Another specific plot function named targetplot() can be used to
+plot targeted items, whether they were or not selected in step 2 and fitted in step 3. See an example below and details in ?targetplot
+
+```{r}
+targetitems <- c("88.1", "1", "3", "15")
+targetplot(targetitems, f = f)
+```
+
+### Plot of residuals
+
+To check the assumption of normal error model, two types of residual plots can
+be used ("dose_residuals" or "fitted_residuals")
+
+```{r, fig.width = 7, fig.height = 5}
+plot(f, plot.type = "dose_residuals")
+```
+
+
+## Step 4: calculation of x-fold and z-SD benchmark doses 
+
+### Calculation of BMD
+
+Both types of benchmark doses (BMD-zSD and BMD-xfold) are systematically calculated
+for each fitted dose-response curve using the function bmdcalc() with the output
+of the drcfit() function as a first argument. 
+
+The argument z, by default at 1, is used to define the BMD-zSD as the dose at which the response is reaching y0 +/- z * SD, with y0 the level at the control given by the dose-response fitted model and SD the residual standard deviation of the dose-response fitted model. 
+
+The argument x, 
+by default at 10 (for 10%), is used to define the BMD-xfold as the dose at which the response is reaching y0 +/- (x/100) * y0.
+
+```{r}
+(r <- bmdcalc(f, z = 1, x = 10))
+```
+
+In the following you can see the first ten lines of the output dataframe 
+of the function bmdcalc()
+on our example (see ?bmdcalc for a complete description of the
+columns of the output dataframe).
+
+```{r}
+head(r$res, 10)
+```
+
+### Various plots of BMD distribution
+
+The default plot of the output of the bmdcalc() function provides the distribution of benchmark doses as an ECDF
+(Empirical Cumulative Density Function) plot for the chosen BMD ("zSD"" or "xfold"). See an example below.
+
+```{r}
+plot(r, BMDtype = "zSD", plottype = "ecdf") 
+```
+
+Different alternative plots are proposed (see ?bmdcalc for details)
+that can be obtained using the argument plottype to choose the type of plot 
+("ecdf", "hist" or "density") and the argument by to split the
+plot by "trend", "model" or "typology". Below is an example
+of a density plot of BMD-zSD split by trend of dose-response
+curves.
+
+
+```{r}
+plot(r, BMDtype = "zSD", plottype = "density", by = "trend") 
+```
+
+### Plot of BMD distribution with a color gradient for signal intensity
+
+On a BMD ECDF plot one can add of a color gradient for each item coding for 
+the intensity of the signal (after shift of the control signal at 0) as a function of the dose (see ?bmdplotwithgradient for details
+and an example below).
+
+```{r}
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      facetby = "trend", 
+                      shapeby = "model")
+```
+
+## Step 5: calculation of confidence intervals on the BMDs by bootstrap 
+
+Confidence intervals on BMD values can be calculated by bootstrap.
+As the call to this function may take much time, by default a progressbar is provided and some arguments can be used to specify parallel computing to
+accelerate the computation (see ?bmdboot for details).
+
+In the example below a small number of iterations was used to make this vignette quick to compile, but the default value of
+the argument niter (1000) should be considered as a minimal value to
+obtain stable results.
+
+### Bootstrap calculation
+```{r}
+(b <- bmdboot(r, niter = 100, progressbar = FALSE))
+```
+
+This function gives an output corresponding to the output of
+the bmdcalc() function completed with bounds of BMD confidence
+intervals (by default 95% confidence intervals).
+
+```{r}
+head(b$res, 10)
+```
+
+
+### Add of confidence intervals on BMD ECDF plots
+
+The plot() function applied on the output the bmdboot() function
+gives an ECDF plot of the chosen BMD with the confidence interval
+of each BMD (see an example below). By default BMDs with an infinite 
+confidence interval bound are not plotted.
+
+
+```{r}
+plot(b, BMDtype = "zSD", by = "trend") 
+```
+
+# Help for biological interpretation of DRomics outputs
+
+This section illustrates functions of DRomics that are meant to help the biological interpretation of outputs. The idea is to augment the output dataframe with new column(s) bringing biological information such as provided by functional annotation of the items (e.g. KEGG pathway classes or GO terms) then to use this information to organize the visualisation of the DRomics output. 
+
+Below is used an example from a metabolomic data set previously analysed using DRomics. 
+
+## Enrichment of the dataframe of DRomics results with functional annotation {#enrich}
+
+This enrichment is not done using DRomics functions, but relevant R functions such as merge().
+
+An example of how to proceed:
+
+1. **Import the dataframe with DRomics results to be used: the output $res of bmdcalc() or bmdboot() functions from step 4 or 5 of the main DRomics workflow.**
+
+(This step will not be necessary if previous steps are done directly in R using the DRomics package as described previously in this vignette. We did it to take a real example that took a long time to run but from which results are stored in the package.)
+
+```{r}
+   # code to import the file for this example in our package
+resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
+res <- read.table(resfilename, header = TRUE, stringsAsFactors = TRUE)
+
+   # to see the structure of this file
+str(res)
+
+```
+
+2. **Import the dataframe with functional annotation (or any other descriptor/category you want to use, here KEGG pathway classes) of each item present in the 'res' file.**
+
+Examples are embedded in the DRomics package, but be cautious, generally this file must be produced by the user. Each item may have more than one annotation (*i.e.* more than one line). 
+
+```{r}
+   # code to import the file for this example in our package
+annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", 
+                              package="DRomics")
+annot <- read.table(annotfilename, header = TRUE, stringsAsFactors = TRUE)
+
+   # to see the structure of this file
+str(annot)
+
+```
+
+3. **Merging of both previous dataframes in order to obtain a so-called 'extenderes' dataframe gathering, for each item, metrics derived from the DRomics workflow and functional annotation.**
+
+Arguments by.x and by.y of the merge() function 
+indicate the column name in res and annot dataframes, respectively, that must be used for the merging.  
+
+```{r}
+
+annotres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
+head(annotres)
+
+```
+
+## BMD ECDF plot by functional group
+
+### BMD ECDF plot with color gradient split by group defined from functional annotation
+
+Using the function bmdplotwithgradient() and its argument facetby, the BMD plot with color gradient can be split here by KEGG pathway class. (See ?bmdplotwithgradient for more options).
+
+```{r}
+   
+bmdplotwithgradient(annotres, BMDtype = "zSD",
+                     facetby = "path_class", 
+                       shapeby = "trend") 
+```
+
+### the same representation with labels of items (so without shapeby)
+
+The argument add.label set at TRUE will display item identifiers instead of points. 
+
+```{r}
+
+bmdplotwithgradient(annotres, BMDtype = "zSD",
+                     facetby = "path_class", 
+                       add.label = TRUE) 
+```
+
+### BMD ECDF plot with confidence intervals split by group defined from functional annotation
+
+Using the function ecdfplotwithCI() and its arguments by and CI.col, the ECDF plot of BMD_zSD with confidence intervals can be split here by pathway class and with color coding for dose-response trend. (See ?ecdfplotwithCI for more options.)
+
+```{r}
+
+ecdfplotwithCI(variable = annotres$BMD.zSD, 
+               CI.lower = annotres$BMD.zSD.lower, 
+               CI.upper = annotres$BMD.zSD.upper, 
+               by = annotres$path_class,
+               CI.col = annotres$trend) 
+
+```
+                      
+## Sensitivity plot of functional groups
+
+It is also possible to show a summary of BMD values in each pathway/category as a given quantile (argument quantile.prob) using the function ecdfquantileplot(). Moreover, this function will provide information on the number of items involved in each pathway/category. (See ?ecdfquantileplot for more options).
+
+As an example, below is an ECDF plot of quantiles of BMD-zSD calculated here by pathway class. 
+   
+```{r}
+
+ecdfquantileplot(variable = annotres$BMD.zSD, 
+               by = annotres$path_class,
+               quantile.prob = 0.25) 
+```
+
+## Plot of dose-response curves for a specific functional group 
+
+The function curvesplot() can show the dose-response curves for a specific pathway/category with arguments left to the choice of the user. In this example, first only results related to the "lipid metabolism" pathway class are kept. Then, the plot is split by id (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
+   
+```{r}
+LMres <- annotres[annotres$path_class == "Lipid metabolism", ]
+curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
+           colorby = "trend",
+           xmin = 0, xmax = 8) 
+```
+
+# Help for multi-omics approaches 
+
+This section illustrates functions of DRomics that are meant to help the interpretation of outputs by linking several omics levels. The idea is to augment the output dataframe with new column(s) bringing information on the molecular level, then to use this information to organize the visualisation of the DRomics output. 
+
+Below is used an example linking a  transcriptomic (microarray) and a metabolomic data set issued from the same experiment. 
+
+## An example with metabolomics and transcriptomics data for Scenedesmus and triclosan (cf. Larras et al. 2020)
+
+### Enrichment of the dataframes of DRomics results with functional annotation
+
+Following the same steps as [described before for metabolomics](#enrich), below is an example of R code to import the DRomics results for microarray data, and to merge them with information on functional annotation.
+
+```{r}
+# 1. Import the dataframe with DRomics results to be used
+contigresfilename <- system.file("extdata", "triclosanSVcontigres.txt", package="DRomics")
+contigres <- read.table(contigresfilename, header = TRUE, stringsAsFactors = TRUE)
+str(contigres)
+
+# 2. Import the dataframe with functional annotation (or any other descriptor/category you want to use, here KEGG pathway classes) 
+contigannotfilename <- system.file("extdata", "triclosanSVcontigannot.txt", 
+                              package="DRomics")
+contigannot <- read.table(contigannotfilename, header = TRUE, stringsAsFactors = TRUE)
+str(contigannot)
+
+# 3. Merging of both previous dataframes   
+contigextendedres <- merge(x = contigres, y = contigannot, by.x = "id", by.y = "contig")
+# to see the structure of this dataframe
+str(contigextendedres)
+```
+
+The [previouly created](#enrich) metabolomics dataframe (extended results with functional annotation) is renamed for the sake of homogeneity.
+
+```{r}
+metabextendedres <- annotres
+```
+
+### Binding of transcriptomics and metabolomics dataframes
+The next step is the binding of dataframes at both levels adding a variable (named level) coding for the level (here a factor with two levels, metabolites and contigs).
+
+```{r}
+extendedres <- rbind(metabextendedres, contigextendedres)
+extendedres$level <- factor(c(rep("metabolites", nrow(metabextendedres)),
+                              rep("contigs", nrow(contigextendedres))))
+str(extendedres)
+```
+
+## Comparison of results obtained at both molecular levels (metabolites and contigs)
+
+Below are examples of illustrations that can be used to compare the results obtained at several levels of biological organization.
+
+### Frequencies of pathways by molecular levels
+
+Here basic R functions are used to compute and plot frequencies of pathways by molecular levels.
+
+```{r}
+ (t.pathways <- table(extendedres$path_class, extendedres$level)) 
+original.par <- par()
+par(las = 2, mar = c(4,13,1,1))
+barplot(t(t.pathways), beside = TRUE, horiz = TRUE, 
+      cex.names = 0.7, legend.text = TRUE, 
+      main = "Frequencies of pathways")
+```
+
+### Proportions of pathways by molecular levels
+
+Here basic R functions are used to compute and plot proportions of pathways by molecular levels.
+
+```{r}
+(t.prop.pathways <- prop.table(t.pathways, margin = 2)) 
+barplot(t(t.prop.pathways), beside = TRUE, horiz = TRUE, 
+      cex.names = 0.7, legend.text = TRUE, 
+      main = "Proportion of pathways")
+par(original.par)
+```
+
+### ECDF plot of BMD_zSD by pathway using different colors or facets
+
+Here the ggplot2 grammar is used to plot the ECDF of BMD_zSD using different colors or facets for the different molecular levels.
+
+```{r}
+if (require(ggplot2))
+{
+   ggplot(extendedres, aes(x = BMD.zSD, color = level)) +
+      stat_ecdf(geom = "step") + ylab("ECDF")
+
+}
+```
+
+```{r}
+if (require(ggplot2))
+{
+   ggplot(extendedres, aes(x = BMD.zSD)) + facet_wrap(~ level) +
+      stat_ecdf(geom = "step") + ylab("ECDF")
+
+}
+```
+
+### ECDF plot of BMD_zSD with confidence intervals split here by metabolic pathway
+
+Using the function ecdfplotwithCI() and its arguments by and CI.col, the ECDF plot of BMD_zSD with confidence intervals can be split here by pathway class and with colors coding for different molecular levels. (See ?ecdfplotwithCI for more options).
+
+```{r}
+    # with color coding for molecular level
+ecdfplotwithCI(variable = extendedres$BMD.zSD, 
+               CI.lower = extendedres$BMD.zSD.lower, 
+               CI.upper = extendedres$BMD.zSD.upper, 
+               by = extendedres$path_class,
+               CI.col = extendedres$level) + labs(col = "Molecular level")
+```
+
+### ECDF plot of BMD_zSD with confidence intervals split here by molecular level
+
+Using the function ecdfplotwithCI() and its argument by, the ECDF plot of BMD_zSD with confidence intervals can be split here by molecular level. (See ?ecdfplotwithCI for more options).
+
+```{r}
+ecdfplotwithCI(variable = extendedres$BMD.zSD, 
+               CI.lower = extendedres$BMD.zSD.lower, 
+               CI.upper = extendedres$BMD.zSD.upper, 
+               by = extendedres$level)
+```
+
+### Plot of the dose-response curves for a specific metabolic pathway
+
+Using the function curvesplot(), specific dose-response curves can be shown. In this example, first only results related to the "lipid metabolism" pathway class are kept. Then, the plot is split by molecular level (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
+
+```{r}
+ # Plot of the dose-response curves for a specific metabolic pathway
+   # in this example the "lipid metabolism" pathclass
+LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
+curvesplot(LMres, facetby = "level", free.y.scales = TRUE, npoints = 100, line.size = 1,
+           colorby = "trend",
+           xmin = 0, xmax = 8) + labs(col = "DR_trend")
+```
+
+# Main references 
+
++ Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics : a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental Science & Technology. [https://pubs.acs.org/doi/10.1021/acs.est.8b04752](https://pubs.acs.org/doi/10.1021/acs.est.8b04752).
+You can also find this article at : [https://hal.archives-ouvertes.fr/hal-02309919](https://hal.archives-ouvertes.fr/hal-02309919)
+
++ Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020). A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus. Journal of Hazardous Materials. [https://doi.org/10.1016/j.jhazmat.2020.122727](https://doi.org/10.1016/j.jhazmat.2020.122727).
+

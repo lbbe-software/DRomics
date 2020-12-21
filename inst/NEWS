@@ -14,6 +14,7 @@ and add of a function continuousomicdata() that is called by metabolomicdata()
 but could be used on other types of continuous omics data such as proteomics data.
 - default color changed for bmdplotwithgradient() (green replaced by blue for 
 color blind people)
+- Add of a vignette
 
 Version 2.1-0 
 =============
