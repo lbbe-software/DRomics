@@ -129,37 +129,32 @@ dose value at which their extremum is reached is at zero.
    and the corresponding y value (\code{yextrem}).
   }
 
-    \item{omicdata}{ The corresponding object of class \code{"microarraydata"} given in input 
-    (component of itemselect).}
- 
-    \item{information.criterion}{The information criterion used to select the best fit model as given in input.}
+\item{omicdata}{The corresponding object of class \code{"microarraydata"} given in input 
+(component of itemselect).}
 
-    \item{information.criterion.val}{ a data frame reporting AIC (or BIC) values for each selected item (one line per item) and each fitted model (one colum per model with the AIC (or BIC) value fixed at \code{Inf} when the fit failed).}
+\item{information.criterion}{The information criterion used to select the best fit model as given in input.}
 
-    \item{n.failure}{ The number of previously selected items on which the workflow failed to 
-    fit an acceptable model.}
+\item{information.criterion.val}{A data frame reporting AIC (or BIC) values for each selected item (one line per item) and each fitted model (one colum per model with the AIC (or BIC) value fixed at \code{Inf} when the fit failed).}
 
-    \item{unfitres}{A data frame reporting the results on each selected item 
-   for which no successful fit is reached (one line per item) sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The different columns correspond to the identifier of each item (\code{id}), the row number of this item in the initial data set (\code{irow}), the adjusted p-value of the selection step (\code{adjpvalue}), and code for the reason of the fitting failure (\code{cause},
-   equal to \code{"constant.model"} if the best fit model is a constant model or 
-   \code{"trend.in.residuals"} if the best fit model is rejected due to quadratic trend on residuals.)}
-   
-    \item{residualtests}{A data frame of P-values of the tests performed on residuals,
-    on the mean trend (\code{resimeantrendP} ) and on the variance trend (\code{resivartrendP}). The first one tests a global significant quadratic trend of the residuals as a function of the dose in rank-scale (used to
-    eliminate unreliable fits) and the second one a global significant quadratic trend of the residuals in absolute value as a function of the dose in rank-scale
-    (used to alert in case of heteroscedasticity).}
-   
+\item{n.failure}{The number of previously selected items on which the workflow failed to fit an acceptable model.}
 
+\item{unfitres}{A data frame reporting the results on each selected item 
+for which no successful fit is reached (one line per item) sorted in the ascending order of the adjusted p-values returned by function \code{itemselect}. The different columns correspond to the identifier of each item (\code{id}), the row number of this item in the initial data set (\code{irow}), the adjusted p-value of the selection step (\code{adjpvalue}), and code for the reason of the fitting failure (\code{cause}, equal to \code{"constant.model"} if the best fit model is a constant model or \code{"trend.in.residuals"} if the best fit model is rejected due to quadratic trend on residuals.)}
+
+\item{residualtests}{A data frame of P-values of the tests performed on residuals,
+on the mean trend (\code{resimeantrendP} ) and on the variance trend (\code{resivartrendP}). The first one tests a global significant quadratic trend of the residuals as a function of the dose in rank-scale (used to
+eliminate unreliable fits) and the second one a global significant quadratic trend of the residuals in absolute value as a function of the dose in rank-scale
+(used to alert in case of heteroscedasticity).}
 }
 
 \seealso{
-    See \code{\link{nls}} for details about the non linear regression function and 
-    \code{\link{targetplot}} to plot target items (even if non responsive or unfitted).
+  See \code{\link{nls}} for details about the non linear regression function and 
+  \code{\link{targetplot}} to plot target items (even if non responsive or unfitted).
 }
 
 \references{ 
 Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M,
-  Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental science & technology.\href{https://doi.org/10.1021/acs.est.8b04752}{https://doi.org/10.1021/acs.est.8b04752}
+Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental science & technology.\href{https://doi.org/10.1021/acs.est.8b04752}{https://doi.org/10.1021/acs.est.8b04752}
 }
 
 \author{ 
@@ -170,11 +165,11 @@ Marie-Laure Delignette-Muller
 
 # (1) a toy example (a very small subsample of a microarray data set) 
 #
-datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", package="DRomics")
+datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", package = "DRomics")
 
 # to test the package on a small (for a quick calculation) but not very small data set
 # use the following commented line
-# datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+# datafilename <- system.file("extdata", "transcripto_sample.txt", package = "DRomics")
 
 o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05)
@@ -182,15 +177,14 @@ f <- drcfit(s_quad, progressbar = TRUE)
 
 # Default plot
 plot(f)
-
 \donttest{
 # The same plot with log transformation of the doses
 plot(f, dose_log_transfo = TRUE)
 
 # The same plot in x log scale choosing x limits for plot
 if (require(ggplot2))
-plot(f, dose_log_transfo = TRUE) + 
-        scale_x_log10(limits = c(0.1, 10))
+  plot(f, dose_log_transfo = TRUE) + 
+    scale_x_log10(limits = c(0.1, 10))
 
 # Plot of residuals as function of the dose
 plot(f, plot.type = "dose_residuals")
@@ -204,8 +198,7 @@ plot(f, plot.type = "fitted_residuals")
 
 # (2) an example on a microarray data set (a subsample of a greater data set) 
 #
-
-datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+datafilename <- system.file("extdata", "transcripto_sample.txt", package = "DRomics")
 
 (o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
@@ -216,9 +209,7 @@ plot(f)
 
 # save all plots to pdf using plotfit2pdf()
 plotfit2pdf(f)
-plotfit2pdf(f, plot.type = "fitted_residuals", 
-  nrowperpage = 9, ncolperpage = 6)
-
+plotfit2pdf(f, plot.type = "fitted_residuals", nrowperpage = 9, ncolperpage = 6)
 
 # Plot of the fit of the first 12 most responsive items
 plot(f, items = 12)
@@ -235,13 +226,10 @@ head(f$unfitres)
 # count the number of unsuccessful fits for each cause
 table(f$unfitres$cause)
 
-# (3) Comparison of parallel and non paralell implementations on a 
-#     larger selection of items
-#
 
-   s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05)
-    system.time(f1 <- drcfit(s_quad, progressbar = TRUE))
-   system.time(f2 <- drcfit(s_quad, progressbar = FALSE, parallel = "snow", ncpus = 2))
-   
-   }
-}
+# (3) Comparison of parallel and non paralell implementations on a larger selection of items
+#
+s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05)
+system.time(f1 <- drcfit(s_quad, progressbar = TRUE))
+system.time(f2 <- drcfit(s_quad, progressbar = FALSE, parallel = "snow", ncpus = 2))
+}}
