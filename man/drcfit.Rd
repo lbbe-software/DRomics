@@ -11,35 +11,34 @@ Fits dose reponse models to responsive items.
 
 \usage{
 drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
-                  information.criterion = c("AIC", "BIC"),
-                  postfitfilter = TRUE,
-                   progressbar = TRUE, saveplot2pdf = TRUE, 
-                   parallel = c("no", "snow", "multicore"), ncpus)
+  information.criterion = c("AIC", "BIC"), postfitfilter = TRUE,
+  progressbar = TRUE, saveplot2pdf = TRUE, 
+  parallel = c("no", "snow", "multicore"), ncpus)
 
 \method{print}{drcfit}(x, \dots)
 
 \method{plot}{drcfit}(x, items, 
   plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
-   dose_log_transfo = FALSE, \dots)
+  dose_log_transfo = FALSE, \dots)
    
 plotfit2pdf(x, items, 
-  plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
-   dose_log_transfo = FALSE, nrowperpage = 6, ncolperpage = 4)
+  plot.type = c("dose_fitted", "dose_residuals", "fitted_residuals"), 
+  dose_log_transfo = FALSE, nrowperpage = 6, ncolperpage = 4, path2figs = getwd())
 }
 
 \arguments{
 \item{itemselect}{An object of class \code{"itemselect"} returned by the function \code{itemselect}.}
 
 \item{sigmoid.model}{The chosen sigmoid model, \code{"Hill"} (default
-choice) or \code{"log-probit"}.}
+  choice) or \code{"log-probit"}.}
 
 \item{information.criterion}{The information criterion used to select the best fit model, \code{"AIC"} (default
-choice) or \code{"BIC"}.}
+  choice) or \code{"BIC"}.}
 
 \item{postfitfilter}{If \code{TRUE} fits with significant trends on residuals 
-(showing a global significant quadratic trend of the residuals
-as a function of the dose (in rank-scale)) are considered as failures and so eliminated.
-It is strongly recommended to let it at \code{TRUE}, its default value.}
+  (showing a global significant quadratic trend of the residuals
+  as a function of the dose (in rank-scale)) are considered as failures and so eliminated.
+  It is strongly recommended to let it at \code{TRUE}, its default value.}
 
 \item{progressbar}{If \code{TRUE} a progress bar is used to follow the fitting process.}
 
@@ -53,30 +52,31 @@ It is strongly recommended to let it at \code{TRUE}, its default value.}
 \item{ncpus}{Number of processes to be used in parallel operation : 
   typically one would fix it to the number of available CPUs.}
 
-
 \item{x}{An object of class \code{"drcfit"}.}
 
 \item{items}{Argument of the \code{plot.drcfit} function : the number of the first fits to
   plot (20 items max) or the character vector
   specifying the identifiers of the items to plot (20 items max).}
   
-\item{plot.type}{the type of plot, by default \code{"dose_fitted"} for the plot of 
- fitted curves with the observed points added to the plot and the observed means at each dose
- added as black plain circles, \code{"dose_residuals"} for the plot of the residuals as function
- of the dose, and \code{"fitted_residuals"} for the plot of the residuals as function of 
- the fitted value.}
+\item{plot.type}{The type of plot, by default \code{"dose_fitted"} for the plot of 
+  fitted curves with the observed points added to the plot and the observed means at each dose
+  added as black plain circles, \code{"dose_residuals"} for the plot of the residuals as function
+  of the dose, and \code{"fitted_residuals"} for the plot of the residuals as function of 
+  the fitted value.}
 
-\item{dose_log_transfo}{to put at \code{TRUE} to use a log transformation
-for the dose axis (only available if the dose is in x-axis, so not available
-for \code{plot.type} \code{"fitted_residuals"}).}
+\item{dose_log_transfo}{Put at \code{TRUE} to use a log transformation
+  for the dose axis (only available if the dose is in x-axis, so not available
+  for \code{plot.type} \code{"fitted_residuals"}).}
 
 \item{nrowperpage}{Number of rows of plots when plots are saved in a pdf file using
   plotfit2pdf() (passed to \code{facet_wrap()}).}
 
 \item{ncolperpage}{Number of columns of plots when plots are saved in a pdf file using
   plotfit2pdf() (passed to \code{facet_wrap()}).}
+  
+\item{path2figs}{File path when plots are saved in a pdf file using plotfit2pdf()}
 
-\item{\dots}{ further arguments passed to graphical or print functions.}
+\item{\dots}{Further arguments passed to graphical or print functions.}
 }
 
 \details{

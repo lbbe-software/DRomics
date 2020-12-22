@@ -739,7 +739,8 @@ plot.drcfit <- function(x, items,
 
 plotfit2pdf <- function(x, items, 
                         plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
-                        dose_log_transfo = FALSE, nrowperpage = 6, ncolperpage = 4)
+                        dose_log_transfo = FALSE, nrowperpage = 6, ncolperpage = 4,
+                        path2figs = getwd())
 {
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects.")
@@ -764,10 +765,9 @@ plotfit2pdf <- function(x, items,
       subd <- x$fitres[inditems, ]
   }
   
-  pathToFigs <- tempdir()
-  file2plot <- paste0(pathToFigs, "/drcfitplot.pdf")
+  file2plot <- paste0(path2figs, "/drcfitplot.pdf")
   message(strwrap(prefix = "\n", initial = "\n",
-                  paste0("Figures are stored in ", pathToFigs, ". This directory is temporary. It will be removed when the R session is closed.")))
+                  paste0("Figures are stored in ", normalizePath(path2figs), ".")))
   pdf(file2plot, width = 7, height = 10, onefile = TRUE) # w and h in inches
   
   nplotsperpage = nrowperpage * ncolperpage
