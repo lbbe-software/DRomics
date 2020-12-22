@@ -45,7 +45,7 @@ library(DRomics)
 
 # The vignette
 A vignette is attached to the `DRomics` package.
-This vignette can be is reach by:
+This vignette can be reach by:
 ```r
 vignette("DRomics_vignette")
 ```
