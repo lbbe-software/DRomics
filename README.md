@@ -42,6 +42,21 @@ Finally load the package in your current R session with the following R command:
 library(DRomics)
 ```
 
+
+# The vignette
+A vignette is attached to the `DRomics` package.
+This vignette can be is reach by:
+```r
+vignette("DRomics_vignette")
+```
+
+Note that, by default, the vignette is not installed when the package is installed through GitHub.
+The following command (rather long to execute because of the large size of the vignette) will allow you to access the vignette of the development version of the package you installed from GitHub:
+```r
+remotes::install_github("aursiber/DRomics", build_vignettes = TRUE)
+```
+
+
 # The shiny app 
 `DRomics-shiny` can be run on a R session, doing:
 ```r
