@@ -415,6 +415,13 @@ ui <- fluidPage(
                                                 selected = 'none'),
                                    h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about typologies"),
                                    hr(),
+                                   radioButtons('fileformat_bmdcalc', 
+                                                'File format',
+                                                choices = c('pdf' = 'pdf',
+                                                            'png' = 'png',
+                                                            'jpeg' = 'jpeg',
+                                                            'svg' = 'svg'),
+                                                selected = 'pdf'),
                                    downloadButton("buttonPlotBmdcalc", "Download figure", icon = icon("fas fa-download"))
                                  ),
                                  mainPanel(

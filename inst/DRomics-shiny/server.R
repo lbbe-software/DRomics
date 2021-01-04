@@ -189,11 +189,18 @@ server <- function(input, output, session) {
     ## Output: plots downloading
     output$buttonPlotBmdcalc <- downloadHandler(
       filename = function(){
-        paste0("data-", Sys.Date(), ".pdf")
+        paste0("data-", Sys.Date(), ".", input$fileformat_bmdcalc)
       },
       content = function(file) {
+        
+        switch(input$fileformat_bmdcalc,
+               "pdf" = pdf(file),
+               "png" = png(file),
+               "jpeg" = jpeg(file),
+               "svg" = svg(file))
+        
+        
         myplottype <- input$plottype
-        pdf(file, width = 8, height = 8)
         print(
           
           if(myplottype == 'ecdfcolorgradient') {
@@ -229,8 +236,7 @@ server <- function(input, output, session) {
             
           })
         dev.off()
-      },
-      contentType = {"application/pdf"}
+      }
     )
   })
   
