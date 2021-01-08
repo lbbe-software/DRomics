@@ -92,12 +92,12 @@ Marie-Laure Delignette-Muller, Elise Billoir, Floriane Larras and Aurelie Siberc
 
 \references{ 
 Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M,
-  Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental science & technology.\href{https://doi.org/10.1021/acs.est.8b04752}{https://doi.org/10.1021/acs.est.8b04752}
+  Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental science & technology.\doi{10.1021/acs.est.8b04752}
 
 Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Tarkka M, Delignette-Muller ML and
   Schmitt-Jansen M and  (2020). A multi-omics concentration-response framework uncovers 
   novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus. 
-  Journal of Hazardous Materials.\href{https://doi.org/10.1016/j.jhazmat.2020.122727}{https://doi.org/10.1016/j.jhazmat.2020.122727}
+  Journal of Hazardous Materials.\doi{10.1016/j.jhazmat.2020.122727}
 }
 
 
