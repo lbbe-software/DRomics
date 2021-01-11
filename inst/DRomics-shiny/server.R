@@ -54,10 +54,21 @@ server <- function(input, output, session) {
   
   inFDR <- reactive({as.numeric(input$FDR)})
   inSelectMethod <- reactive({input$selectMethod})
+  observe({shinyjs::disable("buttonDowloadItems")})
   
   output$printItemSelect <- renderPrint({ 
     signifitems <<- itemselect(filedata(), select.method = inSelectMethod(), FDR = inFDR())
     print(signifitems)
+    
+    shinyjs::enable("buttonDowloadItems")
+    output$buttonDowloadItems <- downloadHandler(
+      filename = function(){
+        paste0("items-", Sys.Date(), ".txt")
+      },
+      content = function(file) {
+        write.table(signifitems$omicdata$item[signifitems$selectindex] , file, sep = "\t", dec = ".")
+      }
+    )
   })
   
   

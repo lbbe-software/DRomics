@@ -266,7 +266,8 @@ ui <- fluidPage(
                                fixedRow(
                                  mainPanel(
                                    width = 12,
-                                   withSpinner(verbatimTextOutput('printItemSelect'), type = 4, color = '#9c5c16')
+                                   withSpinner(verbatimTextOutput('printItemSelect'), type = 4, color = '#9c5c16'),
+                                   downloadButton("buttonDowloadItems", "Download all items", icon = icon("fas fa-download"))
                                  )
                                )
                         )
