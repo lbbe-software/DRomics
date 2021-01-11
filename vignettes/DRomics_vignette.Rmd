@@ -53,8 +53,7 @@ nrow(Zhou_kidney_pce)
 head(Zhou_kidney_pce)
 
 # Import the text file just to see what will be automatically imported
-datafilename <- system.file("extdata", "RNAseq_sample.txt", 
-                            package = "DRomics")
+datafilename <- system.file("extdata", "RNAseq_sample.txt", package = "DRomics")
 # for your local file datafilename would be just "yourchosenname.txt"
 d <- read.table(file = datafilename, header = FALSE)
 nrow(d)
@@ -94,7 +93,7 @@ of the Bioconductor package **limma**.
 ### An example with RNAseq data 
 
 ```{r}
-RNAseqfilename <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
+RNAseqfilename <- system.file("extdata", "RNAseq_sample.txt", package = "DRomics")
 ```
 
 For RNAseq data, imperatively imported in raw counts, you have to choose the transformation
@@ -120,7 +119,7 @@ normalization method ("cyclicloess", "quantile", "scale" or "none"). "cyclicloes
 
 
 ```{r}
-microarrayfilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
+microarrayfilename <- system.file("extdata", "transcripto_sample.txt", package = "DRomics")
 ```
 
 
@@ -179,7 +178,6 @@ See ?itemselect and Larras et al. 2018 for details.
 
 ```{r}
 (s_quad <- itemselect(o.microarray, select.method = "quadratic", FDR = 0.01))
-
 ```
 
 ## Step 3: fit of dose-response models, choice of the best fit for each curve
@@ -292,8 +290,8 @@ and an example below).
 
 ```{r}
 bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      facetby = "trend", 
-                      shapeby = "model")
+                    facetby = "trend", 
+                    shapeby = "model")
 ```
 
 ## Step 5: calculation of confidence intervals on the BMDs by bootstrap 
@@ -349,13 +347,12 @@ An example of how to proceed:
 (This step will not be necessary if previous steps are done directly in R using the DRomics package as described previously in this vignette. We did it to take a real example that took a long time to run but from which results are stored in the package.)
 
 ```{r}
-   # code to import the file for this example in our package
-resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
+# code to import the file for this example in our package
+resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package = "DRomics")
 res <- read.table(resfilename, header = TRUE, stringsAsFactors = TRUE)
 
-   # to see the structure of this file
+# to see the structure of this file
 str(res)
-
 ```
 
 2. **Import the dataframe with functional annotation (or any other descriptor/category you want to use, here KEGG pathway classes) of each item present in the 'res' file.**
@@ -363,14 +360,12 @@ str(res)
 Examples are embedded in the DRomics package, but be cautious, generally this file must be produced by the user. Each item may have more than one annotation (*i.e.* more than one line). 
 
 ```{r}
-   # code to import the file for this example in our package
-annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", 
-                              package="DRomics")
+# code to import the file for this example in our package
+annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", package = "DRomics")
 annot <- read.table(annotfilename, header = TRUE, stringsAsFactors = TRUE)
 
-   # to see the structure of this file
+# to see the structure of this file
 str(annot)
-
 ```
 
 3. **Merging of both previous dataframes in order to obtain a so-called 'extenderes' dataframe gathering, for each item, metrics derived from the DRomics workflow and functional annotation.**
@@ -379,10 +374,8 @@ Arguments by.x and by.y of the merge() function
 indicate the column name in res and annot dataframes, respectively, that must be used for the merging.  
 
 ```{r}
-
 annotres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
 head(annotres)
-
 ```
 
 ## BMD ECDF plot by functional group
@@ -392,10 +385,9 @@ head(annotres)
 Using the function bmdplotwithgradient() and its argument facetby, the BMD plot with color gradient can be split here by KEGG pathway class. (See ?bmdplotwithgradient for more options).
 
 ```{r}
-   
 bmdplotwithgradient(annotres, BMDtype = "zSD",
-                     facetby = "path_class", 
-                       shapeby = "trend") 
+                    facetby = "path_class", 
+                    shapeby = "trend") 
 ```
 
 ### the same representation with labels of items (so without shapeby)
@@ -403,10 +395,9 @@ bmdplotwithgradient(annotres, BMDtype = "zSD",
 The argument add.label set at TRUE will display item identifiers instead of points. 
 
 ```{r}
-
 bmdplotwithgradient(annotres, BMDtype = "zSD",
-                     facetby = "path_class", 
-                       add.label = TRUE) 
+                    facetby = "path_class", 
+                    add.label = TRUE) 
 ```
 
 ### BMD ECDF plot with confidence intervals split by group defined from functional annotation
@@ -414,32 +405,29 @@ bmdplotwithgradient(annotres, BMDtype = "zSD",
 Using the function ecdfplotwithCI() and its arguments by and CI.col, the ECDF plot of BMD_zSD with confidence intervals can be split here by pathway class and with color coding for dose-response trend. (See ?ecdfplotwithCI for more options.)
 
 ```{r}
-
 ecdfplotwithCI(variable = annotres$BMD.zSD, 
                CI.lower = annotres$BMD.zSD.lower, 
                CI.upper = annotres$BMD.zSD.upper, 
                by = annotres$path_class,
                CI.col = annotres$trend) 
-
 ```
-                      
+
 ## Sensitivity plot of functional groups
 
 It is also possible to show a summary of BMD values in each pathway/category as a given quantile (argument quantile.prob) using the function ecdfquantileplot(). Moreover, this function will provide information on the number of items involved in each pathway/category. (See ?ecdfquantileplot for more options).
 
 As an example, below is an ECDF plot of quantiles of BMD-zSD calculated here by pathway class. 
-   
-```{r}
 
+```{r}
 ecdfquantileplot(variable = annotres$BMD.zSD, 
-               by = annotres$path_class,
-               quantile.prob = 0.25) 
+                 by = annotres$path_class,
+                 quantile.prob = 0.25) 
 ```
 
 ## Plot of dose-response curves for a specific functional group 
 
 The function curvesplot() can show the dose-response curves for a specific pathway/category with arguments left to the choice of the user. In this example, first only results related to the "lipid metabolism" pathway class are kept. Then, the plot is split by id (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
-   
+
 ```{r}
 LMres <- annotres[annotres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
@@ -461,13 +449,12 @@ Following the same steps as [described before for metabolomics](#enrich), below 
 
 ```{r}
 # 1. Import the dataframe with DRomics results to be used
-contigresfilename <- system.file("extdata", "triclosanSVcontigres.txt", package="DRomics")
+contigresfilename <- system.file("extdata", "triclosanSVcontigres.txt", package = "DRomics")
 contigres <- read.table(contigresfilename, header = TRUE, stringsAsFactors = TRUE)
 str(contigres)
 
 # 2. Import the dataframe with functional annotation (or any other descriptor/category you want to use, here KEGG pathway classes) 
-contigannotfilename <- system.file("extdata", "triclosanSVcontigannot.txt", 
-                              package="DRomics")
+contigannotfilename <- system.file("extdata", "triclosanSVcontigannot.txt", package = "DRomics")
 contigannot <- read.table(contigannotfilename, header = TRUE, stringsAsFactors = TRUE)
 str(contigannot)
 
@@ -502,12 +489,12 @@ Below are examples of illustrations that can be used to compare the results obta
 Here basic R functions are used to compute and plot frequencies of pathways by molecular levels.
 
 ```{r}
- (t.pathways <- table(extendedres$path_class, extendedres$level)) 
+(t.pathways <- table(extendedres$path_class, extendedres$level)) 
 original.par <- par()
 par(las = 2, mar = c(4,13,1,1))
 barplot(t(t.pathways), beside = TRUE, horiz = TRUE, 
-      cex.names = 0.7, legend.text = TRUE, 
-      main = "Frequencies of pathways")
+        cex.names = 0.7, legend.text = TRUE, 
+        main = "Frequencies of pathways")
 ```
 
 ### Proportions of pathways by molecular levels
@@ -517,8 +504,8 @@ Here basic R functions are used to compute and plot proportions of pathways by m
 ```{r}
 (t.prop.pathways <- prop.table(t.pathways, margin = 2)) 
 barplot(t(t.prop.pathways), beside = TRUE, horiz = TRUE, 
-      cex.names = 0.7, legend.text = TRUE, 
-      main = "Proportion of pathways")
+        cex.names = 0.7, legend.text = TRUE, 
+        main = "Proportion of pathways")
 par(original.par)
 ```
 
@@ -531,7 +518,7 @@ if (require(ggplot2))
 {
    ggplot(extendedres, aes(x = BMD.zSD, color = level)) +
       stat_ecdf(geom = "step") + ylab("ECDF")
-
+   
 }
 ```
 
@@ -540,7 +527,7 @@ if (require(ggplot2))
 {
    ggplot(extendedres, aes(x = BMD.zSD)) + facet_wrap(~ level) +
       stat_ecdf(geom = "step") + ylab("ECDF")
-
+   
 }
 ```
 
@@ -549,7 +536,7 @@ if (require(ggplot2))
 Using the function ecdfplotwithCI() and its arguments by and CI.col, the ECDF plot of BMD_zSD with confidence intervals can be split here by pathway class and with colors coding for different molecular levels. (See ?ecdfplotwithCI for more options).
 
 ```{r}
-    # with color coding for molecular level
+# with color coding for molecular level
 ecdfplotwithCI(variable = extendedres$BMD.zSD, 
                CI.lower = extendedres$BMD.zSD.lower, 
                CI.upper = extendedres$BMD.zSD.upper, 
@@ -573,8 +560,8 @@ ecdfplotwithCI(variable = extendedres$BMD.zSD,
 Using the function curvesplot(), specific dose-response curves can be shown. In this example, first only results related to the "lipid metabolism" pathway class are kept. Then, the plot is split by molecular level (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
 
 ```{r}
- # Plot of the dose-response curves for a specific metabolic pathway
-   # in this example the "lipid metabolism" pathclass
+# Plot of the dose-response curves for a specific metabolic pathway
+# in this example the "lipid metabolism" pathclass
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "level", free.y.scales = TRUE, npoints = 100, line.size = 1,
            colorby = "trend",
