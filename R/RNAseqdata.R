@@ -1,8 +1,8 @@
 ### import, check normalize and transform RNAseq data
 
 RNAseqdata <- function(file, check = TRUE, 
-                     transfo.method = c("rlog", "vst"), 
-                     transfo.blind = TRUE, round.counts = FALSE)
+                       transfo.method = c("rlog", "vst"), 
+                       transfo.blind = TRUE, round.counts = FALSE)
 {
   if (is.data.frame(file))
   {
@@ -55,8 +55,8 @@ RNAseqdata <- function(file, check = TRUE,
   # Normalization and count data transformation using DESeq2
   transfo.method <- match.arg(transfo.method, c("rlog", "vst"))
   if(transfo.method == "rlog")
-    cat("Just wait, the transformation using regularized logarithm (rlog)
-        may take a few minutes.\n")
+    cat(strwrap(prefix = "\n", initial = "\n",
+                paste0("Just wait, the transformation using regularized logarithm (rlog) may take a few minutes.\n")))
   
   raw.counts <- data
   (dose <- as.vector(unlist(d[1, 2:ncold])))
@@ -159,15 +159,16 @@ print.RNAseqdata <- function(x, ...)
     cat("Identifiers of the items:\n")
     print(x$item)
   }
-  cat("Data were normalized with respect to library size
-        and  tranformed using the following method: ", x$transfo.method," \n")
+  cat(strwrap(prefix = "\n", initial = "\n",
+              paste0("Data were normalized with respect to library size 
+                     and  tranformed using the following method: ", x$transfo.method," \n")))
 }
 
 plot.RNAseqdata <- function(x, ...) 
 {
   if (!inherits(x, "RNAseqdata"))
     stop("Use only with 'RNAseqdata' objects.")
-
+  
   def.par <- par(no.readonly = TRUE)
   ymin.rc <- min(x$raw.counts)
   ymax.rc <- max(x$raw.counts)

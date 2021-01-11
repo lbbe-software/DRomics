@@ -466,24 +466,25 @@ print.bmdboot <- function(x, ...)
   nNA.BMDboot <- sum(x$res$nboot.successful < x$tol * x$niter)
   if (nNA.BMDboot == 0)
   {
-    cat("Bootstrap confidence interval computation was successful on ", ntot ,
-        "items among", ntot, ".\n")
+    cat(strwrap(prefix = "\n", initial = "\n",
+                paste0("Bootstrap confidence interval computation was successful on ", ntot , " items among", ntot, ".\n")))
   } else
   {
-    cat("Bootstrap confidence interval computation failed on", nNA.BMDboot,
-        "items among", ntot, 
-        "due to lack of convergence of the model fit for a fraction of the bootstrapped samples greater than",
-        x$tol, ".\n")
+    cat(strwrap(prefix = "\n", initial = "\n", 
+                paste0("Bootstrap confidence interval computation failed on ", nNA.BMDboot, " items among ", ntot, 
+                       " due to lack of convergence of the model fit for a fraction of the 
+                       bootstrapped samples greater than ", x$tol, ".\n")))
   }
   
   nInf.BMD.zSD.upper <- sum(is.infinite(x$res$BMD.zSD.upper))
   nInf.BMD.xfold.upper <- sum(is.infinite(x$res$BMD.xfold.upper))
-  cat("For", nInf.BMD.zSD.upper, "BMD.zSD values and", nInf.BMD.xfold.upper,
-      "BMD.xfold values among", ntot, 
-      "at least one bound of the 95 percent confidence interval could not be
-      computed due to some bootstrapped BMD values not reachable due to model asymptotes 
-      or reached outside the range of tested doses (bounds coded Inf)).\n")
-  }
+  cat(strwrap(prefix = "\n", initial = "\n",
+              paste0("For ", nInf.BMD.zSD.upper, " BMD.zSD values and ", nInf.BMD.xfold.upper,
+                     " BMD.xfold values among ", ntot, 
+                     " at least one bound of the 95 percent confidence interval could not be 
+                     computed due to some bootstrapped BMD values not reachable due to model asymptotes 
+                     or reached outside the range of tested doses (bounds coded Inf)).\n")))
+}
 
 plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
                          by = c("none", "trend", "model", "typology"), CI.col = "blue",  ...) 

@@ -684,14 +684,16 @@ print.drcfit <- function(x, ...)
   nsucces <- nrow(x$fitres)
   nfirstselect <- x$n.failure + nsucces
   if (x$n.failure > 0)
-    cat(x$n.failure,"dose-response curves out of ",nfirstselect, " previously selected were removed
-        because no model could be fitted reliably.\n")
+    cat(strwrap(prefix = "\n", initial = "\n",
+                paste0(x$n.failure," dose-response curves out of ", nfirstselect, " previously selected were removed 
+                       because no model could be fitted reliably.\n")))
   ncaseheterosced <- length(which(x$residualtests$resivartrendP < 0.05))
   ntot <- nrow(x$residualtests)
   pc.heterosced <- round(ncaseheterosced / ntot * 100)
   if (pc.heterosced > 50)
-    cat(pc.heterosced,"% of the fitted dose-response curves show a significant heteroscedasticity. 
-        (non constant variance).\n")
+    cat(strwrap(prefix = "\n", initial = "\n",
+                paste0(pc.heterosced,"% of the fitted dose-response curves show a significant heteroscedasticity. 
+                       (non constant variance).\n")))
   cat("Distribution of the chosen models among the ",nsucces," fitted dose-response curves :\n")
   print(tfit)
   cat("Distribution of the trends (curve shapes) among the ",nsucces," fitted dose-response curves :\n")
