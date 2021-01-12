@@ -292,20 +292,15 @@ ui <- fluidPage(
                                             h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the dose reponse modelling procedure")
                                      ),
                                      column(width = 2, actionButton("buttonDrcfit", "Fit", icon = icon("bar-chart-o"), style='font-size:200%')),
-                                     column(width = 3,
-                                            useShinyjs(),
-                                            hidden(
-                                              downloadButton("buttonDownloadDrcfitplot", HTML("Download all the fitted<br/>dose-response plots"), style = 'background-color:#e6e6e6; color:#000000; border-color:#9d9d9d; font-size:110%;', icon = icon("fas fa-download"))
+                                     column(width = 4,
+                                            sidebarPanel(
+                                              style = "background-color: #FFFFFF;",
+                                              width = 12,
+                                              icon("exclamation-triangle"),
+                                              "These ongoing calculations can take from minutes to about an hour. Your patience should be proportional to the size of your data and the chosen FDR."
                                             )
                                      )
                                    )
-                                 ),
-                                 
-                                 sidebarPanel(
-                                   style = "background-color: #FFFFFF;",
-                                   width = 4,
-                                   icon("exclamation-triangle"),
-                                   "These ongoing calculations can take from minutes to about an hour. Your patience should be proportional to the size of your data and the chosen FDR."
                                  )
                                ),
                                
@@ -322,12 +317,21 @@ ui <- fluidPage(
                                                                      'dose / residuals' = 'dose_residuals',
                                                                      'fitted / residuals' = 'fitted_residuals'),
                                                          selected = "dose_fitted")),
-                                     column(3,
+                                     column(width = 2,
                                             radioButtons('logdosescale',
                                                          'Log dose-scale', inline = TRUE,
                                                          choices = c('yes' = 'TRUE',
                                                                      'no' = 'FALSE'),
-                                                         selected = "FALSE"))
+                                                         selected = "FALSE")),
+                                     column(width = 3,
+                                            useShinyjs(),
+                                            hidden(
+                                              downloadButton("buttonDownloadDrcfitplot", 
+                                                             HTML("Download all the fitted<br/>dose-response plots"), 
+                                                             style = 'background-color:#F5aa4c; color:#000000; border-color:#9d9d9d; font-size:110%;', 
+                                                             icon = icon("fas fa-download"))
+                                            )
+                                     )
                                    ),
                                    br(),
                                    withSpinner(plotOutput("plotDrcfit", width = "100%", height = "900px"), type = 4, color = '#9c5c16'),
