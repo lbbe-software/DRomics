@@ -425,6 +425,7 @@ ui <- fluidPage(
                                                 choices = c('pdf' = 'pdf',
                                                             'png' = 'png',
                                                             'jpeg' = 'jpeg',
+                                                            'tiff' = 'tiff',
                                                             'svg' = 'svg'),
                                                 selected = 'pdf'),
                                    downloadButton("buttonPlotBmdcalc", "Download figure", icon = icon("fas fa-download"))

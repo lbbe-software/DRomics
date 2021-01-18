@@ -208,6 +208,7 @@ server <- function(input, output, session) {
                "pdf" = pdf(file),
                "png" = png(file),
                "jpeg" = jpeg(file),
+               "tiff" = tiff(file, compression = "lzw"),
                "svg" = svg(file))
         
         
