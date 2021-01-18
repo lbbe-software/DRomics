@@ -55,10 +55,11 @@ continuousanchoringdata <- function(file, check = TRUE)
   
   fdose <- as.factor(dose)
   tdata <- t(data)
+  
+  meanwithnarm <- function(v) mean(v, na.rm = TRUE)
   calcmean <- function(i)
   {
-  #   tapply(data[i,], fdose, mean)
-    tapply(tdata[, i], fdose, mean)
+    tapply(tdata[, i], fdose, meanwithnarm)
   }
   s <- sapply(1:(nrowd - 1), calcmean)
   data.mean <- as.matrix(t(s))
@@ -75,10 +76,14 @@ print.continuousanchoringdata <- function(x, ...)
   if (!inherits(x, "continuousanchoringdata"))
     stop("Use only with 'continuousanchoringdata' objects.")
   
-  cat("Elements of the experimental design in order to check the coding of the data :\n")
+  nitems <- length(x$item)
+  nitemswithNA <- nitems - sum(complete.cases(x$data))
+  
+  cat("Elements of the experimental design in order to check the coding of the data:\n")
   cat("Tested doses and number of replicates for each dose:\n")
   print(x$design)
-  cat("Number of endpoints: ", length(x$item),"\n")
+  cat("Number of endpoints: ", nitems,"\n")
+  if (nitemswithNA > 0) cat("Number of endpoints with at least one missing data: ", nitemswithNA,"\n")
   
   if (length(x$item) > 20)
   {

@@ -78,15 +78,17 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     signalm <- as.vector(data.mean[selectindex[i],]) # means per dose
     
     # preparation of data for modelling with nls 
-    dset <- data.frame(signal = signal, dose = dose)
+    dset <- data.frame(signal = signal, dose = dose, doseranks = doseranks)
+    # removing lines with NA values for the signal
+    dset <- dset[complete.cases(dset$signal), ]
     
     # for choice of the linear trend (decreasing or increasing)
-    modlin <- lm(signal ~ doseranks)
+    modlin <- lm(signal ~ doseranks, data = dset)
     increaseranks <- coef(modlin)[2] >= 0
-    increaseminmax <- dose[which.min(signal)] < dose[which.max(signal)]
+    increaseminmax <- dset$dose[which.min(dset$signal)] < dset$dose[which.max(dset$signal)]
     
     # for choice of the quadratic trend (Ushape or Umbrella shape)
-    modquad <- lm(signal ~ doseranks + I(doseranks^2))
+    modquad <- lm(signal ~ doseranks + I(doseranks^2), data = dset)
     Ushape <- coef(modquad)[3] >= 0
     
     ################ Expo fit ###############################
@@ -399,16 +401,16 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     
     # diagnostics on residuals (quadratic trend on residuals) 
     # correct mean function ?
-    resi <- residuals(fit)
-    modquad.resi <- lm(resi ~ doseranks + I(doseranks^2))
-    mod0.resi <- lm(resi ~ 1)
+    dset$resi <- residuals(fit)
+    modquad.resi <- lm(resi ~ doseranks + I(doseranks^2), data = dset)
+    mod0.resi <- lm(resi ~ 1, data = dset)
     resimeantrendPi <- anova(modquad.resi, mod0.resi)[[6]][2]
  
     # diagnostics on absolute value of residuals - homoscedasticity ?
     # (quadratic trend on abs(residuals)) 
-    absresi <-abs(resi)
-    modquad.absresi <- lm(absresi ~ doseranks + I(doseranks^2))
-    mod0.absresi <- lm(absresi ~ 1)
+    dset$absresi <-abs(dset$resi)
+    modquad.absresi <- lm(absresi ~ doseranks + I(doseranks^2), data = dset)
+    mod0.absresi <- lm(absresi ~ 1, data = dset)
     resivartrendPi <- anova(modquad.absresi, mod0.absresi)[[6]][2]
     
     
@@ -421,7 +423,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
              AIClini, AICExpoi, AICHilli, AICLprobiti, AICLGaussi, 
              AICGaussi,resimeantrendPi,resivartrendPi))
     
-  } ##################################### and of fitoneitem
+  } ##################################### END of fitoneitem
   
   # Loop on items
   # parallel or sequential computation

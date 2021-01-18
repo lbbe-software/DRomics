@@ -76,6 +76,8 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
     # dataset
     datai <- r$omicdata$data[resitem$irow, ]
     dset <- data.frame(signal = datai, dose = dose)
+    # removing lines with NA values for the signal
+    dset <- dset[complete.cases(dset$signal), ]
     ndata <- nrow(dset)
 
     ############## Model expo ###########
@@ -84,8 +86,8 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       b1 <- lestimpar$b
       d1 <- lestimpar$d
       e1 <- lestimpar$e
-      fitted1 <- fExpo(x = dose, d = d1, b = b1, e = e1)
-      resid1 <- datai - fitted1
+      fitted1 <- fExpo(x = dset$dose, d = d1, b = b1, e = e1)
+      resid1 <- dset$signal - fitted1
       
       dsetboot <- dset
       fboot <- function(i)
@@ -135,8 +137,8 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       c1 <- lestimpar$c
       d1 <- lestimpar$d
       e1 <- lestimpar$e
-      fitted1 <- fHill(x = dose, b = b1, c = c1, d = d1,  e = e1)
-      resid1 <- datai - fitted1
+      fitted1 <- fHill(x = dset$dose, b = b1, c = c1, d = d1,  e = e1)
+      resid1 <- dset$signal - fitted1
       
       dsetboot <- dset
       fboot <- function(i)
@@ -179,8 +181,8 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       c1 <- lestimpar$c
       d1 <- lestimpar$d
       e1 <- lestimpar$e
-      fitted1 <- fLGauss5p(x = dose, b = b1, c = c1, d = d1, e = e1, f = 0)
-      resid1 <- datai - fitted1
+      fitted1 <- fLGauss5p(x = dset$dose, b = b1, c = c1, d = d1, e = e1, f = 0)
+      resid1 <- dset$signal - fitted1
       
       dsetboot <- dset
       fboot <- function(i)
@@ -222,8 +224,8 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
     {
       b1 <- lestimpar$b
       d1 <- lestimpar$d
-      fitted1 <- flin(x = dose, b = b1, d = d1)
-      resid1 <- datai - fitted1
+      fitted1 <- flin(x = dset$dose, b = b1, d = d1)
+      resid1 <- dset$signal - fitted1
       
       dsetboot <- dset
       fboot <- function(i)
@@ -260,8 +262,8 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       d1 <- lestimpar$d
       e1 <- lestimpar$e
       f1 <- lestimpar$f
-      fitted1 <- fGauss5p(x = dose, c = c1, d = d1, b = b1, e = e1, f = f1)
-      resid1 <- datai - fitted1
+      fitted1 <- fGauss5p(x = dset$dose, c = c1, d = d1, b = b1, e = e1, f = f1)
+      resid1 <- dset$signal - fitted1
        
       dsetboot <- dset
       fboot <- function(i)
@@ -331,8 +333,8 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       d1 <- lestimpar$d
       e1 <- lestimpar$e
       f1 <- lestimpar$f
-      fitted1 <- fLGauss5p(x = dose, c = c1, d = d1, b = b1, e = e1, f = f1)
-      resid1 <- datai - fitted1
+      fitted1 <- fLGauss5p(x = dset$dose, c = c1, d = d1, b = b1, e = e1, f = f1)
+      resid1 <- dset$signal - fitted1
 
       dsetboot <- dset
       fboot <- function(i)
