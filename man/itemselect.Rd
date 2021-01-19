@@ -12,7 +12,7 @@ a quadratic trend test, a linear trend test or an ANOVA-based test.
 itemselect(omicdata, select.method = c("quadratic", "linear", "ANOVA"), 
   FDR = 0.05, max.ties.prop = 0.2)   
 
-\method{print}{itemselect}(x, \dots)
+\method{print}{itemselect}(x, nfirstitems = 20, \dots)
 }
 
 \arguments{
@@ -32,6 +32,8 @@ an ANOVA-type test (see details for further explaination).}
   and by default fixed at 0.2 - see details for a description of this filtering step).}
 
 \item{x}{An object of class \code{"itemselect"}.}
+
+\item{nfirstitems}{The maximum number of selected items to print.}
 
 \item{\dots}{ further arguments passed to print function.}
 }
@@ -129,6 +131,10 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 # 1.a using the quadratic trend test
 #
 (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
+print(s_quad, nfirstitems = 30)
+
+# to get the names of all the selected items
+(selecteditems <- s_quad$omicdata$item[s_quad$selectindex]) 
 
 \donttest{
 

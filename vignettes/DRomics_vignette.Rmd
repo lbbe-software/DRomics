@@ -19,6 +19,7 @@ vignette: >
 # output:
 #  html_vignette
 require(DRomics)
+require(ggplot2)
 set.seed(1234)
 options(digits = 3)
 knitr::opts_chunk$set(echo = TRUE,
@@ -98,11 +99,11 @@ RNAseqfilename <- system.file("extdata", "RNAseq_sample.txt", package = "DRomics
 
 For RNAseq data, imperatively imported in raw counts, you have to choose the transformation
 method used to stabilize the variance 
-("rlog" or "vst"). "rlog" is recommended and chosen by default but more computer intensive than "vst" (see ?RNAseqdata for details). Whatever the chosen method, data are automatically normalized with respect to library size and transformed in a log2 scale.
+("rlog" or "vst"). **"rlog" is recommended and chosen by default but more computer intensive than "vst"** (see ?RNAseqdata for details). Whatever the chosen method, data are automatically normalized with respect to library size and transformed in a log2 scale.
 
 
 ```{r}
-(o.RNAseq <- RNAseqdata(RNAseqfilename, transfo.method = "rlog"))
+(o.RNAseq <- RNAseqdata(RNAseqfilename, transfo.method = "vst"))
 plot(o.RNAseq, cex.main = 0.8, col = "green", range = 1e6)
 ```
 
@@ -115,7 +116,7 @@ as individual points in the plot of raw counts.
 
 For single-channel microarray data, imperatively imported in log
 scale (classically log2 scale), you can choose the between array 
-normalization method ("cyclicloess", "quantile", "scale" or "none"). "cyclicloess" is recommended and chosen by default but more computer intensive than the others (see ?microarraydata for details).
+normalization method ("cyclicloess", "quantile", "scale" or "none"). **"cyclicloess" is recommended and chosen by default but more computer intensive than the others** (see ?microarraydata for details).
 
 
 ```{r}
@@ -124,8 +125,8 @@ microarrayfilename <- system.file("extdata", "transcripto_sample.txt", package =
 
 
 ```{r}
-(o.microarray <- microarraydata(microarrayfilename, norm.method = "cyclicloess"))
-plot(o.microarray, cex.main = 0.8, col = "green")
+(o.microarray <- microarraydata(microarrayfilename, norm.method = "quantile"))
+plot(o.microarray, cex.main = 0.8, col = "green", range = 1e6)
 
 ```
 
@@ -141,7 +142,7 @@ As an example, a basic procedure for this pre-treatment of metabolomic data coul
 
 ```{r}
 (o.metabolo <- continuousomicdata(metabolofilename))
-plot(o.metabolo, col = "green",)
+plot(o.metabolo, col = "green", range = 1e6)
 ```
 
 We renamed metabolomicdata() to continuousomicdata() (while keeping the first name available) to offer its use to other continuous omic data such as proteomics data or RT-QPCR data. 
@@ -291,7 +292,7 @@ and an example below).
 ```{r}
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                     facetby = "trend", 
-                    shapeby = "model")
+                    shapeby = "model") + labs(shape = "model")
 ```
 
 ## Step 5: calculation of confidence intervals on the BMDs by bootstrap 
@@ -306,7 +307,7 @@ obtain stable results.
 
 ### Bootstrap calculation
 ```{r}
-(b <- bmdboot(r, niter = 100, progressbar = FALSE))
+(b <- bmdboot(r, niter = 50, progressbar = FALSE))
 ```
 
 This function gives an output corresponding to the output of
@@ -387,7 +388,7 @@ Using the function bmdplotwithgradient() and its argument facetby, the BMD plot 
 ```{r}
 bmdplotwithgradient(annotres, BMDtype = "zSD",
                     facetby = "path_class", 
-                    shapeby = "trend") 
+                    shapeby = "trend") + labs(shape = "trend")
 ```
 
 ### the same representation with labels of items (so without shapeby)
@@ -409,7 +410,7 @@ ecdfplotwithCI(variable = annotres$BMD.zSD,
                CI.lower = annotres$BMD.zSD.lower, 
                CI.upper = annotres$BMD.zSD.upper, 
                by = annotres$path_class,
-               CI.col = annotres$trend) 
+               CI.col = annotres$trend) + labs(col = "trend")
 ```
 
 ## Sensitivity plot of functional groups
@@ -432,7 +433,7 @@ The function curvesplot() can show the dose-response curves for a specific pathw
 LMres <- annotres[annotres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
            colorby = "trend",
-           xmin = 0, xmax = 8) 
+           xmin = 0, xmax = 8) + labs(col = "trend")
 ```
 
 # Help for multi-omics approaches 

@@ -172,7 +172,7 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
   return(structure(reslist, class = "itemselect"))
 }
 
-print.itemselect <- function(x, ...)
+print.itemselect <- function(x, nfirstitems = 20, ...)
 {
   if (!inherits(x, "itemselect"))
     stop("Use only with 'itemselect' objects.")
@@ -190,10 +190,10 @@ print.itemselect <- function(x, ...)
         cat("Number of selected items using a quadratic trend test with an FDR of ",x$FDR,": ", length(x$selectindex),"\n")
       } 
   
-  if (length(x$selectindex) > 20) 
+  if (length(x$selectindex) > nfirstitems) 
   {
-    cat("Identifiers of the first 20 most responsive items:\n")
-    print(x$omicdata$item[x$selectindex[1:20]])
+    cat(paste("Identifiers of the first ", nfirstitems," most responsive items:\n"))
+    print(x$omicdata$item[x$selectindex[1:nfirstitems]])
   } else
   {
     cat("Identifiers of the responsive items:\n")
