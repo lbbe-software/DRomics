@@ -28,19 +28,29 @@ continuousomicdata <- function(file, check = TRUE)
   nrowd <- nrow(d)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
-  if (any(data > 100))
-    warning(strwrap(prefix = "\n", initial = "\n",
-      "Your data contain high values (> 100). 
-      Make sure that your data are in a reasonable scale 
-      (e.g. log-scale for metabolomic signal).\n"))
-  if (nrowd < 100)
-    warning(strwrap(prefix = "\n", initial = "\n",
-      "Your dataset contains less than 100 lines. Are you sure you really
-      work on omic data ? If the different lines of your data set contain
-      different endpoints you should use the function continuousanchoringdata()."))
   
   if (check)
   {
+    if(any(!complete.cases(data)))
+      warning(strwrap(prefix = "\n", initial = "\n",
+                      "Your data contain NA values. 
+      Make sure that those NA values correspond to missing
+        values at random. If this is not the case 
+        (e.g. missing values correspond to values 
+        under a limit of quantification),
+        you should
+        consider an imputation of missing values.\n"))
+    if (any(data > 100, na.rm = TRUE))
+      warning(strwrap(prefix = "\n", initial = "\n",
+                      "Your data contain high values (> 100). 
+      Make sure that your data are in a reasonable scale 
+      (e.g. log-scale for metabolomic signal).\n"))
+    if (nrowd < 100)
+      warning(strwrap(prefix = "\n", initial = "\n",
+                      "Your dataset contains less than 100 lines. Are you sure you really
+      work on omic data ? If the different lines of your data set contain
+      different endpoints you should use the function continuousanchoringdata()."))
+    
     # check that doses and responses are numeric
     if (!is.numeric(as.matrix(d[, 2:ncold])))
       stop("All the columns except the first one must be numeric with the numeric 
@@ -72,10 +82,10 @@ continuousomicdata <- function(file, check = TRUE)
   
   fdose <- as.factor(dose)
   tdata <- t(data)
+  meanwithnarm <- function(v) mean(v, na.rm = TRUE)
   calcmean <- function(i)
   {
-  #   tapply(data[i,], fdose, mean)
-    tapply(tdata[, i], fdose, mean)
+    tapply(tdata[, i], fdose, meanwithnarm)
   }
   s <- sapply(1:(nrowd - 1), calcmean)
   data.mean <- as.matrix(t(s))
@@ -91,19 +101,33 @@ print.continuousomicdata <- function(x, ...)
 {
   if (!inherits(x, "continuousomicdata"))
     stop("Use only with 'continuousomicdata' objects.")
+
+  nitems <- length(x$item)
+  nitemswithNA <- nitems - sum(complete.cases(x$data))
   
   cat("Elements of the experimental design in order to check the coding of the data :\n")
   cat("Tested doses and number of replicates for each dose:\n")
   print(x$design)
-  cat("Number of items: ", length(x$item),"\n")
+  cat("Number of items: ", nitems,"\n")
+  if (nitemswithNA > 0) 
+  {
+    cat("Number of items with at least one missing data: ", nitemswithNA,"\n")
+    cat(strwrap(prefix = "\n", initial = "\n",
+        "BE CAREFUL ! MISSING VALUES ARE CONSIDERED AS MISSING AT RANDOM ! IF THIS IS NOT THE CASE
+        CONSIDER AN IMPUTATION METHOD FOR NON RANDOM MISSING DATA.\n"))
+    cat("\n")
+  }
   
   if (length(x$item) > 20)
   {
-    cat("Identifiers of the first 20 items:\n")
+    cat(strwrap(prefix = "\n", initial = "\n",
+                "Identifiers of the first 20 items:\n"))
+    cat("\n")
     print(x$item[1:20])
   } else
   {
-    cat("Identifiers of the items:\n")
+    cat(strwrap(prefix = "\n", initial = "\n",
+                "Identifiers of the items:\n"))
     print(x$item)
   }
 }

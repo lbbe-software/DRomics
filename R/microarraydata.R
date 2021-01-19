@@ -23,18 +23,22 @@ microarraydata <- function(file, check = TRUE,
   nrowd <- nrow(d)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
-  if (any(data > 100))
-    warning(strwrap(prefix = "\n", initial = "\n",
-      "Your data contain high values (> 100). 
-      Make sure that your data (microarray signal) are in log-scale.\n"))
-  if (nrowd < 100)
-    warning(strwrap(prefix = "\n", initial = "\n",
-      "Your dataset contains less than 100 lines. Are you sure you really
-      work on microarray data ? This function should
-      not be used with another type of data."))
+
+    if(any(!complete.cases(data)))
+    stop("microarraydata() should not be used with data including NA values.")
   
   if (check)
-  {
+  {  
+    if (any(data > 100))
+    warning(strwrap(prefix = "\n", initial = "\n",
+                    "Your data contain high values (> 100). 
+      Make sure that your data (microarray signal) are in log-scale.\n"))
+    if (nrowd < 100)
+      warning(strwrap(prefix = "\n", initial = "\n",
+                      "Your dataset contains less than 100 lines. Are you sure you really
+      work on microarray data ? This function should
+      not be used with another type of data."))
+    
     # check that doses and responses are numeric
     if (!is.numeric(as.matrix(d[,2:ncold])))
       stop("All the columns except the first one must be numeric with the numeric 

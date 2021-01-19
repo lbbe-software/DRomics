@@ -26,6 +26,9 @@ RNAseqdata <- function(file, check = TRUE,
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
   nrowdata <- nrowd - 1
+
+  if(any(!complete.cases(data)))
+    stop("RNAseqdata() should not be used with data including NA values.")
   
   if (round.counts)
   {
@@ -38,14 +41,15 @@ RNAseqdata <- function(file, check = TRUE,
       stop("Your data contain non integer values. Make sure that your RNAseq data are imported in raw counts.
       If your counts come from Kallisto or Salmon put the argument round.counts of RNAseqdata at TRUE to round them.\n") 
   }
-  if (nrowdata < 100)
-    warning(strwrap(prefix = "\n", initial = "\n",
-      "Your dataset contains less than 100 lines. Are you sure you really
-      work on RNAseq data ? This function should
-      not be used with another type of data."))
   
   if (check)
   {
+    if (nrowdata < 100)
+      warning(strwrap(prefix = "\n", initial = "\n",
+                      "Your dataset contains less than 100 lines. Are you sure you really
+      work on RNAseq data ? This function should
+      not be used with another type of data."))
+    
     # check that doses and responses are numeric
     if (!is.numeric(as.matrix(d[,2:ncold])))
       stop("All the columns except the first one must be numeric with the numeric dose in the firt line 
