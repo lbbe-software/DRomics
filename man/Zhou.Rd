@@ -1,29 +1,23 @@
 \name{Zhou}
 \alias{Zhou}
 \alias{Zhou_kidney_pce}
-\alias{Zhou_kidney_tce}
-\alias{Zhou_liver_pce}
-\alias{Zhou_liver_tce}
 \docType{data}
 %- Also NEED an '\alias' for EACH other topic documented here.
 
-\title{Dose-response liver and kidney transcriptomic effect of Trichloroethylene end Tetrachloroethylene in mouse}
+\title{Dose-response kidney transcriptomic effect of Tetrachloroethylene in mouse}
 
 \description{
-RNAseq data sets for the effect of Trichloroethylene (TCE) and Tetrachloroethylene (PCE) on mouse liver and kidney. Each of those environmental contaminants was administered by gavage in aqueous vehicle to male B6C3F1/J mice, within a dose-reponse design
+RNAseq data set for the effect of Tetrachloroethylene (PCE) on mouse kidney. This environmental contaminant was administered by gavage in aqueous vehicle to male B6C3F1/J mice, within a dose-reponse design
 including five doses plus the control.
 }
 
 \usage{
 data(Zhou_kidney_pce)
-data(Zhou_kidney_tce)
-data(Zhou_liver_pce)
-data(Zhou_liver_tce)
 }
 %- maybe also 'usage' for other objects documented here.
 
 \format{ 
-\code{Zhou_kidney_pce},  \code{Zhou_kidney_tce}, \code{Zhou_liver_pce}  nd \code{Zhou_liver_tce} each contains one row per transcript, with the first column corresponding to the identifier of each transcript, and the other columns giving the count of reads for each replicate at each dose. In the first line, after the name for the identifier column, we have the tested doses for each corresponding replicate.
+\code{Zhou_kidney_pce} contains one row per transcript, with the first column corresponding to the identifier of each transcript, and the other columns giving the count of reads for each replicate at each dose. In the first line, after the name for the identifier column, we have the tested doses for each corresponding replicate.
 }
 
 \source{ 
@@ -38,15 +32,6 @@ Zhou, Y. H., Cichocki, J. A., Soldatow, V. Y., Scholl, E. H., Gallins, P. J., Ji
 data(Zhou_kidney_pce)
 head(Zhou_kidney_pce)
 str(Zhou_kidney_pce)
-
-data(Zhou_kidney_tce)
-head(Zhou_kidney_tce)
-
-data(Zhou_liver_pce)
-head(Zhou_liver_pce)
-
-data(Zhou_liver_tce)
-head(Zhou_liver_tce)
 
 \donttest{
 
