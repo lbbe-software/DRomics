@@ -153,6 +153,21 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       facetby = "trend", shapeby = "model") 
                       
+# same plot changing the names of the facets 
+levels(r$res$trend)
+levels(r$res$trend) <- c("bell shape", "decreasing", "increasing", "U shape")
+
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      facetby = "trend", shapeby = "model")
+
+# same plot changing the labels of the legends 
+# and inversing the two guides
+if (require(ggplot2)) bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      facetby = "trend", shapeby = "model") + 
+                      labs(col = "signal value", shape = "model") +
+                      guides(colour = guide_colourbar(order = 2),
+                      shape = guide_legend(order = 1))
+                      
 # (2)
 # Plot of BMD values with color dose-response gradient
 # faceted by metabolic pathway (from annotation of the selected items)

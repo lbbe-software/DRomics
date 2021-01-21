@@ -70,7 +70,15 @@ head(annotres)
 ecdfquantileplot(variable = annotres$BMD.zSD, 
                by = annotres$path_class,
                quantile.prob = 0.25) 
-               
+ 
+# same plot in log10 dose scale (not interesting on this example
+# but could be on another one) 
+if (require(ggplot2))
+  ecdfquantileplot(variable = annotres$BMD.zSD, 
+               by = annotres$path_class,
+               quantile.prob = 0.25) + scale_y_log10() 
+
+
 }
 
 
