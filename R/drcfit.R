@@ -75,6 +75,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     # removing lines with NA values for the signal
     dset <- dset[complete.cases(dset$signal), ]
     npts <- nrow(dset)
+    ndoses <- length(unique(dset$dose))
+    lessthan5doses <- ndoses < 5
     
     if (information.criterion == "AIC" | information.criterion == "AICc")
     { 
@@ -136,8 +138,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
                                              npar = 3, npts = npts), digits = AICdigits)
           AICExpo3p.2 <- round(AICcorrection(AIC(Expo3p.2, k = kcrit),
                                              npar = 3, npts = npts), digits = AICdigits)
-        }
-        else
+        } else
         {
           AICExpo3p.1 <- round(AIC(Expo3p.1, k = kcrit), digits = AICdigits)
           AICExpo3p.2 <- round(AIC(Expo3p.2, k = kcrit), digits = AICdigits)
@@ -155,7 +156,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
         #### no convergence of both models
         if (inherits(Expo3p.1, "try-error") & inherits(Expo3p.2, "try-error"))
         {
-          keepExpo <- FALSE
+          # keepExpo <- FALSE
           AICExpoi <- Inf
           Expo <- Expo3p.1 # we could have given Expo3p.2
         } else 
@@ -202,14 +203,13 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
         {
           AICHilli <- round(AICcorrection(AIC(Hill, k = kcrit),
                                           npar = 4, npts = npts), digits = AICdigits)
-         }
-        else
+         } else
         {
           AICHilli <- round(AIC(Hill, k = kcrit), digits = AICdigits)
         }
       } else 
       {
-        keepHill <- FALSE
+        # keepHill <- FALSE
         AICHilli <- Inf
       }
     } else (AICHilli <- Inf)
@@ -227,14 +227,13 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
         {
           AICLprobiti <- round(AICcorrection(AIC(Lprobit, k = kcrit),
                                              npar = 4, npts = npts), digits = AICdigits)
-        }
-        else
+        } else
         {
           AICLprobiti <- round(AIC(Lprobit, k = kcrit), digits = AICdigits)
         }
       } else 
       {
-        keepLprobit <- FALSE
+        # keepLprobit <- FALSE
         AICLprobiti <- Inf
       }
     } else (AICLprobiti <- Inf)
@@ -243,154 +242,194 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     ################# LGauss fit ####################
     if (keepLGauss)
     {
-      startLGauss5p <- startvalLGauss5pnls(xm = doseu, ym = signalm,  
+      if (!lessthan5doses)
+      {
+        startLGauss5p <- startvalLGauss5pnls(xm = doseu, ym = signalm,  
                                            Ushape = Ushape)
+        LGauss5p <- suppressWarnings(try(nls(formLGauss5p, start = startLGauss5p, data = dset,
+                                             lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+      }
       startLGauss4p <- startvalLGauss4pnls(xm = doseu, ym = signalm,  
                                            Ushape = Ushape)
-      LGauss5p <- suppressWarnings(try(nls(formLGauss5p, start = startLGauss5p, data = dset,
-                                           lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
       LGauss4p <- suppressWarnings(try(nls(formLGauss4p, start = startLGauss4p, data = dset,
                                            lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
-      #### convergence of both models
-      if ((!inherits(LGauss4p, "try-error")) & (!inherits(LGauss5p, "try-error")))
+      if (lessthan5doses)
       {
-        if (correctAIC)
+        if (!inherits(LGauss4p, "try-error"))
         {
-          AICLGauss4p <- round(AICcorrection(AIC(LGauss4p, k = kcrit),
-                                             npar = 4, npts = npts), digits = AICdigits)
-          AICLGauss5p <- round(AICcorrection(AIC(LGauss5p, k = kcrit),
-                                             npar = 5, npts = npts), digits = AICdigits)
-        }
-        else
-        {
-          AICLGauss4p <- round(AIC(LGauss4p, k = kcrit), digits = AICdigits)
-          AICLGauss5p <- round(AIC(LGauss5p, k = kcrit), digits = AICdigits)
-        }
-        if (AICLGauss5p < AICLGauss4p)
-        {
-          LGauss <- LGauss5p
-          AICLGaussi <- AICLGauss5p
-        } else
-        {
-          LGauss <- LGauss4p
           equalcdLG <- TRUE
-          AICLGaussi <- AICLGauss4p
-        }
-      } else
-        #### no convergence of both models
-        if (inherits(LGauss4p, "try-error") & inherits(LGauss5p, "try-error"))
-        {
-          keepLGauss <- FALSE
-          AICLGaussi <- Inf
-          LGauss <- LGauss5p # we could have given LGauss4p
-        } else 
-          #### convergence only of LGauss4p
-          if ((!inherits(LGauss4p, "try-error")) & inherits(LGauss5p, "try-error"))
+          LGauss <- LGauss4p
+          if (correctAIC)
           {
-            equalcdLG <- TRUE
-            LGauss <- LGauss4p
-            if (correctAIC)
-            {
-              AICLGaussi <- round(AICcorrection(AIC(LGauss4p, k = kcrit),
-                                                npar = 4, npts = npts), digits = AICdigits)
-            }
-            else
-            {
-              AICLGaussi <- round(AIC(LGauss4p, k = kcrit), digits = AICdigits)
-            }
+            AICLGaussi <- round(AICcorrection(AIC(LGauss4p, k = kcrit),
+                                              npar = 4, npts = npts), digits = AICdigits)
           } else
-            #### convergence only of LGauss5p
-            if ((!inherits(LGauss5p, "try-error")) & inherits(LGauss4p, "try-error"))
+          {
+            AICLGaussi <- round(AIC(LGauss4p, k = kcrit), digits = AICdigits)
+          }
+        } else (AICLGaussi <- Inf)
+      } else # if (lessthan5doses)
+      {
+        #### convergence of both models
+        if ((!inherits(LGauss4p, "try-error")) & (!inherits(LGauss5p, "try-error")))
+        {
+          if (correctAIC)
+          {
+            AICLGauss4p <- round(AICcorrection(AIC(LGauss4p, k = kcrit),
+                                               npar = 4, npts = npts), digits = AICdigits)
+            AICLGauss5p <- round(AICcorrection(AIC(LGauss5p, k = kcrit),
+                                               npar = 5, npts = npts), digits = AICdigits)
+          } else
+          {
+            AICLGauss4p <- round(AIC(LGauss4p, k = kcrit), digits = AICdigits)
+            AICLGauss5p <- round(AIC(LGauss5p, k = kcrit), digits = AICdigits)
+          }
+          if (AICLGauss5p < AICLGauss4p)
+          {
+            LGauss <- LGauss5p
+            AICLGaussi <- AICLGauss5p
+          } else
+          {
+            LGauss <- LGauss4p
+            equalcdLG <- TRUE
+            AICLGaussi <- AICLGauss4p
+          }
+        } else
+          #### no convergence of both models
+          if (inherits(LGauss4p, "try-error") & inherits(LGauss5p, "try-error"))
+          {
+            # keepLGauss <- FALSE
+            AICLGaussi <- Inf
+            LGauss <- LGauss5p # we could have given LGauss4p
+          } else 
+            #### convergence only of LGauss4p
+            if ((!inherits(LGauss4p, "try-error")) & inherits(LGauss5p, "try-error"))
             {
-              LGauss <- LGauss5p
+              equalcdLG <- TRUE
+              LGauss <- LGauss4p
               if (correctAIC)
               {
-                AICLGaussi <- round(AICcorrection(AIC(LGauss5p, k = kcrit),
-                                                  npar = 5, npts = npts), digits = AICdigits)
-              }
-              else
+                AICLGaussi <- round(AICcorrection(AIC(LGauss4p, k = kcrit),
+                                                  npar = 4, npts = npts), digits = AICdigits)
+              } else
               {
-                AICLGaussi <- round(AIC(LGauss5p, k = kcrit), digits = AICdigits)
+                AICLGaussi <- round(AIC(LGauss4p, k = kcrit), digits = AICdigits)
               }
-            }
-    } else (AICLGaussi <- Inf)
+            } else
+              #### convergence only of LGauss5p
+              if ((!inherits(LGauss5p, "try-error")) & inherits(LGauss4p, "try-error"))
+              {
+                LGauss <- LGauss5p
+                if (correctAIC)
+                {
+                  AICLGaussi <- round(AICcorrection(AIC(LGauss5p, k = kcrit),
+                                                    npar = 5, npts = npts), digits = AICdigits)
+                } else
+                {
+                  AICLGaussi <- round(AIC(LGauss5p, k = kcrit), digits = AICdigits)
+                }
+              } else (AICLGaussi <- Inf)
+      } 
+
+    } # END of if (keepLGauss)
+        
+      
     
     
     ################### Gauss fit ########################
     if (keepGauss)
     {
-      startGauss5p <- startvalGauss5pnls(xm = doseu, ym = signalm,  
+      if (!lessthan5doses)
+      {
+        startGauss5p <- startvalGauss5pnls(xm = doseu, ym = signalm,  
                                          Ushape = Ushape)
-      Gauss5p <- suppressWarnings(try(nls(formGauss5p, start = startGauss5p, data = dset, 
+        Gauss5p <- suppressWarnings(try(nls(formGauss5p, start = startGauss5p, data = dset, 
                                           lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+      }
       startGauss4p <- startvalGauss4pnls(xm = doseu, ym = signalm,  
                                          Ushape = Ushape)
       Gauss4p <- suppressWarnings(try(nls(formGauss4p, start = startGauss4p, data = dset, 
                                           lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
-      
-      #### convergence of both models
-      if ((!inherits(Gauss4p, "try-error")) & (!inherits(Gauss5p, "try-error")))
+
+      if (lessthan5doses)
       {
-        if (correctAIC)
+        if (!inherits(Gauss4p, "try-error"))
         {
-          AICGauss4p <- round(AICcorrection(AIC(Gauss4p, k = kcrit),
-                                            npar = 4, npts = npts), digits = AICdigits)
-          AICGauss5p <- round(AICcorrection(AIC(Gauss5p, k = kcrit),
-                                            npar = 5, npts = npts), digits = AICdigits)
-        }
-        else
-        {
-          AICGauss4p <- round(AIC(Gauss4p, k = kcrit), digits = AICdigits)
-          AICGauss5p <- round(AIC(Gauss5p, k = kcrit), digits = AICdigits)
-        }
-        if (AICGauss5p < AICGauss4p)
-        {
-          Gauss <- Gauss5p
-          AICGaussi <- AICGauss5p
-        } else
-        {
-          Gauss <- Gauss4p
           equalcdG <- TRUE
-          AICGaussi <- AICGauss4p
-        }
-      } else
-        #### no convergence of both models
-        if (inherits(Gauss4p, "try-error") & inherits(Gauss5p, "try-error"))
-        {
-          keepGauss <- FALSE
-          AICGaussi <- Inf
-          Gauss <- Gauss5p # we could have given Gauss4p
-        } else 
-          #### convergence only of Gauss4p
-          if ((!inherits(Gauss4p, "try-error")) & inherits(Gauss5p, "try-error"))
+          Gauss <- Gauss4p
+          if (correctAIC)
           {
-            equalcdG <- TRUE
-            Gauss <- Gauss4p
-            if (correctAIC)
-            {
-               AICGaussi <- round(AICcorrection(AIC(Gauss4p, k = kcrit),
-                                               npar = 4, npts = npts), digits = AICdigits)
-            }
-            else
-            {
-              AICGaussi <- round(AIC(Gauss4p, k = kcrit), digits = AICdigits)
-            }
+            AICGaussi <- round(AICcorrection(AIC(Gauss4p, k = kcrit),
+                                              npar = 4, npts = npts), digits = AICdigits)
           } else
-            #### convergence only of Gauss5p
-            if ((!inherits(Gauss5p, "try-error")) & inherits(Gauss4p, "try-error"))
+          {
+            AICGaussi <- round(AIC(Gauss4p, k = kcrit), digits = AICdigits)
+          }
+        } else (AICGaussi <- Inf)
+      } else # if (lessthan5doses)
+      {
+        #### convergence of both models
+        if ((!inherits(Gauss4p, "try-error")) & (!inherits(Gauss5p, "try-error")))
+        {
+          if (correctAIC)
+          {
+            AICGauss4p <- round(AICcorrection(AIC(Gauss4p, k = kcrit),
+                                              npar = 4, npts = npts), digits = AICdigits)
+            AICGauss5p <- round(AICcorrection(AIC(Gauss5p, k = kcrit),
+                                              npar = 5, npts = npts), digits = AICdigits)
+          } else
+          {
+            AICGauss4p <- round(AIC(Gauss4p, k = kcrit), digits = AICdigits)
+            AICGauss5p <- round(AIC(Gauss5p, k = kcrit), digits = AICdigits)
+          }
+          if (AICGauss5p < AICGauss4p)
+          {
+            Gauss <- Gauss5p
+            AICGaussi <- AICGauss5p
+          } else
+          {
+            Gauss <- Gauss4p
+            equalcdG <- TRUE
+            AICGaussi <- AICGauss4p
+          }
+        } else
+          #### no convergence of both models
+          if (inherits(Gauss4p, "try-error") & inherits(Gauss5p, "try-error"))
+          {
+            # keepGauss <- FALSE
+            AICGaussi <- Inf
+            Gauss <- Gauss5p # we could have given Gauss4p
+          } else 
+            #### convergence only of Gauss4p
+            if ((!inherits(Gauss4p, "try-error")) & inherits(Gauss5p, "try-error"))
             {
-              Gauss <- Gauss5p
+              equalcdG <- TRUE
+              Gauss <- Gauss4p
               if (correctAIC)
               {
-                AICGaussi <- round(AICcorrection(AIC(Gauss5p, k = kcrit),
-                                                 npar = 5, npts = npts), digits = AICdigits)
-              }
-              else
+                AICGaussi <- round(AICcorrection(AIC(Gauss4p, k = kcrit),
+                                                 npar = 4, npts = npts), digits = AICdigits)
+              } else
               {
-                AICGaussi <- round(AIC(Gauss5p, k = kcrit), digits = AICdigits)
+                AICGaussi <- round(AIC(Gauss4p, k = kcrit), digits = AICdigits)
               }
-            }
-    } else (AICGaussi <- Inf)
+            } else
+              #### convergence only of Gauss5p
+              if ((!inherits(Gauss5p, "try-error")) & inherits(Gauss4p, "try-error"))
+              {
+                Gauss <- Gauss5p
+                if (correctAIC)
+                {
+                  AICGaussi <- round(AICcorrection(AIC(Gauss5p, k = kcrit),
+                                                   npar = 5, npts = npts), digits = AICdigits)
+                } else
+                {
+                  AICGaussi <- round(AIC(Gauss5p, k = kcrit), digits = AICdigits)
+                }
+              } else (AICGaussi <- Inf)
+      } 
+   }# END of if (keepGauss)
+        
     
     ######### Fit of the linear model ############################    
     if (keeplin)
@@ -400,8 +439,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
       {
         AIClini <- round(AICcorrection(AIC(lin, k = kcrit),
                                        npar = 2, npts = npts), digits = AICdigits)
-      }
-      else
+      } else
       {
         AIClini <- round(AIC(lin, k = kcrit), digits = AICdigits)
       }
@@ -414,8 +452,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     {
       AICconsti <-  round(AICcorrection(AIC(constmodel, k = kcrit),
                                         npar = 1, npts = npts), digits = AICdigits)
-    }
-    else
+    } else
     {
       AICconsti <-  round(AIC(constmodel, k = kcrit), digits = AICdigits)
     }
