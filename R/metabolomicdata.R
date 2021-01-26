@@ -32,6 +32,7 @@ continuousomicdata <- function(file, check = TRUE)
   if (check)
   {
     if(any(!complete.cases(data)))
+    {
       warning(strwrap(prefix = "\n", initial = "\n",
                       "Your data contain NA values. 
       Make sure that those NA values correspond to missing
@@ -40,6 +41,7 @@ continuousomicdata <- function(file, check = TRUE)
         under a limit of quantification),
         you should
         consider an imputation of missing values.\n"))
+    }
     if (any(data > 100, na.rm = TRUE))
       warning(strwrap(prefix = "\n", initial = "\n",
                       "Your data contain high values (> 100). 
@@ -71,14 +73,32 @@ continuousomicdata <- function(file, check = TRUE)
   if (any(dose < 0))
     stop("DRomics cannot be used with negative values of doses.")
   design <- table(dose, dnn = "")
-  if (length(design) < 4)
+  nbdoses <- length(design)
+  nbpts <- sum(design)
+  if ((nbdoses < 4)| (nbpts < 8))
     stop("Dromics cannot be used with a dose-response design 
-    with less than four tested doses/concentrations.")
-  if (length(design) == 4)
+    with less than four tested doses/concentrations or less than eight data points
+         per dose-response curve.")
+  if (nbdoses < 6)
     warning(strwrap(prefix = "\n", initial = "\n",
-      "When using DRomics with a dose-response design with only four tested doses/concentrations, 
-      it is recommended to check after the modelling step that all selected models have no more 
-      than 4 parameters."))
+                    "To optimize the dose-response modelling, it is recommended to use
+      a dose-response design with at least six different tested doses."))
+
+  # control of the design including on rows with NA values
+  if(any(!complete.cases(data)))
+  {
+    nonNAdata <- !is.na(data)
+    minnonNAnbpts <- min(rowSums(nonNAdata))
+    if (minnonNAnbpts < 8)
+      stop(strwrap(prefix = "\n", initial = "\n",
+      "Dromics cannot be used with a dose-response design 
+    with less than eight data points
+         per dose-response curve for each item. You should check your data
+           to eliminate items with too many NA values or impute NA values if 
+           they do not correspond to missing values at random 
+           (e.g. missing values correspond to values 
+        under a limit of quantification)."))
+  }
   
   fdose <- as.factor(dose)
   tdata <- t(data)

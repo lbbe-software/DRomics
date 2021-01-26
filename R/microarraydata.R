@@ -61,14 +61,16 @@ microarraydata <- function(file, check = TRUE,
   if (any(dose < 0))
     stop("DRomics cannot be used with negative values of doses.")
   design <- table(dose, dnn = "")
-  if (length(design) < 4)
+  nbdoses <- length(design)
+  nbpts <- sum(design)
+  if ((nbdoses < 4)| (nbpts < 8))
     stop("Dromics cannot be used with a dose-response design 
-    with less than four tested doses/concentrations.")
-  if (length(design) == 4)
+    with less than four tested doses/concentrations or less than eight data points
+         per dose-response curve.")
+  if (nbdoses < 6)
     warning(strwrap(prefix = "\n", initial = "\n",
-      "When using DRomics with a dose-response design with only four tested doses/concentrations, 
-      it is recommended to check after the modelling step that all selected models have no more 
-      than 4 parameters."))
+      "To optimize the dose-response modelling, it is recommended to use
+      a dose-response design with at least six different tested doses."))
   
   fdose <- as.factor(dose)
   tdata <- t(data)

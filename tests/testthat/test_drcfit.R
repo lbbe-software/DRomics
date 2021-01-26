@@ -6,7 +6,7 @@ test_that("drcfit works as expected on the model results",
     datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
     o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
     s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)
-    f <- drcfit(s_quad, progressbar = TRUE)
+    f <- drcfit(s_quad, progressbar = TRUE, information.criterion = "AIC")
     tmodel <- table(f$fitres$model)
     expect_equal(as.numeric(tmodel["Hill"]), 2)
     expect_equal(as.numeric(tmodel["linear"]), 9)
@@ -26,5 +26,13 @@ test_that("drcfit works as expected on the model results",
     expect_equal(as.numeric(tmodel.BIC["exponential"]), 26)
     expect_equal(as.numeric(tmodel.BIC["Gauss-probit"]), 24)
     expect_equal(as.numeric(tmodel.BIC["log-Gauss-probit"]), 2)
+    # Select model with AICc
+    f.AICc <- drcfit(s_quad, progressbar = TRUE, information.criterion = "AICc")
+    tmodel.AICc <- table(f.AICc$fitres$model)
+    expect_equal(as.numeric(tmodel.AICc["Hill"]), 0)
+    expect_equal(as.numeric(tmodel.AICc["linear"]), 11)
+    expect_equal(as.numeric(tmodel.AICc["exponential"]), 30)
+    expect_equal(as.numeric(tmodel.AICc["Gauss-probit"]), 24)
+    expect_equal(as.numeric(tmodel.AICc["log-Gauss-probit"]), 2)
     
   })

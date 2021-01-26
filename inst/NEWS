@@ -17,6 +17,7 @@ color blind people)
 - Add of a vignette
 - Removing of three of the four datasets from Zou et al. 2017 to make the 
 package lighter
+- Add an option 'AICc' for the argument information.criterion in drcfit().
 
 Version 2.1-0 
 =============

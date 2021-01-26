@@ -11,7 +11,7 @@ Fits dose reponse models to responsive items.
 
 \usage{
 drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
-  information.criterion = c("AIC", "BIC"), postfitfilter = TRUE,
+  information.criterion = c("AIC", "BIC", "AICc"), postfitfilter = TRUE,
   progressbar = TRUE, saveplot2pdf = TRUE, 
   parallel = c("no", "snow", "multicore"), ncpus)
 
@@ -33,7 +33,8 @@ plotfit2pdf(x, items,
   choice) or \code{"log-probit"}.}
 
 \item{information.criterion}{The information criterion used to select the best fit model, \code{"AIC"} (default
-  choice) or \code{"BIC"}.}
+  choice), \code{"BIC"} or \code{"AICc"} the corrected version of the AIC that is recommended
+  for small samples (see Burnham and Anderson 2004).}
 
 \item{postfitfilter}{If \code{TRUE} fits with significant trends on residuals 
   (showing a global significant quadratic trend of the residuals
@@ -155,6 +156,8 @@ eliminate unreliable fits) and the second one a global significant quadratic tre
 \references{ 
 Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M,
 Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental science & technology.\doi{10.1021/acs.est.8b04752}
+
+Burnham, KP, Anderson DR (2004). Multimodel inference: understanding AIC and BIC in model selection. Sociological methods & research, 33(2), 261-304.
 }
 
 \author{ 

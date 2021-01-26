@@ -6,7 +6,7 @@ test_that("bmdcalc works as expected on the BMD results",
     datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
     o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
     s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)
-    f <- drcfit(s_quad, progressbar = TRUE)
+    f <- drcfit(s_quad, progressbar = TRUE, information.criterion = "AIC")
     r.1 <- bmdcalc(f, z = 1, x = 10)
     r.2 <- bmdcalc(f, z = 2, x = 50)
     BMD.zSD.1 <- r.1$res$BMD.zSD
