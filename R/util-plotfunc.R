@@ -13,6 +13,8 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
       this type of plot: residuals as fonction of fitted values."))
   }
   
+  lev <- if((!is.null(nr) & !is.null(nc)) && (length(subd$id) < (nr * nc))) {c(subd$id, strrep(" ", 1:(nr * nc - length(subd$id))))} else {subd$id}
+  
 ######################### Dose_fitted plot ##########################
   if (plot.type == "dose_fitted")
   {
@@ -45,7 +47,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
     for (i in 1:nitems)
     {
       irow <- subd$irow[i]
-      ident <- subd$id[i]
+      ident <- lev[i]
       datai <- data[irow, ]
       datameani <- data.mean[irow, ]
       # fitted curves
@@ -75,18 +77,18 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
       }
     }
     
-    dataobs$id <- factor(dataobs$id, levels = subd$id)
-    dataobsmean$id <- factor(dataobsmean$id, levels = subd$id)
+    dataobs$id <- factor(dataobs$id, levels = lev)
+    dataobsmean$id <- factor(dataobsmean$id, levels = lev)
     
     g <- ggplot(dataobs, aes_(x = quote(dose), y = quote(signal))) + geom_point(shape = 1) +
-      facet_wrap(~ id, scales = "free_y", nrow = nr, ncol = nc) +
+      facet_wrap(~ id, scales = "free_y", nrow = nr, ncol = nc, drop = FALSE) +
       geom_point(data = dataobsmean, shape = 19)
     
     
-    datatheo$id <- factor(datatheo$id, levels = subd$id)
+    datatheo$id <- factor(datatheo$id, levels = lev)
     if (dose_log_transfo) 
     {
-      datatheo0$id <- factor(datatheo0$id, levels = subd$id)
+      datatheo0$id <- factor(datatheo0$id, levels = lev)
       g <- g + geom_line(data = datatheo, colour = "red") +
         geom_point(data = datatheo0, colour = "red") 
       g <- g + scale_x_log10()
@@ -105,7 +107,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
     for (i in 1:nitems)
     {
       irow <- subd$irow[i]
-      ident <- subd$id[i]
+      ident <- lev[i]
       datai <- data[irow, ]
       # fitted curves
       if (subd$model[i] == "exponential") datapred <- fExpo(x = xplot, d = subd$d[i], b = subd$b[i], e = subd$e[i])
@@ -120,12 +122,12 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
                                   fitted_values = datapred, id = rep(ident, nobs)))
     }
     
-    dataresiduals$id <- factor(dataresiduals$id, levels = subd$id)
+    dataresiduals$id <- factor(dataresiduals$id, levels = lev)
     if (plot.type == "dose_residuals")
     {
       g <- ggplot(dataresiduals, aes_(x = quote(dose), y = quote(residuals))) + 
         geom_point(shape = 1) +
-        facet_wrap(~ id, nrow = nr, ncol = nc) + 
+        facet_wrap(~ id, nrow = nr, ncol = nc, drop = FALSE) +
         geom_hline(yintercept = 0, linetype = "dashed", color = "red")
       if (dose_log_transfo)
       {
@@ -138,7 +140,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
     {
       g <- ggplot(dataresiduals, aes_(x = quote(fitted_values), y = quote(residuals))) + 
         geom_point(shape = 1) +
-        facet_wrap(~ id, scales = "free_x", nrow = nr, ncol = nc) + 
+        facet_wrap(~ id, scales = "free_x", nrow = nr, ncol = nc, drop = FALSE) +
         geom_hline(yintercept = 0, linetype = "dashed", color = "red")
       
     }
