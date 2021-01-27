@@ -91,7 +91,7 @@ server <- function(input, output, session) {
   observe({shinyjs::disable("buttonPlotBmdcalc")})
   
   rundrcfit <- eventReactive(input$buttonDrcfit, {
-    return(drcfit(signifitems, progressbar = FALSE, sigmoid.model = "Hill", parallel = "no"))
+    return(drcfit(signifitems, progressbar = FALSE, sigmoid.model = "Hill", parallel = "no", saveplot2pdf = FALSE))
   })
   
   
@@ -112,6 +112,7 @@ server <- function(input, output, session) {
         "drcfitplot.pdf"
       },
       content = function(file) {
+        plotfit2pdf(mydrcfit, plot.type = input$plottypeDrcfit, dose_log_transfo = as.logical(input$logdosescale), path2figs = tempdir())
         file.copy(paste0(tempdir(), "/drcfitplot.pdf"), file)
       },
       contentType = {"application/pdf"}
