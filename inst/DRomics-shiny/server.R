@@ -91,7 +91,7 @@ server <- function(input, output, session) {
   observe({shinyjs::disable("buttonPlotBmdcalc")})
   
   rundrcfit <- eventReactive(input$buttonDrcfit, {
-    return(drcfit(signifitems, progressbar = FALSE, sigmoid.model = "Hill", parallel = "no", saveplot2pdf = FALSE))
+    return(drcfit(signifitems, progressbar = FALSE, sigmoid.model = "Hill", parallel = "no"))
   })
   
   
