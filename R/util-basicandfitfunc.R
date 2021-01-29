@@ -354,7 +354,7 @@ invLprobit <- function(y, b, c, d, e)
       return(e * exp(qnorm((y - d) / (c - d)) *b))
 }
 
-# calculation of AIC from AIC
+# calculation of AICc from AIC
 AICcorrection <- function(AIC, npar, npts)
 {
   k <- npar + 1 # number of parameters + 1 for sigma

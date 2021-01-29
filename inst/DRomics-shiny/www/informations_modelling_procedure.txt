@@ -1,8 +1,16 @@
 For each selected item, five dose-response models (linear, Hill, exponential, 
-Gauss-probit and log-Gauss-probit, see Larras et al. ???? for their definition) 
+Gauss-probit and log-Gauss-probit, see Larras et al. 2018 for their definition) 
 are fitted by non linear regression. 
-The best one is chosen as the one giving the lowest AIC value. 
-Items with the best AIC value not lower than the AIC value of the null model
+The best one is chosen as the one giving the lowest AICc value.
+
+The former use of the AIC (Akaike criterion)
+was replaced by the use of the AICc (second-order Akaike criterion)
+in order to prevent the overfitting that may occur with dose-response designs
+with a small number of data points, as recommended
+and now classically done in regression 
+(Hurvich and Tsai, 1989; Burnham and Anderson DR, 2004).
+
+Items with the best AICc value not lower than the AICc value of the null model
 (constant model) minus 2 are eliminated. 
 Items with the best fit showing a global significant quadratic trend of the 
 residuals as a function of the dose (in rank-scale) are also eliminated (the 
@@ -23,4 +31,20 @@ chosen model and of its parameter values :
 - "lGP.U" for U-shape log-Gauss-probit curves
 - "lGP.bell" for bell-shape log-Gauss-probit curves
 
-Larras, ..., ES&T ?
+Each retained item is also classified in four classes by its global trend,
+which can be used to roughly describe the shape of each dose-response curve:
+  - inc for increasing curves,
+  - dec for decreasing curves ,
+  - U for U-shape curves,
+  - bell for bell-shape curves.
+
+Burnham, KP, Anderson DR (2004). Multimodel inference: understanding AIC and 
+BIC in model selection. Sociological methods & research, 33(2), 261-304.
+
+Hurvich, CM, Tsai, CL (1989). Regression and time series model selection in 
+small samples. Biometrika, 76(2), 297-307.
+
+Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M,
+Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to 
+support the use of the dose-response framework for omics data in ecological 
+risk assessment. Environmental science & technology.

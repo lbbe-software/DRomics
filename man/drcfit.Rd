@@ -11,9 +11,8 @@ Fits dose reponse models to responsive items.
 
 \usage{
 drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
-  information.criterion = c("AIC", "BIC", "AICc"), postfitfilter = TRUE,
-  progressbar = TRUE, saveplot2pdf = TRUE, 
-  parallel = c("no", "snow", "multicore"), ncpus)
+  information.criterion = c("AICc", "BIC", "AIC"), postfitfilter = TRUE,
+  progressbar = TRUE, parallel = c("no", "snow", "multicore"), ncpus)
 
 \method{print}{drcfit}(x, \dots)
 
@@ -32,9 +31,9 @@ plotfit2pdf(x, items,
 \item{sigmoid.model}{The chosen sigmoid model, \code{"Hill"} (default
   choice) or \code{"log-probit"}.}
 
-\item{information.criterion}{The information criterion used to select the best fit model, \code{"AIC"} (default
-  choice), \code{"BIC"} or \code{"AICc"} the corrected version of the AIC that is recommended
-  for small samples (see Burnham and Anderson 2004).}
+\item{information.criterion}{The information criterion used to select the best fit model, \code{"AICc"} as recommended and default
+  choice (the corrected version of the AIC that is recommended
+  for small samples (see Burnham and Anderson 2004), \code{"BIC"} or \code{"AIC"}.}
 
 \item{postfitfilter}{If \code{TRUE} fits with significant trends on residuals 
   (showing a global significant quadratic trend of the residuals
@@ -42,9 +41,6 @@ plotfit2pdf(x, items,
   It is strongly recommended to let it at \code{TRUE}, its default value.}
 
 \item{progressbar}{If \code{TRUE} a progress bar is used to follow the fitting process.}
-
-\item{saveplot2pdf}{If \code{TRUE} a pdf file named drcfitplot.pdf is saved containing
-	all the fitted dose-response curves sorted by adjusted p-values of the selection step.}
 
 \item{parallel}{The type of parallel operation to be used, \code{"snow"} or \code{"multicore"}
   (the second one not being available on Windows),
@@ -84,8 +80,14 @@ plotfit2pdf(x, items,
 For each selected item, five dose-response models (linear, Hill, exponential, 
 Gauss-probit and log-Gauss-probit, see Larras et al. 2018
 for their definition) were fitted by non linear regression,
-using the \code{\link{nls}} function. The best one was chosen as the one giving the lowest AIC (or BIC) value.
-Items with the best AIC (or BIC) value not lower than the AIC (or BIC) value of the null model (constant model) minus 2
+using the \code{\link{nls}} function. The best one was chosen as the one giving the lowest AICc 
+(or BIC or AIC) value. The use of the AICc (second-order Akaike criterion)
+instead of the AIC
+is strongly recommended to prevent the overfitting that may occur with dose-response designs
+with a small number of data points (Hurvich and Tsai, 1989; Burnham and Anderson DR, 2004). 
+Note that in the extremely rare cases where the number of 
+data points would be great, the AIC would converge to the AICc and both procedures would be equivalent.
+Items with the best AICc value not lower than the AICc value of the null model (constant model) minus 2
 were eliminated. Items with the best fit showing a global significant quadratic trend of the residuals
 as a function of the dose (in rank-scale) were also eliminated (the best fit is considered as 
 not reliable in such cases). Each retained item is classified in a twelve class typology depending of the
@@ -105,7 +107,8 @@ chosen model and of its parameter values :
   \item lGP.bell for bell-shape log-Gauss-probit curves.
  }
  
-Each retained item is also classified in four classes by its global trend :
+Each retained item is also classified in four classes by its global trend,
+which can be used to roughly describe the shape of each dose-response curve:
   \itemize{
   \item inc for increasing curves,
   \item dec for decreasing curves ,
@@ -135,7 +138,7 @@ dose value at which their extremum is reached is at zero.
 
 \item{information.criterion}{The information criterion used to select the best fit model as given in input.}
 
-\item{information.criterion.val}{A data frame reporting AIC (or BIC) values for each selected item (one line per item) and each fitted model (one colum per model with the AIC (or BIC) value fixed at \code{Inf} when the fit failed).}
+\item{information.criterion.val}{A data frame reporting the IC values (AICc, BIC or AIC) values for each selected item (one line per item) and each fitted model (one colum per model with the IC value fixed at \code{Inf} when the fit failed).}
 
 \item{n.failure}{The number of previously selected items on which the workflow failed to fit an acceptable model.}
 
@@ -154,10 +157,12 @@ eliminate unreliable fits) and the second one a global significant quadratic tre
 }
 
 \references{ 
+Burnham, KP, Anderson DR (2004). Multimodel inference: understanding AIC and BIC in model selection. Sociological methods & research, 33(2), 261-304.
+
+Hurvich, CM, Tsai, CL (1989). Regression and time series model selection in small samples. Biometrika, 76(2), 297-307.
+
 Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M,
 Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental science & technology.\doi{10.1021/acs.est.8b04752}
-
-Burnham, KP, Anderson DR (2004). Multimodel inference: understanding AIC and BIC in model selection. Sociological methods & research, 33(2), 261-304.
 }
 
 \author{ 
@@ -176,7 +181,7 @@ datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", pack
 
 o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05)
-f <- drcfit(s_quad, progressbar = TRUE)
+(f <- drcfit(s_quad, progressbar = TRUE))
 
 # Default plot
 plot(f)

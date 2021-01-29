@@ -185,7 +185,13 @@ See ?itemselect and Larras et al. 2018 for details.
 
 ### Fit
 
-For Step 3 the function drcfit() must be simply used with the output of itemselect() as first argument. Description of the fitted models and of the procedure to select the best fit are described in Larras et al. 2018 and in ?drcfit.
+For Step 3 the function drcfit() must be simply used with the output of itemselect() as first argument. Description of the fitted models and of the procedure to select the best fit are described in Larras et al. 2018 and in ?drcfit. **The former use of the AIC** (Akaike criterion-
+default information criterion used for the selection of the best fit model in DRomics versions
+< 2.2-0) was **replaced by the use of the AICc** (second-order Akaike criterion)
+in order to prevent the overfitting that may occur with dose-response designs
+with a small number of data points, as recommended
+and now classically done in regression 
+(Hurvich and Tsai, 1989; Burnham and Anderson DR, 2004).
 
 As the call to this function may take time, by default a progressbar is provided.
 Some arguments of this function can be used to specify parallel computing to
@@ -208,8 +214,8 @@ head(f$fitres, 10)
 By default the plot() function used on the output of the drcfit() function 
 provides the first 20 fitted curves (or the ones you specify using the argument items) with observed points. Fitted curves are represented in red, replicates are
 represented in open circles and means of replicates at each dose/concentration
-are represented by solid circles. All the fitted curves are
-saved in a pdf file (see argument saveplot2pdf in ?drcfit).
+are represented by solid circles. All the fitted curves may be
+saved in a pdf file using the plotfit2pdf() function (see ? drcfit).
 
 ```{r}
 plot(f) 
@@ -570,6 +576,10 @@ curvesplot(LMres, facetby = "level", free.y.scales = TRUE, npoints = 100, line.s
 ```
 
 # Main references 
+
++ Burnham, KP, Anderson DR (2004). Multimodel inference: understanding AIC and BIC in model selection. Sociological methods & research, 33(2), 261-304.
+
++ Hurvich, CM, Tsai, CL (1989). Regression and time series model selection in small samples. Biometrika, 76(2), 297-307.
 
 + Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics : a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental Science & Technology. [https://pubs.acs.org/doi/10.1021/acs.est.8b04752](https://pubs.acs.org/doi/10.1021/acs.est.8b04752).
 You can also find this article at : [https://hal.archives-ouvertes.fr/hal-02309919](https://hal.archives-ouvertes.fr/hal-02309919)

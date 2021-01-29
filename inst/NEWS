@@ -3,6 +3,11 @@
 Version 2.2-0 
 =============
 NEW FEATURES
+- The second-order Akaike criterion (AICc) recommended to prevent overfitting
+with small number of data poinst in each dose-response crives was implemented
+and defined as the default option for the argument information.criterion in drcfit().
+- The example file of the package (?DRomics) was replaced by a vignette to help
+the use of the package and of the Shiny application.
 - Improvement of the computation of low BMD values for designs with a high
 ratio between the maximal and minimal (non null) tested doses, with the add
 of two arguments to bmdcalc, minBMD and ratio2switchinlog.
@@ -14,10 +19,8 @@ and add of a function continuousomicdata() that is called by metabolomicdata()
 but could be used on other types of continuous omics data such as proteomics data.
 - default color changed for bmdplotwithgradient() (green replaced by blue for 
 color blind people)
-- Add of a vignette
 - Removing of three of the four datasets from Zou et al. 2017 to make the 
 package lighter
-- Add an option 'AICc' for the argument information.criterion in drcfit().
 - Add a test on residuals for heteroscedasticity and an output of drcfit: 
 residualtests
 

@@ -1,8 +1,8 @@
 ### fit different models to each dose-response curve and choose the best fit 
 drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"), 
-                   information.criterion = c("AIC", "BIC", "AICc"),
+                   information.criterion = c("AICc", "BIC", "AIC"),
                    postfitfilter = TRUE,
-                   progressbar = TRUE, saveplot2pdf = TRUE, 
+                   progressbar = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
 {
   # Checks
@@ -46,7 +46,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   
   # Information criterion definition 
   AICdigits <- 2 # number of digits for rounding the AIC values
-  information.criterion <- match.arg(information.criterion, c("AIC", "BIC", "AICc"))
+  information.criterion <- match.arg(information.criterion, c("AICc", "BIC", "AIC"))
   if (information.criterion == "AICc") correctAIC <- TRUE else correctAIC <- FALSE
  
   # progress bar
@@ -803,20 +803,20 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   }
   
   # Plot of fitted DRCs
-  if(saveplot2pdf) 
-  {
-    pathToFigs <- tempdir()
-    pdf(paste0(pathToFigs, "/drcfitplot.pdf"), width = 7, height = 10) # w and h in inches
-    message(strwrap(prefix = "\n", initial = "\n",
-      paste0("Figures are stored in ", pathToFigs, ". This directory is temporary. It will be removed when the R session is closed.")))
-    plotfit(dc, 
-            dose = dose, 
-            data = data, 
-            data.mean = data.mean, 
-            xlog10 = FALSE, 
-            allpoints = TRUE)
-    dev.off()
-  }
+  # if(saveplot2pdf) 
+  # {
+  #   pathToFigs <- tempdir()
+  #   pdf(paste0(pathToFigs, "/drcfitplot.pdf"), width = 7, height = 10) # w and h in inches
+  #   message(strwrap(prefix = "\n", initial = "\n",
+  #     paste0("Figures are stored in ", pathToFigs, ". This directory is temporary. It will be removed when the R session is closed.")))
+  #   plotfit(dc, 
+  #           dose = dose, 
+  #           data = data, 
+  #           data.mean = data.mean, 
+  #           xlog10 = FALSE, 
+  #           allpoints = TRUE)
+  #   dev.off()
+  # }
   
   reslist <- list(fitres = dc, omicdata = itemselect$omicdata,  
                   information.criterion = information.criterion, information.criterion.val = dAIC,
@@ -831,6 +831,7 @@ print.drcfit <- function(x, ...)
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects.")
   
+  cat("Results of the fitting using the ",x$information.criterion," to select the best fit model:\n")
   ttrend <- table(x$fitres$trend)
   tfit <- table(x$fitres$model)
   nsucces <- nrow(x$fitres)
@@ -850,9 +851,9 @@ print.drcfit <- function(x, ...)
   print(tfit)
   cat("Distribution of the trends (curve shapes) among the ",nsucces," fitted dose-response curves :\n")
   print(ttrend)
-  ttypology <- table(x$fitres$typology)
-  cat("Distribution of the typology of the ",nsucces," fitted dose-response curves :\n")
-  print(ttypology)
+  # ttypology <- table(x$fitres$typology)
+  # cat("Distribution of the typology of the ",nsucces," fitted dose-response curves :\n")
+  # print(ttypology)
 }
 
 plot.drcfit <- function(x, items, 
