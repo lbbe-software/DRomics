@@ -5,3 +5,4 @@ drcfitplot.pdf
 .travis.yml
 appveyor.yml
 README.md
+vignettes/*.html
