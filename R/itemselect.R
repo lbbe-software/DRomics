@@ -179,20 +179,20 @@ print.itemselect <- function(x, nfirstitems = 20, ...)
   
   if (x$select.method == "ANOVA")
   {
-    cat("Number of selected items using an ANOVA type test with an FDR of ",x$FDR,": ", length(x$selectindex),"\n")
+    cat("Number of selected items using an ANOVA type test with an FDR of ", x$FDR, ": ", length(x$selectindex), "\n", sep = "")
   } else
     if (x$select.method == "linear")
     {
-      cat("Number of selected items using a linear trend test with an FDR of ",x$FDR,": ", length(x$selectindex),"\n")
+      cat("Number of selected items using a linear trend test with an FDR of ", x$FDR, ": ", length(x$selectindex), "\n", sep = "")
     } else
       if (x$select.method == "quadratic")
       {
-        cat("Number of selected items using a quadratic trend test with an FDR of ",x$FDR,": ", length(x$selectindex),"\n")
+        cat("Number of selected items using a quadratic trend test with an FDR of ", x$FDR, ": ", length(x$selectindex), "\n", sep = "")
       } 
   
   if (length(x$selectindex) > nfirstitems) 
   {
-    cat(paste("Identifiers of the first ", nfirstitems," most responsive items:\n"))
+    cat("Identifiers of the first ", nfirstitems, " most responsive items:\n", sep = "")
     print(x$omicdata$item[x$selectindex[1:nfirstitems]])
   } else
   {

@@ -100,8 +100,8 @@ print.continuousanchoringdata <- function(x, ...)
   cat("Elements of the experimental design in order to check the coding of the data:\n")
   cat("Tested doses and number of replicates for each dose:\n")
   print(x$design)
-  cat("Number of endpoints: ", nitems,"\n")
-  if (nitemswithNA > 0) cat("Number of endpoints with at least one missing data: ", nitemswithNA,"\n")
+  cat("Number of endpoints:", nitems,"\n")
+  if (nitemswithNA > 0) cat("Number of endpoints with at least one missing data:", nitemswithNA,"\n")
   
   if (length(x$item) > 20)
   {

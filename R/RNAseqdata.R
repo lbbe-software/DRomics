@@ -59,8 +59,7 @@ RNAseqdata <- function(file, check = TRUE,
   # Normalization and count data transformation using DESeq2
   transfo.method <- match.arg(transfo.method, c("rlog", "vst"))
   if(transfo.method == "rlog")
-    cat(strwrap(prefix = "\n", initial = "\n",
-                paste0("Just wait, the transformation using regularized logarithm (rlog) may take a few minutes.\n")))
+    cat(strwrap(paste0("Just wait, the transformation using regularized logarithm (rlog) may take a few minutes.\n")), fill = TRUE)
   
   raw.counts <- data
   (dose <- as.vector(unlist(d[1, 2:ncold])))
@@ -151,10 +150,10 @@ print.RNAseqdata <- function(x, ...)
   if (!inherits(x, "RNAseqdata"))
     stop("Use only with 'RNAseqdata' objects.")
   
-  cat("Elements of the experimental design in order to check the coding of the data :\n")
+  cat("Elements of the experimental design in order to check the coding of the data:\n")
   cat("Tested doses and number of replicates for each dose:\n")
   print(x$design)
-  cat("Number of items: ", length(x$item),"\n")
+  cat("Number of items:", length(x$item), "\n")
   
   if (length(x$item) > 20)
   {
@@ -165,9 +164,8 @@ print.RNAseqdata <- function(x, ...)
     cat("Identifiers of the items:\n")
     print(x$item)
   }
-  cat(strwrap(prefix = "\n", initial = "\n",
-              paste0("Data were normalized with respect to library size 
-                     and  tranformed using the following method: ", x$transfo.method," \n")))
+  cat(strwrap(paste0("Data were normalized with respect to library size 
+                     and tranformed using the following method: ", x$transfo.method)), fill = TRUE)
 }
 
 plot.RNAseqdata <- function(x, ...) 

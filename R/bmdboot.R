@@ -29,8 +29,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
   if (parallel != "no") progressbar <- FALSE
   
   if (progressbar)
-    cat(strwrap(prefix = "\n", initial = "\n",
-      "The bootstrap may be long if the number of items and the number of bootstrap iterations is high.\n"))
+    cat(strwrap("The bootstrap may be long if the number of items and the number of bootstrap iterations is high."), fill = TRUE)
 
   i.items <- match(items, r$res$id)
   nitems <- length(items)
@@ -402,8 +401,8 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
     nboot.successful <- niter - sum(sapply(l1, is.null))
     if(nboot.successful < niter * tol) 
     {
-      # warning(strwrap(prefix = "\n", initial = "\n", paste0("Procedure aborted: the fit only converged for ", nboot.successful, 
-      #               " iterations during bootstrapping for item ", items[i], ".")))
+      # warning(strwrap(paste0("Procedure aborted: the fit only converged for ", nboot.successful, 
+      #               " iterations during bootstrapping for item ", items[i], ".")), fill = TRUE)
       return(c(NA, NA, NA, NA, nboot.successful))
     } else
     {
@@ -468,24 +467,21 @@ print.bmdboot <- function(x, ...)
   nNA.BMDboot <- sum(x$res$nboot.successful < x$tol * x$niter)
   if (nNA.BMDboot == 0)
   {
-    cat(strwrap(prefix = "\n", initial = "\n",
-                paste0("Bootstrap confidence interval computation was successful on ", ntot , " items among", ntot, ".\n")))
+    cat(strwrap(paste0("Bootstrap confidence interval computation was successful on ", ntot, " items among", ntot, ".")), fill = TRUE)
   } else
   {
-    cat(strwrap(prefix = "\n", initial = "\n", 
-                paste0("Bootstrap confidence interval computation failed on ", nNA.BMDboot, " items among ", ntot, 
+    cat(strwrap(paste0("Bootstrap confidence interval computation failed on ", nNA.BMDboot, " items among ", ntot, 
                        " due to lack of convergence of the model fit for a fraction of the 
-                       bootstrapped samples greater than ", x$tol, ".\n")))
+                       bootstrapped samples greater than ", x$tol, ".")), fill = TRUE)
   }
   
   nInf.BMD.zSD.upper <- sum(is.infinite(x$res$BMD.zSD.upper))
   nInf.BMD.xfold.upper <- sum(is.infinite(x$res$BMD.xfold.upper))
-  cat(strwrap(prefix = "\n", initial = "\n",
-              paste0("For ", nInf.BMD.zSD.upper, " BMD.zSD values and ", nInf.BMD.xfold.upper,
+  cat(strwrap(paste0("For ", nInf.BMD.zSD.upper, " BMD.zSD values and ", nInf.BMD.xfold.upper,
                      " BMD.xfold values among ", ntot, 
                      " at least one bound of the 95 percent confidence interval could not be 
                      computed due to some bootstrapped BMD values not reachable due to model asymptotes 
-                     or reached outside the range of tested doses (bounds coded Inf)).\n")))
+                     or reached outside the range of tested doses (bounds coded Inf)).")), fill = TRUE)
 }
 
 plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
