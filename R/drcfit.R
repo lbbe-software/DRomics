@@ -802,22 +802,6 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     dAIC <- dres[, c("AIC.L", "AIC.E", "AIC.lP", "AIC.lGP", "AIC.GP")] 
   }
   
-  # Plot of fitted DRCs
-  # if(saveplot2pdf) 
-  # {
-  #   pathToFigs <- tempdir()
-  #   pdf(paste0(pathToFigs, "/drcfitplot.pdf"), width = 7, height = 10) # w and h in inches
-  #   message(strwrap(prefix = "\n", initial = "\n",
-  #     paste0("Figures are stored in ", pathToFigs, ". This directory is temporary. It will be removed when the R session is closed.")))
-  #   plotfit(dc, 
-  #           dose = dose, 
-  #           data = data, 
-  #           data.mean = data.mean, 
-  #           xlog10 = FALSE, 
-  #           allpoints = TRUE)
-  #   dev.off()
-  # }
-  
   reslist <- list(fitres = dc, omicdata = itemselect$omicdata,  
                   information.criterion = information.criterion, information.criterion.val = dAIC,
                   n.failure = n.failure, unfitres = dfail, 
