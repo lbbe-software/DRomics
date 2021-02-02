@@ -43,13 +43,16 @@ information on selected items for which the modelling step is not successful
 - Add of a function to plot raw data on target items optionally with fitted curves 
 for items which have be selected in step 2 and for which step 3 was successful
 (new function targetplot()).
-- Add of the argument transfo.blind in RNAseqdata() and fixing of a bug in RNAseqdata()
-that occured when using vst() with small datasets.
+- Add of the argument transfo.blind in RNAseqdata() 
 - Add of the argument free.y.scales in curvesplot() to enable free y scales in facets
 and dose_log_transfo to use an x log scale for plot and calculation of signal.
 - Add of examples in DRomics.Rd to help a multi-omics approach
 - Add of the argument round.counts to enable rounding of read counts that would come
 from Kallisto or Salmon.
+
+BUG FIXES
+- make the direct use of varianceStabilizingTransformation() automatic
+for small RNAseq data sets (low number of items: < 1000) to fix a bug in RNAseqdata() that occured when using vst() with small datasets.
 
 
 Version 2.0-1 
