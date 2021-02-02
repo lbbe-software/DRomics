@@ -236,25 +236,22 @@ print.bmdcalc <- function(x, ...)
   nNaN.BMD.zSD <- sum(is.nan(x$res$BMD.zSD))
   nNaN.BMD.xfold <- sum(is.nan(x$res$BMD.xfold))
   if ((nNaN.BMD.zSD > 0) |  (nNaN.BMD.xfold > 0))
-    cat(strwrap(prefix = "\n", initial = "\n",
-                paste0(nNaN.BMD.xfold, " BMD-xfold values and ", nNaN.BMD.zSD,
+    cat(strwrap(paste0(nNaN.BMD.xfold, " BMD-xfold values and ", nNaN.BMD.zSD,
                        " BMD-zSD values are not defined (coded NaN as the BMR stands outside 
-                       the range of response values defined by the model).\n")))
+                       the range of response values defined by the model).")), fill = TRUE)
                 
   # count of cases where BMD is not yet reached at the highest tested dose
   nNA.BMD.zSD <- sum(is.na(x$res$BMD.zSD) & !is.nan(x$res$BMD.zSD))
   nNA.BMD.xfold <- sum(is.na(x$res$BMD.xfold) & !is.nan(x$res$BMD.xfold))
   if ((nNA.BMD.zSD > 0) |  (nNA.BMD.xfold > 0))
-    cat(strwrap(prefix = "\n", initial = "\n",
-                paste0(nNA.BMD.xfold, " BMD-xfold values and ", nNA.BMD.zSD,
+    cat(strwrap(paste0(nNA.BMD.xfold, " BMD-xfold values and ", nNA.BMD.zSD,
                        " BMD-zSD values could not be calculated (coded NA as the BMR stands within the 
-                       range of response values defined by the model but outside the range of tested doses).\n")))
+                       range of response values defined by the model but outside the range of tested doses).")), fill = TRUE)
   
   if ((nNA.BMD.zSD == 0) &  (nNA.BMD.xfold == 0) & (nNaN.BMD.zSD == 0) &  (nNaN.BMD.xfold == 0))
-    cat(strwrap(prefix = "\n", initial = "\n",
-                "BMD-xfold and BMD-SD values could be calculated on all the curves 
+    cat(strwrap("BMD-xfold and BMD-SD values could be calculated on all the curves 
                 (the BMR always stands within the range of response values defined by the model 
-                and within the range of tested doses).\n"))
+                and within the range of tested doses)."), fill = TRUE)
 }
 
 plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"), 

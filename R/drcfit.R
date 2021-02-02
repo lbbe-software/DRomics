@@ -831,25 +831,23 @@ print.drcfit <- function(x, ...)
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects.")
   
-  cat("Results of the fitting using the ",x$information.criterion," to select the best fit model:\n")
+  cat("Results of the fitting using the", x$information.criterion, "to select the best fit model:\n")
   ttrend <- table(x$fitres$trend)
   tfit <- table(x$fitres$model)
   nsucces <- nrow(x$fitres)
   nfirstselect <- x$n.failure + nsucces
   if (x$n.failure > 0)
-    cat(strwrap(prefix = "\n", initial = "\n",
-                paste0(x$n.failure," dose-response curves out of ", nfirstselect, " previously selected were removed 
-                       because no model could be fitted reliably.\n")))
+    cat(strwrap(paste(x$n.failure, "dose-response curves out of", nfirstselect, "previously selected were removed 
+                       because no model could be fitted reliably.")), fill = TRUE)
   ncaseheterosced <- length(which(x$residualtests$resivartrendP < 0.05))
   ntot <- nrow(x$residualtests)
   pc.heterosced <- round(ncaseheterosced / ntot * 100)
   if (pc.heterosced > 50)
-    cat(strwrap(prefix = "\n", initial = "\n",
-                paste0(pc.heterosced,"% of the fitted dose-response curves show a significant heteroscedasticity. 
-                       (non constant variance).\n")))
-  cat("Distribution of the chosen models among the ",nsucces," fitted dose-response curves :\n")
+    cat(strwrap(paste0(pc.heterosced, "% of the fitted dose-response curves show a significant heteroscedasticity. 
+                       (non constant variance).")), fill = TRUE)
+  cat("Distribution of the chosen models among the", nsucces, "fitted dose-response curves:\n")
   print(tfit)
-  cat("Distribution of the trends (curve shapes) among the ",nsucces," fitted dose-response curves :\n")
+  cat("Distribution of the trends (curve shapes) among the", nsucces, "fitted dose-response curves:\n")
   print(ttrend)
   # ttypology <- table(x$fitres$typology)
   # cat("Distribution of the typology of the ",nsucces," fitted dose-response curves :\n")

@@ -125,29 +125,26 @@ print.continuousomicdata <- function(x, ...)
   nitems <- length(x$item)
   nitemswithNA <- nitems - sum(complete.cases(x$data))
   
-  cat("Elements of the experimental design in order to check the coding of the data :\n")
+  cat("Elements of the experimental design in order to check the coding of the data:\n")
   cat("Tested doses and number of replicates for each dose:\n")
   print(x$design)
-  cat("Number of items: ", nitems,"\n")
+  cat("Number of items:", nitems, "\n")
   if (nitemswithNA > 0) 
   {
-    cat("Number of items with at least one missing data: ", nitemswithNA,"\n")
-    cat(strwrap(prefix = "\n", initial = "\n",
-        "BE CAREFUL ! MISSING VALUES ARE CONSIDERED AS MISSING AT RANDOM ! IF THIS IS NOT THE CASE
-        CONSIDER AN IMPUTATION METHOD FOR NON RANDOM MISSING DATA.\n"))
+    cat("Number of items with at least one missing data:", nitemswithNA, "\n")
+    cat(strwrap("BE CAREFUL ! MISSING VALUES ARE CONSIDERED AS MISSING AT RANDOM ! IF THIS IS NOT THE CASE
+        CONSIDER AN IMPUTATION METHOD FOR NON RANDOM MISSING DATA."), fill = TRUE)
     cat("\n")
   }
   
   if (length(x$item) > 20)
   {
-    cat(strwrap(prefix = "\n", initial = "\n",
-                "Identifiers of the first 20 items:\n"))
+    cat(strwrap("Identifiers of the first 20 items:"), fill = TRUE)
     cat("\n")
     print(x$item[1:20])
   } else
   {
-    cat(strwrap(prefix = "\n", initial = "\n",
-                "Identifiers of the items:\n"))
+    cat(strwrap("Identifiers of the items:"), fill = TRUE)
     print(x$item)
   }
 }

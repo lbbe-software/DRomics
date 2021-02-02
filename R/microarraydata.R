@@ -95,10 +95,10 @@ print.microarraydata <- function(x, ...)
   if (!inherits(x, "microarraydata"))
     stop("Use only with 'microarraydata' objects.")
   
-  cat("Elements of the experimental design in order to check the coding of the data :\n")
+  cat("Elements of the experimental design in order to check the coding of the data:\n")
   cat("Tested doses and number of replicates for each dose:\n")
   print(x$design)
-  cat("Number of items: ", length(x$item),"\n")
+  cat("Number of items:", length(x$item), "\n")
   
   if (length(x$item) > 20)
   {
@@ -110,7 +110,7 @@ print.microarraydata <- function(x, ...)
     print(x$item)
   }
   if (x$norm.method != "none")
-    cat("Data were normalized between arrays using the following method: ", x$norm.method," \n")
+    cat("Data were normalized between arrays using the following method:", x$norm.method, "\n")
 }
 
 plot.microarraydata <- function(x, ...) 

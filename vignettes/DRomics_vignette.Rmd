@@ -473,7 +473,8 @@ contigresfilename <- system.file("extdata", "triclosanSVcontigres.txt", package 
 contigres <- read.table(contigresfilename, header = TRUE, stringsAsFactors = TRUE)
 str(contigres)
 
-# 2. Import the dataframe with functional annotation (or any other descriptor/category you want to use, here KEGG pathway classes) 
+# 2. Import the dataframe with functional annotation (or any other descriptor/category 
+# you want to use, here KEGG pathway classes) 
 contigannotfilename <- system.file("extdata", "triclosanSVcontigannot.txt", package = "DRomics")
 contigannot <- read.table(contigannotfilename, header = TRUE, stringsAsFactors = TRUE)
 str(contigannot)
