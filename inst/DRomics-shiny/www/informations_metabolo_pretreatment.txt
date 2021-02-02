@@ -11,6 +11,11 @@ If a scaling to the total intensity (normalization by sum of signals
 in each sample) or another normalization is necessary and pertinent, 
 we recommend to do it before those three previously decribed steps.
 
-For more information and options about pre-treatment of metabolomic data, see for example Liggi et al. 2018.
+For more information and options about pre-treatment of metabolomic data, 
+see for example Liggi et al. 2018.
 
-Liggi S, Hinz C, Hall Z, Santoru ML, Poddighe S, Fjeldsted J, ... & Griffin JL (2018). KniMet: a pipeline for the processing of chromatography mass spectrometry metabolomics data. Metabolomics, 14(4), 52.
+-- REFERENCES --
+
+Liggi S, Hinz C, Hall Z, Santoru ML, Poddighe S, Fjeldsted J, ... & Griffin JL (2018).
+KniMet: a pipeline for the processing of chromatography mass spectrometry 
+metabolomics data. Metabolomics, 14(4), 52.

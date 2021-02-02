@@ -1,7 +1,7 @@
 The data file must be a .txt file with tabs or spaces as field separators.
 
-It must be formated with one row per item (e.g. probes, metabolites for omics
-data or endpoints for anchoring data),
+It must be formated with one row per item (e.g. probes, contigs, metabolites 
+for omics data or endpoints for anchoring data),
 one column per sample (e.g dose/concentration).
 
 The first column must correspond to the identifier of each item (in a column

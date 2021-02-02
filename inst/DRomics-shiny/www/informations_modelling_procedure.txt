@@ -38,6 +38,8 @@ which can be used to roughly describe the shape of each dose-response curve:
   - U for U-shape curves,
   - bell for bell-shape curves.
 
+-- REFERENCES --
+
 Burnham, KP, Anderson DR (2004). Multimodel inference: understanding AIC and 
 BIC in model selection. Sociological methods & research, 33(2), 261-304.
 

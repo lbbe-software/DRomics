@@ -55,8 +55,10 @@ on a log scale of dose.}
 }
 
 \details{
-Two types of benchmark doses (BMD) were computed for each responsive item using 
-the best fit dose-reponse model previously obtained using the \code{\link{drcfit}} function :
+The two types of benchmark doses (BMD) proposed by the EFSA (2017)
+were computed for each responsive item using 
+the best fit dose-reponse model previously obtained using the \code{\link{drcfit}} function
+(see Larras et al. 2018 for details):
 \itemize{
   \item the BMD-zSD defined as the dose at which the response is reaching 
     y0 +/- z * SD, with y0 the level at the control given by the dose-response model, SD the 
@@ -112,8 +114,14 @@ the numerical computations are performed in a log scale (as given in input).}
 }
 
 \references{ 
+EFSA Scientific Committee, Hardy A, Benford D, Halldorsson T, Jeger MJ, Knutsen KH,
+... & Schlatter JR  (2017). Update: use of the benchmark dose approach in risk assessment.
+EFSA Journal, 15(1), e04658.
+
 Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M,
-  Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental science & technology.\doi{10.1021/acs.est.8b04752}
+Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to support 
+the use of the dose-response framework for omics data in ecological risk assessment. 
+Environmental science & technology.\doi{10.1021/acs.est.8b04752}
 }
 
 

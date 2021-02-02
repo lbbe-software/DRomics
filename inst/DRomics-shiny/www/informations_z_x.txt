@@ -1,5 +1,7 @@
-Two types of benchmark doses (BMD) are computed for each responsive item using 
-the best fit dose-reponse model previously obtained:
+The two types of benchmark doses (BMD-zSD and BMD-xfold) proposed by 
+the EFSA (2017) are computed for each responsive item using 
+the best fit dose-reponse model previously obtained (see Larras et al. 2018 
+for details).
 
 - the BMD-xfold considers a x-fold change of the control response which makes 
 it equivalent to a x% inhibition/enhancement concentration. The so-called 
@@ -21,3 +23,14 @@ We recommend the latter approach (BMD-zSD).
 In cases where the BMD cannot be reached due to the asymptote at high doses, 
 NaN is returned. In cases where the BMD is not reached at the highest tested 
 dose, NA is returned.
+
+-- REFERENCES --
+
+EFSA Scientific Committee, Hardy A, Benford D, Halldorsson T, Jeger MJ, Knutsen KH,
+... & Schlatter JR  (2017). Update: use of the benchmark dose approach in risk assessment.
+EFSA Journal, 15(1), e04658.
+
+Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M,
+Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to support 
+the use of the dose-response framework for omics data in ecological risk assessment. 
+Environmental science & technology.\doi{10.1021/acs.est.8b04752}

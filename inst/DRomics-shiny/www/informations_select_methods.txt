@@ -18,10 +18,15 @@ non monotonic trends from a dose-response designs, whatever the number of
 replicates per dose (default chosen method).
 
 We recommend the use of the latter for selecting both monotonic
-and biphasic trends form a dose-response design.
+and biphasic trends form a dose-response design (see Larras et al., 2018).
 
 For details, see 
 
 Tukey JW, Ciminera JL and Heyse JF (1985).
 Testing the statistical certainty of a response to increasing doses of a drug. 
 Biometrics, 295-301.
+
+Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M,
+Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to 
+support the use of the dose-response framework for omics data in ecological 
+risk assessment. Environmental science & technology.

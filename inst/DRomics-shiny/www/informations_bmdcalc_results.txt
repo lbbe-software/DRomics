@@ -6,14 +6,19 @@ returned by the item selection step. The given results are:
 - irow: the row number in the initial dataset
 - adjpvalue: the adjusted p-values returned by the item selection step
 - model: the best model fitted
-- nbpar: the number of parameters of this best model; b, c, d, e, and f, the 
-  model parameter values (see Larras et al. for their interpretation)
+- nbpar: the number of parameters of this best model 
+- b, c, d, e, and f, 
+  the model parameter values (see Larras et al. for their interpretation)
 - SDres: the residual standard deviation of the best model
 - typology: the class of typology (twelve class typology as described in the 
   dose response modelling step)
 - trend: the rough trend of the curve defined with four classes (U, bell, increasing or decreasing shape)
-- y0 : theoretical value at the control
-- yrange : theoretical y range for x within the range of tested doses
-- xextrem : for biphasic curves, x value at which their extremum is reached
+- y0: theoretical value at the control
+- yrange: theoretical y range for x within the range of tested doses
+- xextrem: for biphasic curves, x value at which their extremum is reached
+- yextrem: the corresponding y value at this extremum
 - BMD.zSD: the BMD-zSD value
+- BMR.zSD: the corresponding BMR-zSD value
 - BMD.xfold: the BMD-xfold value
+- BMR.xfold: the corresponding BMR-xfold value
+

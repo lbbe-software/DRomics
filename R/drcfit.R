@@ -815,7 +815,7 @@ print.drcfit <- function(x, ...)
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects.")
   
-  cat("Results of the fitting using the", x$information.criterion, "to select the best fit model:\n")
+  cat("Results of the fitting using the", x$information.criterion, "to select the best fit model\n")
   ttrend <- table(x$fitres$trend)
   tfit <- table(x$fitres$model)
   nsucces <- nrow(x$fitres)

@@ -2,7 +2,9 @@ Both methods RNAseq are transforming raw counts in a log2 scale using the
 variance stabilizing transformation ("vst") or regularized logarithm ("rlog").
 Both methods aim at removing the dependence of the variance on the mean.
 Both methods include a normalization with respect to library size.
+"rlog" is recommended but more computer intensive than "vst"
+(see Love et al. 2014 for details). 
 
-For details, see 
+-- REFERENCES --
 
 Love MI, Huber W, and Anders S (2014), Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome biology, 15(12), 550.
