@@ -15,7 +15,6 @@ vignette: >
 ---
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
-# bonne entete !!!!!!!!!!!!
 # output:
 #  html_vignette
 require(DRomics)
@@ -31,7 +30,21 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.height = 5)
 ```
 
+
+# Introduction
+
+This vignette is intended to help users to start using the DRomics package. It is complementary to the reference manual where you can find more details on
+each function of the package. The first part of this vignette (Main workflow, 
+steps 1 to 4)
+could also help users of the Shiny application. If you do not want
+to use R functions, you can skip the pieces of code and focus on the explanations
+and on the outputs that are also given in the Shiny application. And if one day 
+you want go further using the R functions, you recommended you to start
+from the whole R code corresponding to your analysis on the Shiny application,
+that is provided on its last page. 
+
 # Main workflow 
+
 
 ## Step 1: importation, check and normalization / transformation of data if needed
 
