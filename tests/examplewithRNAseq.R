@@ -6,21 +6,22 @@ doboot <- FALSE
 # with respect to library size and transformation 
 # options to put in shiny : transfo.method (2 methods, rlog or vst)
 datafilename <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
-(o <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
-plot(o, range = 1e6)
+# small data set 'less than 1000 items (999)
+(o.vst <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
+plot(o.vst, range = 1e6)
 
 if (visualize) # too long computation !
 {
-  (o.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst",
+  (o.vst.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst",
                             transfo.blind = FALSE))
-  plot(o.notblind)
+  plot(o.vst.notblind, range = 1e6)
   
-  (o.vst <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog"))
-  plot(o.vst)
+  (o.rlog <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog"))
+  plot(o.rlog, range = 1e6)
   
-  (o.vst.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog",
+  (o.rlog.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog",
                                 transfo.blind = FALSE))
-  plot(o.vst.notblind)
+  plot(o.rlog.notblind, range = 1e6)
   
 }
 
@@ -36,14 +37,14 @@ if(visualize) # too long computation !
   (o2 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "rlog"))
   plot(o2)
   
-  # variance stabilizing tranformation (blind to the experimental design)
+  # variance stabilizing tranformation (not blind to the experimental design)
   (o3 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "vst",
-                    transfo.blind = TRUE))
+                    transfo.blind = FALSE))
   plot(o3)
   
-  # regularized logarithm (blind to the experimental design)
+  # regularized logarithm (not blind to the experimental design)
   (o4 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "rlog",
-                    transfo.blind = TRUE))
+                    transfo.blind = FALSE))
   plot(o4)
   
 }

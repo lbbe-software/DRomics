@@ -24,6 +24,10 @@ package lighter
 - Add a test on residuals for heteroscedasticity and an output of drcfit: 
 residualtests
 
+BUG FIXES
+- gestion in RNAseqdata() of all the cases for which vst() may give a stop message.
+
+
 Version 2.1-0 
 =============
 NEW FEATURES

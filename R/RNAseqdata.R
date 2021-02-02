@@ -78,12 +78,12 @@ RNAseqdata <- function(file, check = TRUE,
   if (transfo.method == "rlog")
   {
     if (transfo.blind) 
-      {
-        data <- rlog(raw.counts)
-      } else
-      {
+    {
+      data <- rlog(raw.counts)
+    } else
+    {
         data <- assay(rlog(dds, blind = FALSE))  
-      }
+    }
   } else # transfo.method == "vst"
   {
     nsub <- 1000 # parameter of vst to speed computation
@@ -94,16 +94,30 @@ RNAseqdata <- function(file, check = TRUE,
         data <- varianceStabilizingTransformation(raw.counts)
       } else
       {
-        data <- vst(raw.counts, nsub = nsub)
+        tryvst <- try(vst(raw.counts, nsub = nsub), silent = TRUE)
+        if (!inherits(tryvst, "try-error"))
+        {
+          data <- tryvst
+        } else
+        {
+          data <- varianceStabilizingTransformation(raw.counts)
+        }
       }
-    } else
+    } else # VST is not blind to the experimental design
     {
       if (nrowdata < nsub)
       {
-        data <- varianceStabilizingTransformation(raw.counts, blind = FALSE)
+        data <- assay(varianceStabilizingTransformation(dds, blind = FALSE))
       } else
       {
-        data <- assay(vst(dds, nsub = nsub, blind = FALSE))  
+        tryvst <- try(vst(dds, nsub = nsub, blind = FALSE), silent = TRUE)
+        if (!inherits(tryvst, "try-error"))
+        {
+          data <- assay(tryvst)
+        } else
+        {
+          data <- assay(varianceStabilizingTransformation(dds, blind = FALSE))
+        }
       }
     }
   }
