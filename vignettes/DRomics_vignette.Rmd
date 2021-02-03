@@ -112,7 +112,11 @@ RNAseqfilename <- system.file("extdata", "RNAseq_sample.txt", package = "DRomics
 
 For RNAseq data, imperatively imported in raw counts, you have to choose the transformation
 method used to stabilize the variance 
-("rlog" or "vst"). **"rlog" is recommended and chosen by default but more computer intensive than "vst"** (see ?RNAseqdata for details). Whatever the chosen method, data are automatically normalized with respect to library size and transformed in a log2 scale.
+("rlog" or "vst"). In the example below "vst" was used 
+only to make this vignette quick to compile, 
+but **"rlog" is strongly recommended and chosen by default even if more computer intensive than "vst"** 
+(see ?RNAseqdata for details). Whatever the chosen method, 
+data are automatically normalized with respect to library size and transformed in a log2 scale.
 
 
 ```{r}
@@ -129,7 +133,11 @@ as individual points in the plot of raw counts.
 
 For single-channel microarray data, imperatively imported in log
 scale (classically log2 scale), you can choose the between array 
-normalization method ("cyclicloess", "quantile", "scale" or "none"). **"cyclicloess" is recommended and chosen by default but more computer intensive than the others** (see ?microarraydata for details).
+normalization method ("cyclicloess", "quantile", "scale" or "none"). 
+In the example below "quantile" was used 
+only to make this vignette quick to compile, 
+but **"cyclicloess" is strongly recommended and chosen by default even if more computer intensive than the others** 
+(see ?microarraydata for details).
 
 
 ```{r}
@@ -142,6 +150,11 @@ microarrayfilename <- system.file("extdata", "transcripto_sample.txt", package =
 plot(o.microarray, cex.main = 0.8, col = "green", range = 1e6)
 
 ```
+
+In the previous example the argument range is intended to be internally passed 
+by to the boxplot() function in order 
+to enable long whiskers to be plotted, without individualizing extreme values, 
+just to make the obtained figure lighter.
 
 ### An example with metabolomic data
 
@@ -234,7 +247,7 @@ By default the plot() function used on the output of the drcfit() function
 provides the first 20 fitted curves (or the ones you specify using the argument items) with observed points. Fitted curves are represented in red, replicates are
 represented in open circles and means of replicates at each dose/concentration
 are represented by solid circles. All the fitted curves may be
-saved in a pdf file using the plotfit2pdf() function (see ? drcfit).
+saved in a pdf file using the plotfit2pdf() function (see ?drcfit).
 
 ```{r}
 plot(f) 
@@ -254,7 +267,9 @@ targetplot(targetitems, f = f)
 ### Plot of residuals
 
 To check the assumption of normal error model, two types of residual plots can
-be used ("dose_residuals" or "fitted_residuals")
+be used ("dose_residuals" or "fitted_residuals"). The residual plots for
+all items may also be
+saved in a pdf file using the plotfit2pdf() function (see ?drcfit).
 
 ```{r, fig.width = 7, fig.height = 5}
 plot(f, plot.type = "dose_residuals")
@@ -289,7 +304,7 @@ columns of the output dataframe).
 head(r$res, 10)
 ```
 
-### Various plots of BMD distribution
+### Various plots of the BMD distribution
 
 The default plot of the output of the bmdcalc() function provides the distribution of benchmark doses as an ECDF
 (Empirical Cumulative Density Function) plot for the chosen BMD ("zSD"" or "xfold"). See an example below.
@@ -319,8 +334,13 @@ and an example below).
 ```{r}
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                     facetby = "trend", 
-                    shapeby = "model") + labs(shape = "model")
+                    shapeby = "model",
+                    line.size = 1.2) + labs(shape = "model")
 ```
+
+As in the previous example, you can use the argument line.size to manually
+adjust the width of lines in that plot if the default value does not give
+a visual result that suits you.
 
 ## Step 5: calculation of confidence intervals on the BMDs by bootstrap 
 
@@ -328,9 +348,8 @@ Confidence intervals on BMD values can be calculated by bootstrap.
 As the call to this function may take much time, by default a progressbar is provided and some arguments can be used to specify parallel computing to
 accelerate the computation (see ?bmdboot for details).
 
-In the example below a small number of iterations was used to make this vignette quick to compile, but the default value of
-the argument niter (1000) should be considered as a minimal value to
-obtain stable results.
+In the example below a small number of iterations was used just 
+to make this vignette quick to compile, but **the default value of the argument niter (1000) should be considered as a minimal value to obtain stable results**.
 
 ### Bootstrap calculation
 ```{r}
@@ -425,8 +444,30 @@ The argument add.label set at TRUE will display item identifiers instead of poin
 ```{r}
 bmdplotwithgradient(annotres, BMDtype = "zSD",
                     facetby = "path_class", 
-                    add.label = TRUE) 
+                    add.label = TRUE) +
+  theme(strip.text.x = element_text(size = 6))
+
 ```
+
+To increase the visibility of this plot,
+you can plot it one by one for each group of interest
+as below for the group "Lipid metabolism". In that case in can be useful 
+to control the limits of the color gradient and the limits
+on the x-axis in order to use the same x-scale and signal-scale,
+as in the following example (see ?bmdplotwithgradient for details).
+
+```{r}
+annotres_lipid <- annotres[annotres$path_class == "Lipid metabolism",] 
+
+bmdplotwithgradient(annotres_lipid, BMDtype = "zSD",
+                    facetby = "path_class", 
+                    add.label = TRUE,
+                    limits4colgradient = c(-0.8, 0.8),
+                    xmin = 0, xmax = 6.5,
+                    label.size = 3) 
+
+```
+
 
 ### BMD ECDF plot with confidence intervals split by group defined from functional annotation
 
