@@ -88,6 +88,9 @@ data are normalized using the function \code{\link{normalizeBetweenArrays}} of t
     \item{data.beforenorm}{ the numeric matrix of responses of each item in each replicate
   (one line per item, one column per replicate) before normalization  }
 
+    \item{containsNA}{always at FALSE as microarray data are not allowed to contain 
+    NA values}
+
   The print of a \code{microarraydata} object gives the tested doses (or concentrations) 
   and number of replicates for each dose, the number of items, the identifiers 
   of the first 20 items (for check of good coding of data) and the normalization method.

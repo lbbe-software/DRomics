@@ -35,6 +35,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   data <- itemselect$omicdata$data 
   data.mean <- itemselect$omicdata$data.mean 
   
+  containsNA <- itemselect$omicdata$containsNA
+    
   # calculations for starting values and other uses
   dosemin <- min(dose)
   dosemax <- max(dose)
@@ -42,13 +44,33 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
   doseu <- as.numeric(colnames(data.mean)) # sorted unique doses
   
   # number of points per dose-response curve
+  npts <- length(dose)
+  ndoses <- length(unique(dose))
+  lessthan5doses <- ndoses < 5
+
   nselect <- length(selectindex)
   
   # Information criterion definition 
   AICdigits <- 2 # number of digits for rounding the AIC values
   information.criterion <- match.arg(information.criterion, c("AICc", "BIC", "AIC"))
-  if (information.criterion == "AICc") correctAIC <- TRUE else correctAIC <- FALSE
- 
+
+    # kcrit gives the argument k to pass to function AIC()
+  # dependeing of the number of parameters of the model 
+  # (1 to 5, corresponding to the index of the vector)
+  if (information.criterion == "AIC")
+  { 
+    kcrit <- rep(2, 5) 
+  } else
+  if (information.criterion == "AICc")
+  {
+    nparwithsigma <- 1:5 + 1
+    kcrit <- 2*npts /(npts - nparwithsigma - 1)
+  } else # BIC last choice
+  {
+    lnpts <- log(npts)
+    kcrit <- rep(lnpts, 5)
+  } 
+  
   # progress bar
   if (progressbar)
     pb <- txtProgressBar(min = 0, max = length(selectindex), style = 3)
@@ -72,20 +94,33 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     
     # preparation of data for modelling with nls 
     dset <- data.frame(signal = signal, dose = dose, doseranks = doseranks)
-    # removing lines with NA values for the signal
-    dset <- dset[complete.cases(dset$signal), ]
-    npts <- nrow(dset)
-    ndoses <- length(unique(dset$dose))
-    lessthan5doses <- ndoses < 5
     
-    if (information.criterion == "AIC" | information.criterion == "AICc")
-    { 
-      kcrit <- 2 
-    } else
-    {
-      kcrit <- log(npts)
-    }
-    
+    if (containsNA)
+      if (any(!complete.cases(dset)))
+      {
+        # removing lines with NA values for the signal
+        dset <- dset[complete.cases(dset$signal), ]
+        npts <- nrow(dset)
+        ndoses <- length(unique(dset$dose))
+        lessthan5doses <- ndoses < 5
+        
+        # kcrit gives the argument k to pass to function AIC()
+        # dependeing of the number of parameters of the model 
+        # (1 to 5, corresponding to the index of the vector)
+        if (information.criterion == "AIC")
+        { 
+          kcrit <- rep(2, 5) 
+        } else
+          if (information.criterion == "AICc")
+          {
+            nparwithsigma <- 1:5 + 1
+            kcrit <- 2*npts /(npts - nparwithsigma - 1)
+          } else # BIC last choice
+          {
+            lnpts <- log(npts)
+            kcrit <- rep(lnpts, 5)
+          } 
+       } 
     
     # for choice of the linear trend (decreasing or increasing)
     modlin <- lm(signal ~ doseranks, data = dset)
@@ -132,17 +167,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
       #### convergence of both models
       if ((!inherits(Expo3p.1, "try-error")) & (!inherits(Expo3p.2, "try-error")))
       {
-        if (correctAIC)
-        {
-          AICExpo3p.1 <- round(AICcorrection(AIC(Expo3p.1, k = kcrit),
-                                             npar = 3, npts = npts), digits = AICdigits)
-          AICExpo3p.2 <- round(AICcorrection(AIC(Expo3p.2, k = kcrit),
-                                             npar = 3, npts = npts), digits = AICdigits)
-        } else
-        {
-          AICExpo3p.1 <- round(AIC(Expo3p.1, k = kcrit), digits = AICdigits)
-          AICExpo3p.2 <- round(AIC(Expo3p.2, k = kcrit), digits = AICdigits)
-        }
+        AICExpo3p.1 <- round(AIC(Expo3p.1, k = kcrit[3]), digits = AICdigits)
+        AICExpo3p.2 <- round(AIC(Expo3p.2, k = kcrit[3]), digits = AICdigits)
         if (AICExpo3p.1 < AICExpo3p.2)
         {
           Expo <- Expo3p.1
@@ -164,29 +190,13 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
           if ((!inherits(Expo3p.2, "try-error")) & inherits(Expo3p.1, "try-error"))
           {
             Expo <- Expo3p.2
-            if (correctAIC)
-            {
-               AICExpoi <- round(AICcorrection(AIC(Expo3p.2, k = kcrit),
-                                               npar = 3, npts = npts), digits = AICdigits)
-            }
-            else
-            {
-              AICExpoi <- round(AIC(Expo3p.2, k = kcrit), digits = AICdigits) 
-            }
+            AICExpoi <- round(AIC(Expo3p.2, k = kcrit[3]), digits = AICdigits) 
           } else
             #### convergence only of Expo3p.1
             if ((!inherits(Expo3p.1, "try-error")) & inherits(Expo3p.2, "try-error"))
             {
               Expo <- Expo3p.1
-              if (correctAIC)
-              {
-                AICExpoi <- round(AICcorrection(AIC(Expo3p.1, k = kcrit),
-                                                npar = 3, npts = npts), digits = AICdigits)
-              }
-              else
-              {
-                AICExpoi <- round(AIC(Expo3p.1, k = kcrit), digits = AICdigits) 
-              }
+              AICExpoi <- round(AIC(Expo3p.1, k = kcrit[3]), digits = AICdigits) 
             }
     } else (AICExpoi <- Inf)
     
@@ -199,14 +209,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
                                        lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
       if (!inherits(Hill, "try-error"))
       {
-        if (correctAIC)
-        {
-          AICHilli <- round(AICcorrection(AIC(Hill, k = kcrit),
-                                          npar = 4, npts = npts), digits = AICdigits)
-         } else
-        {
-          AICHilli <- round(AIC(Hill, k = kcrit), digits = AICdigits)
-        }
+        AICHilli <- round(AIC(Hill, k = kcrit[4]), digits = AICdigits)
       } else 
       {
         # keepHill <- FALSE
@@ -223,14 +226,7 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
                                           lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
       if (!inherits(Lprobit, "try-error"))
       {
-        if (correctAIC)
-        {
-          AICLprobiti <- round(AICcorrection(AIC(Lprobit, k = kcrit),
-                                             npar = 4, npts = npts), digits = AICdigits)
-        } else
-        {
-          AICLprobiti <- round(AIC(Lprobit, k = kcrit), digits = AICdigits)
-        }
+        AICLprobiti <- round(AIC(Lprobit, k = kcrit[4]), digits = AICdigits)
       } else 
       {
         # keepLprobit <- FALSE
@@ -259,31 +255,15 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
         {
           equalcdLG <- TRUE
           LGauss <- LGauss4p
-          if (correctAIC)
-          {
-            AICLGaussi <- round(AICcorrection(AIC(LGauss4p, k = kcrit),
-                                              npar = 4, npts = npts), digits = AICdigits)
-          } else
-          {
-            AICLGaussi <- round(AIC(LGauss4p, k = kcrit), digits = AICdigits)
-          }
+          AICLGaussi <- round(AIC(LGauss4p, k = kcrit[4]), digits = AICdigits)
         } else (AICLGaussi <- Inf)
       } else # if (lessthan5doses)
       {
         #### convergence of both models
         if ((!inherits(LGauss4p, "try-error")) & (!inherits(LGauss5p, "try-error")))
         {
-          if (correctAIC)
-          {
-            AICLGauss4p <- round(AICcorrection(AIC(LGauss4p, k = kcrit),
-                                               npar = 4, npts = npts), digits = AICdigits)
-            AICLGauss5p <- round(AICcorrection(AIC(LGauss5p, k = kcrit),
-                                               npar = 5, npts = npts), digits = AICdigits)
-          } else
-          {
-            AICLGauss4p <- round(AIC(LGauss4p, k = kcrit), digits = AICdigits)
-            AICLGauss5p <- round(AIC(LGauss5p, k = kcrit), digits = AICdigits)
-          }
+          AICLGauss4p <- round(AIC(LGauss4p, k = kcrit[4]), digits = AICdigits)
+          AICLGauss5p <- round(AIC(LGauss5p, k = kcrit[5]), digits = AICdigits)
           if (AICLGauss5p < AICLGauss4p)
           {
             LGauss <- LGauss5p
@@ -307,27 +287,13 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
             {
               equalcdLG <- TRUE
               LGauss <- LGauss4p
-              if (correctAIC)
-              {
-                AICLGaussi <- round(AICcorrection(AIC(LGauss4p, k = kcrit),
-                                                  npar = 4, npts = npts), digits = AICdigits)
-              } else
-              {
-                AICLGaussi <- round(AIC(LGauss4p, k = kcrit), digits = AICdigits)
-              }
+              AICLGaussi <- round(AIC(LGauss4p, k = kcrit[4]), digits = AICdigits)
             } else
               #### convergence only of LGauss5p
               if ((!inherits(LGauss5p, "try-error")) & inherits(LGauss4p, "try-error"))
               {
                 LGauss <- LGauss5p
-                if (correctAIC)
-                {
-                  AICLGaussi <- round(AICcorrection(AIC(LGauss5p, k = kcrit),
-                                                    npar = 5, npts = npts), digits = AICdigits)
-                } else
-                {
-                  AICLGaussi <- round(AIC(LGauss5p, k = kcrit), digits = AICdigits)
-                }
+                AICLGaussi <- round(AIC(LGauss5p, k = kcrit[5]), digits = AICdigits)
               } else (AICLGaussi <- Inf)
       } 
 
@@ -357,31 +323,15 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
         {
           equalcdG <- TRUE
           Gauss <- Gauss4p
-          if (correctAIC)
-          {
-            AICGaussi <- round(AICcorrection(AIC(Gauss4p, k = kcrit),
-                                              npar = 4, npts = npts), digits = AICdigits)
-          } else
-          {
-            AICGaussi <- round(AIC(Gauss4p, k = kcrit), digits = AICdigits)
-          }
+          AICGaussi <- round(AIC(Gauss4p, k = kcrit[4]), digits = AICdigits)
         } else (AICGaussi <- Inf)
       } else # if (lessthan5doses)
       {
         #### convergence of both models
         if ((!inherits(Gauss4p, "try-error")) & (!inherits(Gauss5p, "try-error")))
         {
-          if (correctAIC)
-          {
-            AICGauss4p <- round(AICcorrection(AIC(Gauss4p, k = kcrit),
-                                              npar = 4, npts = npts), digits = AICdigits)
-            AICGauss5p <- round(AICcorrection(AIC(Gauss5p, k = kcrit),
-                                              npar = 5, npts = npts), digits = AICdigits)
-          } else
-          {
-            AICGauss4p <- round(AIC(Gauss4p, k = kcrit), digits = AICdigits)
-            AICGauss5p <- round(AIC(Gauss5p, k = kcrit), digits = AICdigits)
-          }
+          AICGauss4p <- round(AIC(Gauss4p, k = kcrit[4]), digits = AICdigits)
+          AICGauss5p <- round(AIC(Gauss5p, k = kcrit[5]), digits = AICdigits)
           if (AICGauss5p < AICGauss4p)
           {
             Gauss <- Gauss5p
@@ -405,27 +355,13 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
             {
               equalcdG <- TRUE
               Gauss <- Gauss4p
-              if (correctAIC)
-              {
-                AICGaussi <- round(AICcorrection(AIC(Gauss4p, k = kcrit),
-                                                 npar = 4, npts = npts), digits = AICdigits)
-              } else
-              {
-                AICGaussi <- round(AIC(Gauss4p, k = kcrit), digits = AICdigits)
-              }
+              AICGaussi <- round(AIC(Gauss4p, k = kcrit[4]), digits = AICdigits)
             } else
               #### convergence only of Gauss5p
               if ((!inherits(Gauss5p, "try-error")) & inherits(Gauss4p, "try-error"))
               {
                 Gauss <- Gauss5p
-                if (correctAIC)
-                {
-                  AICGaussi <- round(AICcorrection(AIC(Gauss5p, k = kcrit),
-                                                   npar = 5, npts = npts), digits = AICdigits)
-                } else
-                {
-                  AICGaussi <- round(AIC(Gauss5p, k = kcrit), digits = AICdigits)
-                }
+                AICGaussi <- round(AIC(Gauss5p, k = kcrit[5]), digits = AICdigits)
               } else (AICGaussi <- Inf)
       } 
    }# END of if (keepGauss)
@@ -435,27 +371,13 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     if (keeplin)
     {
       lin <- lm(signal ~ dose, data = dset)
-      if (correctAIC)
-      {
-        AIClini <- round(AICcorrection(AIC(lin, k = kcrit),
-                                       npar = 2, npts = npts), digits = AICdigits)
-      } else
-      {
-        AIClini <- round(AIC(lin, k = kcrit), digits = AICdigits)
-      }
+      AIClini <- round(AIC(lin, k = kcrit[2]), digits = AICdigits)
     } else (AIClii <- Inf)
     
     
     ######## Fit of the null model (constant) ###########################
     constmodel <- lm(signal ~ 1, data = dset)
-    if (correctAIC)
-    {
-      AICconsti <-  round(AICcorrection(AIC(constmodel, k = kcrit),
-                                        npar = 1, npts = npts), digits = AICdigits)
-    } else
-    {
-      AICconsti <-  round(AIC(constmodel, k = kcrit), digits = AICdigits)
-    }
+    AICconsti <-  round(AIC(constmodel, k = kcrit[1]), digits = AICdigits)
 
     # Choice of the best fit
     AICvec <- c(AICGaussi, AICLGaussi, AICHilli, AICLprobiti, AICExpoi, AIClini)

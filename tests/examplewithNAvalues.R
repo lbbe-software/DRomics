@@ -32,6 +32,9 @@ if (visualize)
   r$res
   (b <- bmdboot(r))
   b$res
+ 
+  (f.AIC <- drcfit(s, information.criterion = "AIC"))
+  (f.BIC <- drcfit(s, information.criterion = "BIC"))
   
   ## comparison with  the individual fit for growth
   Scenedesmus_apical3 <- Scenedesmus_apical2[1:2, ]
@@ -80,6 +83,9 @@ if (visualize)
   
   f1$fitres[1:3, ]
   f2$fitres[1:3, ]
+
+  (f2.AIC <- drcfit(s2, information.criterion = "AIC"))
+  (f2.BIC <- drcfit(s2, information.criterion = "BIC"))
   
   (r1 <- bmdcalc(f1))
   r1$res[1:2, ]

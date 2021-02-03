@@ -102,6 +102,8 @@ BMD calculation)
     of the corresponding replicates) (one line per item, one column per unique value 
     of the dose}
 
+    \item{containsNA}{ TRUE if the data set contains NA values}
+
   The print of a \code{continuousomicdata} object gives the tested doses (or concentrations) 
   and number of replicates for each dose, the number of items, the identifiers 
   of the first 20 items (for check of good coding of data) and the normalization method.

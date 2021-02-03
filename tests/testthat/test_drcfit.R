@@ -34,5 +34,10 @@ test_that("drcfit works as expected on the model results",
     expect_equal(as.numeric(tmodel.AICc["exponential"]), 30)
     expect_equal(as.numeric(tmodel.AICc["Gauss-probit"]), 24)
     expect_equal(as.numeric(tmodel.AICc["log-Gauss-probit"]), 2)
+    expect_equal(round(mean(f.AICc$fitres$b, na.rm = TRUE), 4), 1.4992)
+    expect_equal(round(mean(f.AICc$fitres$c, na.rm = TRUE), 4), 1.8546)
+    expect_equal(round(mean(f.AICc$fitres$d, na.rm = TRUE), 4), 7.6714)
+    expect_equal(round(mean(f.AICc$fitres$e, na.rm = TRUE), 4), 1.4312)
+    expect_equal(round(mean(f.AICc$fitres$f, na.rm = TRUE), 4), 6.6001)
     
   })

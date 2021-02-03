@@ -75,6 +75,8 @@ the number of replicates for each dose, the number of endpoints.
     \item{data.mean}{ the numeric matrix of mean responses of each item per dose (mean 
     of the corresponding replicates) (one line per item, one column per unique value 
     of the dose}
+    
+    \item{containsNA}{ TRUE if the data set contains NA values}
 
   The print of a \code{continuousanchoringdata} object gives the tested doses (or concentrations) 
   and number of replicates for each dose, the number of items, the identifiers 

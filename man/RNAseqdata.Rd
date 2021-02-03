@@ -99,6 +99,9 @@ and tranformed using functions \code{\link{rlog}} or \code{\link{vst}} of the
     of each item in each replicate
   (one line per item, one column per replicate) before normalization  }
 
+    \item{containsNA}{always at FALSE as RNAseq data are not allowed to contain 
+    NA values}
+
   The print of a \code{RNAseqdata} object gives the tested doses (or concentrations) 
   and number of replicates for each dose, the number of items, the identifiers 
   of the first 20 items (for check of good coding of data) and the tranformation method.

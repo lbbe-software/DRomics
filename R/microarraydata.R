@@ -84,7 +84,8 @@ microarraydata <- function(file, check = TRUE,
   
   reslist <- list(data = data, dose = dose, item = item, 
                   design = design, data.mean = data.mean, 
-                  norm.method = norm.method, data.beforenorm = data.beforenorm)  
+                  norm.method = norm.method, data.beforenorm = data.beforenorm,
+                  containsNA = FALSE)  
   
   return(structure(reslist, class = "microarraydata"))
 }

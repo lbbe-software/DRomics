@@ -58,6 +58,7 @@ continuousanchoringdata <- function(file, check = TRUE)
   # control of the design including on rows with NA values
   if(any(!complete.cases(data)))
   {
+    containsNA <- TRUE
     nonNAdata <- !is.na(data)
     minnonNAnbpts <- min(rowSums(nonNAdata))
     if (minnonNAnbpts < 8)
@@ -69,7 +70,7 @@ continuousanchoringdata <- function(file, check = TRUE)
            they do not correspond to missing values at random 
            (e.g. missing values correspond to values 
         under a limit of quantification)."))
-  } 
+  } else containsNA <- FALSE
   
   fdose <- as.factor(dose)
   tdata <- t(data)
@@ -83,7 +84,8 @@ continuousanchoringdata <- function(file, check = TRUE)
   data.mean <- as.matrix(t(s))
   
   reslist <- list(data = data, dose = dose, item = item, 
-                  design = design, data.mean = data.mean)  
+                  design = design, data.mean = data.mean,
+                  containsNA = containsNA)  
   
   return(structure(reslist, class = "continuousanchoringdata"))
 }

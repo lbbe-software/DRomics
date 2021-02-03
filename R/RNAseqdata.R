@@ -153,7 +153,8 @@ RNAseqdata <- function(file, check = TRUE,
   
   reslist <- list(data = data, dose = dose, item = item, 
                   design = design, data.mean = data.mean, 
-                  transfo.method = transfo.method, raw.counts = raw.counts)  
+                  transfo.method = transfo.method, raw.counts = raw.counts,
+                  containsNA = FALSE)  
   
   return(structure(reslist, class = "RNAseqdata"))
 }

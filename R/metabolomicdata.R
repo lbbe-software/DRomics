@@ -29,9 +29,15 @@ continuousomicdata <- function(file, check = TRUE)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
   
+  if(any(!complete.cases(data)))
+  {
+    containsNA <- TRUE
+  } else containsNA <- FALSE
+  
+  
   if (check)
   {
-    if(any(!complete.cases(data)))
+    if(containsNA)
     {
       warning(strwrap(prefix = "\n", initial = "\n",
                       "Your data contain NA values. 
@@ -85,7 +91,7 @@ continuousomicdata <- function(file, check = TRUE)
       a dose-response design with at least six different tested doses."))
 
   # control of the design including on rows with NA values
-  if(any(!complete.cases(data)))
+  if(containsNA)
   {
     nonNAdata <- !is.na(data)
     minnonNAnbpts <- min(rowSums(nonNAdata))
@@ -111,7 +117,8 @@ continuousomicdata <- function(file, check = TRUE)
   data.mean <- as.matrix(t(s))
   
   reslist <- list(data = data, dose = dose, item = item, 
-                  design = design, data.mean = data.mean)  
+                  design = design, data.mean = data.mean,
+                  containsNA = containsNA)  
   
   return(structure(reslist, class = "continuousomicdata"))
 }
