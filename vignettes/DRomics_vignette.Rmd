@@ -196,11 +196,11 @@ For the second step of the workflow, function itemselect() must be used with the
 
 The false discovery rate corresponds to the expected proportion of items that will be falsely
 detected as responsive. With a very large data set it is important to define a selectio step based
-on an FDR ot only to reduce the number of items to be firther processed, but also to remove
-too noisy dose-response curves that may impair the quality of the results.
-We recommend a value between 0.001 and 0.1 depending of the initial number of items. 
+on an FDR not only to reduce the number of items to be further processed, but also to remove
+too noisy dose-response signals that may impair the quality of the results.
+We recommend to set a value between 0.001 and 0.1 depending of the initial number of items. 
 When this number is very high (more than several tens of thousands),
-we recommend a FDR less than 0.05 (0.001 to 0.01) to increase the robustness of the results.
+we recommend a FDR less than 0.05 (0.001 to 0.01) to increase the robustness of the results (Larras et al. 2018).
 
 Concerning the method used for selection, we recommend the default choice ("quadratic") for a typical omics dose-response design (many doses/concentrations with few replicates
 per condition). It enables the selection of both monotonic and 
