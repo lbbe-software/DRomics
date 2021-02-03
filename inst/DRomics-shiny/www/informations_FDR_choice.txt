@@ -1,5 +1,5 @@
 The false discovery rate corresponds to the expected proportion of items that will be falsely
-detected as responsive. With a very large data set it is important to define a selectio step based
+detected as responsive. With a very large data set it is important to define a selection step based
 on an FDR not only to reduce the number of items to be further processed, but also to remove
 too noisy dose-response signals that may impair the quality of the results.
 We recommend to set a value between 0.001 and 0.1 depending of the initial number of items. 

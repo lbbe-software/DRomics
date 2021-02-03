@@ -195,7 +195,7 @@ For such data the plot() function provides a dose-response plot for each endpoin
 For the second step of the workflow, function itemselect() must be used with the output of the function used in Step 1 as first argument (output of RNAseqdata(), microarraydata(), continuousomicdata() or continuousanchoringdata()). Below is an example with microarray data.
 
 The false discovery rate corresponds to the expected proportion of items that will be falsely
-detected as responsive. With a very large data set it is important to define a selectio step based
+detected as responsive. With a very large data set it is important to define a selection step based
 on an FDR not only to reduce the number of items to be further processed, but also to remove
 too noisy dose-response signals that may impair the quality of the results.
 We recommend to set a value between 0.001 and 0.1 depending of the initial number of items. 
