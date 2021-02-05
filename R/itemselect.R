@@ -155,16 +155,23 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
   # value, at which non detection are imputed
   nsample <- length(dose)
   max4nties <- nsample * max.ties.prop
-  check.ties <- function(index)
+  if (length(selectindex) != 0) 
   {
-    datai <- data[index, ]
-    mini <- min(datai)
-    nbtiesi <- length(which(datai == mini))
-    return(nbtiesi < max4nties)
+    check.ties <- function(index)
+    {
+      datai <- data[index, ]
+      mini <- min(datai)
+      nbtiesi <- length(which(datai == mini))
+      return(nbtiesi < max4nties)
+    }
+    tokeep <- sapply(selectindex, check.ties)
+    selectindex <- selectindex[tokeep]
+    adjpvalue <- adjpvalue[tokeep]
+  } else
+  {
+    warning(strwrap(prefix = "\n", initial = "\n", 
+                    "NO ITEM WAS SELECTED."))
   }
-  tokeep <- sapply(selectindex, check.ties)
-  selectindex <- selectindex[tokeep]
-  adjpvalue <- adjpvalue[tokeep]
   
   reslist <- list(adjpvalue = adjpvalue, selectindex = selectindex, 
                   omicdata = omicdata, select.method = select.method, FDR = FDR)  
