@@ -54,9 +54,10 @@ if (visualize)
 {
   # item selection using the quadratic method
 # options to put in shiny : select.method (3 methods), FDR (numerical positive value < 1)
-  (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001))
-  (s_lin <- itemselect(o, select.method = "linear", FDR = 0.001))
-  (s_ANOVA <- itemselect(o, select.method = "ANOVA", FDR = 0.001))
+  o <- o.rlog
+  (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
+  (s_lin <- itemselect(o, select.method = "linear", FDR = 0.01))
+  (s_ANOVA <- itemselect(o, select.method = "ANOVA", FDR = 0.01))
 
   (f <- drcfit(s_quad, progressbar = TRUE))
   f$fitres
