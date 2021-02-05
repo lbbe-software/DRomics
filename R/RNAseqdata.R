@@ -35,7 +35,7 @@ RNAseqdata <- function(file, check = TRUE,
     data <- round(data)
   } else
   {
-    subdata4check <- data[1:min(nrowdata, 10), ]
+    subdata4check <- as.numeric(data[1:min(nrowdata, 10), ])
     subdata4checkT <- trunc(subdata4check)
     if (!identical(subdata4check, subdata4checkT))
       stop("Your data contain non integer values. Make sure that your RNAseq data are imported in raw counts.
