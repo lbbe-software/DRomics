@@ -5,4 +5,4 @@ drcfitplot.pdf
 .travis.yml
 appveyor.yml
 README.md
-inst/DRomics-shiny/www/DRomics_vignette.pdf
+vignettes/DRomics_vignette.pdf
