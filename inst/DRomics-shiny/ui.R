@@ -54,10 +54,8 @@ ui <- fluidPage(
                                            a("CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#f28d0f;"), 
                                            " and on ",
                                            a("this web page", href = "https://lbbe.univ-lyon1.fr/-DRomics-.html", TARGET="_blank", style="color:#f28d0f;"), "."),
-                                        h4("You can find help about the DRomics Shiny App and the DRomics package in this pdf ",
-                                                        actionButton("usrBtn", "vignette", icon = icon("fas fa-download"), 
-                                                                     style = 'background-color:#F5aa4c; color:#000000; border-color:#9d9d9d;',
-                                                                     onclick = "window.open('DRomics_vignette.pdf')"), ".")
+                                        h4("You can find help about the DRomics Shiny App and the DRomics package ",
+                                           a("here", href = "https://github.com/aursiber/DRomics/blob/master/inst/DRomics-shiny/www/DRomics_vignette.pdf", TARGET="_blank", style="color:#f28d0f;"), ".")
                         )),
                         hr(style='width: 70%;'),
                         fixedRow(column(8, offset = 2,
@@ -453,11 +451,9 @@ ui <- fluidPage(
                       fixedRow(
                         column(8, 
                                br(), HTML("<font face=verdana size=5 color=#9c5c16><b>R CODE TO GO FURTHER</b></font>"), br(), br(), br(),
-                               tags$blockquote("To see what more you can do using the R package, we recommend you to consult the  ",
-                                               actionButton("usrBtn", "vignette", icon = icon("fas fa-download"), 
-                                                            style = 'background-color:#e6e6e6; color:#000000; border-color:#9d9d9d;',
-                                                            onclick = "window.open('DRomics_vignette.pdf')"),
-                                               "  of the package."), 
+                               tags$blockquote("To see what more you can do using the R package, we recommend you to consult ", 
+                                               a("here", href = "https://github.com/aursiber/DRomics/blob/master/inst/DRomics-shiny/www/DRomics_vignette.pdf", TARGET="_blank", style="color:#f28d0f;"),
+                                               "the vignette of the package."), 
                                br(), 
                                downloadButton("buttonDownRCode", "Download R Code", icon = icon("fas fa-download"), style = 'background-color:#e6e6e6; color:#000000; border-color:#9d9d9d;'), br(), br(),
                                verbatimTextOutput('printRCode'), br(), br(),
