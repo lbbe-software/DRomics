@@ -216,8 +216,9 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package = "DRom
 plot(f)
 
 # save all plots to pdf using plotfit2pdf()
-plotfit2pdf(f)
-plotfit2pdf(f, plot.type = "fitted_residuals", nrowperpage = 9, ncolperpage = 6)
+plotfit2pdf(f, path2figs = tempdir())
+plotfit2pdf(f, plot.type = "fitted_residuals", 
+  nrowperpage = 9, ncolperpage = 6, path2figs = tempdir())
 
 # Plot of the fit of the first 12 most responsive items
 plot(f, items = 12)
