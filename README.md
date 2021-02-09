@@ -47,7 +47,7 @@ library(DRomics)
 A vignette is attached to the `DRomics` package.
 
 The development version of the pdf of this vignette can be see 
-<a href="https://github.com/aursiber/DRomics/blob/master/vignettes/DRomics_vignette.pdf" target="_blank">here</a>.
+<a href="https://github.com/aursiber/DRomics/blob/master/DRomics_vignette.pdf" target="_blank">here</a>.
  
 This vignette can be reached by:
 ```r
