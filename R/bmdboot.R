@@ -437,6 +437,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
     if (parallel == "snow") type <- "PSOCK"
     else if (parallel == "multicore") type <- "FORK"
     clus <- parallel::makeCluster(ncpus, type = type)
+    if(parallel == "snow") clusterExport(clus, list("fGauss5p"))
     res <- parallel::parSapply(clus, 1:nitems, bootoneitem)
     parallel::stopCluster(clus)
   }
