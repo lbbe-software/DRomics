@@ -44,7 +44,7 @@ jobs:
       - name: Install libraries for Linux
         if: runner.os == 'Linux'
         run: |
-          sudo apt-get install libcurl14-openssl-dev
+          sudo apt-get install libcurl4-openssl-dev
           
       - name: Install bioconductor packages
         run: |
