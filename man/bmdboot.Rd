@@ -129,7 +129,7 @@ Marie-Laure Delignette-Muller
 # (1) a toy example (a very small subsample of a microarray data set) 
 #
 datafilename <- system.file("extdata", "transcripto_very_small_sample.txt",
-package = "DRomics")
+   package = "DRomics")
 
 # to test the package on a small but not very small data set
 # use the following commented line
@@ -157,7 +157,7 @@ plot(b, remove.infinite = FALSE) # plot of BMD.zSD without removing of BMDs
 # with a greater number of iterations
 \donttest{
 (b.lin.95 <- bmdboot(r, items = r$res$id[r$res$model == "Gauss-probit"],
-                       niter = 1000, progressbar = TRUE))
+                     niter = 1000, progressbar = TRUE))
 b.lin.95$res
 
 # same bootstrap but changing the default confidence level (0.95) to 0.90
@@ -190,10 +190,10 @@ plot(b, BMDtype = "xfold")
 
 # (3) Comparison of parallel and non parallel implementations 
 #
-  \donttest{
-  # to be tested with a greater number of iterations
-   system.time(b1 <- bmdboot(r, niter = 100, progressbar = TRUE))
-   system.time(b2 <- bmdboot(r, niter = 100, progressbar = FALSE, parallel = "snow", ncpus = 2))
+\donttest{
+# to be tested with a greater number of iterations
+system.time(b1 <- bmdboot(r, niter = 100, progressbar = TRUE))
+system.time(b2 <- bmdboot(r, niter = 100, progressbar = FALSE, parallel = "snow", ncpus = 2))
 }
 
 

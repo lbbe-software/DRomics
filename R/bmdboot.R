@@ -17,7 +17,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       "A small number of iterations (less than 1000) may not be sufficient
       to ensure a good quality of bootstrap confidence intervals."))
   
-    parallel <- match.arg(parallel, c("no", "snow", "multicore"))
+  parallel <- match.arg(parallel, c("no", "snow", "multicore"))
   if (parallel == "multicore" & .Platform$OS.type == "windows")
   {
     parallel <- "snow"
