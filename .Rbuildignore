@@ -6,3 +6,4 @@ drcfitplot.pdf
 appveyor.yml
 README.md
 DRomics_vignette.pdf
+^\.github$
