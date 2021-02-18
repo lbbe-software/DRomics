@@ -45,6 +45,7 @@ jobs:
         run: |
           install.packages("BiocManager")
           BiocManager::install(c('DESeq2','limma'))
+        shell: Rscript {0}
           
       - name: Query dependencies
         run: |
