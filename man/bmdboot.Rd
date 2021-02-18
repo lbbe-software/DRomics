@@ -193,7 +193,9 @@ plot(b, BMDtype = "xfold")
 \donttest{
 # to be tested with a greater number of iterations
 system.time(b1 <- bmdboot(r, niter = 100, progressbar = TRUE))
-system.time(b2 <- bmdboot(r, niter = 100, progressbar = FALSE, parallel = "snow", ncpus = 2))
+if(!requireNamespace("parallel", quietly = TRUE)) {
+system.time(b2 <- bmdboot(r, niter = 100, progressbar = FALSE, parallel = "snow", ncpus = min(2, parallel::detectCores())))
+}
 }
 
 
