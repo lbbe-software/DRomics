@@ -238,8 +238,11 @@ table(f$unfitres$cause)
 
 # (3) Comparison of parallel and non paralell implementations on a larger selection of items
 #
-s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05)
-system.time(f1 <- drcfit(s_quad, progressbar = TRUE))
-system.time(f2 <- drcfit(s_quad, progressbar = FALSE, parallel = "snow", 
-  ncpus = min(2, parallel::detectCores())))
+if(!requireNamespace("parallel", quietly = TRUE)) {
+  if(parallel::detectCores() > 1) {
+    s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05)
+    system.time(f1 <- drcfit(s_quad, progressbar = TRUE))
+    system.time(f2 <- drcfit(s_quad, progressbar = FALSE, parallel = "snow", ncpus = 2))
+}}
+
 }}
