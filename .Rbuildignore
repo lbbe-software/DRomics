@@ -2,8 +2,6 @@
 ^\.Rproj\.user$
 drcfitplot.pdf
 ^.*\.tar.gz
-.travis.yml
-appveyor.yml
 README.md
 DRomics_vignette.pdf
 ^\.github$
