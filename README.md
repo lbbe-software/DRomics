@@ -2,7 +2,7 @@
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/DRomics)](https://cran.r-project.org/package=DRomics)
 [![R-CMD-check](https://github.com/aursiber/DRomics/workflows/R-CMD-check/badge.svg)](https://github.com/aursiber/DRomics/actions)
 
-All informations about DRomics can also be found at <a href="https://lbbe.univ-lyon1.fr/-DRomics-.html" target="_blank">https://lbbe.univ-lyon1.fr/-DRomics-.html</a>.
+All informations about DRomics can also be found at <a href="https://lbbe.univ-lyon1.fr/fr/dromics" target="_blank">https://lbbe.univ-lyon1.fr/fr/dromics</a>.
 
 
 # Overview
