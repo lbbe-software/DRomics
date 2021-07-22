@@ -53,7 +53,7 @@ ui <- fluidPage(
                                         h4("DRomics is also an R package, available on ", 
                                            a("CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#f28d0f;"), 
                                            " and on ",
-                                           a("this web page", href = "https://lbbe.univ-lyon1.fr/-DRomics-.html", TARGET="_blank", style="color:#f28d0f;"), "."),
+                                           a("this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"), "."),
                                         h4("You can find help about the DRomics Shiny App and the DRomics package ",
                                            a("here", href = "https://github.com/aursiber/DRomics/blob/master/DRomics_vignette.pdf", TARGET="_blank", style="color:#f28d0f;"), ".")
                         )),
@@ -85,13 +85,13 @@ ui <- fluidPage(
                                         br(),
                                         p(a("Elise Billoir", href = "http://bddc.liec.univ-lorraine.fr/cv/BILLOIR%20E.htm", TARGET = "_blank", style="color:#f28d0f;"),
                                           "- elise.billoir@univ-lorraine.fr - Laboratoire Interdisciplinaire des Environnements Continentaux - Université de Lorraine - Metz - France"),
-                                        p(a("Marie-Laure Delignette-Muller", href = "http://lbbe.univ-lyon1.fr/-Delignette-Muller-Marie-Laure-.html", TARGET = "_blank", style="color:#f28d0f;"),
+                                        p(a("Marie-Laure Delignette-Muller", href = "https://lbbe.univ-lyon1.fr/fr/annuaires-des-membres/delignette-muller-marie-laure", TARGET = "_blank", style="color:#f28d0f;"),
                                           "- marielaure.delignettemuller@vetagro-sup.fr - Laboratoire de Biométrie et Biologie Evolutive - VetAgro Sup - Lyon - France"),
                                         p(a("Floriane Larras", href = "https://www.researchgate.net/profile/Floriane_Larras", TARGET = "_blank", style="color:#f28d0f;"),
                                           "- floriane.larras@inrae.fr - Delegation for scientific expertise, foresight and advanced studies (DEPE) - INRAE - Paris - France"),
                                         p(a("Mechthild Schmitt-Jansen", href = "https://www.ufz.de/index.php?en=38467", TARGET = "_blank", style="color:#f28d0f;"),
                                           "- mechthild.schmitt@ufz.de - Department of Bioanalytical Ecotoxicology - Helmholtz Center for Environmental Research GmbH - Leipzig - Germany"),
-                                        p(a("Aurélie Siberchicot", href = "https://lbbe.univ-lyon1.fr/-Siberchicot-Aurelie-.html", TARGET = "_blank", style="color:#f28d0f;"),
+                                        p(a("Aurélie Siberchicot", href = "https://lbbe.univ-lyon1.fr/fr/annuaires-des-membres/siberchicot-aurelie", TARGET = "_blank", style="color:#f28d0f;"),
                                           "- aurelie.siberchicot@univ-lyon1.fr - Laboratoire de Biométrie et Biologie Evolutive - Université Lyon 1 - Lyon - France")
                                         
                         )),
@@ -101,7 +101,7 @@ ui <- fluidPage(
                                         p("Horizon 2020"),
                                         br(), br()
                         )),
-                        div(a(img(src = "logoLbbe.png", height = 70, width = 92), href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
+                        div(a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", width = 120), href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
                             a(img(src = "logoVetAgroSup.jpg", height = 100, width = 120), href="http://www.vetagro-sup.fr/", TARGET="_blank"),
                             a(img(src = "logoLyon1.png", height = 80, width = 380), href="https://www.univ-lyon1.fr/", TARGET="_blank"),
                             a(img(src = "logoLiec.png", height = 70, width = 100), href="http://liec.univ-lorraine.fr/", TARGET="_blank"),
