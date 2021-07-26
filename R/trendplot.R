@@ -13,7 +13,7 @@ trendplot <- function(extendedres, group,
  
   if (any(!is.element(c("trend"), cnames)))
     stop("The first argument of trendplot must be a dataframe
-    containing the column named trend and others columns coding for group of items.")
+    containing a column named trend and other columns coding for group of items.")
   
   if (missing(facetby))
   {
