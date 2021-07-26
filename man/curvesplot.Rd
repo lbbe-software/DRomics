@@ -9,7 +9,8 @@ additional information (e.g. groups from functional annotation) used to color an
 
 \usage{
 curvesplot(extendedres, xmin = 0, xmax, y0shift = TRUE,
-                       facetby, free.y.scales = FALSE, colorby, removelegend = FALSE,  
+                       facetby, facetby2, free.y.scales = FALSE, ncol4faceting,
+                       colorby, removelegend = FALSE,  
                         npoints = 500, line.size = 0.2, 
                         line.alpha = 1, dose_log_transfo = FALSE)}
 
@@ -34,7 +35,15 @@ the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
 \item{facetby}{optional argument naming the column of \code{extendedres} chosen 
   to split the plot in facets (no split if omitted).}
 
+\item{facetby2}{optional argument naming the column of \code{extendedres} chosen 
+  as an additional argument to split the plot in facets using 
+  \code{ggplot2::facet_grid}, with columns defined by \code{facetby}
+  and rows defined by \code{facetby2} (no split if omitted).}
+
 \item{free.y.scales}{if TRUE the y scales are free in the different facets.}
+
+\item{ncol4faceting}{Number of columns for facetting (not used if \code{facetby2} 
+  is also provided.}
 
 \item{colorby}{optional argument naming the column of \code{extendedres} chosen 
   to color the curves (no color if omitted).}
@@ -91,7 +100,7 @@ curvesplot(f$fitres, xmax = max(f$omicdata$dose))
 
 \donttest{
 
-# the same plot with dose in log scale (need x != 0 in input)
+# the same plot with dose in log scale (need xmin != 0 in input)
 curvesplot(f$fitres, xmin = 0.1, xmax = max(f$omicdata$dose),
   dose_log_transfo = TRUE)
 
@@ -120,6 +129,10 @@ curvesplot(f$fitres, xmax = max(f$omicdata$dose), y0shift = FALSE)
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
   facetby = "trend", colorby = "model")
 
+# changing the number of columns
+curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+  facetby = "trend", colorby = "model", ncol4faceting = 4)
+
 # playing with size and transparency of lines
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
   facetby = "trend", colorby = "model", 
@@ -134,6 +147,11 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))
 
+# plot split by trend and model
+curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+facetby = "trend",facetby2 = "model")
+
+# plot split by typology
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), facetby = "typology")
 
 
@@ -157,6 +175,20 @@ str(annot)
 # bootstrap results and annotation
 extendedres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
 head(extendedres)
+
+# Plot of the dose-response curves by pathway colored by trend
+curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 1,
+           colorby = "trend",
+           xmin = 0, xmax = 8) 
+
+# Plot of the dose-response curves split by pathway and by trend
+# for a selection pathway
+chosen_path_class <- c("Membrane transport", "Lipid metabolism")
+ischosen <- is.element(extendedres$path_class, chosen_path_class)
+curvesplot(extendedres[ischosen, ],
+          facetby = "trend", facetby2 = "path_class",
+          npoints = 100, line.size = 1,
+           xmin = 0, xmax = 8) 
 
 # Plot of the dose-response curves for a specific pathway
 # in this example the "lipid metabolism" pathclass

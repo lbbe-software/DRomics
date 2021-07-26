@@ -626,6 +626,21 @@ ecdfplotwithCI(variable = extendedres$BMD.zSD,
                by = extendedres$level)
 ```
 
+### BMD ECDF plot with color gradient split by pathway and molecular level
+
+Using the function bmdplotwithgradient() and its arguments facetby and facetby2, 
+the BMD plot with color gradient can be split here by KEGG pathway class
+and molecular level, here on a selection of pathway classes present at both molecular levels.(See ?bmdplotwithgradient for more options).
+For a better visualization, it should have been preferable to enter metabolic data 
+in DRomics in log2 instead of log10, to be in same signal scale as for transcriptomic data (indeed the amplitude of the metabolic signal is lower due to the use the log10).
+
+```{r}
+chosen_path_class <- c("Membrane transport", "Lipid metabolism", "Energy metabolism")
+selectedres <- extendedres[extendedres$path_class %in% chosen_path_class, ]
+bmdplotwithgradient(selectedres, BMDtype = "zSD",
+               facetby = "level", facetby2 = "path_class")
+```
+
 ### Plot of the dose-response curves for a specific metabolic pathway
 
 Using the function curvesplot(), specific dose-response curves can be shown. In this example, first only results related to the "lipid metabolism" pathway class are kept. Then, the plot is split by molecular level (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
@@ -638,6 +653,21 @@ curvesplot(LMres, facetby = "level", free.y.scales = TRUE, npoints = 100, line.s
            colorby = "trend",
            xmin = 0, xmax = 8) + labs(col = "DR_trend")
 ```
+
+### Plot of dose-response curves for a selection of pathways
+
+The same plot can be drawn for several chosen pathways with the use of argument
+facetby2. (See ?curvesplot for more options).
+
+```{r}
+# Plot of the dose-response curves for a specific metabolic pathway
+# in this example the "lipid metabolism" pathclass
+curvesplot(selectedres, facetby = "path_class", facetby2 = "level",
+           free.y.scales = TRUE, npoints = 100, line.size = 1,
+           colorby = "trend",
+           xmin = 0, xmax = 8) + labs(col = "DR_trend")
+```
+
 
 # References 
 

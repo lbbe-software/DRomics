@@ -4,7 +4,7 @@
 # with optionnal use of columns for shape and or facet 
 bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
                                    xmin, xmax, y0shift = TRUE, 
-                                   facetby, shapeby, npoints = 50, 
+                                   facetby, facetby2, shapeby, npoints = 50, 
                                    line.size, point.size = 1,
                                    ncol4faceting, limits4colgradient,
                                    lowercol = "darkblue", uppercol = "darkred",
@@ -76,20 +76,32 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     if (!is.character(facetby)) 
       stop("facetby should be a character string for the name of the column used for facetting.")
     BMD2plot$facetby <- extendedres[, facetby]
+    
+    if (!missing(facetby2)) 
+    {
+      if (!is.character(facetby2)) 
+        stop("facetby2 should be a character string for the name of the column used for facetting.")
+      BMD2plot$facetby2 <- extendedres[, facetby2]
+      BMD2plot$group <- paste(extendedres[, facetby], extendedres[, facetby2], sep = "_")
+    } else
+    {
+      BMD2plot$group  <-  BMD2plot$facetby
+    }
+    
+    if (missing(line.size)) line.size <- 24 / max(table(BMD2plot$group)) 
 
-    if (missing(line.size)) line.size <- 24 / max(table(BMD2plot$facetby)) 
-
-    uniqueby <- unique(BMD2plot$facetby)
+    uniqueby <- unique(BMD2plot$group)
     n.uniqueby <- length(uniqueby)
     BMD2plot$ECDF <- rep(0, ntot) # initialization
     for (i in 1:n.uniqueby)
     {
-      indi <- which(BMD2plot$facetby == uniqueby[i])
+      indi <- which(BMD2plot$group == uniqueby[i])
       ntoti <- length(indi)
       BMD2plot$ECDF[indi] <- (rank(BMD2plot$x[indi], ties.method = "first") - 0.5) / ntoti
     }
     g <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF), 
-                                                label = quote(id))) + facet_wrap(~ facetby) 
+                                                label = quote(id))) 
+    if (missing(facetby2)) g <- g + facet_wrap(~ facetby) else g <- g + facet_grid(facetby2 ~ facetby)
     
   } else
   {
@@ -150,29 +162,37 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   }
 
   # no shape no facet
-  if (missing(facetby))
+  if (!missing(facetby))
   {
-    gg <- g + geom_line(data = curves2plot, 
+    curves2plot$facetby <- rep(extendedres[, facetby], each = npoints)
+    if (!missing(facetby2)) 
+    {
+      curves2plot$facetby2 <- rep(extendedres[, facetby2], each = npoints)
+    }
+  }
+  gg <- g + geom_line(data = curves2plot, 
               mapping = aes_(x = quote(x), y = quote(ECDF), 
                              group = quote(id), color = quote(signal)),
               size = line.size) 
-  } else
-  { 
-    curves2plot$facetby <- rep(extendedres[, facetby], each = npoints)
-    gg <- g + geom_line(data = curves2plot, 
-                        mapping = aes_(x = quote(x), y = quote(ECDF), 
-                                       group = quote(id), color = quote(signal)),
-                        size = line.size)
-    if (missing(ncol4faceting))
+  if (!missing(facetby))
+  {
+    if (!missing(facetby2)) 
     {
-        gg <- gg + facet_wrap(~ facetby) 
-    } else
-    {
-      gg <- gg + facet_wrap(~ facetby, ncol = ncol4faceting) 
+      gg <- gg + facet_grid(facetby2 ~ facetby) 
     }
-    
-  } 
-  # Add of the color gradient
+    else
+    {
+      if (missing(ncol4faceting))
+      {
+        gg <- gg + facet_wrap(~ facetby) 
+      } else
+      {
+        gg <- gg + facet_wrap(~ facetby, ncol = ncol4faceting) 
+      }
+    }
+  }
+  
+    # Add of the color gradient
   if (missing(limits4colgradient))
   {
     gg <- gg +
