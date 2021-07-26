@@ -566,6 +566,7 @@ par(las = 2, mar = c(4,13,1,1))
 barplot(t(t.pathways), beside = TRUE, horiz = TRUE, 
         cex.names = 0.7, legend.text = TRUE, 
         main = "Frequencies of pathways")
+par(original.par)
 ```
 
 ### Proportions of pathways by molecular levels
@@ -574,11 +575,29 @@ Here basic R functions are used to compute and plot proportions of pathways by m
 
 ```{r}
 (t.prop.pathways <- prop.table(t.pathways, margin = 2)) 
+original.par <- par()
+par(las = 2, mar = c(4,13,1,1))
 barplot(t(t.prop.pathways), beside = TRUE, horiz = TRUE, 
         cex.names = 0.7, legend.text = TRUE, 
         main = "Proportion of pathways")
 par(original.par)
 ```
+
+### Plot of the trend repartition per pathway and molecular level
+
+Using the function bmdplotwithgradient() and its arguments facetby and facetby2, 
+the BMD plot with color gradient can be split here by KEGG pathway class
+and molecular level, here on a selection of pathway classes present at both molecular levels.(See ?bmdplotwithgradient for more options).
+For a better visualization, it should have been preferable to enter metabolic data 
+in DRomics in log2 instead of log10, to be in same signal scale as for transcriptomic data (indeed the amplitude of the metabolic signal is lower due to the use the log10).
+
+```{r}
+# Preliminary optional alphabetic ordering of path_class groups
+extendedres$path_class <- factor(extendedres$path_class, 
+                levels = sort(levels(extendedres$path_class), decreasing = TRUE))
+trendplot(extendedres, group = "path_class", facetby = "level") 
+```
+
 
 ### ECDF plot of BMD_zSD by pathway using different colors or facets
 

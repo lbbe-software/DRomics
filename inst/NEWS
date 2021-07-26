@@ -5,7 +5,9 @@ Version 2.2-1
 NEW FEATURES
 - An argument facetby2 was added to bmdplotwithgradient()
 and to curvesplot() to be able
-to split those plots in rows AND columns using facet_grid()
+to split those plots in rows AND columns using facet_grid().
+- Add of the function trendplot() to plot the repartition of dose-response
+trend per group of items.
 
 Version 2.2-0 
 =============
