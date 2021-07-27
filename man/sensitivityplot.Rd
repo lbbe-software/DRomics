@@ -27,12 +27,14 @@ sensitivityplot(extendedres, BMDtype = c("zSD", "xfold"),
  must at least contain the column giving the chosen BMD values
  on which to compute the sensitivity (column \code{BMD.zSD} or \code{BMD.xfold}).}
 
+\item{BMDtype}{The type of BMD used, \code{"zSD"} (default choice) or \code{"xfold"}.}
+
 \item{group}{the name of the column of extendedres coding for the groups
 on which we want to estimate a global sensitivity. 
 If \code{ECDFplot} is FALSE, this column should be a factor ordered as you want 
 the groups to appear in the plot from bottom up.}
 
-\item{ECDFplot}{if TRUE groups appear ordered by values of the BMD summary value
+\item{ECDF_plot}{if TRUE groups appear ordered by values of the BMD summary value
 from the bottom up, else they are ordered as their corresponding levels in the factor
 given in \code{group}. If \code{colorby} is given, \code{ECDFplot} is fixed to FALSE.}
 
