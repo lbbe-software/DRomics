@@ -20,7 +20,7 @@ trendplot <- function(extendedres, group,
     dtab <- as.data.frame(table(extendedres[, group], 
                                 extendedres[, "trend"] ) )
     colnames(dtab) <- c("group","trend", "nitems")
-    dtab <- subset(dtab, nitems != 0)
+    dtab <- dtab[dtab$nitems != 0, ]
     if (add.color)
       gg <- ggplot(dtab, aes_(x = quote(trend), y = quote(group), colour = quote(trend))) + 
         geom_point(aes_(size = quote(nitems)))
@@ -32,8 +32,8 @@ trendplot <- function(extendedres, group,
     dtab <- as.data.frame(table(extendedres[, group], 
                                 extendedres[, "trend"],
                                 extendedres[, facetby]) )
-    colnames(dtab) <- c("group","trend", "facetby", "nitems")
-    dtab <- subset(dtab, nitems != 0)
+    colnames(dtab) <- c("group", "trend", "facetby", "nitems")
+    dtab <- dtab[dtab$nitems != 0, ]
     if (add.color)
       gg <- ggplot(dtab, aes_(x = quote(trend), y = quote(group), colour = quote(trend))) +
         geom_point(aes_(size = quote(nitems)))
