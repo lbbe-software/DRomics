@@ -99,16 +99,20 @@ ui <- fluidPage(
                         fixedRow(column(10, offset = 2,
                                         p("Grant Agreement number: 705149 - MicroERA - H2020-MSCA-IF-2015"),
                                         p("Horizon 2020"),
-                                        br(), br()
-                        )),
-                        div(a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", width = 120), href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
-                            a(img(src = "logoVetAgroSup.jpg", height = 100, width = 120), href="http://www.vetagro-sup.fr/", TARGET="_blank"),
-                            a(img(src = "logoLyon1.png", height = 80, width = 380), href="https://www.univ-lyon1.fr/", TARGET="_blank"),
-                            a(img(src = "logoLiec.png", height = 70, width = 100), href="http://liec.univ-lorraine.fr/", TARGET="_blank"),
-                            a(img(src = "LogoUniversiteLorraine.png", height = 80, width = 180), href="http://www.univ-lorraine.fr/", TARGET="_blank"),
-                            a(img(src = "LogoHelmholtz.jpg", height = 80, width = 180), href="https://www.ufz.de/index.php?en=33573", TARGET="_blank"),
-                            img(src = "flag_yellow_high.jpg", height = 70, width = 110),
-                            style="text-align: center;")
+                                        br(), br(),
+                                        fillRow(flex = 0.11,
+                                          a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", width = 120), href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
+                                          a(img(src = "logoVetAgroSup.jpg", height = 100, width = 120), href="http://www.vetagro-sup.fr/", TARGET="_blank"),
+                                          a(img(src = "logoLyon1.png", height = 80, width = 380), href="https://www.univ-lyon1.fr/", TARGET="_blank"),
+                                          a(img(src = "logoLiec.png", height = 70, width = 100), href="http://liec.univ-lorraine.fr/", TARGET="_blank"),
+                                          a(img(src = "LogoUniversiteLorraine.png", height = 80, width = 180), href="http://www.univ-lorraine.fr/", TARGET="_blank"),
+                                          a(img(src = "LogoHelmholtz.jpg", height = 80, width = 180), href="https://www.ufz.de/index.php?en=33573", TARGET="_blank"),
+                                          img(src = "flag_yellow_high.jpg", height = 70, width = 110),
+                                          style="text-align: center;"
+                                        )
+                                        
+                        ))
+                        
                       )
              ),
              
