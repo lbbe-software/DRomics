@@ -38,7 +38,7 @@ We recommend the use of the new function
 }
 
 \seealso{
-    See \code{\link{quantile} and \code{\link{sensitivityplot}}.
+    See \code{\link{quantile}} and \code{\link{sensitivityplot}}.
 }
 
 \author{ 
