@@ -8,6 +8,8 @@ and to curvesplot() to be able
 to split those plots in rows AND columns using facet_grid().
 - Add of the function trendplot() to plot the repartition of dose-response
 trend per group of items.
+- Add of the function sensitivityplot() to plot various summaries of BMD
+values per group of items.
 
 Version 2.2-0 
 =============

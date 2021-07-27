@@ -117,7 +117,8 @@ extendedres$molecular.level <- factor(c(rep("metabolites", nrow(metabextendedres
                               rep("contigs", nrow(contigextendedres))))
 str(extendedres)
 
-# trend plot of both molecular levels
+### trend plot of both molecular levels
+# optional inverse alphabetic ordering of groups for the plot
 extendedres$path_class <- factor(extendedres$path_class, 
                 levels = sort(levels(extendedres$path_class), decreasing = TRUE))
 trendplot(extendedres, group = "path_class", facetby = "molecular.level") 
