@@ -5,11 +5,11 @@
 # (or per another additional grouping level )
 sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
                             group, ECDF_plot = TRUE, colorby,
-                            plottype = c("first.quartile", "median" , "median.and.IQR"),
+                            BMDsummary = c("first.quartile", "median" , "median.and.IQR"),
                             BMD_log_transfo = FALSE)
 {
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
-  plottype <- match.arg(plottype, c("median", "first.quartile", "median.and.IQR"))
+  BMDsummary <- match.arg(BMDsummary, c("median", "first.quartile", "median.and.IQR"))
   
   if (missing(extendedres) | !is.data.frame(extendedres))
     stop("The first argument of bmdplotwithgradient must be a dataframe 
@@ -68,15 +68,15 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   if (ECDF_plot)
   {
     # order by chosen summary
-    if (plottype == "median" | plottype == "median.and.IQR")
+    if (BMDsummary == "median" | BMDsummary == "median.and.IQR")
       dnb <- dnb[order(dnb$secondquartile), ] else 
-    if (plottype == "first.quartile")
+    if (BMDsummary == "first.quartile")
       dnb <- dnb[order(dnb$firstquartile), ]
           
     # fix the order of the modalities of by as in the ordered data set
     dnb$groupby <- factor(dnb$groupby, levels = dnb$groupby)
   }
-  if (plottype == "first.quartile")
+  if (BMDsummary == "first.quartile")
   {
     if (missing(colorby))
     gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(firstquartile), 
@@ -90,16 +90,16 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
         
   } else
   
-  if (plottype == "median" | plottype == "median.and.IQR")
+  if (BMDsummary == "median" | BMDsummary == "median.and.IQR")
   {
     if (missing(colorby))
       gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(secondquartile), 
                            size = quote(nb_of_items))) else
       gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(secondquartile), 
-                             color = quote(level), alpha = I(0.8),
+                             color = quote(level), alpha = I(0.5),
                              size = quote(nb_of_items)))
       gg <- gg + geom_point(stat = 'identity') + coord_flip() 
-    if (plottype == "median")
+    if (BMDsummary == "median")
       gg <- gg + labs(x = "", y = "BMD medians") else
       gg <- gg + geom_errorbar(aes_(ymin = quote(firstquartile), 
                                       ymax = quote(thirdquartile), size = I(1)), 

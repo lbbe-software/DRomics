@@ -14,7 +14,7 @@ with points sized by the numbers of items per group.
 \usage{
 sensitivityplot(extendedres, BMDtype = c("zSD", "xfold"),
                 group, ECDF_plot = TRUE, colorby,
-                plottype = c("first.quartile", "median" , "median.and.IQR"),
+                BMDsummary = c("first.quartile", "median" , "median.and.IQR"),
                 BMD_log_transfo = FALSE)
 }
 
@@ -43,7 +43,8 @@ given in \code{group}. If \code{colorby} is given, \code{ECDFplot} is fixed to F
 an additional level of grouping that will be materialized by the color. 
 If not missing,  \code{ECDFplot} is fixed to FALSE.}
 
-\item{plottype}{The type of sensitivity plot, \code{"first.quartile"} (default choice)
+\item{BMDsummary}{The type of summary used for sensitivity plot, 
+\code{"first.quartile"} (default choice)
 for the plot of first quartiles of BMD values per group, 
 \code{"median"} for the plot of medians of BMD values per group
 and \code{"median.and.IQR"} for the plot of medians with an interval corresponding
@@ -53,17 +54,18 @@ to the inter-quartile range (IQR).}
 }
 
 \details{
-TO COMPLETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-The given quantile is calculated for each group (e.g.from all items of a metabolic pathway) 
-using function \code{\link{quantile}} and plotted as an ECDF plot. In this ECDF plot of quantiles each point is sized according to the number of items in the corresponding group (e.g. metabolic pathway).
-}
+The chosen summary is calculated on the BMD values for each group 
+(groups can be for example defined as pathways from biological annotation of items)
+and plotted as an ECDF plot (ordered by the BMD summary) or in the order of the levels of the factor defining
+the groups from bottom to up. In this plot each point is sized according to the number of items in the corresponding group. Optionally a different levels 
+(e.g. different molecular levels in a multi-omics approach) can be coded by different colors.}
 
 \value{ 
    a ggplot object.
 }
 
 \seealso{
-    See \code{\link{quantile}}.
+    See \code{\link{ecdfquantileplot}}.
 }
 
 \author{ 
@@ -96,7 +98,7 @@ head(annotres)
 ### an ECDFplot of 25th quantiles of BMD-zSD calculated by pathway
 sensitivityplot(annotres, BMDtype = "zSD",
                             group = "path_class", 
-                            plottype = "first.quartile")
+                            BMDsummary = "first.quartile")
 
 \donttest{
 
@@ -104,7 +106,7 @@ sensitivityplot(annotres, BMDtype = "zSD",
 # but could be on another one) 
 sensitivityplot(annotres, BMDtype = "zSD",
                             group = "path_class",  
-                            plottype = "first.quartile",
+                            BMDsummary = "first.quartile",
                             BMD_log_transfo = TRUE)
 
 ### Plot of 25th quantiles of BMD-zSD calculated by pathway
@@ -112,18 +114,18 @@ sensitivityplot(annotres, BMDtype = "zSD",
 levels(annotres$path_class)
 sensitivityplot(annotres, BMDtype = "zSD",
                             group = "path_class", ECDF_plot = FALSE, 
-                            plottype = "first.quartile")
+                            BMDsummary = "first.quartile")
 
 ### an ECDFplot of medians of BMD-zSD calculated by pathway
 sensitivityplot(annotres, BMDtype = "zSD",
                             group = "path_class",  
-                            plottype = "median")
+                            BMDsummary = "median")
 
 ### an ECDFplot of medians of BMD-zSD calculated by pathway
 ### with addition of interquartile ranges (IQRs) 
 sensitivityplot(annotres, BMDtype = "zSD",
                             group = "path_class",  
-                            plottype = "median.and.IQR") 
+                            BMDsummary = "median.and.IQR") 
                             
 # (2) 
 # An example with two molecular levels
@@ -161,8 +163,13 @@ extendedres$path_class <- factor(extendedres$path_class,
                 decreasing = TRUE))
 sensitivityplot(extendedres, BMDtype = "zSD",
                             group = "path_class", colorby = "molecular.level", 
-                            plottype = "first.quartile")
+                            BMDsummary = "first.quartile")
 
+### Plot of medians and IQRs of BMD-zSD calculated by pathway
+### and colored by molecular level
+sensitivityplot(extendedres, BMDtype = "zSD",
+                            group = "path_class", colorby = "molecular.level", 
+                            BMDsummary = "median.and.IQR")
 
 }
 }

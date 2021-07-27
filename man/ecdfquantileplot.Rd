@@ -28,7 +28,9 @@ may be a BMD.}
 \details{
 
 The given quantile is calculated for each group (e.g.from all items of a metabolic pathway) 
-using function \code{\link{quantile}} and plotted as an ECDF plot. In this ECDF plot of quantiles each point is sized according to the number of items in the corresponding group (e.g. metabolic pathway).
+using function \code{\link{quantile}} and plotted as an ECDF plot. In this ECDF plot of quantiles each point is sized according to the number of items in the corresponding group (e.g. metabolic pathway). 
+We recommend the use of the new function 
+\code{\link{sensitivityplot}} that may be more convenient and that offers more options. 
 }
 
 \value{ 
@@ -36,7 +38,7 @@ using function \code{\link{quantile}} and plotted as an ECDF plot. In this ECDF 
 }
 
 \seealso{
-    See \code{\link{quantile}}.
+    See \code{\link{quantile} and \code{\link{sensitivityplot}}.
 }
 
 \author{ 

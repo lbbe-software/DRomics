@@ -484,14 +484,25 @@ ecdfplotwithCI(variable = annotres$BMD.zSD,
 
 ## Sensitivity plot of functional groups
 
-It is also possible to show a summary of BMD values in each pathway/category as a given quantile (argument quantile.prob) using the function ecdfquantileplot(). Moreover, this function will provide information on the number of items involved in each pathway/category. (See ?ecdfquantileplot for more options).
+It is also possible to show a summary of BMD values in each pathway/category as a given summary (argument BMDsummary which can be "first.quartile", "median" or "median.and.IQR" for
+medians with the interquartile range as an interval) using the function sensitivityplot(). 
+Moreover, this function will provide information on the number of items involved in each pathway/category. (See ?sensitivityplot for more options).
 
-As an example, below is an ECDF plot of quantiles of BMD-zSD calculated here by pathway class. 
+As an example, below is an ECDF plot of 25th quantiles of BMD-zSD calculated here by pathway class. 
 
 ```{r}
-ecdfquantileplot(variable = annotres$BMD.zSD, 
-                 by = annotres$path_class,
-                 quantile.prob = 0.25) 
+sensitivityplot(annotres, BMDtype = "zSD",
+                    group = "path_class",
+                 BMDsummary = "first.quartile") 
+```
+
+## Trend plot per functional group
+
+It is possible to represent the repartition of trends in each functional group
+using function trendplot() (see ?trendplot for details).
+
+```{r}
+trendplot(annotres, group = "path_class") 
 ```
 
 ## Plot of dose-response curves for a specific functional group 
@@ -643,6 +654,20 @@ ecdfplotwithCI(variable = extendedres$BMD.zSD,
                CI.lower = extendedres$BMD.zSD.lower, 
                CI.upper = extendedres$BMD.zSD.upper, 
                by = extendedres$level)
+```
+
+## Sensitivity plot by pathway and molecular level
+
+Using the function sensitivityplot() and its arguments group and colorby, 
+it is possible to show a summary of BMD values with size of points coding for the number
+of items in each group as in the example, where the 25th quartiles of BMD values are represented per KEGG pathway class for each molecular level. (See ?sensitivityplot for more options).
+
+As an example, below is an ECDF plot of 25th quantiles of BMD-zSD calculated here by pathway class. 
+
+```{r}
+sensitivityplot(extendedres, BMDtype = "zSD",
+                group = "path_class", colorby = "level",
+                BMDsummary = "first.quartile") 
 ```
 
 ### BMD ECDF plot with color gradient split by pathway and molecular level
