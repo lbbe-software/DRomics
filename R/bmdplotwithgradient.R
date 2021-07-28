@@ -66,6 +66,9 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   {
     if (!is.character(shapeby)) 
       stop("shapeby should be a character string for the name of the column coding for the point shape.")
+    if (!is.element(shapeby, cnames))
+      stop("shapeby should be a character string corresponding to the name of a column of
+           extendedres, the dataframe given in input.")
     BMD2plot$shapeby <- extendedres[, shapeby]
   }
   
@@ -75,12 +78,18 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   {
     if (!is.character(facetby)) 
       stop("facetby should be a character string for the name of the column used for facetting.")
+    if (!is.element(facetby, cnames))
+      stop("facetby should be a character string corresponding to the name of a column of
+           extendedres, the dataframe given in input.")
     BMD2plot$facetby <- extendedres[, facetby]
     
     if (!missing(facetby2)) 
     {
       if (!is.character(facetby2)) 
         stop("facetby2 should be a character string for the name of the column used for facetting.")
+      if (!is.element(facetby2, cnames))
+        stop("facetby2 should be a character string corresponding to the name of a column of
+           extendedres, the dataframe given in input.")
       BMD2plot$facetby2 <- extendedres[, facetby2]
       BMD2plot$group <- paste(extendedres[, facetby], extendedres[, facetby2], sep = "_")
     } else

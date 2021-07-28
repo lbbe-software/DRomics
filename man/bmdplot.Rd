@@ -73,7 +73,7 @@ of extendedres. In case where one item is allocated to more than one group
 during the annotation process, the line of this item must be replicated in 
 extendedres as many times as the number of annotation groups in which it was
 allocated.
-}
+
 }
 
 \value{ 
@@ -81,8 +81,8 @@ allocated.
 }
 
 \seealso{
-    See \code{\link{plot.bmdcalc}}, \code{\link{plot.bmdboot} and 
-    \code{\link{ecdfplotwithCI}}}.
+    See \code{\link{plot.bmdcalc}}, \code{\link{plot.bmdboot}} and 
+    \code{\link{ecdfplotwithCI}}.
 }
 
 \author{ 

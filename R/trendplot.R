@@ -11,10 +11,26 @@ trendplot <- function(extendedres, group,
   
   cnames <- colnames(extendedres)
   
+  if (!is.character(group)) 
+    stop("group should be a character string for the name of the column defining groups.")
+  if (!is.element(group, cnames))
+    stop("group should be a character string corresponding to the name of a column of
+           extendedres, the dataframe given in input.")
+  
+  
   if (any(!is.element(c("trend"), cnames)))
     stop("The first argument of trendplot must be a dataframe
     containing a column named trend and other columns coding for group of items.")
-  
+
+  if (!missing(facetby)) 
+  {
+    if (!is.character(facetby)) 
+      stop("facetby should be a character string for the name of the column used for facetting.")
+    if (!is.element(facetby, cnames))
+      stop("facetby should be a character string corresponding to the name of a column of
+           extendedres, the dataframe given in input.")
+  }
+      
   if (missing(facetby))
   {
     dtab <- as.data.frame(table(extendedres[, group], 

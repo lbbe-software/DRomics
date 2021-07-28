@@ -28,18 +28,28 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   {
     if (any(!is.element(c("BMD.xfold"), cnames)))
       stop("The first argument of bmdplotwithgradient must be a dataframe
-      containing a column named BMD.xfold and other columns coding for group of items.")
+      containing a column named BMD.xfold and other columns coding for groups of items.")
     variable <- extendedres[, "BMD.xfold"]
   }
+  
+  if (!is.character(group)) 
+    stop("group should be a character string for the name of the column defining groups.")
+  if (!is.element(group, cnames))
+    stop("group should be a character string corresponding to the name of a column of
+           extendedres, the dataframe given in input.")
   groupby <- as.factor(extendedres[, group])
   
-  # if (!missing(colorby))
-  # {
-  #   if (!is.character(colorby)) 
-  #     stop("colorby should be a character string for the name of the column coding for the point shape.")
-  #   summary2plot$colorby <- extendedres[, colorby]
-  # }
-  firstquartilefun <- function(x) quantile(x, probs = 0.25)
+  if (!missing(colorby))
+  {
+    if (!is.character(colorby)) 
+      stop("colorby should be a character string for the name of the column coding for the point color.")
+    if (!is.element(colorby, cnames))
+      stop("colorby should be a character string corresponding to the name of a column of
+           extendedres, the dataframe given in input.")
+  }
+  
+  
+   firstquartilefun <- function(x) quantile(x, probs = 0.25)
   thirdquartilefun <- function(x) quantile(x, probs = 0.75)
   
   if (missing(colorby))
@@ -52,8 +62,6 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
 
   } else
   {
-    if (!is.character(colorby)) 
-     stop("colorby should be a character string for the name of the column coding for the point shape.")
     level <- extendedres[, colorby]
     dnb <- as.data.frame(table(groupby, level))
     colnames(dnb) <- c("groupby", "level","nb_of_items")
