@@ -109,7 +109,12 @@ bmdcalc <- function(f, z = 1, x = 10, minBMD, ratio2switchinlog = 100)
   dosemax <- max(f$omicdata$dose)
   dosemin <- min(f$omicdata$dose[f$omicdata$dose != 0])
   
-  if (missing(minBMD)) minBMD <- dosemin / 100 # could be changed
+  if (missing(minBMD)) minBMD <- dosemin / 100  else# could be changed
+  if (minBMD > dosemin)
+    { 
+      warning("You can fix minBMD only to a value smaller than the minimal non null tested dose.")
+      minBMD <- dosemin / 100
+    }
   
   if (minBMD <= 0)
     stop("minBMD should be a stricly positive value.")

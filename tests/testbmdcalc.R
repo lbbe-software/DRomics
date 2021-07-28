@@ -25,7 +25,8 @@ if(visualize)
   
   # check of defensive prog
   # (r <- bmdcalc(f, minBMD = 0))
-
+  # (r <- bmdcalc(f, minBMD = 1)) # 1 > minimal non null dose
+  
   
   # look at BMR in the output
   (r <- bmdcalc(f, z = 2, x = 20))
