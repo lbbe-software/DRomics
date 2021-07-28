@@ -52,10 +52,13 @@ that is provided on its last page.
 ### General format of imported data
 
 Whatever the type of data imported in DRomics,
-data can be imported from a .txt file (e.g. "mydata.txt") containing one row per item,
+data can be imported from a .txt file (e.g. "mydata.txt") containing one row per item after  
+the first row coding for doses or concentrations for each sample (column),
 with the first column corresponding to the identifier of each item (identifier of the probe, transcript, metabolite, ..., or name of the endpoint for anchoring data), 
-and the other columns giving the responses of the item for each sample. In the first line, after a name for the identifier column, we must have the tested doses or concentrations in a numeric format for the corresponding sample
-(for example, if there are triplicates for each treatment, the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). This file is imported within each DRomics function using the function read.table() with its default field separator (sep argument). Alternatively an R object of class data.frame 
+and the other columns giving the responses of the item for each sample. In the first row, after a name for the identifier column, we must have the tested doses or concentrations in a numeric format for the corresponding sample
+(for example, if there are triplicates for each treatment, the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). This file is imported within each DRomics function using the function read.table() with its default field separator (sep argument). 
+
+Alternatively an R object of class data.frame 
 can be directly given in input, corresponding to the output of read.table(file, header = FALSE) on a file described as above. 
 
 You can see below an example of a RNAseq data set that is available in DRomics both as an R object (named Zhou_kidney_pce) and as a text file named "RNAseq_sample.txt" containing just
@@ -428,6 +431,30 @@ head(annotres)
 
 ## BMD ECDF plot by functional group
 
+### BMD ECDF plot split by group defined from functional annotation
+
+Using the function bmdplot() and its argument facetby, the BMD ECDF plot can be split
+by group (here by KEGG pathway class). 
+Confidence intervals can be added on this plot and color coding for trend in this example
+(See ?bmdplot for more options).
+
+```{r}
+bmdplot(annotres, BMDtype = "zSD", add.CI = TRUE, 
+                    facetby = "path_class", 
+                    colorby = "trend") + labs(col = "trend")
+```
+
+Function ecdfplotwithCI() can also used as an alternative as below to provide the same plot
+differing just by the coloring of intervals only. (See ?ecdfplotwithCI for more options.)
+
+```{r, eval = FALSE}
+ecdfplotwithCI(variable = annotres$BMD.zSD, 
+               CI.lower = annotres$BMD.zSD.lower, 
+               CI.upper = annotres$BMD.zSD.upper, 
+               by = annotres$path_class,
+               CI.col = annotres$trend) + labs(col = "trend")
+```
+
 ### BMD ECDF plot with color gradient split by group defined from functional annotation
 
 Using the function bmdplotwithgradient() and its argument facetby, the BMD plot with color gradient can be split here by KEGG pathway class. (See ?bmdplotwithgradient for more options).
@@ -469,18 +496,6 @@ bmdplotwithgradient(annotres_lipid, BMDtype = "zSD",
 
 ```
 
-
-### BMD ECDF plot with confidence intervals split by group defined from functional annotation
-
-Using the function ecdfplotwithCI() and its arguments by and CI.col, the ECDF plot of BMD_zSD with confidence intervals can be split here by pathway class and with color coding for dose-response trend. (See ?ecdfplotwithCI for more options.)
-
-```{r}
-ecdfplotwithCI(variable = annotres$BMD.zSD, 
-               CI.lower = annotres$BMD.zSD.lower, 
-               CI.upper = annotres$BMD.zSD.upper, 
-               by = annotres$path_class,
-               CI.col = annotres$trend) + labs(col = "trend")
-```
 
 ## Sensitivity plot of functional groups
 
@@ -562,11 +577,11 @@ extendedres$level <- factor(c(rep("metabolites", nrow(metabextendedres)),
 str(extendedres)
 ```
 
-## Comparison of results obtained at both molecular levels (metabolites and contigs)
+## Comparison of results obtained at different molecular levels using basic R functions
 
-Below are examples of illustrations that can be used to compare the results obtained at several levels of biological organization.
+Below are examples of illustrations that can be used to compare the results obtained at several levels of biological organization using basic R functions.
 
-### Frequencies of pathways by molecular levels
+### Frequencies of pathways per molecular level
 
 Here basic R functions are used to compute and plot frequencies of pathways by molecular levels.
 
@@ -580,7 +595,7 @@ barplot(t(t.pathways), beside = TRUE, horiz = TRUE,
 par(original.par)
 ```
 
-### Proportions of pathways by molecular levels
+### Proportions of pathways per molecular level
 
 Here basic R functions are used to compute and plot proportions of pathways by molecular levels.
 
@@ -594,23 +609,7 @@ barplot(t(t.prop.pathways), beside = TRUE, horiz = TRUE,
 par(original.par)
 ```
 
-### Plot of the trend repartition per pathway and molecular level
-
-Using the function bmdplotwithgradient() and its arguments facetby and facetby2, 
-the BMD plot with color gradient can be split here by KEGG pathway class
-and molecular level, here on a selection of pathway classes present at both molecular levels.(See ?bmdplotwithgradient for more options).
-For a better visualization, it should have been preferable to enter metabolic data 
-in DRomics in log2 instead of log10, to be in same signal scale as for transcriptomic data (indeed the amplitude of the metabolic signal is lower due to the use the log10).
-
-```{r}
-# Preliminary optional alphabetic ordering of path_class groups
-extendedres$path_class <- factor(extendedres$path_class, 
-                levels = sort(levels(extendedres$path_class), decreasing = TRUE))
-trendplot(extendedres, group = "path_class", facetby = "level") 
-```
-
-
-### ECDF plot of BMD_zSD by pathway using different colors or facets
+### ECDF plot of BMD_zSD by pathway using different colors or facets for molecular levels
 
 Here the ggplot2 grammar is used to plot the ECDF of BMD_zSD using different colors or facets for the different molecular levels.
 
@@ -632,42 +631,32 @@ if (require(ggplot2))
 }
 ```
 
-### ECDF plot of BMD_zSD with confidence intervals split here by metabolic pathway
+## Comparison of results obtained at different molecular levels using DRomics functions
 
-Using the function ecdfplotwithCI() and its arguments by and CI.col, the ECDF plot of BMD_zSD with confidence intervals can be split here by pathway class and with colors coding for different molecular levels. (See ?ecdfplotwithCI for more options).
+DRomics functions bmdplot(), bmdplotwithgradient(), sensitivityplot(), trendplot() and curvesplot(), 
+it is also possible to easily integrate different molecular levels (or another grouping level).
+
+
+### ECDF plot of BMD_zSD per pathway and molecular level
+
+Using the function bmdplot() and its argument facetby, the BMD ECDF plot can be split
+by group (here by KEGG pathway class) and colored or split by molecular level. 
+(See ?bmdplot for more options).
 
 ```{r}
-# with color coding for molecular level
-ecdfplotwithCI(variable = extendedres$BMD.zSD, 
-               CI.lower = extendedres$BMD.zSD.lower, 
-               CI.upper = extendedres$BMD.zSD.upper, 
-               by = extendedres$path_class,
-               CI.col = extendedres$level) + labs(col = "Molecular level")
+bmdplot(extendedres, BMDtype = "zSD", 
+                    facetby = "path_class", 
+                    colorby = "level") + labs(col = "molecular level")
 ```
 
-### ECDF plot of BMD_zSD with confidence intervals split here by molecular level
-
-Using the function ecdfplotwithCI() and its argument by, the ECDF plot of BMD_zSD with confidence intervals can be split here by molecular level. (See ?ecdfplotwithCI for more options).
+Below is a focus on few pathways with split on pathway and molecular level.
 
 ```{r}
-ecdfplotwithCI(variable = extendedres$BMD.zSD, 
-               CI.lower = extendedres$BMD.zSD.lower, 
-               CI.upper = extendedres$BMD.zSD.upper, 
-               by = extendedres$level)
-```
-
-## Sensitivity plot by pathway and molecular level
-
-Using the function sensitivityplot() and its arguments group and colorby, 
-it is possible to show a summary of BMD values with size of points coding for the number
-of items in each group as in the example, where the 25th quartiles of BMD values are represented per KEGG pathway class for each molecular level. (See ?sensitivityplot for more options).
-
-As an example, below is an ECDF plot of 25th quantiles of BMD-zSD calculated here by pathway class. 
-
-```{r}
-sensitivityplot(extendedres, BMDtype = "zSD",
-                group = "path_class", colorby = "level",
-                BMDsummary = "first.quartile") 
+chosen_path_class <- c("Membrane transport", "Lipid metabolism", "Energy metabolism")
+selectedres <- extendedres[extendedres$path_class %in% chosen_path_class, ]
+bmdplot(selectedres, BMDtype = "zSD", add.CI = TRUE, 
+                    facetby = "path_class", 
+                    facetby2 = "level") + labs(col = "trend")
 ```
 
 ### BMD ECDF plot with color gradient split by pathway and molecular level
@@ -682,8 +671,37 @@ in DRomics in log2 instead of log10, to be in same signal scale as for transcrip
 chosen_path_class <- c("Membrane transport", "Lipid metabolism", "Energy metabolism")
 selectedres <- extendedres[extendedres$path_class %in% chosen_path_class, ]
 bmdplotwithgradient(selectedres, BMDtype = "zSD",
-               facetby = "level", facetby2 = "path_class")
+               facetby = "path_class", facetby2 = "level")
 ```
+
+## Sensitivity plot per pathway and molecular level
+
+Using the function sensitivityplot() and its arguments group and colorby, 
+it is possible to show a summary of BMD values with size of points coding for the number
+of items in each group as in the example, where the 25th quartiles of BMD values are represented per KEGG pathway class for each molecular level. (See ?sensitivityplot for more options).
+
+
+```{r}
+sensitivityplot(extendedres, BMDtype = "zSD",
+                group = "path_class", colorby = "level",
+                BMDsummary = "first.quartile") 
+```
+
+### Plot of the trend repartition per pathway and molecular level
+
+Using the function bmdplotwithgradient() and its arguments facetby and facetby2, 
+the BMD plot with color gradient can be split here by KEGG pathway class
+and molecular level, here on a selection of pathway classes present at both molecular levels.(See ?bmdplotwithgradient for more options).
+For a better visualization, it should have been preferable to enter metabolic data 
+in DRomics in log2 instead of log10, to be in same signal scale as for transcriptomic data (indeed the amplitude of the metabolic signal is lower due to the use the log10).
+
+```{r}
+# Preliminary optional alphabetic ordering of path_class groups
+extendedres$path_class <- factor(extendedres$path_class, 
+                levels = sort(levels(extendedres$path_class), decreasing = TRUE))
+trendplot(extendedres, group = "path_class", facetby = "level") 
+```
+
 
 ### Plot of the dose-response curves for a specific metabolic pathway
 

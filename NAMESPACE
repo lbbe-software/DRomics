@@ -59,3 +59,5 @@ export(bmdplotwithgradient)
 export(ecdfquantileplot)
 export(trendplot)
 export(sensitivityplot)
+export(bmdplot)
+

@@ -10,6 +10,8 @@ to split those plots in rows AND columns using facet_grid().
 trend per group of items.
 - Add of the function sensitivityplot() to plot various summaries of BMD
 values per group of items.
+- Add of the function BMDplot() that takes extendedres as a first argument as
+trendplot(), bmdplotwithgradient(), sensitivityplot() and curvesplot().
 
 Version 2.2-0 
 =============
