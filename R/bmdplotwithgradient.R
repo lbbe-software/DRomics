@@ -97,10 +97,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
       BMD2plot$group  <-  BMD2plot$facetby
     }
     
-    print(table(BMD2plot$group))
-    print(sum(table(BMD2plot$group) != 0))
     if (missing(line.size)) line.size <- 24 / max(table(BMD2plot$group))
-    print(paste("line size = ", line.size))
     
     uniqueby <- unique(BMD2plot$group)
     n.uniqueby <- length(uniqueby)
