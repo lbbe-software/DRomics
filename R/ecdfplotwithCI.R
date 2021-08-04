@@ -20,7 +20,7 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
   
   if (!missing(by)) 
   {
-    ntot = nrow(d)
+    ntot <- nrow(d)
     uniqueby <- unique(d$by)
     n.uniqueby <- length(uniqueby)
     d$ECDF <- rep(0, ntot) # initialization
@@ -47,7 +47,7 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
     }
   } else
   {
-    ntot = nrow(d)
+    ntot <- nrow(d)
     d$ECDF <- (rank(d$variable, ties.method = "first") - 0.5) / ntot
     # not strictly equivalent with ecdf (i / n)
     # d$variable <- ecdf(d$variable)(d$variable)

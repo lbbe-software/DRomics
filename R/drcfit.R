@@ -837,7 +837,7 @@ plotfit2pdf <- function(x, items,
                   paste0("Figures are stored in ", normalizePath(path2figs), ".")))
   pdf(file2plot, width = 7, height = 10, onefile = TRUE) # w and h in inches
   
-  nplotsperpage = nrowperpage * ncolperpage
+  nplotsperpage <- nrowperpage * ncolperpage
   npage <- ceiling(nrow(subd) / nplotsperpage)
   
   for (i in 1:npage)
