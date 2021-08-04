@@ -15,3 +15,4 @@ BuildVignettes: true
 Encoding: UTF-8
 URL: https://lbbe.univ-lyon1.fr/fr/dromics, https://github.com/aursiber/DRomics
 Contact: Marie-Laure Delignette-Muller <marielaure.delignettemuller@vetagro-sup.fr>
+BugReports: https://github.com/aursiber/DRomics/issues
