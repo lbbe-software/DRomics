@@ -25,7 +25,7 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
   fdose <- as.factor(dose)
   doseranks <- as.numeric(as.factor(dose))
   doseranks2 <- doseranks*doseranks
-  irow <- seq_len(item)
+  irow <- seq_len(length(item))
   
   if (inherits(omicdata,"microarraydata") | 
       inherits(omicdata,"continuousomicdata"))
