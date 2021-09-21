@@ -90,8 +90,8 @@ as a function of the dose (in rank-scale) were also eliminated (the best fit is 
 not reliable in such cases). Each retained item is classified in a twelve class typology depending of the
 chosen model and of its parameter values : 
   \itemize{
-  \item H.inc for increasing Hill curves (or lP.inc if \code{sigmoid.model = "log-probit"}),
-  \item H.dec for decreasing Hill curves (or lP.dec if \code{sigmoid.model = "log-probit"}),
+  \item H.inc for increasing Hill curves,
+  \item H.dec for decreasing Hill curves,
   \item L.inc for increasing linear curves,
   \item L.dec for decreasing linear curves,
   \item E.inc.convex for increasing convex exponential curves,
