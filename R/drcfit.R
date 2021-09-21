@@ -1,5 +1,5 @@
 ### fit different models to each dose-response curve and choose the best fit 
-drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"), 
+drcfit <- function(itemselect,  
                    information.criterion = c("AICc", "BIC", "AIC"),
                    postfitfilter = TRUE,
                    progressbar = TRUE, 
@@ -25,7 +25,8 @@ drcfit <- function(itemselect, sigmoid.model = c("Hill", "log-probit"),
     cat("The fitting may be long if the number of selected items is high.\n")
   
   # Definition of the sigmoid model to fit
-  sigmoid.model <- match.arg(sigmoid.model, c("Hill", "log-probit"))
+  # sigmoid.model <- match.arg(sigmoid.model, c("Hill", "log-probit"))
+  sigmoid.model <- "Hill"
   
   # definition of necessary data
   selectindex <- itemselect$selectindex

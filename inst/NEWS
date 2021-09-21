@@ -12,6 +12,7 @@ trend per group of items.
 values per group of items.
 - Add of the function bmdplot() that takes extendedres as a first argument as
 trendplot(), bmdplotwithgradient(), sensitivityplot() and curvesplot().
+- Removing of the drcfit() argument sigmoid.model that was confusing for some users and not useful for a common use of the package.
 
 Version 2.2-0 
 =============

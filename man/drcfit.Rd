@@ -10,7 +10,7 @@ Fits dose reponse models to responsive items.
 }
 
 \usage{
-drcfit(itemselect, sigmoid.model = c("Hill", "log-probit"),
+drcfit(itemselect, 
   information.criterion = c("AICc", "BIC", "AIC"), postfitfilter = TRUE,
   progressbar = TRUE, parallel = c("no", "snow", "multicore"), ncpus)
 
@@ -27,9 +27,6 @@ plotfit2pdf(x, items,
 
 \arguments{
 \item{itemselect}{An object of class \code{"itemselect"} returned by the function \code{itemselect}.}
-
-\item{sigmoid.model}{The chosen sigmoid model, \code{"Hill"} (default
-  choice) or \code{"log-probit"}.}
 
 \item{information.criterion}{The information criterion used to select the best fit model, \code{"AICc"} as recommended and default
   choice (the corrected version of the AIC that is recommended
