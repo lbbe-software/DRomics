@@ -135,7 +135,7 @@ as individual points in the plot of raw counts.
 ### An example with microarray data 
 
 For single-channel microarray data, imperatively imported in log
-scale (classically log2 scale), you can choose the between array 
+scale (classical and recommended log2 scale), you can choose the between array 
 normalization method ("cyclicloess", "quantile", "scale" or "none"). 
 In the example below "quantile" was used 
 only to make this vignette quick to compile, 
@@ -165,7 +165,8 @@ just to make the obtained figure lighter.
 metabolofilename <- system.file("extdata", "metabolo_sample.txt", package = "DRomics")
 ```
 
-No normalization nor transformation is provided in function continuousomicdata(). The pre-treatment of metabolomic data must be done before importation of data, and data must be imported in log scale, so that they can be directly modelled using a normal error model. This strong hypothesis is required both for selection of items and for dose-reponse modelling.
+No normalization nor transformation is provided in function continuousomicdata(). The pre-treatment of metabolomic data must be done before importation of data, and data must be imported in log scale, so that they can be directly modelled using a normal error model. This strong hypothesis is required both for selection of items and for dose-reponse modelling. In the context of a multi-omics approach we recommend you the use of a log2 transformation, instead of the classical log10 for such data, so as to facilitate the comparison of
+results obtained with transcriptomics data generally handled in a log2 scale.
 
 As an example, a basic procedure for this pre-treatment of metabolomic data could follow the three steps described thereafter: i) removing of metabolites for which the proportion of missing data (non detections) across all the samples is too high (more than 20 to 50 percents according to your tolerance level); ii) retrieving of missing values data using half minimum method (i.e. half of the minimum value found for a metabolite across all samples); iii) log-transformation of values. If a scaling to the total intensity (normalization by sum of signals in each sample) or another normalization is necessary and pertinent, we recommend to do it before those three previously decribed steps.
 
@@ -197,7 +198,7 @@ For such data the plot() function provides a dose-response plot for each endpoin
 
 For the second step of the workflow, function itemselect() must be used with the output of the function used in Step 1 as first argument (output of RNAseqdata(), microarraydata(), continuousomicdata() or continuousanchoringdata()). Below is an example with microarray data.
 
-The false discovery rate corresponds to the expected proportion of items that will be falsely
+The false discovery rate (FDR) corresponds to the expected proportion of items that will be falsely
 detected as responsive. With a very large data set it is important to define a selection step based
 on an FDR not only to reduce the number of items to be further processed, but also to remove
 too noisy dose-response signals that may impair the quality of the results.
@@ -269,7 +270,7 @@ targetplot(targetitems, f = f)
 
 ### Plot of residuals
 
-To check the assumption of normal error model, two types of residual plots can
+To check the assumption of the normal error model, two types of residual plots can
 be used ("dose_residuals" or "fitted_residuals"). The residual plots for
 all items may also be
 saved in a pdf file using the plotfit2pdf() function (see ?drcfit).
@@ -388,7 +389,7 @@ Below is used an example from a metabolomic data set previously analysed using D
 
 ## Enrichment of the dataframe of DRomics results with functional annotation {#enrich}
 
-This enrichment is not done using DRomics functions, but relevant R functions such as merge().
+This enrichment is not done using DRomics functions, but with relevant R functions such as merge().
 
 An example of how to proceed:
 
@@ -418,7 +419,7 @@ annot <- read.table(annotfilename, header = TRUE, stringsAsFactors = TRUE)
 str(annot)
 ```
 
-3. **Merging of both previous dataframes in order to obtain a so-called 'extenderes' dataframe gathering, for each item, metrics derived from the DRomics workflow and functional annotation.**
+3. **Merging of both previous dataframes in order to obtain a so-called 'extendedres' dataframe gathering, for each item, metrics derived from the DRomics workflow and functional annotation.**
 
 Arguments by.x and by.y of the merge() function 
 indicate the column name in res and annot dataframes, respectively, that must be used for the merging.  
@@ -521,7 +522,7 @@ trendplot(annotres, group = "path_class")
 
 ## Plot of dose-response curves for a specific functional group 
 
-The function curvesplot() can show the dose-response curves for a specific pathway/category with arguments left to the choice of the user. In this example, first only results related to the "lipid metabolism" pathway class are kept. Then, the plot is split by id (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
+The function curvesplot() can show the dose-response curves for a specific pathway/category with arguments left to the choice of the user. In this example, only results related to the "lipid metabolism" pathway class are kept. The plot is split by id (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
 
 ```{r}
 LMres <- annotres[annotres$path_class == "Lipid metabolism", ]
@@ -536,7 +537,7 @@ This section illustrates functions of DRomics that are meant to help the interpr
 
 Below is used an example linking a  transcriptomic (microarray) and a metabolomic data set issued from the same experiment. 
 
-## An example with metabolomics and transcriptomics data for Scenedesmus and triclosan (cf. Larras et al. 2020)
+## An example with metabolomics and transcriptomics data for *Scenedesmus* and triclosan (cf. Larras *et al.* 2020)
 
 ### Enrichment of the dataframes of DRomics results with functional annotation
 
@@ -632,7 +633,7 @@ if (require(ggplot2))
 
 ## Comparison of results obtained at different molecular levels using DRomics functions
 
-DRomics functions bmdplot(), bmdplotwithgradient(), sensitivityplot(), trendplot() and curvesplot(), 
+With DRomics functions bmdplot(), bmdplotwithgradient(), sensitivityplot(), trendplot() and curvesplot(), 
 it is also possible to easily integrate different molecular levels (or another grouping level).
 
 
@@ -688,11 +689,9 @@ sensitivityplot(extendedres, BMDtype = "zSD",
 
 ### Plot of the trend repartition per pathway and molecular level
 
-Using the function bmdplotwithgradient() and its arguments facetby and facetby2, 
-the BMD plot with color gradient can be split here by KEGG pathway class
-and molecular level, here on a selection of pathway classes present at both molecular levels.(See ?bmdplotwithgradient for more options).
-For a better visualization, it should have been preferable to enter metabolic data 
-in DRomics in log2 instead of log10, to be in same signal scale as for transcriptomic data (indeed the amplitude of the metabolic signal is lower due to the use the log10).
+Using the function trendplot() and its arguments facetby it is possible 
+to show the repartition of trends of responses in each pathway class 
+for both molecular levels.
 
 ```{r}
 # Preliminary optional alphabetic ordering of path_class groups
