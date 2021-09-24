@@ -22,9 +22,9 @@ or bmdcalc (res)
  can be replicated if their corresponding item has more than one annotation. 
  This extended dataframe
  must at least contain as results of the dose-response modelling
- the column giving the trend (\code{trend}.}
+ the column giving the trend (\code{trend}).}
 
-\item{group}{The name of the column of extendedres coding for the groups
+\item{group}{the name of the column of \code{extendedres} coding for the groups
 on which we want to see the repartition of dose-response trends. 
 This column should be a factor ordered as you want the groups to appear
 in the plot from bottom up.}
@@ -32,9 +32,9 @@ in the plot from bottom up.}
 \item{facetby}{optional argument naming the column of \code{extendedres} chosen 
   to split the plot in facets using \code{ggplot2::facet_wrap} (no split if omitted).}
 
-\item{ncol4faceting}{Number of columns for facetting.}
+\item{ncol4faceting}{number of columns for faceting.}
 
-\item{add.color}{A color is added coding for the trend if TRUE.}
+\item{add.color}{if TRUE a color is added coding for the trend.}
 
 }
 

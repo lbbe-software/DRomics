@@ -19,7 +19,7 @@ bmdplot(extendedres, BMDtype = c("zSD", "xfold"),
 }
 
 \arguments{
-\item{extendedres}{the dataframe of results provided by bmdcalc (res) 
+\item{extendedres}{the dataframe of results provided by bmdcalc (\code{res}) 
  or a subset of this data frame (selected lines). This dataframe can be extended 
  with additional columns coming for example from the functional annotation of items, and some lines 
  can be replicated if their corresponding item has more than one annotation. 
@@ -65,13 +65,13 @@ bmdplot(extendedres, BMDtype = c("zSD", "xfold"),
 
 \details{
 BMD values are plotted as an ECDF plot, as with \code{\link{plot.bmdcalc}}
-using "ecdf" as plottype with confidence intervals on each BMD value
+using \code{"ecdf"} as \code{plottype} with confidence intervals on each BMD value
 and/or labels of items if requested. The optional use of columns to code for shape and/or 
 facets for each item is particularly intended to give a view of all the dose-response 
 per group (e.g. metabolic pathways). Those groups must be coded in a column
-of extendedres. In case where one item is allocated to more than one group
+of \code{extendedres}. In case where one item is allocated to more than one group
 during the annotation process, the line of this item must be replicated in 
-extendedres as many times as the number of annotation groups in which it was
+\code{extendedres} as many times as the number of annotation groups in which it was
 allocated.
 
 }

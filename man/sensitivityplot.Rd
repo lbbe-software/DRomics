@@ -34,7 +34,8 @@ on which we want to estimate a global sensitivity.
 If \code{ECDFplot} is FALSE, this column should be a factor ordered as you want 
 the groups to appear in the plot from bottom up.}
 
-\item{ECDF_plot}{if TRUE groups appear ordered by values of the BMD summary value
+\item{ECDF_plot}{if TRUE (default choice) groups appear ordered by 
+values of the BMD summary value
 from the bottom up, else they are ordered as their corresponding levels in the factor
 given in \code{group}. If \code{colorby} is given, \code{ECDFplot} is fixed to FALSE.}
 
