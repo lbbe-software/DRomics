@@ -40,9 +40,9 @@ steps 1 to 4)
 could also help users of the Shiny application. If you do not want
 to use R functions, you can skip the pieces of code and focus on the explanations
 and on the outputs that are also given in the Shiny application. And if one day 
-you want go further using the R functions, you recommended you to start
-from the whole R code corresponding to your analysis on the Shiny application,
-that is provided on its last page. 
+you want go further using the R functions, we recommend you to start
+from the whole R code corresponding to your analysis 
+that is provided on the last page of the Shiny application. 
 
 # Main workflow 
 
@@ -52,11 +52,10 @@ that is provided on its last page.
 ### General format of imported data
 
 Whatever the type of data imported in DRomics,
-data can be imported from a .txt file (e.g. "mydata.txt") containing one row per item after  
-the first row coding for doses or concentrations for each sample (column),
+data can be imported from a .txt file (e.g. "mydata.txt") containing one row per item, after the first row coding for doses or concentrations for each sample (each column except the first one),
 with the first column corresponding to the identifier of each item (identifier of the probe, transcript, metabolite, ..., or name of the endpoint for anchoring data), 
 and the other columns giving the responses of the item for each sample. In the first row, after a name for the identifier column, we must have the tested doses or concentrations in a numeric format for the corresponding sample
-(for example, if there are triplicates for each treatment, the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). This file is imported within each DRomics function using the function read.table() with its default field separator (sep argument). 
+(for example, if there are triplicates for each treatment, the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). This file is imported within DRomics using the function read.table() with its default field separator (sep argument). 
 
 Alternatively an R object of class data.frame 
 can be directly given in input, corresponding to the output of read.table(file, header = FALSE) on a file described as above. 
@@ -72,7 +71,7 @@ head(Zhou_kidney_pce)
 
 # Import the text file just to see what will be automatically imported
 datafilename <- system.file("extdata", "RNAseq_sample.txt", package = "DRomics")
-# for your local file datafilename would be just "yourchosenname.txt"
+# for your local file datafilename choose the name: "yourchosenname.txt"
 d <- read.table(file = datafilename, header = FALSE)
 nrow(d)
 head(d)
@@ -91,10 +90,10 @@ but also on continuous anchoring data.
 (except the first one coding for the doses or concentrations)
 **correspond to different endpoints that may correspond to different
 types of data** (e.g. biomass, length,..), but all are assumed continuous data
-compatible with a normal error distribution for the 
+compatible with a normal error distribution (e.g. after logarithmic transformation for metabolomic data) for the 
 selection and modelling steps.
 
-Three types of omics data may be may imported in DRomics using the following functions:
+Three types of omics data may be imported in DRomics using the following functions:
 
 + **RNAseqdata() should be used to import RNAseq as counts of reads**,
 + **microarraydata() should be used to import single-channel microarray data in log2 scale**,
