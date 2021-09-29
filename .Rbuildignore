@@ -3,6 +3,5 @@
 drcfitplot.pdf
 ^.*\.tar.gz
 README.md
-DRomics_vignette.pdf
 ^\.github$
 share
