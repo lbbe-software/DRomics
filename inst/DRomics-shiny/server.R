@@ -91,7 +91,7 @@ server <- function(input, output, session) {
   observe({shinyjs::disable("buttonPlotBmdcalc")})
   
   rundrcfit <- eventReactive(input$buttonDrcfit, {
-    return(drcfit(signifitems, progressbar = FALSE, sigmoid.model = "Hill", parallel = "no"))
+    return(drcfit(signifitems, progressbar = FALSE, parallel = "no"))
   })
   
   
@@ -289,7 +289,7 @@ server <- function(input, output, session) {
               "print(s)",
               "",
               "# Step 3",
-              paste0("f <- drcfit(s, progressbar = FALSE, sigmoid.model = 'Hill', parallel = 'no')"),
+              paste0("f <- drcfit(s, progressbar = FALSE, parallel = 'no')"),
               "# This computation time can be reduced using parallel computing (see ?drcfit)",
               paste0("plot(f, plot.type = '", input$plottypeDrcfit, "', dose_log_transfo = ", input$logdosescale, ")"),
               "",
