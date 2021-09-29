@@ -299,7 +299,7 @@ ui <- fluidPage(
                                             br(), 
                                             h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the dose reponse modelling procedure")
                                      ),
-                                     column(width = 2, actionButton("buttonDrcfit", "Fit", icon = icon("bar-chart-o"), style='font-size:200%')),
+                                     column(width = 2, actionButton("buttonDrcfit", "Fit", icon = icon("chart-bar"), style='font-size:250%')),
                                      column(width = 4,
                                             sidebarPanel(
                                               style = "background-color: #FFFFFF;",
