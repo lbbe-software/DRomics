@@ -56,7 +56,7 @@ ui <- fluidPage(
                                            a("this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"), "."),
                                         h4("You can find help about the DRomics Shiny App and the DRomics package in a ",
                                            a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_0.pdf", TARGET="_blank", style="color:#f28d0f;"), " and a ",
-                                           a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet.pdf", TARGET="_blank", style="color:#f28d0f;"), "."
+                                           a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_0.pdf", TARGET="_blank", style="color:#f28d0f;"), "."
                                            )
                         )),
                         hr(style='width: 70%;'),
