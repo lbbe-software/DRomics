@@ -31,18 +31,18 @@ sensitivityplot(extendedres, BMDtype = c("zSD", "xfold"),
 
 \item{group}{the name of the column of extendedres coding for the groups
 on which we want to estimate a global sensitivity. 
-If \code{ECDFplot} is FALSE, this column should be a factor ordered as you want 
+If \code{ECDF_plot} is FALSE, this column should be a factor ordered as you want 
 the groups to appear in the plot from bottom up.}
 
 \item{ECDF_plot}{if TRUE (default choice) groups appear ordered by 
 values of the BMD summary value
 from the bottom up, else they are ordered as their corresponding levels in the factor
-given in \code{group}. If \code{colorby} is given, \code{ECDFplot} is fixed to FALSE.}
+given in \code{group}. If \code{colorby} is given, \code{ECDF_plot} is fixed to FALSE.}
 
   
 \item{colorby}{optional argument naming the column of \code{extendedres} coding for 
 an additional level of grouping that will be materialized by the color. 
-If not missing,  \code{ECDFplot} is fixed to FALSE.}
+If not missing,  \code{ECDF_plot} is fixed to FALSE.}
 
 \item{BMDsummary}{The type of summary used for sensitivity plot, 
 \code{"first.quartile"} (default choice)
