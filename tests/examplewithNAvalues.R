@@ -19,7 +19,7 @@ if (visualize)
   Scenedesmus_apical2[3, 1] <- "growthbis"
   head(Scenedesmus_apical2)
   
-  (o <- continuousanchoringdata(Scenedesmus_apical2))
+  (o <- continuousanchoringdata(Scenedesmus_apical2, backgrounddose = 0.1))
   plot(o)
   o$data
   complete.cases(o$data)
@@ -41,7 +41,7 @@ if (visualize)
   Scenedesmus_apical3 <- Scenedesmus_apical3[, -2] # remove of the column with NA
   head(Scenedesmus_apical3)
   
-  (o3 <- continuousanchoringdata(Scenedesmus_apical3))
+  (o3 <- continuousanchoringdata(Scenedesmus_apical3, backgrounddose = 0.1))
   plot(o3)
   (s3 <- itemselect(o3, select.method = "quadratic"))
   (f3 <- drcfit(s3))

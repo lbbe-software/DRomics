@@ -3,7 +3,15 @@
 Version 2.4-0 
 =======================
 NEW FEATURES
-- Add of an argument (preventsfitsoutofrange) by default at TRUE in drcfit() to prevent fits of biphasic models giving an extreme value out of the range of the observed signal, that could happen in rare cases.
+- Add of an argument (preventsfitsoutofrange) by default at TRUE in drcfit() 
+to prevent fits of biphasic models giving an extreme value out of the range of 
+the observed signal, that could happen in rare cases.
+- Add a defensive code in microarraydata(), continuousomicdata(),
+continuousanchoringdata(), RNAseqdata(), and the argument backgrounddose was added
+to prevent the use of DRomics on a design with no dose at zero. 
+In case of observationnal data, to prevent calculation of BMDs by extrapolation, 
+doses considered as corresponding to the background exposition must be fixed at 0, 
+for example using this new argument.
 
 Version 2.3-0 
 =======================

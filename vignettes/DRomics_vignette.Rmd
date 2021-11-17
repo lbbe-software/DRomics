@@ -188,7 +188,10 @@ anchoringfilename <- system.file("extdata", "apical_anchoring.txt", package = "D
 No transformation is provided in function continuousanchoringdata(). If needed the pretreatment of data must be done before importation of data, so that they can be directly modelled using a normal error model. This strong hypothesis is required both for selection of responsive endpoints and for dose-reponse modelling. 
 
 ```{r}
-(o.anchoring <- continuousanchoringdata(anchoringfilename))
+(o.anchoring <- continuousanchoringdata(anchoringfilename, backgrounddose = 0.1))
+# Here the argument backgrounddose is used to specify that doses below 0.1
+# are considered can be fixed at 0 in the DRomics workflow.
+# Specifying this argument is necessary when there is no doses at 0 in the data 
 plot(o.anchoring)
 ```
 

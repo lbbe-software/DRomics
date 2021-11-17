@@ -57,7 +57,9 @@ str(Scenedesmus_apical)
 
 # (2.2) import and check of apical data
 #
-(o_apical <- continuousanchoringdata(Scenedesmus_apical))
+(o_apical <- continuousanchoringdata(Scenedesmus_apical, backgrounddose = 0.1))
+# It is here necessary to define the background dose as there is no dose at 0 in the data
+# The BMD cannot be computed without defining the background level
 plot(o_apical)
 
 # (2.3) selection of responsive endpoints on apical data

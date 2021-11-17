@@ -17,7 +17,7 @@ variance stabilizing transformation or regularized logarithm.
 }
 
 \usage{
-RNAseqdata(file, check = TRUE, transfo.method = c("rlog", "vst"), 
+RNAseqdata(file, backgrounddose, check = TRUE, transfo.method = c("rlog", "vst"), 
           transfo.blind = TRUE, round.counts = FALSE)
 
 \method{print}{RNAseqdata}(x, \dots)
@@ -39,6 +39,9 @@ Alternatively an R object of class \code{data.frame} can be directly given in in
 corresponding to the output
 of \code{read.table(file, header = FALSE)} on a file described as above. The two
 alternatives are illustrated below in examples.}
+
+
+\item{backgrounddose}{This argument must be used when there is no dose at zero in the data, to prevent the calculation of the BMD by extrapolation. All doses below the value given in backgrounddose will be fixed at 0, so as to be considered at the background level of exposition.}
 
 \item{check}{If TRUE the format of the input file is checked.}
 

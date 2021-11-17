@@ -4,13 +4,16 @@ doboot <- FALSE
 
 # importation and check of apical anchoring data
 # datafilename <- system.file("extdata", "apical_anchoring.txt", package="DRomics")
-# (o <- continuousanchoringdata(datafilename, check = TRUE))
+# (o <- continuousanchoringdata(datafilename, backgrounddose = 0.1, check = TRUE))
 data("Scenedesmus_apical")
-(o <- continuousanchoringdata(Scenedesmus_apical, check = TRUE)) 
+(o <- continuousanchoringdata(Scenedesmus_apical, backgrounddose = 0.1, check = TRUE))
+
 
 # Use of only one endpoint
-#(o <- continuousanchoringdata(Scenedesmus_apical[c(1,2), ], check = TRUE)) # growth
-# (o <- continuousanchoringdata(Scenedesmus_apical[c(1,3), ], check = TRUE)) # photosynthesis
+#(o <- continuousanchoringdata(Scenedesmus_apical[c(1,2), ], 
+#  backgrounddose = 0.1,check = TRUE)) # growth
+# (o <- continuousanchoringdata(Scenedesmus_apical[c(1,3), ], 
+#   backgrounddose = 0.1, check = TRUE)) # photosynthesis
 if (visualize)
 plot(o)
 

@@ -98,7 +98,7 @@ if (visualize)
   ###### test on apical data
   data(Scenedesmus_apical)
   head(Scenedesmus_apical)
-  (o <- continuousanchoringdata(Scenedesmus_apical))
+  (o <- continuousanchoringdata(Scenedesmus_apical, backgrounddose = 0.1))
   (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
   (fAIC <- drcfit(s_quad, information.criterion = "AIC", progressbar = TRUE))
   (fAICc <- drcfit(s_quad, information.criterion = "AICc", progressbar = TRUE))

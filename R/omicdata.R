@@ -1,6 +1,6 @@
 ### deprecated function that was replaced by microarraydata()
 
-omicdata <- function(file, check = TRUE, 
+omicdata <- function(file, backgrounddose, check = TRUE, 
                      norm.method = c("cyclicloess", "quantile", "scale", "none"))
 {
   warning(strwrap(prefix = "\n", initial = "\n",
@@ -8,7 +8,7 @@ omicdata <- function(file, check = TRUE,
     You should replace it by microarraydata(), RNAseqdata(), metabolomicdata()
     or equivalentlty continuousmicdata() or continuousanchoringdata()
     depending of the type of data you handle. \n"))
-  microarraydata(file = file, check = check, norm.method = norm.method)
+  microarraydata(file = file, backgrounddose, check = check, norm.method = norm.method)
 }
 
 
