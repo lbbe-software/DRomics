@@ -1,7 +1,12 @@
 === DRomics : Dose response for omics ===
 
-Version 2.2-1 
-=============
+Version 2.4-0 
+=======================
+NEW FEATURES
+- Add of an argument (preventsfitsoutofrange) by default at TRUE in drcfit() to prevent fits of biphasic models giving an extreme value out of the range of the observed signal, that could happen in rare cases.
+
+Version 2.3-0 
+=======================
 NEW FEATURES
 - An argument facetby2 was added to bmdplotwithgradient()
 and to curvesplot() to be able

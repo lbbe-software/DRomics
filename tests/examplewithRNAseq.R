@@ -77,6 +77,19 @@ if (visualize)
              facetby = "id")
 }
 
+if (visualize)
+{
+  # evaluate the impact of preventsfitsoutofrange
+  data(Zhou_kidney_pce)
+  (o1 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "rlog"))
+  s_quad1 <- itemselect(o1, select.method = "quadratic", FDR = 0.01)
+  (f1 <- drcfit(s_quad1, progressbar = TRUE))
+  (f1bis <- drcfit(s_quad1, preventsfitsoutofrange = FALSE , progressbar = TRUE))
+  
+  (idremovedinf1 <- f1bis$fitres$id[!is.element(f1bis$fitres$id, f1$fitres$id)])
+  targetplot(items = idremovedinf1, f1bis) 
+}
+
 
 # calculation of benchmark doses
 # options in shiny : z (numerical positive value), x (numerical positive value : percentage)

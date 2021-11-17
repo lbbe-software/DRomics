@@ -24,6 +24,17 @@ f$fitres
 if (visualize)
 plot(f)
 
+if (visualize)
+{
+  # evaluate the impact of preventsfitsoutofrange
+  (s_quad1 <- itemselect(o, select.method = "quadratic", FDR = 0.1))
+  (f1 <- drcfit(s_quad1, progressbar = TRUE))
+  (f1bis <- drcfit(s_quad1, preventsfitsoutofrange = FALSE , progressbar = TRUE))
+  
+  (idremovedinf <- f1bis$fitres$id[!is.element(f1bis$fitres$id, f1$fitres$id)])
+  # no impact on this dataset
+}
+
 
 if (visualize) 
 {

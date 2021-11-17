@@ -218,6 +218,38 @@ fGauss5pBMR_xinlog <- function(xinlog, b, c, d, e, g, threshold)
   
 }
 
+fGauss5poutofrange <- function(fit, signalmin, signalmax)
+# TRUE if the fit gives an extremum value out of the signal range 
+# function that takes the result of nls as first argument
+# to be used before the choice of the best model
+{
+  par <- coef(fit)
+  b.i <- par["b"]
+  c.i <- par["c"]
+  d.i <- par["d"]
+  e.i <- par["e"]
+  f.i <- par["f"]
+  xextr.i <- e.i + (c.i - d.i)*b.i / (f.i*sqrt(2*pi)) 
+  yextr.i <- fGauss5p(xextr.i, b = b.i, c = c.i, d = d.i, e = e.i, f = f.i)
+  outofrange <- (yextr.i > signalmax) | (yextr.i < signalmin)
+}
+
+fGauss4poutofrange <- function(fit, signalmin, signalmax)
+  # TRUE if the fit gives an extremum value out of the signal range 
+  # function that takes the result of nls as first argument
+  # to be used before the choice of the best model
+{
+  par <- coef(fit)
+  b.i <- par["b"]
+  c.i <- par["d"]
+  d.i <- par["d"]
+  e.i <- par["e"]
+  f.i <- par["f"]
+  xextr.i <- e.i + (c.i - d.i)*b.i / (f.i*sqrt(2*pi)) 
+  yextr.i <- fGauss5p(xextr.i, b = b.i, c = c.i, d = d.i, e = e.i, f = f.i)
+  outofrange <- (yextr.i > signalmax) | (yextr.i < signalmin)
+}
+
 
 ### Gaussian model 5 p and starting values in log scale
 formLGauss5p <- as.formula(signal ~ f * exp(-0.5 * (log(dose/e)/b)^2) + d + (c - d) * pnorm(log(dose/e)/b)) 
@@ -352,5 +384,38 @@ invLprobit <- function(y, b, c, d, e)
   if ( ((d < c) & (y > c)) | ((d > c) & (y < c)) )
     return(NaN) else
       return(e * exp(qnorm((y - d) / (c - d)) *b))
+}
+
+
+fLGauss5poutofrange <- function(fit, signalmin, signalmax)
+  # TRUE if the fit gives an extremum value out of the signal range 
+  # function that takes the result of nls as first argument
+  # to be used before the choice of the best model
+{
+  par <- coef(fit)
+  b.i <- par["b"]
+  c.i <- par["c"]
+  d.i <- par["d"]
+  e.i <- par["e"]
+  f.i <- par["f"]
+  xextr.i <- exp(log(e.i) + (c.i - d.i)*b.i/(f.i*sqrt(2*pi))) 
+  yextr.i <- fLGauss5p(xextr.i, b = b.i, c = c.i, d = d.i, e = e.i, f = f.i)
+  outofrange <- (yextr.i > signalmax) | (yextr.i < signalmin)
+}
+
+fLGauss4poutofrange <- function(fit, signalmin, signalmax)
+  # TRUE if the fit gives an extremum value out of the signal range 
+  # function that takes the result of nls as first argument
+  # to be used before the choice of the best model
+{
+  par <- coef(fit)
+  b.i <- par["b"]
+  c.i <- par["d"]
+  d.i <- par["d"]
+  e.i <- par["e"]
+  f.i <- par["f"]
+  xextr.i <- exp(log(e.i) + (c.i - d.i)*b.i/(f.i*sqrt(2*pi))) 
+  yextr.i <- fLGauss5p(xextr.i, b = b.i, c = c.i, d = d.i, e = e.i, f = f.i)
+  outofrange <- (yextr.i > signalmax) | (yextr.i < signalmin)
 }
 

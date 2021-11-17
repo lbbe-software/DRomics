@@ -2,6 +2,7 @@
 drcfit <- function(itemselect,  
                    information.criterion = c("AICc", "BIC", "AIC"),
                    postfitfilter = TRUE,
+                   preventsfitsoutofrange = TRUE,
                    progressbar = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
 {
@@ -92,6 +93,8 @@ drcfit <- function(itemselect,
     
     signal <- data[selectindex[i], ]
     signalm <- as.vector(data.mean[selectindex[i],]) # means per dose
+    signalmin <- min(signal)
+    signalmax <- max(signal)
     
     # preparation of data for modelling with nls 
     dset <- data.frame(signal = signal, dose = dose, doseranks = doseranks)
@@ -245,14 +248,23 @@ drcfit <- function(itemselect,
                                            Ushape = Ushape)
         LGauss5p <- suppressWarnings(try(nls(formLGauss5p, start = startLGauss5p, data = dset,
                                              lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+        LGauss5psucces <- !inherits(LGauss5p, "try-error")
+        # state a failure if the fitted model is out of the range of the signal
+        if (LGauss5psucces & preventsfitsoutofrange)
+          LGauss5psucces <- !fLGauss5poutofrange(LGauss5p, signalmin, signalmax)
       }
       startLGauss4p <- startvalLGauss4pnls(xm = doseu, ym = signalm,  
                                            Ushape = Ushape)
       LGauss4p <- suppressWarnings(try(nls(formLGauss4p, start = startLGauss4p, data = dset,
                                            lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+      LGauss4psucces <- !inherits(LGauss4p, "try-error")
+      # state a failure if the fitted model is out of the range of the signal
+      if (LGauss4psucces & preventsfitsoutofrange)
+        LGauss4psucces <- !fLGauss4poutofrange(LGauss4p, signalmin, signalmax)
+      
       if (lessthan5doses)
       {
-        if (!inherits(LGauss4p, "try-error"))
+        if (LGauss4psucces)
         {
           equalcdLG <- TRUE
           LGauss <- LGauss4p
@@ -261,7 +273,7 @@ drcfit <- function(itemselect,
       } else # if (lessthan5doses)
       {
         #### convergence of both models
-        if ((!inherits(LGauss4p, "try-error")) & (!inherits(LGauss5p, "try-error")))
+        if ((LGauss4psucces) & (LGauss5psucces))
         {
           AICLGauss4p <- round(AIC(LGauss4p, k = kcrit[4]), digits = AICdigits)
           AICLGauss5p <- round(AIC(LGauss5p, k = kcrit[5]), digits = AICdigits)
@@ -277,21 +289,21 @@ drcfit <- function(itemselect,
           }
         } else
           #### no convergence of both models
-          if (inherits(LGauss4p, "try-error") & inherits(LGauss5p, "try-error"))
+          if ((!LGauss4psucces) & (!LGauss5psucces))
           {
             # keepLGauss <- FALSE
             AICLGaussi <- Inf
             LGauss <- LGauss5p # we could have given LGauss4p
           } else 
             #### convergence only of LGauss4p
-            if ((!inherits(LGauss4p, "try-error")) & inherits(LGauss5p, "try-error"))
+            if ((LGauss4psucces) & (!LGauss5psucces))
             {
               equalcdLG <- TRUE
               LGauss <- LGauss4p
               AICLGaussi <- round(AIC(LGauss4p, k = kcrit[4]), digits = AICdigits)
             } else
               #### convergence only of LGauss5p
-              if ((!inherits(LGauss5p, "try-error")) & inherits(LGauss4p, "try-error"))
+              if ((LGauss5psucces) & (!LGauss4psucces))
               {
                 LGauss <- LGauss5p
                 AICLGaussi <- round(AIC(LGauss5p, k = kcrit[5]), digits = AICdigits)
@@ -312,15 +324,23 @@ drcfit <- function(itemselect,
                                          Ushape = Ushape)
         Gauss5p <- suppressWarnings(try(nls(formGauss5p, start = startGauss5p, data = dset, 
                                           lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
+        Gauss5psucces <- !inherits(Gauss5p, "try-error")
+        # state a failure if the fitted model is out of the range of the signal
+        if (Gauss5psucces & preventsfitsoutofrange)
+          Gauss5psucces <- !fGauss5poutofrange(Gauss5p, signalmin, signalmax)
       }
       startGauss4p <- startvalGauss4pnls(xm = doseu, ym = signalm,  
                                          Ushape = Ushape)
       Gauss4p <- suppressWarnings(try(nls(formGauss4p, start = startGauss4p, data = dset, 
                                           lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
-
+      Gauss4psucces <- !inherits(Gauss4p, "try-error")
+      # state a failure if the fitted model is out of the range of the signal
+      if (Gauss4psucces & preventsfitsoutofrange)
+        Gauss4psucces <- !fGauss4poutofrange(Gauss4p, signalmin, signalmax)
+      
       if (lessthan5doses)
       {
-        if (!inherits(Gauss4p, "try-error"))
+        if (Gauss4psucces)
         {
           equalcdG <- TRUE
           Gauss <- Gauss4p
@@ -329,7 +349,7 @@ drcfit <- function(itemselect,
       } else # if (lessthan5doses)
       {
         #### convergence of both models
-        if ((!inherits(Gauss4p, "try-error")) & (!inherits(Gauss5p, "try-error")))
+        if ((Gauss4psucces) & (Gauss5psucces))
         {
           AICGauss4p <- round(AIC(Gauss4p, k = kcrit[4]), digits = AICdigits)
           AICGauss5p <- round(AIC(Gauss5p, k = kcrit[5]), digits = AICdigits)
@@ -345,21 +365,21 @@ drcfit <- function(itemselect,
           }
         } else
           #### no convergence of both models
-          if (inherits(Gauss4p, "try-error") & inherits(Gauss5p, "try-error"))
+          if ((!Gauss4psucces) & (!Gauss5psucces))
           {
             # keepGauss <- FALSE
             AICGaussi <- Inf
             Gauss <- Gauss5p # we could have given Gauss4p
           } else 
             #### convergence only of Gauss4p
-            if ((!inherits(Gauss4p, "try-error")) & inherits(Gauss5p, "try-error"))
+            if ((Gauss4psucces) & (!Gauss5psucces))
             {
               equalcdG <- TRUE
               Gauss <- Gauss4p
               AICGaussi <- round(AIC(Gauss4p, k = kcrit[4]), digits = AICdigits)
             } else
               #### convergence only of Gauss5p
-              if ((!inherits(Gauss5p, "try-error")) & inherits(Gauss4p, "try-error"))
+              if ((Gauss5psucces) & (!Gauss4psucces))
               {
                 Gauss <- Gauss5p
                 AICGaussi <- round(AIC(Gauss5p, k = kcrit[5]), digits = AICdigits)

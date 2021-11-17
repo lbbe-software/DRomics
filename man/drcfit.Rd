@@ -11,7 +11,8 @@ Fits dose reponse models to responsive items.
 
 \usage{
 drcfit(itemselect, 
-  information.criterion = c("AICc", "BIC", "AIC"), postfitfilter = TRUE,
+  information.criterion = c("AICc", "BIC", "AIC"), 
+  postfitfilter = TRUE, preventsfitsoutofrange = TRUE,
   progressbar = TRUE, parallel = c("no", "snow", "multicore"), ncpus)
 
 \method{print}{drcfit}(x, \dots)
@@ -35,6 +36,12 @@ plotfit2pdf(x, items,
 \item{postfitfilter}{If \code{TRUE} fits with significant trends on residuals 
   (showing a global significant quadratic trend of the residuals
   as a function of the dose (in rank-scale)) are considered as failures and so eliminated.
+  It is strongly recommended to let it at \code{TRUE}, its default value.}
+
+\item{preventsfitsoutofrange}{If \code{TRUE} fits of Gaussian or log-Gaussian models
+  that give an extremum value outside the range of the observed signal for an item
+  are eliminated from the candidate models for this item, 
+  before the choice of the best.
   It is strongly recommended to let it at \code{TRUE}, its default value.}
 
 \item{progressbar}{If \code{TRUE} a progress bar is used to follow the fitting process.}
@@ -76,8 +83,12 @@ plotfit2pdf(x, items,
 \details{
 For each selected item, five dose-response models (linear, Hill, exponential, 
 Gauss-probit and log-Gauss-probit, see Larras et al. 2018
-for their definition) were fitted by non linear regression,
-using the \code{\link{nls}} function. The best one was chosen as the one giving the lowest AICc 
+for their definition) are fitted by non linear regression,
+using the \code{\link{nls}} function. If a fit of a biphasic model gives a extremum
+value out of the range of the observed signal, it is eliminated (this may happen in rare cases,
+especially on observational data  when the number of samples is high and the dose in uncontrolled,
+if doses are not distributed all along the dose range).
+The best fit is chosen as the one giving the lowest AICc 
 (or BIC or AIC) value. The use of the AICc (second-order Akaike criterion)
 instead of the AIC
 is strongly recommended to prevent the overfitting that may occur with dose-response designs
@@ -85,8 +96,8 @@ with a small number of data points (Hurvich and Tsai, 1989; Burnham and Anderson
 Note that in the extremely rare cases where the number of 
 data points would be great, the AIC would converge to the AICc and both procedures would be equivalent.
 Items with the best AICc value not lower than the AICc value of the null model (constant model) minus 2
-were eliminated. Items with the best fit showing a global significant quadratic trend of the residuals
-as a function of the dose (in rank-scale) were also eliminated (the best fit is considered as 
+are eliminated. Items with the best fit showing a global significant quadratic trend of the residuals
+as a function of the dose (in rank-scale) are also eliminated (the best fit is considered as 
 not reliable in such cases). Each retained item is classified in a twelve class typology depending of the
 chosen model and of its parameter values : 
   \itemize{
@@ -130,8 +141,8 @@ dose value at which their extremum is reached is at zero.
    and the corresponding y value (\code{yextrem}).
   }
 
-\item{omicdata}{The corresponding object of class \code{"microarraydata"} given in input 
-(component of itemselect).}
+\item{omicdata}{The object containing all the data, as given in input of \code{itemselect()}
+which is also a component of the output of \code{itemselect()}.}
 
 \item{information.criterion}{The information criterion used to select the best fit model as given in input.}
 
