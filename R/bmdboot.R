@@ -354,19 +354,28 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
         }
         else
         {
-          lestimpar.4p <- list(b = lestimpar$b, d = lestimpar$d, e = lestimpar$e, f = lestimpar$f)
-          nlsboot <- suppressWarnings(try(nls(formula = formLGauss4p, data = dsetboot, start = lestimpar.4p,
-                                              lower = c(0, -Inf, 0, -Inf), algorithm = "port"), 
-                                          silent = TRUE))
+          if (f1 == 0)
+          {
+            lestimpar.f0 <- list(b = lestimpar$b, c = lestimpar$c, d = lestimpar$d, e = lestimpar$e)
+            nlsboot <- suppressWarnings(try(nls(formula = formLprobit, data = dsetboot, start = lestimpar.f0,
+                                                lower = c(0, -Inf, -Inf, 0), algorithm = "port"), 
+                                            silent = TRUE))
+          } else
+          {
+            lestimpar.4p <- list(b = lestimpar$b, d = lestimpar$d, e = lestimpar$e, f = lestimpar$f)
+            nlsboot <- suppressWarnings(try(nls(formula = formLGauss4p, data = dsetboot, start = lestimpar.4p,
+                                                lower = c(0, -Inf, 0, -Inf), algorithm = "port"), 
+                                            silent = TRUE))
+          }
         }
         if(inherits(nlsboot, "nls"))
         {
           SDresboot <- sqrt(sum(residuals(nlsboot)^2)/(ndata - nbpari))
           bboot <- coef(nlsboot)["b"]
-          if (nbpari == 5) cboot <- coef(nlsboot)["c"] else cboot <- coef(nlsboot)["d"]
+          if (nbpari == 5 | f1 == 0) cboot <- coef(nlsboot)["c"] else cboot <- coef(nlsboot)["d"]
           dboot <- coef(nlsboot)["d"]
           eboot <- coef(nlsboot)["e"]
-          fboot <- coef(nlsboot)["f"]
+          if (f1 == 0) fboot <- 0 else fboot <- coef(nlsboot)["f"]
           y0boot <- dboot
           ydosemaxboot <- fLGauss5p(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
           
@@ -376,19 +385,29 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           deltapboot <- abs(y0boot) * xdiv100
           deltasdboot <- z * SDresboot
           
-          resBMDp <- calcBMD(y0=y0boot, delta=deltapboot, xext=xextrboot, yext=yextrboot, 
-                             dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemaxboot, 
-                             func = fLGauss5pBMR, func_xinlog = fLGauss5pBMR_xinlog,
-                             b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
-                             minBMD = minBMD, ratio2switchinlog = ratio2switchinlog)
-          BMDpboot <- resBMDp$BMD
+          if (f1 != 0)
+          {
+            resBMDp <- calcBMD(y0=y0boot, delta=deltapboot, xext=xextrboot, yext=yextrboot, 
+                               dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemaxboot, 
+                               func = fLGauss5pBMR, func_xinlog = fLGauss5pBMR_xinlog,
+                               b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
+                               minBMD = minBMD, ratio2switchinlog = ratio2switchinlog)
+            BMDpboot <- resBMDp$BMD
+            
+            resBMDsd <- calcBMD(y0=y0boot, delta=deltasdboot, xext=xextrboot, yext=yextrboot, 
+                                dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemaxboot, 
+                                func = fLGauss5pBMR, func_xinlog = fLGauss5pBMR_xinlog,
+                                b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
+                                minBMD = minBMD, ratio2switchinlog = ratio2switchinlog)
+            BMDsdboot <- resBMDsd$BMD
+          } else
+          {
+            ypboot <- y0boot * ( 1 + xdiv100*sign(cboot * dboot))
+            BMDpboot <- pmax(invLprobit(ypboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
+            ysdboot <- y0boot + z*SDresboot * sign(cboot * dboot)
+            BMDsdboot <- pmax(invLprobit(ysdboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
+          }
           
-          resBMDsd <- calcBMD(y0=y0boot, delta=deltasdboot, xext=xextrboot, yext=yextrboot, 
-                              dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemaxboot, 
-                              func = fLGauss5pBMR, func_xinlog = fLGauss5pBMR_xinlog,
-                              b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
-                              minBMD = minBMD, ratio2switchinlog = ratio2switchinlog)
-          BMDsdboot <- resBMDsd$BMD
           return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
         }
       } # end fboot

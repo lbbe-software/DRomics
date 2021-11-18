@@ -10,7 +10,7 @@ returned by the item selection step. The given results are:
 - b, c, d, e, and f, 
   the model parameter values (see Larras et al. for their interpretation)
 - SDres: the residual standard deviation of the best model
-- typology: the class of typology (twelve class typology as described in the 
+- typology: the class of typology (16 class typology as described in the 
   dose response modelling step)
 - trend: the rough trend of the curve defined with four classes (U, bell, increasing or decreasing shape)
 - y0: theoretical value at the control

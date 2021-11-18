@@ -3,10 +3,14 @@
 Version 2.4-0 
 =======================
 NEW FEATURES
+- Add of an argument (enablesfequal0inLGP) by default at TRUE in drcfit(), to enable
+the simplification of the log-Gauss-probit model with 5 parameters by its version with f = 0 
+(which corresponds to the log-probit model) to prevent overfitting when the parameter f is close to 0 
+(evaluated using the information criterion).
 - Add of an argument (preventsfitsoutofrange) by default at TRUE in drcfit() 
 to prevent fits of biphasic models giving an extreme value out of the range of 
 the observed signal, that could happen in rare cases.
-- Add a defensive code in microarraydata(), continuousomicdata(),
+- Add of a defensive code in microarraydata(), continuousomicdata(),
 continuousanchoringdata(), RNAseqdata(), and the argument backgrounddose was added
 to prevent the use of DRomics on a design with no dose at zero. 
 In case of observationnal data, to prevent calculation of BMDs by extrapolation, 

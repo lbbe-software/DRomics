@@ -86,7 +86,7 @@ to finite values.
    the adjusted p-value of the selection step (\code{adjpvalue}), the name of the best fit model (\code{model}), 
    the number of fitted parameters (\code{nbpar}), the values of the parameters \code{b}, \code{c}, \code{d}, 
    \code{e} and \code{f}, (\code{NA} for non used parameters), the residual standard deviation (\code{SDres}), 
-   the typology of the curve (\code{typology}, (twelve class typology described in the help of the \code{drcfit} 
+   the typology of the curve (\code{typology}, (16 class typology described in the help of the \code{drcfit} 
    function)), the rough trend of the curve (\code{trend}) defined with four classes 
    (U, bell, increasing or decreasing shape), the theoretical value at the control (\code{y0}), 
    the theoretical y range for x within the range of tested doses 

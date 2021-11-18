@@ -15,7 +15,22 @@ Items with the best AICc value not lower than the AICc value of the null model
 Items with the best fit showing a global significant quadratic trend of the 
 residuals as a function of the dose (in rank-scale) are also eliminated (the 
 best fit is considered as not reliable in such cases). 
-Each retained item is classified in a twelve class typology depending of the
+
+Each retained item is also classified in four classes by its global trend,
+which can be used to roughly describe the shape of each dose-response curve:
+  - inc for increasing curves,
+  - dec for decreasing curves ,
+  - U for U-shape curves,
+  - bell for bell-shape curves.
+
+Some curves fitted by a Gauss-probit model can be classified as increasing or decreasing when the 
+dose value at which their extremum is reached is at zero or if their simplified version with f = 0
+is retained (corresponding to the probit model).
+Some curves fitted by a log-Gauss-probit model can be classified as increasing or decreasing 
+if their simplified version with f = 0
+is retained (corresponding to the log-probit model).
+
+Each retained item is thus classified in a 16 class typology depending of the
 chosen model and of its parameter values :
 
 - "H.inc" for increasing Hill curves
@@ -28,15 +43,13 @@ chosen model and of its parameter values :
 - "E.dec.convex" for decreasing convex exponential curves
 - "GP.U" for U-shape Gauss-probit curves
 - "GP.bell" for bell-shape Gauss-probit curves
+- "GP.inc" for increasing Gauss-probit curves
+- "GP.dec" for decreasing Gauss-probit curves
 - "lGP.U" for U-shape log-Gauss-probit curves
 - "lGP.bell" for bell-shape log-Gauss-probit curves
+- "lGP.inc" for increasing log-Gauss-probit curves
+- "lGP.decreasing" for decreasing log-Gauss-probit curves
 
-Each retained item is also classified in four classes by its global trend,
-which can be used to roughly describe the shape of each dose-response curve:
-  - inc for increasing curves,
-  - dec for decreasing curves ,
-  - U for U-shape curves,
-  - bell for bell-shape curves.
 
 -- REFERENCES --
 
