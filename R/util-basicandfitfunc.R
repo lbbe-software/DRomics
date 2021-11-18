@@ -195,6 +195,11 @@ startvalGauss4pnls <- function(xm, ym, Ushape)
   startval <- list(b = b, d = d, e = e, f = f)
 }
 
+### probit model
+formprobit <- as.formula(signal ~ d + (c - d) * pnorm((dose-e)/b)) 
+
+
+
 # for plot
 
 fGauss5p <- function(x, b, c, d, e, f)
@@ -217,6 +222,20 @@ fGauss5pBMR_xinlog <- function(xinlog, b, c, d, e, g, threshold)
     d + (c - d) * pnorm((x-e)/b) - threshold # probit part
   
 }
+
+fprobit <- function(x, b, c, d, e)
+{
+  d + (c - d) * pnorm((dose-e)/b)
+}
+
+## inverse probit (X for an y value)
+invprobit <- function(y, b, c, d, e)
+{
+  if ( ((d < c) & (y > c)) | ((d > c) & (y < c)) )
+    return(NaN) else
+      return(e + b *qnorm((y - d) / (c - d)))
+}
+
 
 fGauss5poutofrange <- function(fit, signalmin, signalmax)
 # TRUE if the fit gives an extremum value out of the signal range 
