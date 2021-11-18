@@ -223,9 +223,10 @@ fGauss5pBMR_xinlog <- function(xinlog, b, c, d, e, g, threshold)
   
 }
 
-fprobit <- function(x, b, c, d, e)
+fprobit <- function(x, b, c, d, e) 
+  # I think not useful as fGauss5p can be used with f = 0
 {
-  d + (c - d) * pnorm((dose-e)/b)
+  d + (c - d) * pnorm((x - e)/b)
 }
 
 ## inverse probit (X for an y value)

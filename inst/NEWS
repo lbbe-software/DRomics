@@ -3,6 +3,10 @@
 Version 2.4-0 
 =======================
 NEW FEATURES
+- Add of an argument (enablesfequal0inGP) by default at TRUE in drcfit(), to enable
+the simplification of the Gauss-probit model with 5 parameters by its version with f = 0 
+(which corresponds to the probit model) to prevent overfitting when the parameter f is close to 0 
+(evaluated using the information criterion).
 - Add of an argument (enablesfequal0inLGP) by default at TRUE in drcfit(), to enable
 the simplification of the log-Gauss-probit model with 5 parameters by its version with f = 0 
 (which corresponds to the log-probit model) to prevent overfitting when the parameter f is close to 0 

@@ -3,6 +3,7 @@ drcfit <- function(itemselect,
                    information.criterion = c("AICc", "BIC", "AIC"),
                    postfitfilter = TRUE,
                    preventsfitsoutofrange = TRUE,
+                   enablesfequal0inGP = TRUE,
                    enablesfequal0inLGP = TRUE,
                    progressbar = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
@@ -94,6 +95,7 @@ drcfit <- function(itemselect,
     equalcdG <- FALSE # use to define the value of c equal to d in the Gauss4p model if needed
     equalcdLG <- FALSE # use to define the value of c equal to d in the LGauss4p model if needed
     fequal0LG <- FALSE # use to define the value of f at 0 in the LGauss5p model if needed
+    fequal0G <- FALSE # use to define the value of f at 0 in the Gauss5p model if needed
     
     signal <- data[selectindex[i], ]
     signalm <- as.vector(data.mean[selectindex[i],]) # means per dose
@@ -333,7 +335,7 @@ drcfit <- function(itemselect,
             }
           }          
         } 
-      } 
+      } # END of if (lessthan5doses) 
     } # END of if (keepLGauss)
         
       
@@ -408,9 +410,28 @@ drcfit <- function(itemselect,
                 Gauss <- Gauss5p
                 AICGaussi <- round(AIC(Gauss5p, k = kcrit[5]), digits = AICdigits)
               } else (AICGaussi <- Inf)
+
+      # If Gauss5p chosen, try with f = 0
+      if (enablesfequal0inGP & (is.finite(AICGaussi)) & (!equalcdG))
+      {
+        parG5p <- coef(Gauss)
+        startprobit <- list(b = parG5p["b"], c = parG5p["c"], d = parG5p["d"], e = parG5p["e"])
+        probit <- suppressWarnings(try(nls(formprobit, start = startprobit, data = dset, 
+                                            lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
+        if (!inherits(probit, "try-error"))
+        {
+          AICwithfat0 <- round(AIC(probit, k = kcrit[4]), digits = AICdigits)
+          if (AICwithfat0 <= AICGaussi)
+          {
+            AICGaussi <- AICwithfat0
+            Gauss <- probit
+            fequal0G <- TRUE
+          }
+        }          
       } 
-   }# END of if (keepGauss)
-        
+    } # END of if (lessthan5doses) 
+  } # END of if (keepGauss)
+  
     
     ######### Fit of the linear model ############################    
     if (keeplin)
@@ -451,9 +472,15 @@ drcfit <- function(itemselect,
         c.i <- ifelse(equalcdG, par["d"], par["c"])
         d.i <- par["d"]
         e.i <- par["e"]
-        f.i <- par["f"]
+        f.i <- ifelse(fequal0G, 0, par["f"])
         SDres.i <- sigma(fit)
-        nbpari <- ifelse(equalcdG, 4, 5)
+        if (enablesfequal0inGP)
+        {
+          nbpari <- ifelse(equalcdG | fequal0G, 4, 5)
+        } else
+        {
+          nbpari <- ifelse(equalcdG, 4, 5)
+        }
       } else
         if (indmodeli == 2)
         {
@@ -653,6 +680,7 @@ drcfit <- function(itemselect,
   y0[indHill] <- vd
   
   # calculation of y0, xextrem and yrange for Gauss-probit curves
+  # when f != 0
   indGP <- which(dc$model == "Gauss-probit")
   vb <- dc$b[indGP]
   vc <- dc$c[indGP]
@@ -666,7 +694,17 @@ drcfit <- function(itemselect,
     abs(yextr - fGauss5p(dosemax, vb, vc, vd, ve, vf))
   )
   y0[indGP] <- fGauss5p(0, vb, vc, vd, ve, vf)
-
+  # when f == 0
+  indGPf0 <- which((dc$model == "Gauss-probit" & dc$f == 0))
+  vb <- dc$b[indGPf0]
+  vc <- dc$c[indGPf0]
+  vd <- dc$d[indGPf0]
+  ve <- dc$e[indGPf0]
+  vf <- dc$f[indGPf0]
+  yrange[indGPf0] <- 
+    abs(fGauss5p(dosemin, vb, vc, vd, ve, vf) - fGauss5p(dosemax, vb, vc, vd, ve, vf))
+  y0[indGPf0] <- vd
+  
   # calculation of y0, xextrem and yrange for log-Gauss-probit and log-probit curves
   # when f != 0
   indlGP <- which(dc$model == "log-Gauss-probit" & dc$f != 0)
@@ -766,6 +804,19 @@ drcfit <- function(itemselect,
             trend[i] <- "dec"} 
         }
       } 
+      if (enablesfequal0inGP)
+      {
+        if (di$model == "Gauss-probit" & di$f == 0) 
+        {     
+          if (di$c > di$d) 
+          { typology[i] <- "GP.inc"
+          trend[i] <- "inc"} else
+            if (di$c <= di$d) 
+            {typology[i] <- "GP.dec"
+            trend[i] <- "dec"} 
+        }
+      } 
+      
     } # END of the for
   } else
   {

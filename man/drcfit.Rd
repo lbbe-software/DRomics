@@ -12,7 +12,8 @@ Fits dose reponse models to responsive items.
 \usage{
 drcfit(itemselect, 
   information.criterion = c("AICc", "BIC", "AIC"), 
-  postfitfilter = TRUE, preventsfitsoutofrange = TRUE, enablesfequal0inLGP = TRUE,
+  postfitfilter = TRUE, preventsfitsoutofrange = TRUE, 
+  enablesfequal0inGP = TRUE, enablesfequal0inLGP = TRUE,
   progressbar = TRUE, parallel = c("no", "snow", "multicore"), ncpus)
 
 \method{print}{drcfit}(x, \dots)
@@ -44,12 +45,19 @@ plotfit2pdf(x, items,
   before the choice of the best.
   It is strongly recommended to let it at \code{TRUE}, its default value.}
 
+\item{enablesfequal0inGP}{If \code{TRUE} when the fit of a Gauss-probit model with 5 parameters
+  is successful, its simplified version with \code{f = 0} is also fitted and included in the candidate
+  models. This submodel of the log-Gauss-probit model corresponds to the probit model.
+  We recommend to let this argument at \code{TRUE}, its default value, in order to prevent
+  overfitting, and prefer the description of a monotonic curve
+  when the parameter f is not necessary to model the data according to the information criterion.}
+
 \item{enablesfequal0inLGP}{If \code{TRUE} when the fit of a log-Gauss-probit model with 5 parameters
   is successful, its simplified version with \code{f = 0} is also fitted and included in the candidate
   models. This submodel of the log-Gauss-probit model corresponds to the log-probit model.
   We recommend to let this argument at \code{TRUE}, its default value, in order to prevent
-  the estimation of a negligible f value and prefer the description of a monotonic curve
-  when the parameter f is not clearly necessary to better model the data.}
+  overfitting and prefer the description of a monotonic curve
+  when the parameter f is not necessary to model the data according to the information criterion.}
 
 \item{progressbar}{If \code{TRUE} a progress bar is used to follow the fitting process.}
 

@@ -79,20 +79,23 @@ if (visualize)
 
 if (visualize)
 {
-  # evaluate the impact of preventsfitsoutofrange and enablesfequal0
+  # evaluate the impact of preventsfitsoutofrange, enablesfequal0inGP, enablesfequal0inlGP
   data(Zhou_kidney_pce)
   (o1 <- RNAseqdata(Zhou_kidney_pce, check = TRUE, transfo.method = "rlog"))
-  s_quad1 <- itemselect(o1, select.method = "quadratic", FDR = 0.01)
+  s_quad1 <- itemselect(o1, select.method = "quadratic", FDR = 0.1)
   (f1 <- drcfit(s_quad1, 
                 preventsfitsoutofrange = FALSE,
+                enablesfequal0inGP  = FALSE,
                 enablesfequal0inLGP  = FALSE,
                 progressbar = TRUE))
   (f1bis <- drcfit(s_quad1, 
                 preventsfitsoutofrange = TRUE,
+                enablesfequal0inGP  = FALSE,
                 enablesfequal0inLGP  = FALSE,
                 progressbar = TRUE))
   (f1ter <- drcfit(s_quad1, 
                    preventsfitsoutofrange = TRUE,
+                   enablesfequal0inGP  = TRUE,
                    enablesfequal0inLGP  = TRUE,
                    progressbar = TRUE))
   

@@ -61,14 +61,17 @@ if (visualize)
 
   (f1 <- drcfit(s_quad1, 
                 preventsfitsoutofrange = FALSE,
+                enablesfequal0inGP  = FALSE,
                 enablesfequal0inLGP  = FALSE,
                 progressbar = TRUE))
   (f1bis <- drcfit(s_quad1, 
                    preventsfitsoutofrange = TRUE,
+                   enablesfequal0inGP  = FALSE,
                    enablesfequal0inLGP  = FALSE,
                    progressbar = TRUE))
   (f1ter <- drcfit(s_quad1, 
                    preventsfitsoutofrange = TRUE,
+                   enablesfequal0inGP  = TRUE,
                    enablesfequal0inLGP  = TRUE,
                    progressbar = TRUE))
   
