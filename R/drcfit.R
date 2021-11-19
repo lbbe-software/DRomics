@@ -3,8 +3,8 @@ drcfit <- function(itemselect,
                    information.criterion = c("AICc", "BIC", "AIC"),
                    postfitfilter = TRUE,
                    preventsfitsoutofrange = TRUE,
-                   enablesfequal0inGP = TRUE,
-                   enablesfequal0inLGP = TRUE,
+                   enablesfequal0inGP = FALSE,
+                   enablesfequal0inLGP = FALSE,
                    progressbar = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
 {
