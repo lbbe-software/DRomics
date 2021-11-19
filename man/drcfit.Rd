@@ -13,7 +13,7 @@ Fits dose reponse models to responsive items.
 drcfit(itemselect, 
   information.criterion = c("AICc", "BIC", "AIC"), 
   postfitfilter = TRUE, preventsfitsoutofrange = TRUE, 
-  enablesfequal0inGP = FALSE, enablesfequal0inLGP = FALSE,
+  enablesfequal0inGP = TRUE, enablesfequal0inLGP = TRUE,
   progressbar = TRUE, parallel = c("no", "snow", "multicore"), ncpus)
 
 \method{print}{drcfit}(x, \dots)

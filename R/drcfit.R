@@ -3,8 +3,8 @@ drcfit <- function(itemselect,
                    information.criterion = c("AICc", "BIC", "AIC"),
                    postfitfilter = TRUE,
                    preventsfitsoutofrange = TRUE,
-                   enablesfequal0inGP = FALSE,
-                   enablesfequal0inLGP = FALSE,
+                   enablesfequal0inGP = TRUE,
+                   enablesfequal0inLGP = TRUE,
                    progressbar = TRUE, 
                    parallel = c("no", "snow", "multicore"), ncpus)
 {
@@ -681,7 +681,7 @@ drcfit <- function(itemselect,
   
   # calculation of y0, xextrem and yrange for Gauss-probit curves
   # when f != 0
-  indGP <- which(dc$model == "Gauss-probit")
+  indGP <- which(dc$model == "Gauss-probit"& dc$f != 0)
   vb <- dc$b[indGP]
   vc <- dc$c[indGP]
   vd <- dc$d[indGP]

@@ -308,14 +308,14 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           y0boot <- fGauss5p(x = 0, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
           ydosemaxboot <- fGauss5p(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
             
-          xextrboot <- eboot + (cboot - dboot)*bboot/(fboot*sqrt(2*pi)) 
-          yextrboot <- fGauss5p(x = xextrboot, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
-
-          deltapboot <- abs(y0boot) * xdiv100
-          deltasdboot <- z * SDresboot
-            
           if (f1 != 0)
           {
+            xextrboot <- eboot + (cboot - dboot)*bboot/(fboot*sqrt(2*pi)) 
+            yextrboot <- fGauss5p(x = xextrboot, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
+            
+            deltapboot <- abs(y0boot) * xdiv100
+            deltasdboot <- z * SDresboot
+            
             resBMDp <- calcBMD(y0=y0boot, delta=deltapboot, xext=xextrboot, yext=yextrboot, 
                                dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemaxboot, 
                                func = fGauss5pBMR, func_xinlog = fGauss5pBMR_xinlog,
@@ -398,14 +398,14 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           y0boot <- dboot
           ydosemaxboot <- fLGauss5p(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
           
-          xextrboot <-  exp(log(eboot) + (cboot - dboot)*bboot/(fboot*sqrt(2*pi))) 
-          yextrboot <-  fLGauss5p(x = xextrboot, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot) 
-          
-          deltapboot <- abs(y0boot) * xdiv100
-          deltasdboot <- z * SDresboot
-          
           if (f1 != 0)
           {
+            xextrboot <-  exp(log(eboot) + (cboot - dboot)*bboot/(fboot*sqrt(2*pi))) 
+            yextrboot <-  fLGauss5p(x = xextrboot, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot) 
+            
+            deltapboot <- abs(y0boot) * xdiv100
+            deltasdboot <- z * SDresboot
+            
             resBMDp <- calcBMD(y0=y0boot, delta=deltapboot, xext=xextrboot, yext=yextrboot, 
                                dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemaxboot, 
                                func = fLGauss5pBMR, func_xinlog = fLGauss5pBMR_xinlog,
