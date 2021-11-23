@@ -703,7 +703,7 @@ drcfit <- function(itemselect,
   vf <- dc$f[indGPf0]
   yrange[indGPf0] <- 
     abs(fGauss5p(dosemin, vb, vc, vd, ve, vf) - fGauss5p(dosemax, vb, vc, vd, ve, vf))
-  y0[indGPf0] <- vd
+  y0[indGPf0] <- fGauss5p(0, vb, vc, vd, ve, vf)
   
   # calculation of y0, xextrem and yrange for log-Gauss-probit and log-probit curves
   # when f != 0
