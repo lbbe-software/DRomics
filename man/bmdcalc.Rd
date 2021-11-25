@@ -151,6 +151,18 @@ plot(r)
 plot(rb)
 }
 
+# Plot of fits with BMD values 
+\donttest{
+# example with the BMD-1SD
+plot(f, BMDoutput = r, BMDtype = "zSD")
+
+# example with the BMD-2SD
+plot(f, BMDoutput = rb, BMDtype = "zSD")
+
+# example with the BMD-xfold with x = 10 percent
+plot(f, BMDoutput = r, BMDtype = "xfold")
+}
+
 # (2) an example on a microarray data set (a subsample of a greater data set) 
 #
 \donttest{

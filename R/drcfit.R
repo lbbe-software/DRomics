@@ -903,10 +903,10 @@ plot.drcfit <- function(x, items,
                 dose_log_transfo = FALSE, 
                 BMDoutput, BMDtype = c("zSD", "xfold"), ...)
 {
+  plot.type <- match.arg(plot.type, c("dose_fitted", "dose_residuals","fitted_residuals"))  
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects.")
   
-  # a ggplot alternative
   if(missing(items))
   {
     items <- 20
@@ -916,7 +916,8 @@ plot.drcfit <- function(x, items,
     a character vector indicating the identifiers of the items who want to plot.")
   if (is.numeric(items))
   {
-    subd <- x$fitres[1:min(nrow(x$fitres),items), ]
+    inditems <- 1:min(nrow(x$fitres),items)
+    subd <- x$fitres[inditems, ]
   } else
   if (is.character(items))
   {
@@ -934,13 +935,14 @@ plot.drcfit <- function(x, items,
                 dose_log_transfo = dose_log_transfo)
   
   ## optional add of BMD values on fits
-  if (!missing(BMDoutput) & plot.type == c("dose_fitted"))
+  if (!(missing(BMDoutput)) & (plot.type == "dose_fitted"))
   {
+    BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))  
     addBMD <- TRUE
     if (inherits(BMDoutput, "bmdcalc") | inherits(BMDoutput, "bmdboot"))
     {
       bmdres <- BMDoutput$res
-      if (any(x$fitres$id != bmdres$id) | any(x$fitres$yrange != bmdres$yrange))
+      if (any(subd$id != bmdres$id) | any(subd$yrange != bmdres$yrange))
       {
         warning(strwrap(prefix = "\n", initial = "\n",
                         "To add BMD values on the plot you must 
@@ -952,14 +954,30 @@ plot.drcfit <- function(x, items,
         addBMD <- FALSE
       } else
       {
-        subbmdres <- x$fitres[inditems, ]
+        subbmdres <- BMDoutput$res[inditems, ]
         if (BMDtype == "zSD")
         {
-          g + geom_vline(data = subbmdres, aes(xintercept = BMD.zSD), linetype = 1, colour = "red")
+          zvalue <- BMDoutput$z
+          subbmdres$lowhline <- subbmdres$y0 - zvalue * subbmdres$SDres
+          subbmdres$uphline <- subbmdres$y0 + zvalue * subbmdres$SDres
+          g <- g + geom_vline(data = subbmdres, aes_(xintercept = quote(BMD.zSD)), 
+                              linetype = 1, colour = "red") +
+            geom_hline(data = subbmdres, aes_(yintercept = quote(uphline)), 
+                       linetype = 3, colour = "red") +
+            geom_hline(data = subbmdres, aes_(yintercept = quote(lowhline)), 
+                       linetype = 3,colour = "red")
         } else
         if (BMDtype == "xfold")
         {
-          g + geom_vline(data = subbmdres, aes(xintercept = BMD.xfold), linetype = 1, colour = "red")
+          xvalue <- BMDoutput$x
+          subbmdres$lowhline <- subbmdres$y0 * (1 + xvalue/100)
+          subbmdres$uphline <- subbmdres$y0 * (1 - xvalue/100)
+          g <- g + geom_vline(data = subbmdres, aes_(xintercept = quote(BMD.xfold)), 
+                              linetype = 1, colour = "red") +
+            geom_hline(data = subbmdres, aes_(yintercept = quote(uphline)), 
+                       linetype = 3, colour = "red") +
+            geom_hline(data = subbmdres, aes_(yintercept = quote(lowhline)), 
+                       linetype = 3,colour = "red")
         } else
         {
           warning("BMDtype must put as 'zSD' or 'xfold' if you want the add of BMD values on the fits")
@@ -982,27 +1000,17 @@ plot.drcfit <- function(x, items,
     {
       if (BMDtype == "zSD")
       {
-        z <- BMDoutput$z
-         g + geom_vline(data = subbootres, aes(xintercept = BMD.zSD.lower), 
+         g <- g + geom_vline(data = subbmdres, aes_(xintercept = quote(BMD.zSD.lower)), 
                    linetype = 2,colour = "red") +
-          geom_vline(data = subbootres, aes(xintercept = BMD.zSD.upper), 
-                     linetype = 2, colour = "red") +
-          geom_hline(data = subbootres, aes(yintercept = y0 + z*SDres), 
-                     linetype = 3, colour = "red") +
-          geom_hline(data = subbootres, aes(yintercept = y0 - z*SDres), 
-                     linetype = 3,colour = "red")
+          geom_vline(data = subbmdres, aes_(xintercept = quote(BMD.zSD.upper)), 
+                     linetype = 2, colour = "red") 
       } else
       if (BMDtype == "xfold")
       {
-        x <- BMDoutput$x
-        g + geom_vline(data = subbootres, aes(xintercept = BMD.xfold.lower), 
+        g <- g + geom_vline(data = subbmdres, aes_(xintercept = quote(BMD.xfold.lower)), 
                        linetype = 2,colour = "red") +
-          geom_vline(data = subbootres, aes(xintercept = BMD.xfold.upper), 
-                     linetype = 2, colour = "red") +
-          geom_hline(data = subbootres, aes(yintercept = y0 * (1 + x/100)), 
-                     linetype = 3, colour = "red") +
-          geom_hline(data = subbootres, aes(yintercept = y0 * (1 - x/100)), 
-                     linetype = 3,colour = "red")
+          geom_vline(data = subbmdres, aes_(xintercept = quote(BMD.xfold.upper)), 
+                     linetype = 2, colour = "red") 
       }
     } 
   }# END if !missing(BMDoutput)

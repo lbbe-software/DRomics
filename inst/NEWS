@@ -3,6 +3,8 @@
 Version 2.4-0 
 =======================
 NEW FEATURES
+- Add of arguments BMDoutput and BMDtype to plot.drcfit() to make possible the add of 
+BMD values and confidence intervals on the plot of fits.
 - Add of an argument (enablesfequal0inGP) by default at TRUE in drcfit(), to enable
 the simplification of the Gauss-probit model with 5 parameters by its version with f = 0 
 (which corresponds to the probit model) to prevent overfitting when the parameter f is close to 0 
