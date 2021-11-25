@@ -20,7 +20,7 @@ drcfit(itemselect,
 
 \method{plot}{drcfit}(x, items, 
   plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
-  dose_log_transfo = FALSE, \dots)
+  dose_log_transfo = FALSE, BMDoutput, BMDtype = c("zSD", "xfold"), \dots)
    
 plotfit2pdf(x, items, 
   plot.type = c("dose_fitted", "dose_residuals", "fitted_residuals"), 
@@ -83,6 +83,16 @@ plotfit2pdf(x, items,
 \item{dose_log_transfo}{Put at \code{TRUE} to use a log transformation
   for the dose axis (only available if the dose is in x-axis, so not available
   for \code{plot.type} \code{"fitted_residuals"}).}
+
+\item{BMDoutput}{Argument that can be used to add BMD values
+  and optionally their confidence intervals on a plot of type \code{"dose_fitted"}.
+  To do that you must previously apply \code{\link{bmdcalc}} and optionally
+  \code{\link{bmdboot}}
+  on \code{x} of class \code{drcfit} 
+  and then give in this argument the output of \code{\link{bmdcalc}} or
+  \code{\link{bmdboot}}.}
+
+\item{BMDtype}{The type of BMD to add on the plot, \code{"zSD"} (default choice) or   \code{"xfold"} (only used if BMDoutput is not missing).}
 
 \item{nrowperpage}{Number of rows of plots when plots are saved in a pdf file using
   plotfit2pdf() (passed to \code{facet_wrap()}).}

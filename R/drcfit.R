@@ -900,7 +900,8 @@ print.drcfit <- function(x, ...)
 
 plot.drcfit <- function(x, items, 
                 plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
-                dose_log_transfo = FALSE, ...)
+                dose_log_transfo = FALSE, 
+                BMDoutput, BMDtype = c("zSD", "xfold"), ...)
 {
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects.")
@@ -924,13 +925,88 @@ plot.drcfit <- function(x, items,
     stop("At least one of the chosen items was not selected as responding. You should use targetplot() in that case.")
     subd <- x$fitres[inditems, ]
   }
-  plotfitsubset(subd, 
+  g <- plotfitsubset(subd, 
                 dose = x$omicdata$dose, 
                 data = x$omicdata$data, 
                 data.mean = x$omicdata$data.mean, 
                 npts = 500,
                 plot.type = plot.type, 
-                dose_log_transfo = dose_log_transfo) 
+                dose_log_transfo = dose_log_transfo)
+  
+  ## optional add of BMD values on fits
+  if (!missing(BMDoutput) & plot.type == c("dose_fitted"))
+  {
+    addBMD <- TRUE
+    if (inherits(BMDoutput, "bmdcalc") | inherits(BMDoutput, "bmdboot"))
+    {
+      bmdres <- BMDoutput$res
+      if (any(x$fitres$id != bmdres$id) | any(x$fitres$yrange != bmdres$yrange))
+      {
+        warning(strwrap(prefix = "\n", initial = "\n",
+                        "To add BMD values on the plot you must 
+                        first apply bmdcalc() (and if you want also BMD confidence intervals
+                        bmdboot()) on the R object of class drcfit that is specified as first
+                        argument of the current plot function, and then 
+                        give in the argument BMDoutput the R object given in output
+                    of bmdcalc() or bmdboot()."))
+        addBMD <- FALSE
+      } else
+      {
+        subbmdres <- x$fitres[inditems, ]
+        if (BMDtype == "zSD")
+        {
+          g + geom_vline(data = subbmdres, aes(xintercept = BMD.zSD), linetype = 1, colour = "red")
+        } else
+        if (BMDtype == "xfold")
+        {
+          g + geom_vline(data = subbmdres, aes(xintercept = BMD.xfold), linetype = 1, colour = "red")
+        } else
+        {
+          warning("BMDtype must put as 'zSD' or 'xfold' if you want the add of BMD values on the fits")
+          addBMD <- FALSE
+        }
+      }
+    } else
+    {
+      warning(strwrap(prefix = "\n", initial = "\n",
+                      "To add BMD values on the plot you must 
+                        first apply bmdcalc() (and if you want also BMD confidence intervals
+                        bmdboot()) on the R object of class drcfit that is specified as first
+                        argument of the current plot function, and then 
+                        give in the argument BMDoutput the R object given in output
+                    of bmdcalc() or bmdboot()."))
+      addBMD <- FALSE
+    }
+    
+    if (inherits(BMDoutput, "bmdboot") & addBMD)
+    {
+      if (BMDtype == "zSD")
+      {
+        z <- BMDoutput$z
+         g + geom_vline(data = subbootres, aes(xintercept = BMD.zSD.lower), 
+                   linetype = 2,colour = "red") +
+          geom_vline(data = subbootres, aes(xintercept = BMD.zSD.upper), 
+                     linetype = 2, colour = "red") +
+          geom_hline(data = subbootres, aes(yintercept = y0 + z*SDres), 
+                     linetype = 3, colour = "red") +
+          geom_hline(data = subbootres, aes(yintercept = y0 - z*SDres), 
+                     linetype = 3,colour = "red")
+      } else
+      if (BMDtype == "xfold")
+      {
+        x <- BMDoutput$x
+        g + geom_vline(data = subbootres, aes(xintercept = BMD.xfold.lower), 
+                       linetype = 2,colour = "red") +
+          geom_vline(data = subbootres, aes(xintercept = BMD.xfold.upper), 
+                     linetype = 2, colour = "red") +
+          geom_hline(data = subbootres, aes(yintercept = y0 * (1 + x/100)), 
+                     linetype = 3, colour = "red") +
+          geom_hline(data = subbootres, aes(yintercept = y0 * (1 - x/100)), 
+                     linetype = 3,colour = "red")
+      } else
+    } else
+  }# END if !missing(BMDoutput)
+  print(g)
   
 }
 
