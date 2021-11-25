@@ -1003,8 +1003,8 @@ plot.drcfit <- function(x, items,
                      linetype = 3, colour = "red") +
           geom_hline(data = subbootres, aes(yintercept = y0 * (1 - x/100)), 
                      linetype = 3,colour = "red")
-      } else
-    } else
+      }
+    } 
   }# END if !missing(BMDoutput)
   print(g)
   
