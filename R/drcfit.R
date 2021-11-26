@@ -942,7 +942,8 @@ plot.drcfit <- function(x, items,
     if (inherits(BMDoutput, "bmdcalc") | inherits(BMDoutput, "bmdboot"))
     {
       bmdres <- BMDoutput$res
-      if (any(subd$id != bmdres$id) | any(subd$yrange != bmdres$yrange))
+      subbmdres <- BMDoutput$res[inditems, ]
+      if (any(subd$id != subbmdres$id) | any(subd$yrange != subbmdres$yrange))
       {
         warning(strwrap(prefix = "\n", initial = "\n",
                         "To add BMD values on the plot you must 
@@ -954,7 +955,6 @@ plot.drcfit <- function(x, items,
         addBMD <- FALSE
       } else
       {
-        subbmdres <- BMDoutput$res[inditems, ]
         if (BMDtype == "zSD")
         {
           zvalue <- BMDoutput$z

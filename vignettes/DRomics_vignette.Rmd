@@ -349,6 +349,21 @@ As in the previous example, you can use the argument line.size to manually
 adjust the width of lines in that plot if the default value does not give
 a visual result that suits you.
 
+### Plot of fitted curves with BMD values
+
+It is possible to add the output of bmdcalc()
+in the argument BMDoutput of the plot() function of drcfit() to add BMD values
+(when defined) as a 
+vertical line on each fitted curve. Horizontal dotted lines corresponding to the two BMR potential
+values will be also added.
+All the fitted curves may also be
+saved in the same way in a pdf file using the plotfit2pdf() function (see ?drcfit).
+
+```{r}
+plot(f, BMDoutput = r) 
+```
+
+
 ## Step 5: calculation of confidence intervals on the BMDs by bootstrap 
 
 Confidence intervals on BMD values can be calculated by bootstrap.
@@ -383,6 +398,23 @@ confidence interval bound are not plotted.
 ```{r}
 plot(b, BMDtype = "zSD", by = "trend") 
 ```
+
+### Plot of fitted curves with BMD values and confidence intervals
+
+It is possible to add the output of bmdboot()
+in the argument BMDoutput of the plot() function of drcfit() to add BMD values 
+(when defined) as a 
+vertical line on each fitted curve and bounds of the confidence intervals 
+(when successfully calculated) as two dashed lines. 
+Horizontal dotted lines corresponding to the two BMR potential
+values will be also added.
+All the fitted curves may also be
+saved in the same way in a pdf file using the plotfit2pdf() function (see ?drcfit).
+
+```{r}
+plot(f, BMDoutput = b) 
+```
+
 
 # Help for biological interpretation of DRomics outputs
 
@@ -677,7 +709,7 @@ bmdplotwithgradient(selectedres, BMDtype = "zSD",
                facetby = "path_class", facetby2 = "level")
 ```
 
-## Sensitivity plot per pathway and molecular level
+### Sensitivity plot per pathway and molecular level
 
 Using the function sensitivityplot() and its arguments group and colorby, 
 it is possible to show a summary of BMD values with size of points coding for the number
