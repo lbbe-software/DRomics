@@ -189,8 +189,8 @@ No transformation is provided in function continuousanchoringdata(). If needed t
 
 ```{r}
 (o.anchoring <- continuousanchoringdata(anchoringfilename, backgrounddose = 0.1))
-# Here the argument backgrounddose is used to specify that doses below 0.1
-# are considered can be fixed at 0 in the DRomics workflow.
+# Here the argument backgrounddose is used to specify that doses below  or equal to 0.1
+# are considered as 0 in the DRomics workflow.
 # Specifying this argument is necessary when there is no doses at 0 in the data 
 plot(o.anchoring)
 ```
