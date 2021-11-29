@@ -63,7 +63,6 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
   
   raw.counts <- data
   (dose <- as.vector(unlist(d[1, 2:ncold])))
-  fdose <- as.factor(dose)
   
   if(!transfo.blind)
   {
@@ -153,6 +152,7 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
       a dose-response design with at least six different tested doses."))
   
   # calculation of the means per dose
+  fdose <- as.factor(dose)
   tdata <- t(data)
   calcmean <- function(i)
   {
