@@ -1020,9 +1020,12 @@ plot.drcfit <- function(x, items,
 
 plotfit2pdf <- function(x, items, 
                         plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
-                        dose_log_transfo = FALSE, nrowperpage = 6, ncolperpage = 4,
+                        dose_log_transfo = FALSE, 
+                        BMDoutput, BMDtype = c("zSD", "xfold"),
+                        nrowperpage = 6, ncolperpage = 4,
                         path2figs = getwd())
 {
+  plot.type <- match.arg(plot.type, c("dose_fitted", "dose_residuals","fitted_residuals"))  
   if (!inherits(x, "drcfit"))
     stop("Use only with 'drcfit' objects.")
   
@@ -1036,6 +1039,7 @@ plotfit2pdf <- function(x, items,
     a character vector indicating the identifiers of the items who want to plot.")
   if (is.numeric(items))
   {
+    inditems <- 1:min(nrow(x$fitres),items)
     subd <- x$fitres[1:min(nrow(x$fitres),items), ]
   } else
   if (is.character(items))
@@ -1054,10 +1058,71 @@ plotfit2pdf <- function(x, items,
   nplotsperpage <- nrowperpage * ncolperpage
   npage <- ceiling(nrow(subd) / nplotsperpage)
   
+  if (!(missing(BMDoutput)) & (plot.type == "dose_fitted"))
+  {
+    BMDtype <- match.arg(BMDtype, c("zSD", "xfold")) 
+    addBMD <- TRUE
+    if (inherits(BMDoutput, "bmdcalc") | inherits(BMDoutput, "bmdboot"))
+    {
+      bmdres <- BMDoutput$res
+      subbmdres <- BMDoutput$res[inditems, ]
+      if (inherits(BMDoutput, "bmdboot")) addCI <- TRUE else addCI <- FALSE
+
+      if (any(subd$id != subbmdres$id) | any(subd$yrange != subbmdres$yrange))
+      {
+        warning(strwrap(prefix = "\n", initial = "\n",
+                        "To add BMD values on the plot you must 
+                        first apply bmdcalc() (and if you want also BMD confidence intervals
+                        bmdboot()) on the R object of class drcfit that is specified as first
+                        argument of the current plot function, and then 
+                        give in the argument BMDoutput the R object given in output
+                    of bmdcalc() or bmdboot()."))
+        addBMD <- FALSE
+      } else
+      {
+        if (BMDtype == "zSD")
+        {
+          zvalue <- BMDoutput$z
+          subbmdres$lowhline <- subbmdres$y0 - zvalue * subbmdres$SDres
+          subbmdres$uphline <- subbmdres$y0 + zvalue * subbmdres$SDres
+          subbmdres$BMD <- subbmdres$BMD.zSD
+          if (inherits(BMDoutput, "bmdboot"))
+          {
+            subbmdres$BMDlower <- subbmdres$BMD.zSD.lower
+            subbmdres$BMDupper <- subbmdres$BMD.zSD.upper
+          }
+        } else  # so BMDxfold
+        {
+          xvalue <- BMDoutput$x
+          subbmdres$lowhline <- subbmdres$y0 * (1 + xvalue/100)
+          subbmdres$uphline <- subbmdres$y0 * (1 - xvalue/100)
+          subbmdres$BMD <- subbmdres$BMD.xfold
+          if (inherits(BMDoutput, "bmdboot"))
+          {
+            subbmdres$BMDlower <- subbmdres$BMD.xfold.lower
+            subbmdres$BMDupper <- subbmdres$BMD.xfold.upper
+          }
+        }
+      }
+    } else
+    {
+      warning(strwrap(prefix = "\n", initial = "\n",
+                      "To add BMD values on the plot you must 
+                        first apply bmdcalc() (and if you want also BMD confidence intervals
+                        bmdboot()) on the R object of class drcfit that is specified as first
+                        argument of the current plot function, and then 
+                        give in the argument BMDoutput the R object given in output
+                    of bmdcalc() or bmdboot()."))
+      addBMD <- FALSE
+    }
+  }# END if !missing(BMDoutput)
+
+  
   for (i in 1:npage)
   {
     if (i == npage) indmax <- nrow(subd) else indmax <- i*nplotsperpage
-    g <- plotfitsubset(subd[seq((i-1)*nplotsperpage + 1,indmax, 1), ], 
+    ind2plot <- seq((i-1)*nplotsperpage + 1,indmax, 1)
+    g <- plotfitsubset(subd[ind2plot, ], 
                                  dose = x$omicdata$dose, 
                                  data = x$omicdata$data, 
                                  data.mean = x$omicdata$data.mean, 
@@ -1065,7 +1130,28 @@ plotfit2pdf <- function(x, items,
                                  plot.type = plot.type, 
                                  dose_log_transfo = dose_log_transfo, 
                                   nr = nrowperpage, 
-                                  nc = ncolperpage) 
+                                  nc = ncolperpage) + theme_classic()
+    if (addBMD)
+    {
+      g <- g + geom_vline(data = subbmdres[ind2plot, ],
+                          aes_(xintercept = quote(BMD)), 
+                          linetype = 1, colour = "red") +
+        # geom_ribbon(data = subbmdres[ind2plot, ],
+        #             aes_(ymin = quote(lowhline), 
+        #                  ymax = quote(uphline)), 
+        #             fill = "red", alpha = 0.1)
+        geom_hline(data = subbmdres[ind2plot, ], aes_(yintercept = quote(uphline)),
+                   linetype = 3, colour = "red") +
+        geom_hline(data = subbmdres[ind2plot, ], aes_(yintercept = quote(lowhline)),
+                   linetype = 3,colour = "red")
+      if (addCI)
+      {
+        g <- g + geom_vline(data = subbmdres[ind2plot, ], aes_(xintercept = quote(BMDlower)), 
+                            linetype = 2,colour = "red") +
+          geom_vline(data = subbmdres[ind2plot, ], aes_(xintercept = quote(BMDupper)), 
+                     linetype = 2, colour = "red") 
+      }
+    }
     print(g)
   }
   dev.off()

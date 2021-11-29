@@ -24,7 +24,8 @@ drcfit(itemselect,
    
 plotfit2pdf(x, items, 
   plot.type = c("dose_fitted", "dose_residuals", "fitted_residuals"), 
-  dose_log_transfo = FALSE, nrowperpage = 6, ncolperpage = 4, path2figs = getwd())
+  dose_log_transfo = FALSE, BMDoutput, BMDtype = c("zSD", "xfold"),
+  nrowperpage = 6, ncolperpage = 4, path2figs = getwd())
 }
 
 \arguments{
