@@ -933,7 +933,9 @@ plot.drcfit <- function(x, items,
                 npts = 500,
                 plot.type = plot.type, 
                 dose_log_transfo = dose_log_transfo) + theme_classic()
-  
+
+  addBMD <- FALSE
+  addCI <- FALSE
   ## optional add of BMD values on fits
   if (!(missing(BMDoutput)) & (plot.type == "dose_fitted"))
   {
@@ -976,6 +978,7 @@ plot.drcfit <- function(x, items,
           subbmdres$BMD <- subbmdres$BMD.xfold
           if (inherits(BMDoutput, "bmdboot"))
           {
+            addCI <- TRUE
             subbmdres$BMDlower <- subbmdres$BMD.xfold.lower
             subbmdres$BMDupper <- subbmdres$BMD.xfold.upper
           }
@@ -1059,6 +1062,8 @@ plotfit2pdf <- function(x, items,
   nplotsperpage <- nrowperpage * ncolperpage
   npage <- ceiling(nrow(subd) / nplotsperpage)
   
+  addBMD <- FALSE
+  addCI <- FALSE
   if (!(missing(BMDoutput)) & (plot.type == "dose_fitted"))
   {
     BMDtype <- match.arg(BMDtype, c("zSD", "xfold")) 
@@ -1100,6 +1105,7 @@ plotfit2pdf <- function(x, items,
           subbmdres$BMD <- subbmdres$BMD.xfold
           if (inherits(BMDoutput, "bmdboot"))
           {
+            addCI <- TRUE
             subbmdres$BMDlower <- subbmdres$BMD.xfold.lower
             subbmdres$BMDupper <- subbmdres$BMD.xfold.upper
           }
