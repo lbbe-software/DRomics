@@ -7,8 +7,6 @@ niterboot <- 25
 if (visualize)
 {
   datafilename <- system.file("extdata", "insitu_RNAseq_sample.txt", package="DRomics")
-  # to test the multi-page of plotfit2pdf take the file below
-  # datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
   (o <- RNAseqdata(datafilename, backgrounddose = 2e-2, transfo.method = "vst"))
 #  (o <- RNAseqdata(datafilename, backgrounddose = 2e-2, transfo.method = "rlog"))
   (s <- itemselect(o)) 

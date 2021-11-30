@@ -1,6 +1,6 @@
 # Testof the impact of the three information criteria
 library(DRomics)
-visualize <- FALSE # put to TRUE for a manual check of plots
+visualize <- FALSE # put to TRUE for a manual check 
 
 if (visualize)
 {
@@ -47,6 +47,7 @@ if (visualize)
   table(fAIC$fitres$model)
   table(fAICc$fitres$model)
   table(fBIC$fitres$model)
+  
 
   ### test on metabolo data with 4 doses ######################
   data(Scenedesmus_metab)
@@ -95,6 +96,15 @@ if (visualize)
   plot(fAICc, 81)
   plot(fBIC, 81)
   
+  # exploration of simplified biphasic models with f = 0
+  # f <- fAIC
+  # f <- fBIC
+  f <- AICc
+  (id2explore <- f$fitres$id[f$fitres$model %in% c("Gauss-probit", "log-Gauss-probit") & 
+                               f$fitres$f == 0])
+  f$fitres[f$fitres$id %in%  id2explore, ]
+  plot(f, items = id2explore, dose_log_transfo = TRUE)
+  
   ###### test on apical data
   data(Scenedesmus_apical)
   head(Scenedesmus_apical)
@@ -107,5 +117,48 @@ if (visualize)
   plot(fAIC)
   plot(fAICc)
   plot(fBIC)
+
+  ###### test on in situ RNAseq data
+  datafilename <- system.file("extdata", "insitu_RNAseq_sample.txt", package="DRomics")
+  (o <- RNAseqdata(datafilename, backgrounddose = 2e-2, transfo.method = "rlog"))
+  (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
+  (fAIC <- drcfit(s_quad, information.criterion = "AIC", progressbar = TRUE))
+  (fAICc <- drcfit(s_quad, information.criterion = "AICc", progressbar = TRUE))
+  (fBIC <- drcfit(s_quad, information.criterion = "BIC", progressbar = TRUE))
+
+  table(fAIC$fitres$model)
+  table(fAICc$fitres$model)
+  table(fBIC$fitres$model)
+  
+  table(fAIC$fitres$nbpar)
+  table(fAICc$fitres$nbpar)
+  table(fBIC$fitres$nbpar)
+
+  plot(fAIC, dose_log_transfo = TRUE)
+  plot(fAICc, dose_log_transfo = TRUE)
+  plot(fBIC, dose_log_transfo = TRUE)
+  
+  nrow(fAIC$fitres)
+  nrow(fAICc$fitres)
+  nrow(fBIC$fitres)
+  
+  id2compare <- fBIC$fitres$id[50:70]
+  plot(fAIC, items = id2compare, dose_log_transfo = TRUE)
+  plot(fAICc, items = id2compare, dose_log_transfo = TRUE)
+  plot(fBIC, items = id2compare, dose_log_transfo = TRUE)
+  
+  # exploration of simplified biphasic models with f = 0
+  # f <- fAIC
+  # f <- fBIC
+  f <- fAICc
+  (id2explore <- f$fitres$id[f$fitres$model %in% c("Gauss-probit", "log-Gauss-probit") & 
+                               f$fitres$f == 0])
+  f$fitres[f$fitres$id %in%  id2explore, ]
+  plot(f, items = id2explore, dose_log_transfo = TRUE)
+  
+  head(fAIC$information.criterion.val, 20)
+  head(fAICc$information.criterion.val, 20)
+  head(fBIC$information.criterion.val, 20)
+  
   
 }
