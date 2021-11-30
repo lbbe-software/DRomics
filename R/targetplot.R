@@ -57,7 +57,7 @@ targetplot <- function(items, f, add.fit = TRUE, dose_log_transfo = FALSE)
         rowfitres <- f$fitres[irowfitres, ]
         if (rowfitres$model == "exponential") datapred <- fExpo(x = xplot, d = rowfitres$d, b = rowfitres$b, e = rowfitres$e)
         if (rowfitres$model == "Hill") datapred <- fHill(x = xplot, c = rowfitres$c, d = rowfitres$d, b = rowfitres$b, e = rowfitres$e)
-        if (rowfitres$model == "log-Gauss-probit" | rowfitres$model== "log-probit") datapred <- fLGauss5p(x = xplot, c = rowfitres$c, d = rowfitres$d, b = rowfitres$b, e = rowfitres$e, f = rowfitres$f)
+        if (rowfitres$model == "log-Gauss-probit") datapred <- fLGauss5p(x = xplot, c = rowfitres$c, d = rowfitres$d, b = rowfitres$b, e = rowfitres$e, f = rowfitres$f)
         if (rowfitres$model == "Gauss-probit") datapred <- fGauss5p(x = xplot, c = rowfitres$c, d = rowfitres$d, b = rowfitres$b, e = rowfitres$e, f = rowfitres$f)
         if (rowfitres$model == "linear") datapred <- xplot * rowfitres$b + rowfitres$d
         

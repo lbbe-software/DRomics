@@ -99,7 +99,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
                        d = extendedres$d[i], e = extendedres$e[i], 
                        f = extendedres$f[i]) - extendedres$y0[i]*y0shift
           } else
-            if ((modeli == "log-Gauss-probit") | (modeli == "log-probit"))
+            if (modeli == "log-Gauss-probit")
             {
               curves2plot$y[(i-1)*npoints + 1:npoints] <- fLGauss5p(x2plot, b = extendedres$b[i], c = extendedres$c[i],
                       d = extendedres$d[i], e = extendedres$e[i], 

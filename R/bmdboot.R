@@ -172,51 +172,6 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       } # end fboot
     } else
     ############ END model Hill ###################
-
-    ############## Model log-probit ###########
-    if (modeli == "log-probit")
-    {
-      b1 <- lestimpar$b
-      c1 <- lestimpar$c
-      d1 <- lestimpar$d
-      e1 <- lestimpar$e
-      fitted1 <- fLGauss5p(x = dset$dose, b = b1, c = c1, d = d1, e = e1, f = 0)
-      resid1 <- dset$signal - fitted1
-      
-      dsetboot <- dset
-      fboot <- function(i)
-      {
-        if(bootmethod == "param")
-        {
-          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
-        } else
-        {
-          dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
-        }
-        # fit
-        nlsboot <- suppressWarnings(try(nls(formula = formLprobit, data = dsetboot, start = lestimpar,
-                                            lower = c(0, -Inf, -Inf, 0), algorithm = "port"), 
-                                        silent = TRUE))
-        if(inherits(nlsboot, "nls"))
-        {
-          SDresboot <- sqrt(sum(residuals(nlsboot)^2)/(ndata - nbpari))
-          bboot <- coef(nlsboot)["b"]
-          cboot <- coef(nlsboot)["c"]
-          dboot <- coef(nlsboot)["d"]
-          eboot <- coef(nlsboot)["e"]
-          y0boot <- dboot
-          ydosemaxboot <- fLGauss5p(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot, f = 0)
-          ypboot <- y0boot * ( 1 + xdiv100*sign(cboot * dboot))
-          BMDpboot <- pmax(invLprobit(ypboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
-          ysdboot <- y0boot + z*SDresboot * sign(cboot * dboot)
-          BMDsdboot <- pmax(invLprobit(ysdboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
-          
-          return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
-        }
-      } # end fboot
-    } else
-    ############ END model log-probit ###################
-    
     
     ############## Linear model ###########
     if (modeli == "linear")

@@ -53,7 +53,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
       # fitted curves
       if (subd$model[i] == "exponential") datapred <- fExpo(x = xplot, d = subd$d[i], b = subd$b[i], e = subd$e[i])
       if (subd$model[i]== "Hill") datapred <- fHill(x = xplot, c = subd$c[i], d = subd$d[i], b = subd$b[i], e = subd$e[i])
-      if (subd$model[i]== "log-Gauss-probit" | subd$model[i]== "log-probit") datapred <- fLGauss5p(x = xplot, c = subd$c[i], d = subd$d[i], b = subd$b[i], e = subd$e[i], f = subd$f[i])
+      if (subd$model[i]== "log-Gauss-probit") datapred <- fLGauss5p(x = xplot, c = subd$c[i], d = subd$d[i], b = subd$b[i], e = subd$e[i], f = subd$f[i])
       if (subd$model[i]== "Gauss-probit") datapred <- fGauss5p(x = xplot, c = subd$c[i], d = subd$d[i], b = subd$b[i], e = subd$e[i], f = subd$f[i])
       if (subd$model[i]== "linear") datapred <- xplot * subd$b[i] + subd$d[i]
       if (subd$model[i]== "const") datapred <- rep(mean(datai), length(xplot))
@@ -112,7 +112,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
       # fitted curves
       if (subd$model[i] == "exponential") datapred <- fExpo(x = xplot, d = subd$d[i], b = subd$b[i], e = subd$e[i])
       if (subd$model[i]== "Hill") datapred <- fHill(x = xplot, c = subd$c[i], d = subd$d[i], b = subd$b[i], e = subd$e[i])
-      if (subd$model[i]== "log-Gauss-probit" | subd$model[i]== "log-probit") datapred <- fLGauss5p(x = xplot, c = subd$c[i], d = subd$d[i], b = subd$b[i], e = subd$e[i], f = subd$f[i])
+      if (subd$model[i]== "log-Gauss-probit") datapred <- fLGauss5p(x = xplot, c = subd$c[i], d = subd$d[i], b = subd$b[i], e = subd$e[i], f = subd$f[i])
       if (subd$model[i]== "Gauss-probit") datapred <- fGauss5p(x = xplot, c = subd$c[i], d = subd$d[i], b = subd$b[i], e = subd$e[i], f = subd$f[i])
       if (subd$model[i]== "linear") datapred <- xplot * subd$b[i] + subd$d[i]
       if (subd$model[i]== "const") datapred <- rep(mean(datai), length(xplot))

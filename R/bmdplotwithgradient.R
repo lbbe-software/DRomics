@@ -162,7 +162,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
                                                                       d = extendedres$d[i], e = extendedres$e[i], 
                                                                       f = extendedres$f[i]) - extendedres$y0[i]*y0shift
           } else
-            if ((modeli == "log-Gauss-probit") | (modeli == "log-probit"))
+            if (modeli == "log-Gauss-probit")
             {
               curves2plot$signal[(i-1)*npoints + 1:npoints] <- fLGauss5p(x2plot, b = extendedres$b[i], c = extendedres$c[i],
                                                                          d = extendedres$d[i], e = extendedres$e[i], 

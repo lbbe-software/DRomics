@@ -162,7 +162,8 @@ bmdcalc <- function(f, z = 1, x = 10, minBMD, ratio2switchinlog = 100)
       dcalc$ysd[i] <- y0 + z*dfitall$SDres[i]*sign(c - d)
       dcalc$BMDsd[i] <- invHill(dcalc$ysd[i], b, c, d, e)
     } else
-    if((modeli == "log-probit") | (modeli == "log-Gauss-probit" & g == 0)) {
+      
+    if(modeli == "log-Gauss-probit" & g == 0) {
       ydosemax <- dcalc$ydosemax[i] <- fLGauss5p(x=dosemax, b=b, c=c, d=d, e=e, f=0)
       dcalc$yp[i] <- y0 * ( 1 + xdiv100*sign(c - d))
       dcalc$BMDp[i] <- invLprobit(dcalc$yp[i], b, c, d, e)

@@ -27,10 +27,6 @@ drcfit <- function(itemselect,
   if (progressbar)
     cat("The fitting may be long if the number of selected items is high.\n")
   
-  # Definition of the sigmoid model to fit
-  # sigmoid.model <- match.arg(sigmoid.model, c("Hill", "log-probit"))
-  sigmoid.model <- "Hill"
-  
   # definition of necessary data
   selectindex <- itemselect$selectindex
   adjpvalue <- itemselect$adjpvalue
@@ -58,8 +54,8 @@ drcfit <- function(itemselect,
   AICdigits <- 2 # number of digits for rounding the AIC values
   information.criterion <- match.arg(information.criterion, c("AICc", "BIC", "AIC"))
 
-    # kcrit gives the argument k to pass to function AIC()
-  # dependeing of the number of parameters of the model 
+  # kcrit gives the argument k to pass to function AIC()
+  # depending of the number of parameters of the model 
   # (1 to 5, corresponding to the index of the vector)
   if (information.criterion == "AIC")
   { 
@@ -86,9 +82,6 @@ drcfit <- function(itemselect,
     keeplin <- TRUE
     keepExpo <- TRUE
     keepHill <- TRUE
-    keepLprobit <- FALSE
-    # keepHill <- sigmoid.model == "Hill"
-    # keepLprobit <- sigmoid.model == "log-probit"
     keepLGauss <- TRUE
     keepGauss <- TRUE
     
@@ -227,24 +220,6 @@ drcfit <- function(itemselect,
       }
     } else (AICHilli <- Inf)
     
-    ############### Lprobit fit #################
-    if (keepLprobit)
-    {
-      startLprobit <- startvalLprobitnls2(x = dose, y = signal, xm = doseu, ym = signalm,
-                                          increase = increaseminmax)
-      Lprobit <- suppressWarnings(try(nls(formLprobit, start = startLprobit, data = dset,
-                                          lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
-      if (!inherits(Lprobit, "try-error"))
-      {
-        AICLprobiti <- round(AIC(Lprobit, k = kcrit[4]), digits = AICdigits)
-      } else
-      {
-        # keepLprobit <- FALSE
-        AICLprobiti <- Inf
-      }
-    } else (AICLprobiti <- Inf)
-    
-    
     ################# LGauss fit ####################
     if (keepLGauss)
     {
@@ -318,8 +293,6 @@ drcfit <- function(itemselect,
         # If LGauss5p chosen, try with f = 0
         if (enablesfequal0inLGP & (is.finite(AICLGaussi)) & (!equalcdLG))
         {
-          # startLprobit <- startvalLprobitnls2(x = dose, y = signal, xm = doseu, ym = signalm,  
-          #                                     increase = increaseminmax)
           parLG5p <- coef(LGauss)
           startLprobit <- list(b = parLG5p["b"], c = parLG5p["c"], d = parLG5p["d"], e = parLG5p["e"])
           Lprobit <- suppressWarnings(try(nls(formLprobit, start = startLprobit, data = dset, 
@@ -447,14 +420,15 @@ drcfit <- function(itemselect,
 
     ######### Choice of the best fit #####################################
     ######################################################################
-    AICvec <- c(AICGaussi, AICLGaussi, AICHilli, AICLprobiti, AICExpoi, AIClini)
-    # Order in the default choice you want in case of equality of AIC values
+    AICvec <- c(AICGaussi, AICLGaussi, AICHilli, AICExpoi, AIClini)
+    # the nb. of the model, 1 to 5, is used in the following with the last
+    # being the null model : nb. 6
     indmodeli <- which.min(AICvec)
     AICmin <- AICvec[indmodeli]
     if (AICmin > AICconsti - 2) # we keep the null model
     {
       fit <- constmodel
-      indmodeli <- 7 # constant model
+      indmodeli <- 6 # constant model
       nbpari <- 1
       b.i <- NA
       c.i <- mean(dset$signal)
@@ -514,50 +488,40 @@ drcfit <- function(itemselect,
           } else
             if (indmodeli == 4)
             {
-              fit <- Lprobit
+              fit <- Expo
               par <- coef(fit)
               b.i <- par["b"]
-              c.i <- par["c"]
+              c.i <- NA
               d.i <- par["d"]
               e.i <- par["e"]
-              f.i <- 0 # to enable the use of the LGauss function to plot the model and calculate the BMD 
+              f.i <- NA
               SDres.i <- sigma(fit)
-              nbpari <- 4
+              nbpari <- 3
             } else
               if (indmodeli == 5)
               {
-                fit <- Expo
+                fit <- lin
                 par <- coef(fit)
-                b.i <- par["b"]
+                b.i <- par[2]
                 c.i <- NA
-                d.i <- par["d"]
-                e.i <- par["e"]
+                d.i <- par[1]
+                e.i <- NA
                 f.i <- NA
                 SDres.i <- sigma(fit)
-                nbpari <- 3
-              } else
-                if (indmodeli == 6)
-                {
-                  fit <- lin
-                  par <- coef(fit)
-                  b.i <- par[2]
-                  c.i <- NA
-                  d.i <- par[1]
-                  e.i <- NA
-                  f.i <- NA
-                  SDres.i <- sigma(fit)
-                  nbpari <- 2
-                } 
+                nbpari <- 2
+              } 
+      
     }
     
     # diagnostics on residuals (quadratic trend on residuals) 
-    # correct mean function ?
+    # answer to the question: correct mean function ?
     dset$resi <- residuals(fit)
     modquad.resi <- lm(resi ~ doseranks + I(doseranks^2), data = dset)
     mod0.resi <- lm(resi ~ 1, data = dset)
     resimeantrendPi <- anova(modquad.resi, mod0.resi)[[6]][2]
  
-    # diagnostics on absolute value of residuals - homoscedasticity ?
+    # diagnostics on absolute value of residuals 
+    # answer to the question of homoscedasticity ?
     # (quadratic trend on abs(residuals)) 
     dset$absresi <-abs(dset$resi)
     modquad.absresi <- lm(absresi ~ doseranks + I(doseranks^2), data = dset)
@@ -571,7 +535,7 @@ drcfit <- function(itemselect,
     }
     
     return(c(indmodeli, nbpari, b.i, c.i, d.i, e.i, f.i, SDres.i,
-             AIClini, AICExpoi, AICHilli, AICLprobiti, AICLGaussi, 
+             AIClini, AICExpoi, AICHilli, AICLGaussi, 
              AICGaussi,resimeantrendPi,resivartrendPi))
     
   } ##################################### END of fitoneitem
@@ -595,10 +559,13 @@ drcfit <- function(itemselect,
   if (progressbar) close(pb)
   
   dres <- as.data.frame(t(res))
+  # colnames(dres) <- c("model", "nbpar", "b", "c", "d", "e", "f", "SDres",
+  #                     "AIC.L", "AIC.E", "AIC.H", "AIC.lP", "AIC.lGP", "AIC.GP",
+  #                     "resimeantrendP", "resivartrendP")
   colnames(dres) <- c("model", "nbpar", "b", "c", "d", "e", "f", "SDres",
-                      "AIC.L", "AIC.E", "AIC.H", "AIC.lP", "AIC.lGP", "AIC.GP",
+                      "AIC.L", "AIC.E", "AIC.H", "AIC.lGP", "AIC.GP",
                       "resimeantrendP", "resivartrendP")
-
+  
   dres <- cbind(data.frame(id = row.names(data)[selectindex], 
                            irow = selectindex, 
                            adjpvalue = adjpvalue),
@@ -612,25 +579,25 @@ drcfit <- function(itemselect,
   # dres$resivartrendadjP <- p.adjust(dres$resivartrendP, method = "BH")
   
     
-  # removing of null models (const, model no 7) and 
+  # removing of null models (const, model no 6) and 
   # fits eliminated by the quadratic trend test on residuals
   if (postfitfilter)
   {
-    lines.success <- (dres$model != 7) & 
+    lines.success <- (dres$model != 6) & 
       ((dres$resimeantrendP > 0.05) | is.na(dres$resimeantrendP))
     # is.na(resimeantrendP because anova of two models with very close RSS
     # may return NA for pvalue)
   } else
   {
-    lines.success <- (dres$model != 7) 
+    lines.success <- (dres$model != 6) 
   }
   
   
   dres.failure <- dres[!lines.success, ]
   dfail <- dres.failure[, c("id", "irow", "adjpvalue")]
   dfail$cause <- character(length = nrow(dfail))
-  dfail$cause[dres.failure$model == 7] <- "constant.model"
-  dfail$cause[dres.failure$model != 7] <- "trend.in.residuals"
+  dfail$cause[dres.failure$model == 6] <- "constant.model"
+  dfail$cause[dres.failure$model != 6] <- "trend.in.residuals"
   
   dres <- dres[lines.success, ]
 
@@ -639,7 +606,7 @@ drcfit <- function(itemselect,
   
   dc <- dres[, c("id", "irow", "adjpvalue", "model", "nbpar", "b", "c", "d", "e", "f", "SDres")]
   dresitests <- dres[, c("resimeantrendP", "resivartrendP")]
-  modelnames <- c("Gauss-probit", "log-Gauss-probit", "Hill", "log-probit", "exponential", "linear")
+  modelnames <- c("Gauss-probit", "log-Gauss-probit", "Hill", "exponential", "linear")
   dc$model <- modelnames[dc$model] 
   
   # Calculation of the theoretical value at the control : y0
@@ -705,7 +672,7 @@ drcfit <- function(itemselect,
     abs(fGauss5p(dosemin, vb, vc, vd, ve, vf) - fGauss5p(dosemax, vb, vc, vd, ve, vf))
   y0[indGPf0] <- fGauss5p(0, vb, vc, vd, ve, vf)
   
-  # calculation of y0, xextrem and yrange for log-Gauss-probit and log-probit curves
+  # calculation of y0, xextrem and yrange for log-Gauss-probit curves
   # when f != 0
   indlGP <- which(dc$model == "log-Gauss-probit" & dc$f != 0)
   vb <- dc$b[indlGP]
@@ -721,7 +688,7 @@ drcfit <- function(itemselect,
   )
   y0[indlGP] <- vd
   # when f == 0
-  indlGPf0 <- which((dc$model == "log-Gauss-probit" & dc$f == 0) | dc$model == "log-probit")
+  indlGPf0 <- which(dc$model == "log-Gauss-probit" & dc$f == 0)
   vb <- dc$b[indlGPf0]
   vc <- dc$c[indlGPf0]
   vd <- dc$d[indlGPf0]
@@ -732,11 +699,10 @@ drcfit <- function(itemselect,
   y0[indlGPf0] <- vd
   
   
-  # definition of the typology
+  # definition of trend and typology
   typology <- character(length = nselect)
   trend <- character(length = nselect)
- # pf <- 0.1 # if abs(f) < pf * abs(c - d) gaussian trends are considered roughly monotonous
-  
+
   if (nselect !=0)
   {
     for (i in 1:nselect) 
@@ -760,38 +726,29 @@ drcfit <- function(itemselect,
                 if (di$model == "Hill" & di$c <= di$d) 
                 {typology[i] <- "H.dec"
                 trend[i] <- "dec"} else
-                  if (di$model == "log-probit" & di$c > di$d) 
-                  {typology[i] <- "lP.inc"
-                  trend[i] <- "inc"} else
-                    if (di$model == "log-probit" & di$c <= di$d) 
-                    {typology[i] <- "lP.dec"
-                    trend[i] <- "dec"} else
-                      if (di$model == "log-Gauss-probit" & di$f < 0) 
-                      {typology[i] <- "lGP.U"
+                  if (di$model == "log-Gauss-probit" & di$f < 0) 
+                  {typology[i] <- "lGP.U"
+                  trend[i] <- "U"
+                  } else
+                    if (di$model == "log-Gauss-probit" & di$f >=0) 
+                    {typology[i] <- "lGP.bell"
+                    trend[i] <- "bell"
+                    } else
+                      if (di$model == "Gauss-probit" & di$f < 0) 
+                      {typology[i] <- "GP.U"
                       trend[i] <- "U"
-                      #ifelse(abs(di$f) > pf * abs(di$d - di$c), "U", ifelse(di$c > di$d, "inc", "dec"))
                       } else
-                        if (di$model == "log-Gauss-probit" & di$f >=0) 
-                        {typology[i] <- "lGP.bell"
+                        if (di$model == "Gauss-probit" & di$f >=0) 
+                        {typology[i] <- "GP.bell"
                         trend[i] <- "bell"
-                        #ifelse(abs(di$f) > pf * abs(di$d - di$c), "bell", ifelse(di$c > di$d, "inc", "dec"))
                         } else
-                          if (di$model == "Gauss-probit" & di$f < 0) 
-                          {typology[i] <- "GP.U"
-                          trend[i] <- "U"
-                          #ifelse(abs(di$f) > pf * abs(di$d - di$c), "U", ifelse(di$c > di$d, "inc", "dec"))
-                          } else
-                            if (di$model == "Gauss-probit" & di$f >=0) 
-                            {typology[i] <- "GP.bell"
-                            trend[i] <- "bell"
-                            #ifelse(abs(di$f) > pf * abs(di$d - di$c), "bell", ifelse(di$c > di$d, "inc", "dec"))
-                            } else
-                              if (di$model == "linear" & di$b > 0) 
-                              {typology[i] <- "L.inc"
-                              trend[i] <- "inc"} else
-                                if (di$model == "linear" & di$b <= 0) 
-                                {typology[i] <- "L.dec"
-                                trend[i] <- "dec"} 
+                          if (di$model == "linear" & di$b > 0) 
+                          {typology[i] <- "L.inc"
+                          trend[i] <- "inc"} else
+                            if (di$model == "linear" & di$b <= 0) 
+                            {typology[i] <- "L.dec"
+                            trend[i] <- "dec"} 
+      
       if (enablesfequal0inLGP)
       {
         if (di$model == "log-Gauss-probit" & di$f == 0) 
@@ -840,27 +797,10 @@ drcfit <- function(itemselect,
   # number of null models
   n.failure <- length(itemselect$selectindex) - nrow(dc)
   
-  if (sigmoid.model == "Hill")
-  {
-    dc$model <- factor(dc$model, # to specify the order
-                       levels = c("Hill", "linear", "exponential", "Gauss-probit", "log-Gauss-probit"))
-    # dc$typology <- factor(dc$typology,
-    #                       levels = c("H.inc", "H.dec", "L.inc", "L.dec", 
-    #                                  "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
-    #                                  "GP.U", "GP.bell", "lGP.U", "lGP.bell"))
-    dc$typology <- factor(dc$typology)
-    dAIC <- dres[, c("AIC.L", "AIC.E", "AIC.H", "AIC.lGP", "AIC.GP")] 
-  } else
-  {
-    dc$model <- factor(dc$model, # to specify the order
-                       levels = c("log-probit", "linear", "exponential", "Gauss-probit", "log-Gauss-probit")) 
-    dc$typology <- factor(dc$typology)
-    # dc$typology <- factor(dc$typology,
-    #                       levels = c("lP.inc", "lP.dec", "L.inc", "L.dec", 
-    #                                  "E.inc.convex","E.dec.concave", "E.inc.concave", "E.dec.convex",
-    #                                  "GP.U", "GP.bell", "lGP.U", "lGP.bell"))
-    dAIC <- dres[, c("AIC.L", "AIC.E", "AIC.lP", "AIC.lGP", "AIC.GP")] 
-  }
+  dc$model <- factor(dc$model, # to specify the order
+                     levels = c("Hill", "linear", "exponential", "Gauss-probit", "log-Gauss-probit"))
+  dc$typology <- factor(dc$typology)
+  dAIC <- dres[, c("AIC.L", "AIC.E", "AIC.H", "AIC.lGP", "AIC.GP")] 
   
   reslist <- list(fitres = dc, omicdata = itemselect$omicdata,  
                   information.criterion = information.criterion, information.criterion.val = dAIC,

@@ -224,7 +224,6 @@ fGauss5pBMR_xinlog <- function(xinlog, b, c, d, e, g, threshold)
 }
 
 fprobit <- function(x, b, c, d, e) 
-  # I think not useful as fGauss5p can be used with f = 0
 {
   d + (c - d) * pnorm((x - e)/b)
 }
@@ -319,55 +318,57 @@ startvalLGauss4pnls <- function(xm, ym, Ushape)
 }
 
 
-### log-probit model and starting values in log scale
+### log-probit model - used to simplify the LGP model
 formLprobit <- as.formula(signal ~ d + (c - d) * pnorm(log(dose/e)/b)) 
-startvalLprobitnls1 <- function(xm, ym) # to suppress
-  # inputs
-  # - xm unique values of the dose (sorted by dose)
-  # - ym means of the signal at each value of xm (sorted by dose)
-  # - Ushape TRUE if U shape FALSE if umbrella shape
-{
-  # initial value of d
-  d <- ym[1]# mean of the response at the first dose
-  # initial value of c
-  c <- ym[which.max(xm)]# mean of the response at the highest dose
-  # initial value of b (standard error) assuming (after having looked many curves) the
-  # bell shape extends to the whole dose range so dose max = 4 sd = 4 * b IN LOG SCALE !!!
-  ldosemin <- log(min(xm[xm!=0]))
-  ldosemax <- log(max(xm))
-  b <- (ldosemax - ldosemin) / 4
-  # initial value of e (in the middle of the dose range in log)
-  e <- exp( ldosemin + (ldosemax - ldosemin) /2 )
-  startval <- list(b = b, c = c, d = d, e = e)
-}
 
-startvalLprobitnls2 <- function(x, y, xm, ym, increase) # requires the definition of increase from min and max values
-  # inputs
-  # - x values of the dose
-  # - y values the corresponding signal
-  # - xm unique values of the dose (sorted by dose)
-  # - ym means of the signal at each value of xm (sorted by dose)
-  # 
-{
-  maxi <- max(y, na.rm = TRUE)
-  mini <- min(y, na.rm = TRUE)
-  ampl <- maxi - mini
-  # inflate maxi and mini so as all values are strictly inside the interval [mini; maxi]
-  maxi <- maxi + 0.001 * ampl
-  mini <- mini - 0.001 * ampl
-  # initial value of c
-  c <- ifelse(increase, maxi, mini) 
-  # initial value of d
-  d <-ifelse(increase, mini, maxi) 
-  # initial value of e and b from regression
-  Y <- (y[x!=0] - d) / (c - d)
-  yreg <- qnorm( Y )
-  xreg <- log(x[x!=0])
-  reg <- lm(yreg ~ xreg)
-  b <- 1/ reg$coefficients[2]
-  e <- reg$coefficients[1] * (-b)
-  startval <- list(b = b, c = c, d = d, e = e)
-}
+### log-probit starting values - no more used
+# startvalLprobitnls1 <- function(xm, ym) # to suppress
+#   # inputs
+#   # - xm unique values of the dose (sorted by dose)
+#   # - ym means of the signal at each value of xm (sorted by dose)
+#   # - Ushape TRUE if U shape FALSE if umbrella shape
+# {
+#   # initial value of d
+#   d <- ym[1]# mean of the response at the first dose
+#   # initial value of c
+#   c <- ym[which.max(xm)]# mean of the response at the highest dose
+#   # initial value of b (standard error) assuming (after having looked many curves) the
+#   # bell shape extends to the whole dose range so dose max = 4 sd = 4 * b IN LOG SCALE !!!
+#   ldosemin <- log(min(xm[xm!=0]))
+#   ldosemax <- log(max(xm))
+#   b <- (ldosemax - ldosemin) / 4
+#   # initial value of e (in the middle of the dose range in log)
+#   e <- exp( ldosemin + (ldosemax - ldosemin) /2 )
+#   startval <- list(b = b, c = c, d = d, e = e)
+# }
+# 
+# startvalLprobitnls2 <- function(x, y, xm, ym, increase) # requires the definition of increase from min and max values
+#   # inputs
+#   # - x values of the dose
+#   # - y values the corresponding signal
+#   # - xm unique values of the dose (sorted by dose)
+#   # - ym means of the signal at each value of xm (sorted by dose)
+#   # 
+# {
+#   maxi <- max(y, na.rm = TRUE)
+#   mini <- min(y, na.rm = TRUE)
+#   ampl <- maxi - mini
+#   # inflate maxi and mini so as all values are strictly inside the interval [mini; maxi]
+#   maxi <- maxi + 0.001 * ampl
+#   mini <- mini - 0.001 * ampl
+#   # initial value of c
+#   c <- ifelse(increase, maxi, mini) 
+#   # initial value of d
+#   d <-ifelse(increase, mini, maxi) 
+#   # initial value of e and b from regression
+#   Y <- (y[x!=0] - d) / (c - d)
+#   yreg <- qnorm( Y )
+#   xreg <- log(x[x!=0])
+#   reg <- lm(yreg ~ xreg)
+#   b <- 1/ reg$coefficients[2]
+#   e <- reg$coefficients[1] * (-b)
+#   startval <- list(b = b, c = c, d = d, e = e)
+# }
 
 
 # for plot
