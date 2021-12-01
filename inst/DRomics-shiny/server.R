@@ -20,19 +20,19 @@ server <- function(input, output, session) {
     if(inTypeData() == 'microarraydata') {
       req(input$datafile_microarray)
       validateFile(input$datafile_microarray)
-      microarraydata(input$datafile_microarray$datapath, check = TRUE, norm.method = input$normMethod_microarray)
+      microarraydata(input$datafile_microarray$datapath, backgrounddose = input$bgdose_microarray, check = TRUE, norm.method = input$normMethod_microarray)
     } else if(inTypeData() == 'rnaseqdata') {
       req(input$datafile_rnaseq)
       validateFile(input$datafile_rnaseq)
-      RNAseqdata(input$datafile_rnaseq$datapath, check = TRUE, transfo.method = input$transfoMethod_rnaseq, round.counts = TRUE)
+      RNAseqdata(input$datafile_rnaseq$datapath, backgrounddose = input$bgdose_rnaseq, check = TRUE, transfo.method = input$transfoMethod_rnaseq, round.counts = TRUE)
     } else if(inTypeData() == 'metabolomicdata') {
       req(input$datafile_metabolomic)
       validateFile(input$datafile_metabolomic)
-      metabolomicdata(input$datafile_metabolomic$datapath, check = TRUE)
+      metabolomicdata(input$datafile_metabolomic$datapath, backgrounddose = input$bgdose_metabolomic, check = TRUE)
     } else if(inTypeData() == 'continuousanchoringdata') {
       req(input$datafile_anchoring)
       validateFile(input$datafile_anchoring)
-      continuousanchoringdata(input$datafile_anchoring$datapath, check = TRUE)
+      continuousanchoringdata(input$datafile_anchoring$datapath, backgrounddose = input$bgdose_anchoring, check = TRUE)
     }
   })
   
@@ -274,12 +274,12 @@ server <- function(input, output, session) {
               "",
               "# Step 1",
               paste0("o <- ", ifelse(input$typeData == 'microarraydata', 
-                                     paste0("microarraydata('", input$datafile_microarray$name, "', check = TRUE, norm.method = '", input$normMethod_microarray, "')"), 
+                                     paste0("microarraydata('", input$datafile_microarray$name, "', backgrounddose = ", input$bgdose_microarray, ", check = TRUE, norm.method = '", input$normMethod_microarray, "')"), 
                                      ifelse(input$typeData == 'rnaseqdata', 
-                                            paste0("RNAseqdata('", input$datafile_rnaseq$name, "', check = TRUE, transfo.method = '", input$transfoMethod_rnaseq, "', round.counts = TRUE)"), 
+                                            paste0("RNAseqdata('", input$datafile_rnaseq$name, "', backgrounddose = ", input$bgdose_rnaseq, ", check = TRUE, transfo.method = '", input$transfoMethod_rnaseq, "', round.counts = TRUE)"), 
                                             ifelse(input$typeData == 'metabolomicdata', 
-                                                   paste0("metabolomicdata('", input$datafile_metabolomic$name, "', check = TRUE)"),
-                                                   paste0("continuousanchoringdata('", input$datafile_anchoring$name, "', check = TRUE)")
+                                                   paste0("metabolomicdata('", input$datafile_metabolomic$name, "', backgrounddose = ", input$bgdose_metabolomic, ", check = TRUE)"),
+                                                   paste0("continuousanchoringdata('", input$datafile_anchoring$name, "', backgrounddose = ", input$bgdose_anchoring, ", check = TRUE)")
                                                    )))),
               "print(o)",
               "plot(o)",

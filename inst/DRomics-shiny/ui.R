@@ -144,15 +144,26 @@ ui <- fluidPage(
                                  ###### For micro-array data (default)
                                  conditionalPanel(
                                    condition = "input.typeData == 'microarraydata'",
-                                   
                                    sidebarPanel(
                                      style = "background-color: #F5aa4c;",
                                      width = 4,
-                                     fileInput('datafile_microarray', 
-                                               'Select an input file',
-                                               accept = c('.csv', '.txt')),
-                                     h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
-                                     h5("See ", a("here", href = "DRomicspkg/transcripto_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'transcripto_sample.txt'), " an example file")
+                                     fixedRow(
+                                       column(width = 7, 
+                                              tags$style(HTML('#bgdose_help1 {margin-top: 26px}')),
+                                              fileInput('datafile_microarray', 
+                                                        'Select an input file',
+                                                        accept = c('.csv', '.txt')),
+                                              splitLayout(cellWidths = c("60%", "40%"), 
+                                                          numericInput('bgdose_microarray', "Background dose", 0), 
+                                                          bsButton("bgdose_help1", label = "", icon = icon("question"), size = "small"),
+                                                          bsPopover("bgdose_help1", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)            
+                                              )
+                                       ),
+                                       
+                                       column(width = 5, 
+                                              h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
+                                              h5("See ", a("here", href = "DRomicspkg/transcripto_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'transcripto_sample.txt'), " an example file"))
+                                     )
                                    ),
                                    sidebarPanel(
                                      style = "background-color: #F5aa4c;",
@@ -175,12 +186,24 @@ ui <- fluidPage(
                                    sidebarPanel(
                                      style = "background-color: #F5aa4c;",
                                      width = 4,
-                                     fileInput('datafile_rnaseq', 
-                                               'Select an input file',
-                                               accept = c('.csv', '.txt')),
-                                     h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
-                                     h5("See ", a("here", href = "DRomicspkg/RNAseq_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'RNAseq_sample.txt'), " an example file"),
-                                     icon("exclamation-triangle"), "Be aware that counts are automatically rounded to ensure compatibility of counts from Kallisto or Salmon with the tool."
+                                     fixedRow(
+                                       column(width = 7, 
+                                              tags$style(HTML('#bgdose_help2 {margin-top: 26px}')),
+                                              fileInput('datafile_rnaseq', 
+                                                        'Select an input file',
+                                                        accept = c('.csv', '.txt')),
+                                              splitLayout(cellWidths = c("60%", "40%"), 
+                                                          numericInput('bgdose_rnaseq', "Background dose", 0),
+                                                          bsButton("bgdose_help2", label = "", icon = icon("question"), size = "small"),
+                                                          bsPopover("bgdose_help2", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
+                                              )
+                                       ),
+                                       column(width = 5,
+                                              h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
+                                              h5("See ", a("here", href = "DRomicspkg/RNAseq_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'RNAseq_sample.txt'), " an example file"),
+                                              icon("exclamation-triangle"), "Be aware that counts are automatically rounded to ensure compatibility of counts from Kallisto or Salmon with the tool."
+                                       )
+                                     )
                                    ),
                                    sidebarPanel(
                                      style = "background-color: #F5aa4c;",
@@ -201,11 +224,23 @@ ui <- fluidPage(
                                    sidebarPanel(
                                      style = "background-color: #F5aa4c;",
                                      width = 4,
-                                     fileInput('datafile_metabolomic', 
-                                               'Select an input file',
-                                               accept = c('.csv', '.txt')),
-                                     h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
-                                     h5("See ", a("here", href = "DRomicspkg/metabolo_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'metabolo_norm.txt'), " an example file")
+                                     fixedRow(
+                                       column(width = 7, 
+                                              tags$style(HTML('#bgdose_help3 {margin-top: 26px}')),
+                                              fileInput('datafile_metabolomic', 
+                                                        'Select an input file',
+                                                        accept = c('.csv', '.txt')),
+                                              splitLayout(cellWidths = c("60%", "40%"), 
+                                                          numericInput('bgdose_metabolomic', "Background dose", 0),
+                                                          bsButton("bgdose_help3", label = "", icon = icon("question"), size = "small"),
+                                                          bsPopover("bgdose_help3", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
+                                              )
+                                       ),
+                                       column(width = 5,
+                                              h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
+                                              h5("See ", a("here", href = "DRomicspkg/metabolo_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'metabolo_norm.txt'), " an example file")
+                                       )
+                                     )
                                    ),
                                    sidebarPanel(
                                      style = "background-color: #F5aa4c;",
@@ -221,11 +256,24 @@ ui <- fluidPage(
                                    sidebarPanel(
                                      style = "background-color: #F5aa4c;",
                                      width = 4,
-                                     fileInput('datafile_anchoring', 
-                                               'Select an input file',
-                                               accept = c('.csv', '.txt')),
-                                     h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
-                                     h5("See ", a("here", href = "DRomicspkg/apical_anchoring.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'apical_anchoring.txt'), " an example file")
+                                     
+                                     fixedRow(
+                                       column(width = 7, 
+                                              tags$style(HTML('#bgdose_help4 {margin-top: 26px}')),
+                                              fileInput('datafile_anchoring', 
+                                                        'Select an input file',
+                                                        accept = c('.csv', '.txt')),
+                                              splitLayout(cellWidths = c("60%", "40%"), 
+                                                          numericInput('bgdose_anchoring', "Background dose", 0),
+                                                          bsButton("bgdose_help4", label = "", icon = icon("question"), size = "small"),
+                                                          bsPopover("bgdose_help4", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
+                                              )
+                                       ),
+                                       column(width = 5,
+                                              h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
+                                              h5("See ", a("here", href = "DRomicspkg/apical_anchoring.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'apical_anchoring.txt'), " an example file")
+                                       )
+                                     )
                                    ),
                                    sidebarPanel(
                                      style = "background-color: #F5aa4c;",
