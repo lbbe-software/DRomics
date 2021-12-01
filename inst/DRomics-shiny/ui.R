@@ -156,7 +156,7 @@ ui <- fluidPage(
                                               splitLayout(cellWidths = c("60%", "40%"), 
                                                           numericInput('bgdose_microarray', "Background dose", 0), 
                                                           bsButton("bgdose_help1", label = "", icon = icon("question"), size = "small"),
-                                                          bsPopover("bgdose_help1", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)            
+                                                          bsPopover("bgdose_help1", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
                                               )
                                        ),
                                        
