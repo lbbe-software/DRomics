@@ -476,7 +476,7 @@ ui <- fluidPage(
                                                             'model' = 'model',
                                                             'typology' = 'typology'),
                                                 selected = 'none'),
-                                   h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about typologies"),
+                                   h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about models and trends"),
                                    hr(),
                                    radioButtons('fileformat_bmdcalc', 
                                                 'File format',
