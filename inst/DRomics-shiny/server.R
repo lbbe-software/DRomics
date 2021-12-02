@@ -89,6 +89,7 @@ server <- function(input, output, session) {
   
   observe({shinyjs::disable("buttonResBmdcalc")})
   observe({shinyjs::disable("buttonPlotBmdcalc")})
+  observe({shinyjs::disable("buttonDownloadDrcfitplotBMD")})
   
   rundrcfit <- eventReactive(input$buttonDrcfit, {
     return(drcfit(signifitems, progressbar = FALSE, parallel = "no"))
@@ -251,6 +252,27 @@ server <- function(input, output, session) {
         dev.off()
       }
     )
+    
+    
+    output$plotDrcfitBMD <- renderPlot({
+      plot(mydrcfit, plot.type = "dose_fitted",
+           BMDoutput = mybmdcalc, BMDtype = input$BMDtype_plot2pdf,
+           dose_log_transfo = as.logical(input$logbmd_plot2pdf))
+    })
+    
+    shinyjs::enable("buttonDownloadDrcfitplotBMD")
+    output$buttonDownloadDrcfitplotBMD <- downloadHandler(
+      filename = function(){
+        "drcfitplot.pdf"
+      },
+      content = function(file) {
+        plotfit2pdf(mydrcfit, plot.type = "dose_fitted",
+                    BMDoutput = mybmdcalc, BMDtype = input$BMDtype_plot2pdf,
+                    dose_log_transfo = as.logical(input$logbmd_plot2pdf), path2figs = tempdir())
+        file.copy(paste0(tempdir(), "/drcfitplot.pdf"), file)
+      },
+      contentType = {"application/pdf"}
+    )
   })
   
   
@@ -295,6 +317,7 @@ server <- function(input, output, session) {
               "",
               "# Step 4",
               paste0("r <- bmdcalc(f, z = ", numZbmdcalc(), ", x = ", numXbmdcalc(), ")"),
+              paste0("head(r$res, 10)"),
               if(input$plottype == 'ecdfcolorgradient') {
                 if(input$splitby == 'none') {
                   paste0("bmdplotwithgradient(r$res, BMDtype = '", input$BMDtype, 
@@ -312,7 +335,9 @@ server <- function(input, output, session) {
                 }
               } else {
                 paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', by = '", input$splitby, "', hist.bins = ", input$histbin, ")")
-              }
+              },
+              paste0("plot(f, plot.type = 'dose_fitted', BMDoutput = r, BMDtype = '", input$BMDtype_plot2pdf, 
+                     "', dose_log_transfo = ", input$logbmd_plot2pdf, "))")
     )
     
     output$buttonDownRCode <- downloadHandler(

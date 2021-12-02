@@ -415,7 +415,11 @@ ui <- fluidPage(
                                    textInput('xbmdcalc', label = 'x value for BMD-xfold (in %)', value = "10"),
                                    h5("See ", a("here", href = "informations_z_x.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the BMD-zSD and the BMD-xfold"),
                                    hr(),
-                                   downloadButton("buttonResBmdcalc", "Download results", icon = icon("fas fa-download")),
+                                   fluidRow(
+                                     column(12, align="center",
+                                            downloadButton("buttonResBmdcalc", "Download results", icon = icon("fas fa-download"))
+                                     )
+                                   ),
                                    h5("See ", a("here", href = "informations_bmdcalc_results.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the provided results")
                                  ),
                                  mainPanel(
@@ -429,7 +433,7 @@ ui <- fluidPage(
                                    style = "background-color: #F5aa4c;",
                                    width = 2,
                                    radioButtons('BMDtype', 
-                                                'BMD type',
+                                                'BMD type', inline = TRUE,
                                                 choices = c('zSD' = 'zSD',
                                                             'xfold' = 'xfold')),
                                    br(),
@@ -486,14 +490,48 @@ ui <- fluidPage(
                                                             'tiff' = 'tiff',
                                                             'svg' = 'svg'),
                                                 selected = 'pdf'),
-                                   downloadButton("buttonPlotBmdcalc", "Download figure", icon = icon("fas fa-download"))
+                                   fluidRow(
+                                     column(12, align="center",
+                                            downloadButton("buttonPlotBmdcalc", "Download figure", icon = icon("fas fa-download"))
+                                     )
+                                   )
                                  ),
                                  mainPanel(
                                    width = 10,
-                                   plotOutput("plotBmdcalc", width = "100%", height = "900px"),
+                                   plotOutput("plotBmdcalc", width = "100%", height = "900px")
+                                 )
+                               ),
+                               
+                               br(), br(),
+                               fixedRow(
+                                 sidebarPanel(
+                                   style = "background-color: #F5aa4c;",
+                                   width = 2,
+                                   radioButtons('BMDtype_plot2pdf', 
+                                                'BMD type', inline = TRUE,
+                                                choices = c('zSD' = 'zSD',
+                                                            'xfold' = 'xfold')),
+                                   radioButtons('logbmd_plot2pdf',
+                                                'Log-dose scale', inline = TRUE,
+                                                choices = c('yes' = 'TRUE',
+                                                            'no' = 'FALSE'),
+                                                selected = "FALSE"),
+                                   hr(),
+                                   fluidRow(
+                                     column(12, align="center", 
+                                            downloadButton("buttonDownloadDrcfitplotBMD", 
+                                                           HTML("Download all the<br/>fitted dose-response<br/>plots with BMD"), 
+                                                           icon = icon("fas fa-download"))
+                                     )
+                                   )
+                                 ),
+                                 mainPanel(
+                                   width = 10,
+                                   plotOutput("plotDrcfitBMD", width = "100%", height = "900px"),
                                    br(), br()
                                  )
                                )
+                               
                         )
                       )),
              
