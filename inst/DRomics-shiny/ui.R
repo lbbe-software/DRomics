@@ -154,7 +154,7 @@ ui <- fluidPage(
                                                         'Select an input file',
                                                         accept = c('.csv', '.txt')),
                                               splitLayout(cellWidths = c("60%", "40%"), 
-                                                          numericInput('bgdose_microarray', "Background dose", 0), 
+                                                          textInput('bgdose_microarray', "Background dose", 0), 
                                                           bsButton("bgdose_help1", label = "", icon = icon("question"), size = "small"),
                                                           bsPopover("bgdose_help1", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
                                               )
@@ -193,7 +193,7 @@ ui <- fluidPage(
                                                         'Select an input file',
                                                         accept = c('.csv', '.txt')),
                                               splitLayout(cellWidths = c("60%", "40%"), 
-                                                          numericInput('bgdose_rnaseq', "Background dose", 0),
+                                                          textInput('bgdose_rnaseq', "Background dose", 0),
                                                           bsButton("bgdose_help2", label = "", icon = icon("question"), size = "small"),
                                                           bsPopover("bgdose_help2", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
                                               )
@@ -231,7 +231,7 @@ ui <- fluidPage(
                                                         'Select an input file',
                                                         accept = c('.csv', '.txt')),
                                               splitLayout(cellWidths = c("60%", "40%"), 
-                                                          numericInput('bgdose_metabolomic', "Background dose", 0),
+                                                          textInput('bgdose_metabolomic', "Background dose", 0),
                                                           bsButton("bgdose_help3", label = "", icon = icon("question"), size = "small"),
                                                           bsPopover("bgdose_help3", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
                                               )
@@ -264,7 +264,7 @@ ui <- fluidPage(
                                                         'Select an input file',
                                                         accept = c('.csv', '.txt')),
                                               splitLayout(cellWidths = c("60%", "40%"), 
-                                                          numericInput('bgdose_anchoring', "Background dose", 0),
+                                                          textInput('bgdose_anchoring', "Background dose", 0),
                                                           bsButton("bgdose_help4", label = "", icon = icon("question"), size = "small"),
                                                           bsPopover("bgdose_help4", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
                                               )

@@ -20,19 +20,19 @@ server <- function(input, output, session) {
     if(inTypeData() == 'microarraydata') {
       req(input$datafile_microarray)
       validateFile(input$datafile_microarray)
-      microarraydata(input$datafile_microarray$datapath, backgrounddose = input$bgdose_microarray, check = TRUE, norm.method = input$normMethod_microarray)
+      microarraydata(input$datafile_microarray$datapath, backgrounddose = as.numeric(input$bgdose_microarray), check = TRUE, norm.method = input$normMethod_microarray)
     } else if(inTypeData() == 'rnaseqdata') {
       req(input$datafile_rnaseq)
       validateFile(input$datafile_rnaseq)
-      RNAseqdata(input$datafile_rnaseq$datapath, backgrounddose = input$bgdose_rnaseq, check = TRUE, transfo.method = input$transfoMethod_rnaseq, round.counts = TRUE)
+      RNAseqdata(input$datafile_rnaseq$datapath, backgrounddose = as.numeric(input$bgdose_rnaseq), check = TRUE, transfo.method = input$transfoMethod_rnaseq, round.counts = TRUE)
     } else if(inTypeData() == 'metabolomicdata') {
       req(input$datafile_metabolomic)
       validateFile(input$datafile_metabolomic)
-      metabolomicdata(input$datafile_metabolomic$datapath, backgrounddose = input$bgdose_metabolomic, check = TRUE)
+      metabolomicdata(input$datafile_metabolomic$datapath, backgrounddose = as.numeric(input$bgdose_metabolomic), check = TRUE)
     } else if(inTypeData() == 'continuousanchoringdata') {
       req(input$datafile_anchoring)
       validateFile(input$datafile_anchoring)
-      continuousanchoringdata(input$datafile_anchoring$datapath, backgrounddose = input$bgdose_anchoring, check = TRUE)
+      continuousanchoringdata(input$datafile_anchoring$datapath, backgrounddose = as.numeric(input$bgdose_anchoring), check = TRUE)
     }
   })
   
