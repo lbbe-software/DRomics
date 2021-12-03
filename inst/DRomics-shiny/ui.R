@@ -129,7 +129,6 @@ ui <- fluidPage(
                         sidebarPanel(
                           style = "background-color: #F5aa4c;",
                           width = 3,
-                          
                           radioButtons('typeData', 
                                        "What kind of data do you use?",
                                        choices = c('microarray data (in log scale)' = 'microarraydata', 
@@ -137,8 +136,7 @@ ui <- fluidPage(
                                                    'metabolomics data (in log scale)' = 'metabolomicdata',
                                                    'anchoring continuous data (in a scale that enables the use of a normal error model)' = 'continuousanchoringdata'),
                                        selected = 'microarraydata'),
-                          br(),
-                          hr(), br(),
+                          hr(), 
                           
                           ###### For micro-array data (default)
                           conditionalPanel(
@@ -155,7 +153,7 @@ ui <- fluidPage(
                                         bsButton("bgdose_help1", label = "", icon = icon("question"), size = "small"),
                                         bsPopover("bgdose_help1", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
                             ),
-                            br(), hr(), br(), 
+                            hr(), 
                             radioButtons('normMethod_microarray',
                                          'Select a method to normalize the data',
                                          choices = c('cyclic loess' = 'cyclicloess',
@@ -176,13 +174,13 @@ ui <- fluidPage(
                             h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
                             h5("See ", a("here", href = "DRomicspkg/RNAseq_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'RNAseq_sample.txt'), " an example file"),
                             icon("exclamation-triangle"), "Be aware that counts are automatically rounded to ensure compatibility of counts from Kallisto or Salmon with the tool.",
-                            br(), br(), 
+                            br(), br(),
                             splitLayout(cellWidths = c("40%", "60%"),
                                         textInput('bgdose_rnaseq', "Background dose", 0),
                                         bsButton("bgdose_help2", label = "", icon = icon("question"), size = "small"),
                                         bsPopover("bgdose_help2", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
                             ),
-                            br(), hr(), br(), 
+                            hr(), 
                             radioButtons('transfoMethod_rnaseq',
                                          'Select a method to transform the data',
                                          choices = c('regularized logarithm (rlog)' = 'rlog',
@@ -200,13 +198,13 @@ ui <- fluidPage(
                                       accept = c('.csv', '.txt')),
                             h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
                             h5("See ", a("here", href = "DRomicspkg/metabolo_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'metabolo_norm.txt'), " an example file"),
-                            br(), 
+                            br(),
                             splitLayout(cellWidths = c("40%", "60%"),
                                         textInput('bgdose_metabolomic', "Background dose", 0),
                                         bsButton("bgdose_help3", label = "", icon = icon("question"), size = "small"),
                                         bsPopover("bgdose_help3", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
                             ),
-                            br(), hr(), br(), 
+                            hr(), 
                             icon("exclamation-triangle"), "We recommend you to check that your metabolomics data were correctly pretreated before importation. In particular data (metabolomic signal) should have been log-transformed, without replacing 0 values by NA values (consider using the half minimum method instead for example).",
                             h5("See ", a("here", href = "informations_metabolo_pretreatment.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " more information about metabolomics data pretreatment")
                           ),
@@ -226,9 +224,16 @@ ui <- fluidPage(
                                         bsButton("bgdose_help4", label = "", icon = icon("question"), size = "small"),
                                         bsPopover("bgdose_help4", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
                             ),
-                            br(), hr(), br(), 
+                            hr(), 
                             icon("exclamation-triangle"),
                             "We recommend you to check that your anchoring data are continuous and expressed in a scale that enables the use of a normal error model (a transformation of data may be needed for some endpoints). If this assumption is not respected, results of selection and further steps may be inaccurate."
+                          ),
+                          
+                          hr(), 
+                          fixedRow(
+                            column(12, align="center",
+                                   actionButton("buttonImport", "Import", icon = icon("file-import"), style='font-size:200%')
+                            )
                           )
                         ),
                         
