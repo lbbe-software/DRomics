@@ -289,62 +289,51 @@ ui <- fluidPage(
              ####### STEP 3 #####################################################################
              ####################################################################################
              tabPanel(HTML("<font face=verdana size=3 color=#9c5c16>Step 3</font>"),
-                      fluidRow(
+                      fixedRow(
                         column(12, 
                                br(), HTML("<font face=verdana size=5 color=#9c5c16><b>DOSE RESPONSE MODELLING FOR RESPONSIVE ITEMS</b></font>"), br(), br(), br(),
-                               fluidRow(
+                               fixedRow(
                                  sidebarPanel(
                                    style = "background-color: #F5aa4c;",
-                                   width = 8,
-                                   fluidRow(
-                                     column(width = 6, 
-                                            "Click this button each time you update a setting in previous steps:",
-                                            br(), 
-                                            h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the dose reponse modelling procedure")
-                                     ),
-                                     column(width = 2, actionButton("buttonDrcfit", "Fit", icon = icon("chart-bar"), style='font-size:250%')),
-                                     column(width = 4,
-                                            sidebarPanel(
-                                              style = "background-color: #FFFFFF;",
-                                              width = 12,
-                                              icon("exclamation-triangle"),
-                                              "These ongoing calculations can take from minutes to about an hour. Your patience should be proportional to the size of your data and the chosen FDR."
-                                            )
-                                     )
-                                   )
-                                 )
-                               ),
-                               
-                               fluidRow(
-                                 mainPanel(
-                                   width = 12,
-                                   verbatimTextOutput('printDrcfit'),
+                                   width = 3,
+                                   "Click this button each time you update a setting in previous steps:",
+                                   br(), br(),
+                                   fixedRow(
+                                     column(12, align="center",
+                                            actionButton("buttonDrcfit", "Fit", icon = icon("chart-bar"), style='font-size:250%')
+                                     )),
                                    br(),
-                                   fluidRow(
-                                     column(width = 3,
-                                            radioButtons('plottypeDrcfit', 
-                                                         'Plot type', inline = TRUE, 
-                                                         choices = c('dose / fitted' = 'dose_fitted',
-                                                                     'dose / residuals' = 'dose_residuals',
-                                                                     'fitted / residuals' = 'fitted_residuals'),
-                                                         selected = "dose_fitted")),
-                                     column(width = 2,
-                                            radioButtons('logdosescale',
-                                                         'Log dose-scale', inline = TRUE,
-                                                         choices = c('yes' = 'TRUE',
-                                                                     'no' = 'FALSE'),
-                                                         selected = "FALSE")),
-                                     column(width = 3,
-                                            useShinyjs(),
+                                   h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the dose reponse modelling procedure"),
+                                   icon("exclamation-triangle"),
+                                   "These ongoing calculations can take from minutes to about an hour. Your patience should be proportional to the size of your data and the chosen FDR.",
+                                   hr(), 
+                                   radioButtons('plottypeDrcfit', 
+                                                'Plot type', inline = TRUE, 
+                                                choices = c('dose / fitted' = 'dose_fitted',
+                                                            'dose / residuals' = 'dose_residuals',
+                                                            'fitted / residuals' = 'fitted_residuals'),
+                                                selected = "dose_fitted"),
+                                   radioButtons('logdosescale',
+                                                'Log dose-scale', inline = TRUE,
+                                                choices = c('yes' = 'TRUE',
+                                                            'no' = 'FALSE'),
+                                                selected = "FALSE"),
+                                   hr(), 
+                                   useShinyjs(),
+                                   fixedRow(
+                                     column(12, align="center",
                                             hidden(
                                               downloadButton("buttonDownloadDrcfitplot", 
                                                              HTML("Download all the fitted<br/>dose-response plots"), 
-                                                             style = 'background-color:#F5aa4c; color:#000000; border-color:#9d9d9d; font-size:110%;', 
+                                                             style = 'font-size:110%;', 
                                                              icon = icon("fas fa-download"))
-                                            )
-                                     )
-                                   ),
-                                   br(),
+                                            )))
+                                 ),
+                                 
+                                 mainPanel(
+                                   width = 9,
+                                   verbatimTextOutput('printDrcfit'),
+                                   br(), br(),
                                    withSpinner(plotOutput("plotDrcfit", width = "100%", height = "900px"), type = 4, color = '#9c5c16'),
                                    br(), br()
                                  )
