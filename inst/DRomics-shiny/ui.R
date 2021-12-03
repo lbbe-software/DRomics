@@ -122,181 +122,125 @@ ui <- fluidPage(
              ####### STEP 1 #####################################################################
              ####################################################################################
              tabPanel(HTML("<font face=verdana size=3 color=#9c5c16>Step 1</font>"),
+                      br(), HTML("<font face=verdana size=5 color=#9c5c16><b>IMPORT, CHECK AND PRETREATMENT OF OMICS DATA</b></font>"), br(), br(), br(),
                       fixedRow(
-                        column(12, 
-                               br(), HTML("<font face=verdana size=5 color=#9c5c16><b>IMPORT, CHECK AND PRETREATMENT OF OMICS DATA</b></font>"), br(), br(), br(),
-                               
-                               fixedRow(
-                                 
-                                 ###### Select type of data 
-                                 sidebarPanel(
-                                   style = "background-color: #F5aa4c;",
-                                   width = 4,
-                                   radioButtons('typeData', 
-                                                "What kind of data do you use?",
-                                                choices = c('microarray data (in log scale)' = 'microarraydata', 
-                                                            'RNAseq data (in raw counts)' = 'rnaseqdata',
-                                                            'metabolomics data (in log scale)' = 'metabolomicdata',
-                                                            'anchoring continuous data (in a scale that enables the use of a normal error model)' = 'continuousanchoringdata'),
-                                                selected = 'microarraydata'), 
-                                   br()),
-                                 
-                                 ###### For micro-array data (default)
-                                 conditionalPanel(
-                                   condition = "input.typeData == 'microarraydata'",
-                                   sidebarPanel(
-                                     style = "background-color: #F5aa4c;",
-                                     width = 4,
-                                     fixedRow(
-                                       column(width = 7, 
-                                              tags$style(HTML('#bgdose_help1 {margin-top: 26px}')),
-                                              fileInput('datafile_microarray', 
-                                                        'Select an input file',
-                                                        accept = c('.csv', '.txt')),
-                                              splitLayout(cellWidths = c("60%", "40%"), 
-                                                          textInput('bgdose_microarray', "Background dose", 0), 
-                                                          bsButton("bgdose_help1", label = "", icon = icon("question"), size = "small"),
-                                                          bsPopover("bgdose_help1", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
-                                              )
-                                       ),
-                                       
-                                       column(width = 5, 
-                                              h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
-                                              h5("See ", a("here", href = "DRomicspkg/transcripto_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'transcripto_sample.txt'), " an example file"))
-                                     )
-                                   ),
-                                   sidebarPanel(
-                                     style = "background-color: #F5aa4c;",
-                                     width = 4,
-                                     radioButtons('normMethod_microarray', 
-                                                  'Select a method to normalize the data',
-                                                  choices = c('cyclic loess' = 'cyclicloess',
-                                                              'quantile' = 'quantile',
-                                                              'scale' = 'scale',
-                                                              'no normalization' = 'none'),
-                                                  selected = 'cyclicloess'),
-                                     
-                                     h5("See ", a("here", href = "informations_norm_methods.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the normalization methods")
-                                   )
-                                 ),
-                                 
-                                 ###### For RNA-seq data
-                                 conditionalPanel(
-                                   condition = "input.typeData == 'rnaseqdata'",
-                                   sidebarPanel(
-                                     style = "background-color: #F5aa4c;",
-                                     width = 4,
-                                     fixedRow(
-                                       column(width = 7, 
-                                              tags$style(HTML('#bgdose_help2 {margin-top: 26px}')),
-                                              fileInput('datafile_rnaseq', 
-                                                        'Select an input file',
-                                                        accept = c('.csv', '.txt')),
-                                              splitLayout(cellWidths = c("60%", "40%"), 
-                                                          textInput('bgdose_rnaseq', "Background dose", 0),
-                                                          bsButton("bgdose_help2", label = "", icon = icon("question"), size = "small"),
-                                                          bsPopover("bgdose_help2", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
-                                              )
-                                       ),
-                                       column(width = 5,
-                                              h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
-                                              h5("See ", a("here", href = "DRomicspkg/RNAseq_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'RNAseq_sample.txt'), " an example file"),
-                                              icon("exclamation-triangle"), "Be aware that counts are automatically rounded to ensure compatibility of counts from Kallisto or Salmon with the tool."
-                                       )
-                                     )
-                                   ),
-                                   sidebarPanel(
-                                     style = "background-color: #F5aa4c;",
-                                     width = 4,
-                                     radioButtons('transfoMethod_rnaseq', 
-                                                  'Select a method to transform the data',
-                                                  choices = c('regularized logarithm (rlog)' = 'rlog',
-                                                              'variance stabilizing transformation (vst)' = 'vst'),
-                                                  selected = 'rlog'),
-                                     
-                                     h5("See ", a("here", href = "informations_transfo_methods.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the transformation methods")
-                                   )
-                                 ),
-                                 
-                                 ###### For metabolomic data
-                                 conditionalPanel(
-                                   condition = "input.typeData == 'metabolomicdata'",
-                                   sidebarPanel(
-                                     style = "background-color: #F5aa4c;",
-                                     width = 4,
-                                     fixedRow(
-                                       column(width = 7, 
-                                              tags$style(HTML('#bgdose_help3 {margin-top: 26px}')),
-                                              fileInput('datafile_metabolomic', 
-                                                        'Select an input file',
-                                                        accept = c('.csv', '.txt')),
-                                              splitLayout(cellWidths = c("60%", "40%"), 
-                                                          textInput('bgdose_metabolomic', "Background dose", 0),
-                                                          bsButton("bgdose_help3", label = "", icon = icon("question"), size = "small"),
-                                                          bsPopover("bgdose_help3", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
-                                              )
-                                       ),
-                                       column(width = 5,
-                                              h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
-                                              h5("See ", a("here", href = "DRomicspkg/metabolo_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'metabolo_norm.txt'), " an example file")
-                                       )
-                                     )
-                                   ),
-                                   sidebarPanel(
-                                     style = "background-color: #F5aa4c;",
-                                     width = 4,
-                                     icon("exclamation-triangle"), "We recommend you to check that your metabolomics data were correctly pretreated before importation. In particular data (metabolomic signal) should have been log-transformed, without replacing 0 values by NA values (consider using the half minimum method instead for example).",
-                                     h5("See ", a("here", href = "informations_metabolo_pretreatment.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " more information about metabolomics data pretreatment")
-                                   )
-                                 ),
-                                 
-                                 ###### For continuous anchoring data
-                                 conditionalPanel(
-                                   condition = "input.typeData == 'continuousanchoringdata'",
-                                   sidebarPanel(
-                                     style = "background-color: #F5aa4c;",
-                                     width = 4,
-                                     
-                                     fixedRow(
-                                       column(width = 7, 
-                                              tags$style(HTML('#bgdose_help4 {margin-top: 26px}')),
-                                              fileInput('datafile_anchoring', 
-                                                        'Select an input file',
-                                                        accept = c('.csv', '.txt')),
-                                              splitLayout(cellWidths = c("60%", "40%"), 
-                                                          textInput('bgdose_anchoring', "Background dose", 0),
-                                                          bsButton("bgdose_help4", label = "", icon = icon("question"), size = "small"),
-                                                          bsPopover("bgdose_help4", "", text_bgdose, placement = "bottom", trigger = "hover", options = NULL)
-                                              )
-                                       ),
-                                       column(width = 5,
-                                              h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
-                                              h5("See ", a("here", href = "DRomicspkg/apical_anchoring.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'apical_anchoring.txt'), " an example file")
-                                       )
-                                     )
-                                   ),
-                                   sidebarPanel(
-                                     style = "background-color: #F5aa4c;",
-                                     width = 4,
-                                     icon("exclamation-triangle"), 
-                                     "We recommend you to check that your anchoring data are continuous and expressed in a scale that enables the use of a normal error model (a transformation of data may be needed for some endpoints). If this assumption is not respected, results of selection and further steps may be inaccurate."
-                                   )
-                                 )
-                                 
-                               ),
-                               
-                               
-                               fixedRow(
-                                 mainPanel(
-                                   width = 12,
-                                   verbatimTextOutput('printOmicData'),
-                                   br(),
-                                   withSpinner(plotOutput("plotOmicData", width = "100%", height = "900px"), type = 4, color = '#9c5c16'),
-                                   br()
-                                 )
-                               )
+                        
+                        ###### Select type of data                                
+                        sidebarPanel(
+                          style = "background-color: #F5aa4c;",
+                          width = 3,
+                          
+                          radioButtons('typeData', 
+                                       "What kind of data do you use?",
+                                       choices = c('microarray data (in log scale)' = 'microarraydata', 
+                                                   'RNAseq data (in raw counts)' = 'rnaseqdata',
+                                                   'metabolomics data (in log scale)' = 'metabolomicdata',
+                                                   'anchoring continuous data (in a scale that enables the use of a normal error model)' = 'continuousanchoringdata'),
+                                       selected = 'microarraydata'),
+                          br(),
+                          hr(), br(),
+                          
+                          ###### For micro-array data (default)
+                          conditionalPanel(
+                            condition = "input.typeData == 'microarraydata'",
+                            tags$style(HTML('#bgdose_help1 {margin-top: 26px}')),
+                            fileInput('datafile_microarray',
+                                      'Select an input file',
+                                      accept = c('.csv', '.txt')),
+                            h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
+                            h5("See ", a("here", href = "DRomicspkg/transcripto_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'transcripto_sample.txt'), " an example file"),
+                            br(),
+                            splitLayout(cellWidths = c("40%", "60%"),
+                                        textInput('bgdose_microarray', "Background dose", 0),
+                                        bsButton("bgdose_help1", label = "", icon = icon("question"), size = "small"),
+                                        bsPopover("bgdose_help1", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
+                            ),
+                            br(), hr(), br(), 
+                            radioButtons('normMethod_microarray',
+                                         'Select a method to normalize the data',
+                                         choices = c('cyclic loess' = 'cyclicloess',
+                                                     'quantile' = 'quantile',
+                                                     'scale' = 'scale',
+                                                     'no normalization' = 'none'),
+                                         selected = 'cyclicloess'),
+                            h5("See ", a("here", href = "informations_norm_methods.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the normalization methods")
+                          ),
+                          
+                          ###### For RNA-seq data
+                          conditionalPanel(
+                            condition = "input.typeData == 'rnaseqdata'",
+                            tags$style(HTML('#bgdose_help2 {margin-top: 26px}')),
+                            fileInput('datafile_rnaseq',
+                                      'Select an input file',
+                                      accept = c('.csv', '.txt')),
+                            h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
+                            h5("See ", a("here", href = "DRomicspkg/RNAseq_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'RNAseq_sample.txt'), " an example file"),
+                            icon("exclamation-triangle"), "Be aware that counts are automatically rounded to ensure compatibility of counts from Kallisto or Salmon with the tool.",
+                            br(), br(), 
+                            splitLayout(cellWidths = c("40%", "60%"),
+                                        textInput('bgdose_rnaseq', "Background dose", 0),
+                                        bsButton("bgdose_help2", label = "", icon = icon("question"), size = "small"),
+                                        bsPopover("bgdose_help2", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
+                            ),
+                            br(), hr(), br(), 
+                            radioButtons('transfoMethod_rnaseq',
+                                         'Select a method to transform the data',
+                                         choices = c('regularized logarithm (rlog)' = 'rlog',
+                                                     'variance stabilizing transformation (vst)' = 'vst'),
+                                         selected = 'rlog'),
+                            h5("See ", a("here", href = "informations_transfo_methods.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the transformation methods")
+                          ),
+                          
+                          ###### For metabolomic data
+                          conditionalPanel(
+                            condition = "input.typeData == 'metabolomicdata'",
+                            tags$style(HTML('#bgdose_help3 {margin-top: 26px}')),
+                            fileInput('datafile_metabolomic',
+                                      'Select an input file',
+                                      accept = c('.csv', '.txt')),
+                            h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
+                            h5("See ", a("here", href = "DRomicspkg/metabolo_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'metabolo_norm.txt'), " an example file"),
+                            br(), 
+                            splitLayout(cellWidths = c("40%", "60%"),
+                                        textInput('bgdose_metabolomic', "Background dose", 0),
+                                        bsButton("bgdose_help3", label = "", icon = icon("question"), size = "small"),
+                                        bsPopover("bgdose_help3", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
+                            ),
+                            br(), hr(), br(), 
+                            icon("exclamation-triangle"), "We recommend you to check that your metabolomics data were correctly pretreated before importation. In particular data (metabolomic signal) should have been log-transformed, without replacing 0 values by NA values (consider using the half minimum method instead for example).",
+                            h5("See ", a("here", href = "informations_metabolo_pretreatment.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " more information about metabolomics data pretreatment")
+                          ),
+                          
+                          ###### For continuous anchoring data
+                          conditionalPanel(
+                            condition = "input.typeData == 'continuousanchoringdata'",
+                            tags$style(HTML('#bgdose_help4 {margin-top: 26px}')),
+                            fileInput('datafile_anchoring',
+                                      'Select an input file',
+                                      accept = c('.csv', '.txt')),
+                            h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
+                            h5("See ", a("here", href = "DRomicspkg/apical_anchoring.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'apical_anchoring.txt'), " an example file"),
+                            br(), 
+                            splitLayout(cellWidths = c("40%", "60%"),
+                                        textInput('bgdose_anchoring', "Background dose", 0),
+                                        bsButton("bgdose_help4", label = "", icon = icon("question"), size = "small"),
+                                        bsPopover("bgdose_help4", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
+                            ),
+                            br(), hr(), br(), 
+                            icon("exclamation-triangle"),
+                            "We recommend you to check that your anchoring data are continuous and expressed in a scale that enables the use of a normal error model (a transformation of data may be needed for some endpoints). If this assumption is not respected, results of selection and further steps may be inaccurate."
+                          )
+                        ),
+                        
+                        mainPanel(
+                          width = 9,
+                          verbatimTextOutput('printOmicData'),
+                          br(),
+                          withSpinner(plotOutput("plotOmicData", width = "100%", height = "900px"), type = 4, color = '#9c5c16'),
+                          br()
                         )
-                      )),
+                      )
+             ),
              
              
              ####################################################################################
