@@ -337,7 +337,7 @@ server <- function(input, output, session) {
                 paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', by = '", input$splitby, "', hist.bins = ", input$histbin, ")")
               },
               paste0("plot(f, plot.type = 'dose_fitted', BMDoutput = r, BMDtype = '", input$BMDtype_plot2pdf, 
-                     "', dose_log_transfo = ", input$logbmd_plot2pdf, "))")
+                     "', dose_log_transfo = ", input$logbmd_plot2pdf, ")")
     )
     
     output$buttonDownRCode <- downloadHandler(
