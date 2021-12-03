@@ -273,11 +273,9 @@ ui <- fluidPage(
                                      column(12, align="center",
                                             downloadButton("buttonDowloadItems", "Download all items", icon = icon("fas fa-download"), style='font-size:110%')
                                      ))
-                                 )
-                               ),
-                               fixedRow(
+                                 ),
                                  mainPanel(
-                                   width = 12,
+                                   width = 9,
                                    withSpinner(verbatimTextOutput('printItemSelect'), type = 4, color = '#9c5c16')
                                  )
                                )
@@ -321,7 +319,7 @@ ui <- fluidPage(
                                    hr(), 
                                    useShinyjs(),
                                    fixedRow(
-                                     column(12, align="center",
+                                     column(9, align="center",
                                             hidden(
                                               downloadButton("buttonDownloadDrcfitplot", 
                                                              HTML("Download all the fitted<br/>dose-response plots"), 
@@ -352,7 +350,7 @@ ui <- fluidPage(
                                fixedRow(
                                  sidebarPanel(
                                    style = "background-color: #F5aa4c;",
-                                   width = 2,
+                                   width = 3,
                                    textInput('zbmdcalc', label = 'z value for BMD-zSD', value = "1"),
                                    textInput('xbmdcalc', label = 'x value for BMD-xfold (in %)', value = "10"),
                                    h5("See ", a("here", href = "informations_z_x.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the BMD-zSD and the BMD-xfold"),
@@ -365,7 +363,7 @@ ui <- fluidPage(
                                    h5("See ", a("here", href = "informations_bmdcalc_results.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the provided results")
                                  ),
                                  mainPanel(
-                                   width = 10,
+                                   width = 9,
                                    verbatimTextOutput('printBmdcalc')
                                  )),
                                
@@ -373,7 +371,7 @@ ui <- fluidPage(
                                fixedRow(
                                  sidebarPanel(
                                    style = "background-color: #F5aa4c;",
-                                   width = 2,
+                                   width = 3,
                                    radioButtons('BMDtype', 
                                                 'BMD type', inline = TRUE,
                                                 choices = c('zSD' = 'zSD',
@@ -439,7 +437,7 @@ ui <- fluidPage(
                                    )
                                  ),
                                  mainPanel(
-                                   width = 10,
+                                   width = 9,
                                    plotOutput("plotBmdcalc", width = "100%", height = "900px")
                                  )
                                ),
@@ -448,7 +446,7 @@ ui <- fluidPage(
                                fixedRow(
                                  sidebarPanel(
                                    style = "background-color: #F5aa4c;",
-                                   width = 2,
+                                   width = 3,
                                    radioButtons('BMDtype_plot2pdf', 
                                                 'BMD type', inline = TRUE,
                                                 choices = c('zSD' = 'zSD',
@@ -468,7 +466,7 @@ ui <- fluidPage(
                                    )
                                  ),
                                  mainPanel(
-                                   width = 10,
+                                   width = 9,
                                    plotOutput("plotDrcfitBMD", width = "100%", height = "900px"),
                                    br(), br()
                                  )
