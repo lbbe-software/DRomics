@@ -267,14 +267,18 @@ ui <- fluidPage(
                                    h5("See ", a("here", href = "informations_select_methods.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the selection methods"),
                                    br(),
                                    textInput('FDR', label = 'False Discovery Rate (FDR) for the Benjamini-Hochberg correction of p-values', value = "0.05"),
-                                   h5("See ", a("here", href = "informations_FDR_choice.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the choice of FDR")
+                                   h5("See ", a("here", href = "informations_FDR_choice.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the choice of FDR"),
+                                   hr(),
+                                   fixedRow(
+                                     column(12, align="center",
+                                            downloadButton("buttonDowloadItems", "Download all items", icon = icon("fas fa-download"), style='font-size:110%')
+                                     ))
                                  )
                                ),
                                fixedRow(
                                  mainPanel(
                                    width = 12,
-                                   withSpinner(verbatimTextOutput('printItemSelect'), type = 4, color = '#9c5c16'),
-                                   downloadButton("buttonDowloadItems", "Download all items", icon = icon("fas fa-download"))
+                                   withSpinner(verbatimTextOutput('printItemSelect'), type = 4, color = '#9c5c16')
                                  )
                                )
                         )
