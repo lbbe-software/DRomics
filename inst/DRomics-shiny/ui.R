@@ -319,7 +319,7 @@ ui <- fluidPage(
                                    hr(), 
                                    useShinyjs(),
                                    fixedRow(
-                                     column(9, align="center",
+                                     column(12, align="center",
                                             hidden(
                                               downloadButton("buttonDownloadDrcfitplot", 
                                                              HTML("Download all the fitted<br/>dose-response plots"), 
@@ -359,7 +359,7 @@ ui <- fluidPage(
                                      column(12, align="center",
                                             downloadButton("buttonResBmdcalc", "Download results", icon = icon("fas fa-download"))
                                      )
-                                   ),
+                                   ), br(),
                                    h5("See ", a("here", href = "informations_bmdcalc_results.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the provided results")
                                  ),
                                  mainPanel(
