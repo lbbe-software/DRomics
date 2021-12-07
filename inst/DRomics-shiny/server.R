@@ -16,35 +16,45 @@ server <- function(input, output, session) {
   
   ## Input: file data
   filedata <- eventReactive(input$buttonImport, {
-    
-    if(inTypeData() == 'microarraydata') {
-      req(input$datafile_microarray)
-      validateFile(input$datafile_microarray)
-      microarraydata(input$datafile_microarray$datapath, backgrounddose = as.numeric(input$bgdose_microarray), check = TRUE, norm.method = input$normMethod_microarray)
-    } else if(inTypeData() == 'rnaseqdata') {
-      req(input$datafile_rnaseq)
-      validateFile(input$datafile_rnaseq)
-      RNAseqdata(input$datafile_rnaseq$datapath, backgrounddose = as.numeric(input$bgdose_rnaseq), check = TRUE, transfo.method = input$transfoMethod_rnaseq, round.counts = TRUE)
-    } else if(inTypeData() == 'metabolomicdata') {
-      req(input$datafile_metabolomic)
-      validateFile(input$datafile_metabolomic)
-      metabolomicdata(input$datafile_metabolomic$datapath, backgrounddose = as.numeric(input$bgdose_metabolomic), check = TRUE)
-    } else if(inTypeData() == 'continuousanchoringdata') {
-      req(input$datafile_anchoring)
-      validateFile(input$datafile_anchoring)
-      continuousanchoringdata(input$datafile_anchoring$datapath, backgrounddose = as.numeric(input$bgdose_anchoring), check = TRUE)
+    tryCatch({
+      if(inTypeData() == 'microarraydata') {
+        req(input$datafile_microarray)
+        validateFile(input$datafile_microarray)
+        microarraydata(input$datafile_microarray$datapath, backgrounddose = as.numeric(input$bgdose_microarray), check = TRUE, norm.method = input$normMethod_microarray)
+      } else if(inTypeData() == 'rnaseqdata') {
+        req(input$datafile_rnaseq)
+        validateFile(input$datafile_rnaseq)
+        RNAseqdata(input$datafile_rnaseq$datapath, backgrounddose = as.numeric(input$bgdose_rnaseq), check = TRUE, transfo.method = input$transfoMethod_rnaseq, round.counts = TRUE)
+      } else if(inTypeData() == 'metabolomicdata') {
+        req(input$datafile_metabolomic)
+        validateFile(input$datafile_metabolomic)
+        metabolomicdata(input$datafile_metabolomic$datapath, backgrounddose = as.numeric(input$bgdose_metabolomic), check = TRUE)
+      } else if(inTypeData() == 'continuousanchoringdata') {
+        req(input$datafile_anchoring)
+        validateFile(input$datafile_anchoring)
+        continuousanchoringdata(input$datafile_anchoring$datapath, backgrounddose = as.numeric(input$bgdose_anchoring), check = TRUE)}
+    },
+    error = function(err) {
+      # must contain the error returned when the data does not contain dose at zero (see background dose)
+      # useful to catch and redirect errors when the app is deployed on a shiny server
+      return(err) 
     }
+    )      
   })
   
   ## Output : print and plot omic data
   output$printOmicData <- renderPrint({ 
     ff <- filedata()
-    print(ff)
+    if(!"message"%in%names(ff))
+      print(ff)
+    else
+      cat(ff$message)
   })
   
   output$plotOmicData <- renderPlot({
     ff <- filedata()
-    plot(ff, range = 1e10)
+    if(!"message"%in%names(ff))
+      plot(ff, range = 1e10)
   })
   
   
