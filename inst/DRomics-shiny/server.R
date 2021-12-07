@@ -48,7 +48,7 @@ server <- function(input, output, session) {
     if(!"message"%in%names(ff))
       print(ff)
     else
-      cat(ff$message)
+      cat("Error:\n", ff$message)
   })
   
   output$plotOmicData <- renderPlot({
