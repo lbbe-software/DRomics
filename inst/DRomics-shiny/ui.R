@@ -271,7 +271,7 @@ ui <- fluidPage(
                                    hr(),
                                    fixedRow(
                                      column(12, align="center",
-                                            actionButton("buttonRunStep2", "Run", icon = icon("file-import"), style='font-size:200%')
+                                            actionButton("buttonRunStep2", "Run", icon = icon("fas fa-cog"), style='font-size:200%')
                                      )
                                    ), br(), 
                                    fixedRow(
@@ -360,6 +360,11 @@ ui <- fluidPage(
                                    textInput('xbmdcalc', label = 'x value for BMD-xfold (in %)', value = "10"),
                                    h5("See ", a("here", href = "informations_z_x.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the BMD-zSD and the BMD-xfold"),
                                    hr(),
+                                   fixedRow(
+                                     column(12, align="center",
+                                            actionButton("buttonRunStep4", "Calculate", icon = icon("fas fa-calculator"), style='font-size:200%')
+                                     )
+                                   ), br(), 
                                    fluidRow(
                                      column(12, align="center",
                                             downloadButton("buttonResBmdcalc", "Download results", icon = icon("fas fa-download"))

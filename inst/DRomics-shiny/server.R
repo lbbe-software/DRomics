@@ -139,8 +139,8 @@ server <- function(input, output, session) {
   ####### STEP 4 #####################################################################
   ####################################################################################
   
-  numZbmdcalc <- reactive({as.numeric(input$zbmdcalc)})
-  numXbmdcalc <- reactive({as.numeric(input$xbmdcalc)})
+  numZbmdcalc <- eventReactive(input$buttonRunStep4, {as.numeric(input$zbmdcalc)})
+  numXbmdcalc <- eventReactive(input$buttonRunStep4, {as.numeric(input$xbmdcalc)})
   
   output$printBmdcalc <- renderPrint({
     
