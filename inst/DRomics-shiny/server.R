@@ -62,8 +62,8 @@ server <- function(input, output, session) {
   ####### STEP 2 #####################################################################
   ####################################################################################
   
-  inFDR <- reactive({as.numeric(input$FDR)})
-  inSelectMethod <- reactive({input$selectMethod})
+  inFDR <- eventReactive(input$buttonRunStep2, {as.numeric(input$FDR)})
+  inSelectMethod <- eventReactive(input$buttonRunStep2, {input$selectMethod})
   observe({shinyjs::disable("buttonDowloadItems")})
   
   output$printItemSelect <- renderPrint({ 

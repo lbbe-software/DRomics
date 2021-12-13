@@ -271,6 +271,11 @@ ui <- fluidPage(
                                    hr(),
                                    fixedRow(
                                      column(12, align="center",
+                                            actionButton("buttonRunStep2", "Run", icon = icon("file-import"), style='font-size:200%')
+                                     )
+                                   ), br(), 
+                                   fixedRow(
+                                     column(12, align="center",
                                             downloadButton("buttonDowloadItems", "Download all items", icon = icon("fas fa-download"), style='font-size:110%')
                                      ))
                                  ),
