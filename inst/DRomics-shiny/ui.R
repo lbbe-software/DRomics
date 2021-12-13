@@ -183,7 +183,7 @@ ui <- fluidPage(
                             hr(), 
                             radioButtons('transfoMethod_rnaseq',
                                          'Select a method to transform the data',
-                                         choices = c('regularized logarithm (rlog)' = 'rlog',
+                                         choices = c('regularized logarithm (rlog, may take a few minutes)' = 'rlog',
                                                      'variance stabilizing transformation (vst)' = 'vst'),
                                          selected = 'rlog'),
                             h5("See ", a("here", href = "informations_transfo_methods.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the transformation methods")
@@ -232,7 +232,7 @@ ui <- fluidPage(
                           hr(), 
                           fixedRow(
                             column(12, align="center",
-                                   actionButton("buttonImport", "Import", icon = icon("file-import"), style='font-size:200%')
+                                   actionButton("buttonImport", "Run", icon = icon("file-import"), style='font-size:200%')
                             )
                           )
                         ),
