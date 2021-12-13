@@ -15,7 +15,7 @@ server <- function(input, output, session) {
   }
   
   ## Input: file data
-  filedata <- eventReactive(input$buttonImport, {
+  filedata <- eventReactive(input$buttonRunStep1, {
     tryCatch({
       if(inTypeData() == 'microarraydata') {
         req(input$datafile_microarray)

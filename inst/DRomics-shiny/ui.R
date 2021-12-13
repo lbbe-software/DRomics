@@ -232,7 +232,7 @@ ui <- fluidPage(
                           hr(), 
                           fixedRow(
                             column(12, align="center",
-                                   actionButton("buttonImport", "Run", icon = icon("file-import"), style='font-size:200%')
+                                   actionButton("buttonRunStep1", "Run", icon = icon("file-import"), style='font-size:200%')
                             )
                           )
                         ),
