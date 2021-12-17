@@ -3,6 +3,8 @@
 Version 2.4-0 
 =======================
 NEW FEATURES
+- Forbid the use of the "ANOVA" method to select items when more than half of the doses are without replicates (e.g. for in situ data)
+- Add of a example data set named insitu_RNAseq_sample.txt for tests and examples
 - Add of arguments BMDoutput and BMDtype to plot.drcfit() and 
 plotfit2pdf to make possible the add of BMD values and confidence 
 intervals on the plot of fits.
