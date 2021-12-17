@@ -13,6 +13,15 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
     or 'continuousomicdata()'
     and 'continuousanchoringdata()'.")
   select.method <- match.arg(select.method, c("quadratic", "linear", "ANOVA"))
+  if (select.method == "ANOVA")
+  {
+    # Check that there are replicates for at least half of the doses
+    nbdoses <- length(omicdata$design)
+    nbdoseswithoutrep <- sum(omicdata$design == 1)
+    if (nbdoseswithoutrep > nbdoses / 2) 
+      stop("The ANOVA method should not be used when there are more than half of the doses 
+           without replicates. Choose the quadratic or linear trend test for such a design.")
+  }
   if (!is.numeric(FDR))
     stop("FDR, the false discovery rate, must a number in ]0; 1[ (generally under 0.1).")
   if ((FDR <=0) | (FDR >=1))

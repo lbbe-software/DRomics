@@ -44,12 +44,12 @@ for microarray and continuous omics data (such as metabolomics), the \code{DESeq
 RNAseq data and the \code{lm} function for continuous anchoring data. 
 Three methods are proposed (as described below). Within \code{limma} those methods are implemented using functions \code{\link{lmFit}},  
 \code{\link{eBayes}} and \code{\link{topTable}} with p-values ajusted for multiple 
-testing using the Benjamini-Hochberg method, with the false discovery rate given in
+testing using the Benjamini-Hochberg method (also called q-values), with the false discovery rate given in
 input (argument \code{FDR}). 
 Within \code{DESeq2} those methods
 are implemented using functions \code{\link{DESeqDataSetFromMatrix}},  
 \code{\link{DESeq}} and \code{\link{results}} with p-values ajusted for multiple 
-testing using the Benjamini-Hochberg method, with the false discovery rate given in
+testing using the Benjamini-Hochberg method (also called q-values), with the false discovery rate given in
 input (argument \code{FDR}). 
 For continuous anchoring data, the \code{lm} and \code{anova} functions are used 
 to fit the model and compare it to the null model, and the pvalues are then corrected using
@@ -81,7 +81,8 @@ All items having a proportion of such tied minimal values above the input argume
 \value{ 
    \code{itemselect} returns an object of class \code{"itemselect"}, a list with 5 components:
     
-  \item{ adjpvalue }{ the vector of the p-values adjusted by the Benjamini-Hochberg method for selected items 
+  \item{ adjpvalue }{ the vector of the p-values adjusted by the Benjamini-Hochberg method 
+  (also called q-values) for selected items 
 (adjpvalue inferior to FDR) sorted in ascending order}
 
   \item{ selectindex }{ the corresponding vector of row indices of selected items in the object omicdata }

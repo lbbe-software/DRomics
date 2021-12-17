@@ -10,6 +10,7 @@ if (visualize)
   (o <- RNAseqdata(datafilename, backgrounddose = 2e-2, transfo.method = "vst"))
 #  (o <- RNAseqdata(datafilename, backgrounddose = 2e-2, transfo.method = "rlog"))
   (s <- itemselect(o)) 
+#  (s <- itemselect(o, select.method = "ANOVA")) # should stop
   (f <- drcfit(s))
   (fbis <- drcfit(s, enablesfequal0inGP = FALSE,
                   enablesfequal0inLGP = FALSE, 
