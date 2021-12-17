@@ -378,12 +378,6 @@ server <- function(input, output, session) {
     
     text <- c("# Few lines of R script to go further using the package",
               "",
-              "# Plot of fitted curves",
-              "curvesplot(f$fitres, xmax = max(f$omicdata$dose), facetby = 'trend', colorby = 'model') + 
-  xlab('dose') + ylab('theoretical signal')",
-              "# The first argument can be an extended dataframe, which could be used to split",
-              "# the plot of color the curves (using facetby or colorby)",
-              "",
               "# Bootstrap to compute confidence intervals on BMD estimations",
               "# May take few hours !!!!!!!!!!!!!!!!!!!!!",
               "# This computation time can be reduced using parallel computing",
@@ -391,13 +385,12 @@ server <- function(input, output, session) {
               "(b <- bmdboot(r, niter = 1000, progressbar = TRUE))",
               "plot(b)",
               "",
-              "# Representation of cumulative distribution of BMD values",
-              "# with their confidence 95% intervals",
-              "# Argument by and CI.col can be used with additional columns",
-              "# built from annotation of items for example",
-              "a <- b$res[is.finite(b$res$BMD.zSD.upper), ] # removing of CI with infinite bounds",
-              "ecdfplotwithCI(variable = a$BMD.zSD, CI.lower = a$BMD.zSD.lower, 
-  CI.upper = a$BMD.zSD.upper, by = a$model, CI.col = a$trend)"
+              "# plot the fitted dose-response with BMD",
+              paste0("plot(f, plot.type = 'dose_fitted', BMDoutput = b, BMDtype = '", input$BMDtype_plot2pdf, "', dose_log_transfo = ", input$logbmd_plot2pdf, ")"),
+              "",
+              "# Other functions (bmdplot, bmdplotwithgradient, curvesplot, trendplot and sensitivityplot)",
+              "# are available in the DRomics package to explor your results (see the vignette and the",
+              "# cheat sheet) and will soon be the subject of a second shiny application !"
     )
     
     output$buttonDownRCodeFurther <- downloadHandler(

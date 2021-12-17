@@ -77,7 +77,7 @@ NEW FEATURES
 - Add of an argument named information.criterion in drcfit() to choose 
 the use of AIC or BIC for the best fit model selection process.
 - Add of the possibility to enter data as an R object of class data.frame
-- Add of published datasets (Zhou et al. 2017, Larras etal. 2020) and 
+- Add of published datasets (Zhou et al. 2017, Larras et al. 2020) and 
 corresponding help pages
 - Add of function continuousanchoringdata and modification of itemselect()
 to enable the selection of significant responses on continuous anchoring data.
