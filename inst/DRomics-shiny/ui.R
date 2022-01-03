@@ -374,7 +374,7 @@ ui <- fluidPage(
                                  ),
                                  mainPanel(
                                    width = 9,
-                                   verbatimTextOutput('printBmdcalc')
+                                   withSpinner(verbatimTextOutput('printBmdcalc'), type = 4, color = '#9c5c16')
                                  )),
                                
                                br(), br(),
