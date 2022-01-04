@@ -389,7 +389,7 @@ server <- function(input, output, session) {
               paste0("plot(f, plot.type = 'dose_fitted', BMDoutput = b, BMDtype = '", input$BMDtype_plot2pdf, "', dose_log_transfo = ", input$logbmd_plot2pdf, ")"),
               "",
               "# Other functions (bmdplot, bmdplotwithgradient, curvesplot, trendplot and sensitivityplot)",
-              "# are available in the DRomics package to explor your results (see the vignette and the",
+              "# are available in the DRomics package to explore your results (see the vignette and the",
               "# cheat sheet) and will soon be the subject of a second shiny application !"
     )
     
