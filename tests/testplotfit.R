@@ -1,7 +1,7 @@
 library(DRomics)
 visualize <- FALSE # put to TRUE for a manual check of plots
-# niterboot <- 25
-niterboot <- 250
+niterboot <- 25
+# niterboot <- 250
 
 if (visualize)
 {
