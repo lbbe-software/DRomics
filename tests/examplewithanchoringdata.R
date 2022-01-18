@@ -1,5 +1,5 @@
 library(DRomics)
-visualize <- FALSE # put to TRUE for a manual check of plots
+visualize <- FALSE ## put to TRUE for a manual check of plots
 doboot <- FALSE
 
 # importation and check of apical anchoring data
