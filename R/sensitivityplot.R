@@ -12,22 +12,22 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   BMDsummary <- match.arg(BMDsummary, c("median", "first.quartile", "median.and.IQR"))
   
   if (missing(extendedres) | !is.data.frame(extendedres))
-    stop("The first argument of bmdplotwithgradient must be a dataframe 
-    (see ?bmdplotwithgradient for details).")
+    stop("The first argument of sensitivityplot must be a dataframe 
+    (see ?sensitivityplot for details).")
   
   cnames <- colnames(extendedres)
   
   if (BMDtype == "zSD")
   {  
     if (any(!is.element(c("BMD.zSD"), cnames)))
-      stop("The first argument of bmdplotwithgradient must be a dataframe
+      stop("The first argument of sensitivityplot must be a dataframe
       containing a column named BMD.zSD and other columns coding for group of items.")
     variable <- extendedres[, "BMD.zSD"]
   }
   else 
   {
     if (any(!is.element(c("BMD.xfold"), cnames)))
-      stop("The first argument of bmdplotwithgradient must be a dataframe
+      stop("The first argument of sensitivityplot must be a dataframe
       containing a column named BMD.xfold and other columns coding for groups of items.")
     variable <- extendedres[, "BMD.xfold"]
   }
