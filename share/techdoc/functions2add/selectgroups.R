@@ -6,12 +6,6 @@
 # is made separately in each experimental level, so a group may be selected
 # for one experimental level and removed for another one
 # 
-group <- "path_class" 
-BMDmax <- 5 
-BMDtype <- "zSD" 
-BMDsummary <- "first.quartile"
-nitemsmin <- 3
-
 selectgroups <- function(extendedres, group, explevel,
                               BMDmax, 
                               BMDtype = c("zSD", "xfold"), 
