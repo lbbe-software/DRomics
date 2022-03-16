@@ -6,11 +6,11 @@
 # is made separately in each experimental level, so a group may be selected
 # for one experimental level and removed for another one
 # 
-selectgroups <- function(extendedres, group, explevel,
+selectgroups <- function(extendedres, group, explev,
                               BMDmax, 
                               BMDtype = c("zSD", "xfold"), 
                               BMDsummary = c("first.quartile", "median" ),
-                              nitemsmin = 3
+                              nitemsmin = 3, selectateachexplev = TRUE
                          )
 {
   if (missing(extendedres) | !is.data.frame(extendedres))
@@ -41,43 +41,43 @@ selectgroups <- function(extendedres, group, explevel,
     stop("group should be a character string corresponding to the name of a column of
            extendedres, the dataframe given in input.")
   
-  if (!missing(explevel))
+  if (!missing(explev))
   {
-    if (!is.character(explevel)) 
-      stop("explevel should be a character string for the name of the column coding for the experimental level.")
-    if (!is.element(explevel, cnames))
-      stop("explevel should be a character string corresponding to the name of a column of
+    if (!is.character(explev)) 
+      stop("explev should be a character string for the name of the column coding for the experimental level.")
+    if (!is.element(explev, cnames))
+      stop("explev should be a character string corresponding to the name of a column of
            extendedres, the dataframe given in input.")
   }
   
   firstquartilefun <- function(x) quantile(x, probs = 0.25)
 
-  if (missing(explevel))
+  if (missing(explev))
   {
-    group_explevel <- as.factor(extendedres[, group])
+    group_explev <- as.factor(extendedres[, group])
 
   } else
   {
-    group_explevel <- as.factor(paste(extendedres[, group], extendedres[, explevel], sep = "_"))
+    group_explev <- as.factor(paste(extendedres[, group], extendedres[, explev], sep = "_"))
     
   }
-  dnb <- as.data.frame(table(group_explevel))
-  colnames(dnb) <- c("group_explevel", "nb_of_items")
+  dnb <- as.data.frame(table(group_explev))
+  colnames(dnb) <- c("group_explev", "nb_of_items")
   if (BMDsummary == "first.quartile")
-    dnb$BMDsummary <- tapply(variable, group_explevel, firstquartilefun) else
-    dnb$BMDsummary <- tapply(variable, group_explevel, median)
+    dnb$BMDsummary <- tapply(variable, group_explev, firstquartilefun) else
+    dnb$BMDsummary <- tapply(variable, group_explev, median)
   
   if (!missing(BMDmax))
   {
     if (!is.numeric(BMDmax) | (BMDmax < 0))
       stop("Wrong argument 'BMDmax'. If not omitted it must be a positive number.")
-    g_e2keep <- dnb[(dnb$nb_of_items >= nitemsmin) & (dnb$BMDsummary <= BMDmax), "group_explevel"]
+    g_e2keep <- dnb[(dnb$nb_of_items >= nitemsmin) & (dnb$BMDsummary <= BMDmax), "group_explev"]
   } else
   {
-    g_e2keep <- dnb[dnb$nb_of_items >= nitemsmin, "group_explevel"]
+    g_e2keep <- dnb[dnb$nb_of_items >= nitemsmin, "group_explev"]
   }
   
-  subextendedres <- extendedres[group_explevel %in% g_e2keep, ]
+  subextendedres <- extendedres[group_explev %in% g_e2keep, ]
 
   return(subextendedres)
 }
