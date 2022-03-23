@@ -30,7 +30,7 @@ sensitivityplot(annotres, BMDtype = "zSD",
 subannotres <- selectgroups(annotres, 
                          group = "path_class", 
                          BMDmax = 5, 
-                         BMDtype = c("zSD", "xfold"), 
+                         BMDtype = "zSD", 
                          BMDsummary = "first.quartile",
                          nitemsmin = 10)
 
@@ -41,7 +41,7 @@ sensitivityplot(subannotres, BMDtype = "zSD",
 subannotres <- selectgroups(annotres, 
                             group = "path_class", 
                             BMDmax = 1, 
-                            BMDtype = c("zSD", "xfold"), 
+                            BMDtype = "zSD", 
                             BMDsummary = "first.quartile",
                             nitemsmin = 3)
 
@@ -57,7 +57,7 @@ sensitivityplot(annotres, BMDtype = "zSD",
 subannotres <- selectgroups(annotres, 
                             group = "path_class", 
                             BMDmax = 2, 
-                            BMDtype = c("zSD", "xfold"), 
+                            BMDtype = "zSD", 
                             BMDsummary = "median",
                             nitemsmin = 3)
 
@@ -134,7 +134,7 @@ sensitivityplot(subannotres, BMDtype = "zSD",
                               group = "path_class", 
                               explevel = "molecular.level",
                               BMDmax = 5, 
-                              BMDtype = c("zSD", "xfold"), 
+                              BMDtype = "zSD", 
                               BMDsummary = "first.quartile",
                               nitemsmin = 10)
   
@@ -146,7 +146,7 @@ sensitivityplot(subannotres, BMDtype = "zSD",
                               group = "path_class", 
                               explevel = "molecular.level",
                               BMDmax = 1, 
-                              BMDtype = c("zSD", "xfold"), 
+                              BMDtype = "zSD", 
                               BMDsummary = "first.quartile",
                               nitemsmin = 3)
   

@@ -10,7 +10,7 @@ selectgroups <- function(extendedres, group, explev,
                               BMDmax, 
                               BMDtype = c("zSD", "xfold"), 
                               BMDsummary = c("first.quartile", "median" ),
-                              nitemsmin = 3, selectateachexplev = TRUE
+                              nitemsmin = 3
                          )
 {
   if (missing(extendedres) | !is.data.frame(extendedres))
