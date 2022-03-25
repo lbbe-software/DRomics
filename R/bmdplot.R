@@ -13,15 +13,15 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
 
   if (missing(extendedres) | !is.data.frame(extendedres))
-    stop("The first argument of bmdplotwithgradient must be a dataframe 
-    (see ?bmdplotwithgradient for details).")
+    stop("The first argument of bmdplot must be a dataframe 
+    (see ?bmdplot for details).")
   
   cnames <- colnames(extendedres)
  
   if (BMDtype == "zSD")
   {  
     if (any(!is.element(c("id", "BMD.zSD"), cnames)))
-      stop("The first argument of bmdplotwithgradient must be a dataframe
+      stop("The first argument of bmdplot must be a dataframe
       containing at least columns named id and BMD.zSD.")
     
     if (add.CI)
@@ -33,7 +33,7 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   else 
   {
     if (any(!is.element(c("id", "BMD.xfold"), cnames)))
-      stop("The first argument of bmdplotwithgradient must be a dataframe
+      stop("The first argument of bmdplot must be a dataframe
       containing at least columns named id and BMD.xfold.")
     if (add.CI)
       BMD2plot <- data.frame(x = extendedres$BMD.xfold, id = extendedres$id,
