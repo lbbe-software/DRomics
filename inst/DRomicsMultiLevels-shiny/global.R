@@ -3,7 +3,6 @@ library(shinyjs, quietly = TRUE)
 library(shinyBS, quietly = TRUE)
 library(shinyWidgets, quietly = TRUE)
 library(DRomics, quietly = TRUE)
-library(V8, quietly = TRUE)
 library(sortable, quietly = TRUE)
 options(shiny.maxRequestSize=30*1024^2)
 
