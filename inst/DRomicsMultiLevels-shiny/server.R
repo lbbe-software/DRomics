@@ -290,29 +290,29 @@ server <- function(input, output, session) {
                 "mypathclasslabel" = mypathclasslabel))
   })
   
+  # function to sort the levels. only used for the ggplot display.
+  sortlevels4ggplot <- function(df, v) {
+    if(input$nbLevel > 1) {
+      if(orderingMoreonelev() == "alphaorder_moreonelev" | orderingMoreonelev() == "specificorder_moreonelev"){
+        levels(df[, v]) <- rev(levels(df[, v]))
+      }
+    } else {
+      if(orderingOnelev() == "alphaorder_onelev" | orderingOnelev() == "specificorder_onelev"){
+        levels(df[, v]) <- rev(levels(df[, v]))
+      }
+    }
+    return(df)
+  }
+  
+  
   output$filteredsorteddata <- renderPrint({
     
     sortextendedres <- sortextendedres()
     myextendedmergeddata <- sortextendedres$myextendedmergeddata
     mypathclasslabel <- sortextendedres$mypathclasslabel
     
-    # function to sort the levels. only used for the ggplot display.
-    sortlevels4ggplot <- function(df, v) {
-      if(input$nbLevel > 1) {
-        if(orderingMoreonelev() == "alphaorder_moreonelev" | orderingMoreonelev() == "specificorder_moreonelev"){
-          levels(df[, v]) <- rev(levels(df[, v]))
-        }
-      } else {
-        if(orderingOnelev() == "alphaorder_onelev" | orderingOnelev() == "specificorder_onelev"){
-          levels(df[, v]) <- rev(levels(df[, v]))
-        }
-      }
-      return(df)
-    }
-    
     ############ sensitivity plot ############
     output$sensitivityplot <- renderPlot({
-    
       myextendedmergeddata <- sortlevels4ggplot(myextendedmergeddata, mypathclasslabel)
       if(input$nbLevel > 1) {
         mysensitivityplot <- DRomics::sensitivityplot(myextendedmergeddata, 
