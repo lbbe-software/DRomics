@@ -198,11 +198,11 @@ ui <- fluidPage(
                                  shinyBS::bsPopover("helplabel1step2", "", helplabel1step2, placement = "right", trigger = "hover", options = NULL),
                                  br(), 
                                  br(), 
-                                 sliderInput("minNbItem", "Minimum number of items",
+                                 sliderInput("minNbItem", "Minimum for the number of items",
                                              width = "90%", 
                                              min = 1, max = 10, step = 1, ticks = TRUE, 
                                              value = 3),
-                                 numericInput("BMDmax", label = "BMDmax", value = 0, min = 0, step = 0.1, width = "50%")
+                                 numericInput("BMDmax", label = "Maximum for the BMD summary value", value = 0, min = 0, step = 0.1, width = "70%")
                           ),
                           column(1, 
                                  radioButtons("BMDtypesensitivityPlot", label = "BMD type", 
