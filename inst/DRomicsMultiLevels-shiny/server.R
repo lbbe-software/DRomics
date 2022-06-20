@@ -632,7 +632,9 @@ server <- function(input, output, session) {
     myextendedmergeddata <- sortextendedres$myextendedmergeddata
     mypathclasslabel <- sortextendedres$mypathclasslabel
     
+    # get the BMD values in the combined, merged sorted and selected data frame
     BMD <- myextendedmergeddata[, paste0("BMD.", input$BMDtypeBMDPlot)]
+    
     # Update the min and max doses by default according to the log transformation
     observeEvent(input$doselogtransfoCurvesplot, {
       if(input$doselogtransfoCurvesplot) {
