@@ -636,11 +636,11 @@ server <- function(input, output, session) {
     # Update the min and max doses by default according to the log transformation
     observeEvent(input$doselogtransfoCurvesplot, {
       if(input$doselogtransfoCurvesplot) {
-        updateNumericInput(session, "mindoseCurvesplot", value = round(min(BMD) / 2), 2)
+        updateNumericInput(session, "mindoseCurvesplot", value = round(min(BMD) / 2, 2))
       } else {
         updateNumericInput(session, "mindoseCurvesplot", value = 0)
       }
-      updateNumericInput(session, "maxdoseCurvesplot", value = round(max(BMD) * 2), 2)
+      updateNumericInput(session, "maxdoseCurvesplot", value = round(max(BMD) * 2, 2))
     })
     
     myextendedmergeddata <- sortlevels4ggplot(myextendedmergeddata, mypathclasslabel)
