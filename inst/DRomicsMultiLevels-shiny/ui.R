@@ -1,18 +1,18 @@
 ## JavaScript that dis/enables the ABILITY to click the tab (without changing aesthetics)
-app_jscode <-
-  "shinyjs.disableTab = function(name) {
-    var tab = $('.nav li a[data-value=' + name + ']');
-    tab.bind('click.tab', function(e) {
-      e.preventDefault();
-      return false;
-    });
-    tab.addClass('disabled');
-  }
-  shinyjs.enableTab = function(name) {
-    var tab = $('.nav li a[data-value=' + name + ']');
-    tab.unbind('click.tab');
-    tab.removeClass('disabled');
-  }"
+# app_jscode <-
+#   "shinyjs.disableTab = function(name) {
+#     var tab = $('.nav li a[data-value=' + name + ']');
+#     tab.bind('click.tab', function(e) {
+#       e.preventDefault();
+#       return false;
+#     });
+#     tab.addClass('disabled');
+#   }
+#   shinyjs.enableTab = function(name) {
+#     var tab = $('.nav li a[data-value=' + name + ']');
+#     tab.unbind('click.tab');
+#     tab.removeClass('disabled');
+#   }"
 ## css snipit that makes it LOOK like we are/n't able click the tab (with outchanging functionality)
 app_css <-
   ".nav li a.disabled {
@@ -20,13 +20,21 @@ app_css <-
     color: #333 !important;
     cursor: not-allowed !important;
     border-color: #aaa !important;
-  }"
-
+  }
+  .progress-bar {
+    background-color: #9c5c16;
+  }
+  .js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {
+    background: #f28d0f;
+    border-top: 1px #f28d0f ;
+    border-bottom: 1px #f28d0f ;
+  }
+"
 
 
 ui <- fluidPage(
   shinyjs::useShinyjs(),
-  shinyjs::extendShinyjs(text = app_jscode, functions = c('disableTab','enableTab')),
+  # shinyjs::extendShinyjs(text = app_jscode, functions = c('disableTab','enableTab')),
   shinyjs::inlineCSS(app_css),
   
   titlePanel(
@@ -35,68 +43,68 @@ ui <- fluidPage(
   br(),
   
   navbarPage(title = "", 
-             # tabPanel(HTML("<center><font face=verdana size=3 color=#9c5c16>DRomics WF 2</font></center>"),
-             #          
-             #          fluidRow(
-             #            br(), br(), 
-             #            HTML("<center><font face=verdana size=6 color=#9c5c16>DRomics Shiny Application - workflow 2</font></center>"),
-             #            br(), br(),
-             #            fixedRow(column(8, offset = 2,
-             #                            h4("DRomics Shiny App runs on the ", 
-             #                               a("shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#f28d0f;"), 
-             #                               "with the develoment version of the DRomics package (available on ", 
-             #                               a("Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#f28d0f;"),")."),
-             #                            h4("DRomics is also an R package, available on ", 
-             #                               a("CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#f28d0f;"), 
-             #                               " and on ",
-             #                               a("this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"), "."),
-             #                            h4("You can find help about the DRomics Shiny App and the DRomics package in a ",
-             #                               a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_0.pdf", TARGET="_blank", style="color:#f28d0f;"), " and a ",
-             #                               a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_0.pdf", TARGET="_blank", style="color:#f28d0f;"), "."
-             #                            )
-             #            )),
-             #            hr(style='width: 70%;'),
-             #            fixedRow(column(8, offset = 2,
-             #                            p(strong("Citation and publications")),
-             #                            p("If you use Dromics Shiny App, you should cite:"),
-             #                            p("Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018).", br(),
-             #                              em("DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment."), br(),
-             #                              "Environmental Science & Technology.",
-             #                              a("https://doi.org/10.1021/acs.est.8b04752", href = "https://pubs.acs.org/doi/10.1021/acs.est.8b04752", TARGET = "_blank", style="color:#f28d0f;")),
-             #                            
-             #                            br(),
-             #                            p("You can freely find this article at: ", a("https://hal.archives-ouvertes.fr/hal-02309919", href = "https://hal.archives-ouvertes.fr/hal-02309919", TARGET = "_blank", style="color:#f28d0f;")),
-             #                            
-             #                            br(),
-             #                            p("You can also look at the following citation for a complete example of use:"),
-             #                            p("Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020).", br(),
-             #                              em("A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus."), br(),
-             #                              "Journal of Hazardous Materials.",
-             #                              a("https://doi.org/10.1016/j.jhazmat.2020.122727", href = "https://doi.org/10.1016/j.jhazmat.2020.122727", TARGET = "_blank", style="color:#f28d0f;")),
-             #                            
-             #                            br(),
-             #                            p(strong("Contacts and authors")),
-             #                            p("If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at ", strong("dromics@univ-lyon1.fr"), "."),
-             #                            p("Issues can be reported on",
-             #                              a("https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#f28d0f;"), "."),
-             #                            
-             #                            br(),
-             #                            p(a("Elise Billoir", href = "http://bddc.liec.univ-lorraine.fr/cv/BILLOIR%20E.htm", TARGET = "_blank", style="color:#f28d0f;"),
-             #                              "- elise.billoir@univ-lorraine.fr - Laboratoire Interdisciplinaire des Environnements Continentaux - Université de Lorraine - Metz - France"),
-             #                            p(a("Marie-Laure Delignette-Muller", href = "https://lbbe.univ-lyon1.fr/fr/annuaires-des-membres/delignette-muller-marie-laure", TARGET = "_blank", style="color:#f28d0f;"),
-             #                              "- marielaure.delignettemuller@vetagro-sup.fr - Laboratoire de Biométrie et Biologie Evolutive - VetAgro Sup - Lyon - France"),
-             #                            p(a("Floriane Larras", href = "https://www.researchgate.net/profile/Floriane_Larras", TARGET = "_blank", style="color:#f28d0f;"),
-             #                              "- floriane.larras@inrae.fr - Delegation for scientific expertise, foresight and advanced studies (DEPE) - INRAE - Paris - France"),
-             #                            p(a("Mechthild Schmitt-Jansen", href = "https://www.ufz.de/index.php?en=38467", TARGET = "_blank", style="color:#f28d0f;"),
-             #                              "- mechthild.schmitt@ufz.de - Department of Bioanalytical Ecotoxicology - Helmholtz Center for Environmental Research GmbH - Leipzig - Germany"),
-             #                            p(a("Aurélie Siberchicot", href = "https://lbbe.univ-lyon1.fr/fr/annuaires-des-membres/siberchicot-aurelie", TARGET = "_blank", style="color:#f28d0f;"),
-             #                              "- aurelie.siberchicot@univ-lyon1.fr - Laboratoire de Biométrie et Biologie Evolutive - Université Lyon 1 - Lyon - France")
-             #                            
-             #            ))
-             #            
-             #          )
-             # ),
-             
+             tabPanel(HTML("<center><font face=verdana size=3 color=#9c5c16>DRomics WF 2</font></center>"),
+
+                      fluidRow(
+                        br(), br(),
+                        HTML("<center><font face=verdana size=6 color=#9c5c16>DRomics Shiny Application - workflow 2</font></center>"),
+                        br(), br(),
+                        fixedRow(column(8, offset = 2,
+                                        h4("DRomics Shiny App runs on the ",
+                                           a("shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#f28d0f;"),
+                                           "with the develoment version of the DRomics package (available on ",
+                                           a("Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#f28d0f;"),")."),
+                                        h4("DRomics is also an R package, available on ",
+                                           a("CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#f28d0f;"),
+                                           " and on ",
+                                           a("this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"), "."),
+                                        h4("You can find help about the DRomics Shiny App and the DRomics package in a ",
+                                           a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_0.pdf", TARGET="_blank", style="color:#f28d0f;"), " and a ",
+                                           a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_0.pdf", TARGET="_blank", style="color:#f28d0f;"), "."
+                                        )
+                        )),
+                        hr(style='width: 70%;'),
+                        fixedRow(column(8, offset = 2,
+                                        p(strong("Citation and publications")),
+                                        p("If you use Dromics Shiny App, you should cite:"),
+                                        p("Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018).", br(),
+                                          em("DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment."), br(),
+                                          "Environmental Science & Technology.",
+                                          a("https://doi.org/10.1021/acs.est.8b04752", href = "https://pubs.acs.org/doi/10.1021/acs.est.8b04752", TARGET = "_blank", style="color:#f28d0f;")),
+
+                                        br(),
+                                        p("You can freely find this article at: ", a("https://hal.archives-ouvertes.fr/hal-02309919", href = "https://hal.archives-ouvertes.fr/hal-02309919", TARGET = "_blank", style="color:#f28d0f;")),
+
+                                        br(),
+                                        p("You can also look at the following citation for a complete example of use:"),
+                                        p("Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020).", br(),
+                                          em("A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus."), br(),
+                                          "Journal of Hazardous Materials.",
+                                          a("https://doi.org/10.1016/j.jhazmat.2020.122727", href = "https://doi.org/10.1016/j.jhazmat.2020.122727", TARGET = "_blank", style="color:#f28d0f;")),
+
+                                        br(),
+                                        p(strong("Contacts and authors")),
+                                        p("If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at ", strong("dromics@univ-lyon1.fr"), "."),
+                                        p("Issues can be reported on",
+                                          a("https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#f28d0f;"), "."),
+
+                                        br(),
+                                        p(a("Elise Billoir", href = "http://bddc.liec.univ-lorraine.fr/cv/BILLOIR%20E.htm", TARGET = "_blank", style="color:#f28d0f;"),
+                                          "- elise.billoir@univ-lorraine.fr - Laboratoire Interdisciplinaire des Environnements Continentaux - Université de Lorraine - Metz - France"),
+                                        p(a("Marie-Laure Delignette-Muller", href = "https://lbbe.univ-lyon1.fr/fr/annuaires-des-membres/delignette-muller-marie-laure", TARGET = "_blank", style="color:#f28d0f;"),
+                                          "- marielaure.delignettemuller@vetagro-sup.fr - Laboratoire de Biométrie et Biologie Evolutive - VetAgro Sup - Lyon - France"),
+                                        p(a("Floriane Larras", href = "https://www.researchgate.net/profile/Floriane_Larras", TARGET = "_blank", style="color:#f28d0f;"),
+                                          "- floriane.larras@inrae.fr - Delegation for scientific expertise, foresight and advanced studies (DEPE) - INRAE - Paris - France"),
+                                        p(a("Mechthild Schmitt-Jansen", href = "https://www.ufz.de/index.php?en=38467", TARGET = "_blank", style="color:#f28d0f;"),
+                                          "- mechthild.schmitt@ufz.de - Department of Bioanalytical Ecotoxicology - Helmholtz Center for Environmental Research GmbH - Leipzig - Germany"),
+                                        p(a("Aurélie Siberchicot", href = "https://lbbe.univ-lyon1.fr/fr/annuaires-des-membres/siberchicot-aurelie", TARGET = "_blank", style="color:#f28d0f;"),
+                                          "- aurelie.siberchicot@univ-lyon1.fr - Laboratoire de Biométrie et Biologie Evolutive - Université Lyon 1 - Lyon - France")
+
+                        ))
+
+                      )
+             ),
+
              ####################################################################################
              ####### STEP 1 #####################################################################
              ####################################################################################
