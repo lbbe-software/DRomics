@@ -25,9 +25,49 @@ app_css <-
     background-color: #9c5c16;
   }
   .js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {
-    background: #f28d0f;
-    border-top: 1px #f28d0f ;
-    border-bottom: 1px #f28d0f ;
+    background: #9c5c16;
+    border-top: 1px #9c5c16 ;
+    border-bottom: 1px #9c5c16 ;
+  }
+  label > input[type='radio'] + *::before {
+    content: '';
+    margin: 4px 0 0;
+    width: 13px;
+    height: 13px;
+    position: absolute;
+    margin-left: -20px;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-color: #9c5c16;
+  }
+  label > input[type='radio']:checked + *::before {
+    background: radial-gradient(white 0%, white 30%, #9c5c16 30%, #9c5c16);
+    border-color: #9c5c16;
+  }
+  label > input[type='checkbox'] {
+    opacity: 0;
+    position: absolute;
+  }
+  label > input[type='checkbox'] + *::before {
+    content: '';
+    position: absolute;
+    margin: 4px 0 0;
+    margin-left: -20px;
+    align: center;
+    width: 13px;
+    height: 13px;
+    margin-right: 1rem;
+    border-radius: 0%;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-color: #9c5c16;
+  }
+  label > input[type='checkbox']:checked + *::before {
+    content: '';
+    width: 13px;
+    height: 13px;
+    background-color: #9c5c16;
   }
 "
 
