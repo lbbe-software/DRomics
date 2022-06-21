@@ -88,6 +88,7 @@ ui <- fluidPage(
                       fluidRow(
                         br(), br(),
                         HTML("<center><font face=verdana size=6 color=#9c5c16>Welcome to the DRomicsInterpreter-shiny application</font></center>"),
+                        HTML("<center><font face=verdana size=5 color=#9c5c16>A second workflow for interpretation in light of a biological annotation</font></center>"),
                         br(), br(),
                         fixedRow(column(8, offset = 2,
                                         h4("DRomicsInterpreter-shiny application runs on the ",
@@ -277,7 +278,7 @@ ui <- fluidPage(
              ####################################################################################
              tabPanel(HTML("<font face=verdana size=3 color=#9c5c16>Step 3</font>"),
                       value = "step3",
-                      br(), HTML("<font face=verdana size=5 color=#9c5c16><b>BMD plots</b></font>"), br(), br(), br(),
+                      br(), HTML("<font face=verdana size=5 color=#9c5c16><b>BMD plots (with and without gradient)</b></font>"), br(), br(), br(),
                       
                       wellPanel(
                         fixedRow(
@@ -294,7 +295,7 @@ ui <- fluidPage(
                                                              "xfold" = "xfold")
                                  )),
                           column(2, 
-                                 checkboxInput("addciBMDplot", label = HTML("<b>Add CI</b> (only for the BMD plot)"), value = FALSE),
+                                 checkboxInput("addciBMDplot", label = HTML("<b>Add CI</b> (only for the BMD plot without gradient)"), value = FALSE),
                                  checkboxInput("BMDlogtransfoBMDplot", label = HTML("<b>log transformation of the BMD</b>"), value = FALSE),
                                  checkboxInput("addlabelBMDplot", label = HTML("<b>Add labels</b>"), value = FALSE)
                                  ),
@@ -311,7 +312,7 @@ ui <- fluidPage(
                           column(2,
                                  fixedRow(
                                    checkboxInput("shapebyBMDplot", label = HTML("<b>Shape by trend</b>"), value = FALSE),
-                                   checkboxInput("colorbyBMDplot", label = HTML("<b>Color by trend</b> (only for the BMD plot)"), value = FALSE)
+                                   checkboxInput("colorbyBMDplot", label = HTML("<b>Color by trend</b> (only for the BMD plot without gradient)"), value = FALSE)
                                  )
                           ),
                           column(1,
