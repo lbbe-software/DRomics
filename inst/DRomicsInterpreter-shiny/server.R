@@ -374,6 +374,16 @@ server <- function(input, output, session) {
     
     ############ structure of data ############
     shinyjs::showElement('text3_step2', time = 0)
+    
+    output$downloadData <- downloadHandler(
+      filename = function() {
+        "extendedmergeddata.txt"
+      },
+      content = function(file) {
+               write.table(myextendedmergeddata, file, row.names = FALSE, sep = "\t")
+      }
+    )
+    
     return(str(myextendedmergeddata))
   })
   

@@ -268,7 +268,8 @@ ui <- fluidPage(
                         shinyjs::hidden(div(id = 'text3_step2',
                                             style = 'color:#9c5c16; font-size:large;line-height: 50px;',
                                             "Structure of the data frame merged and combined")),
-                        verbatimTextOutput("filteredsorteddata")
+                        verbatimTextOutput("filteredsorteddata"),
+                        downloadButton('downloadData', 'Download Data')
                       ),
                       br(), br(), br(), br()
              ),
