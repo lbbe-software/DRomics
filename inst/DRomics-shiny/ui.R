@@ -31,6 +31,7 @@ ui <- fluidPage(
                       fluidRow(
                         br(), br(), 
                         HTML("<center><font face=verdana size=6 color=#9c5c16>Welcome to the DRomics-shiny application</font></center>"),
+                        HTML("<center><font face=verdana size=5 color=#9c5c16>A first workflow for dose-response modelling</font></center>"),
                         br(), br(),
                         fixedRow(column(8, offset = 2,
                                         tags$blockquote("DRomics-shiny is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data.
@@ -43,7 +44,9 @@ ui <- fluidPage(
                                                         "In the available version, DRomics supports single-channel microarray data (in log2 scale), RNAseq data (in raw counts) or metabolomics data 
                                              (in log scale). In order to link responses across biological levels based on a common method, DRomics also handles apical data as long as they are continuous and
                                              follow a normal distribution for each dose or concentration, with a common standard error.
-                                             DRomics should not be used on other types of data.", 
+                                             DRomics should not be used on other types of data.", br(), br(),
+                                                        "Next, for interpretation of results in light of a biological annotation, you can use the ",
+                                                        a("DRomicsInterpreter-shiny application", href = "https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsMultiLevels-shiny/", TARGET="_blank", style="color:#f28d0f;"), ".",
                                                         style="text-align:justify;"),
                                         br(),
                                         h4("The DRomics-shiny application runs on the ", 
