@@ -21,7 +21,7 @@ ui <- fluidPage(
     )),
   
   titlePanel(
-    tags$head(tags$link(rel = "icon", type = "image/png", href = "logodromics-dr.png"), tags$title(" DRomics Shiny App"))
+    tags$head(tags$link(rel = "icon", type = "image/png", href = "logodromics-dr.png"), tags$title(" DRomics-shiny"))
   ),
   br(),
   
@@ -30,10 +30,10 @@ ui <- fluidPage(
                       
                       fluidRow(
                         br(), br(), 
-                        HTML("<center><font face=verdana size=6 color=#9c5c16>Welcome to the DRomics Shiny Application</font></center>"),
+                        HTML("<center><font face=verdana size=6 color=#9c5c16>Welcome to the DRomics-shiny application</font></center>"),
                         br(), br(),
                         fixedRow(column(8, offset = 2,
-                                        tags$blockquote("DRomics is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data.
+                                        tags$blockquote("DRomics-shiny is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data.
                                              It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations)
                                              rather than a great number of replicates (no need of three replicates).", br(), 
                                                         "After a first optional step which consists to import, check and if needed normalize/transform the data (step 1), the aim of the proposed workflow 
@@ -46,7 +46,7 @@ ui <- fluidPage(
                                              DRomics should not be used on other types of data.", 
                                                         style="text-align:justify;"),
                                         br(),
-                                        h4("DRomics Shiny App runs on the ", 
+                                        h4("The DRomics-shiny application runs on the ", 
                                            a("shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#f28d0f;"), 
                                            "with the develoment version of the DRomics package (available on ", 
                                            a("Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#f28d0f;"),")."),
@@ -54,7 +54,7 @@ ui <- fluidPage(
                                            a("CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#f28d0f;"), 
                                            " and on ",
                                            a("this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"), "."),
-                                        h4("You can find help about the DRomics Shiny App and the DRomics package in a ",
+                                        h4("You can find help about the DRomics-shiny application and the DRomics package in a ",
                                            a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_0.pdf", TARGET="_blank", style="color:#f28d0f;"), " and a ",
                                            a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_0.pdf", TARGET="_blank", style="color:#f28d0f;"), "."
                                            )
