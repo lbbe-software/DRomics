@@ -161,10 +161,10 @@ server <- function(input, output, session) {
   })
   
   output$strmergeddata <- renderPrint({
-    js$enableTab("step2")
-    js$enableTab("step3")
-    js$enableTab("step4")
-    js$enableTab("step5")
+    # js$enableTab("step2")
+    # js$enableTab("step3")
+    # js$enableTab("step4")
+    # js$enableTab("step5")
     mymergeddata <- mergeddata()
     
     # create dynamically as many outputs as number of experimental level
