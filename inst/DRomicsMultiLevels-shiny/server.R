@@ -51,10 +51,10 @@ server <- function(input, output, session) {
   })
   
   # Disable all tab panel except the first one
-  js$disableTab("step2")
-  js$disableTab("step3")
-  js$disableTab("step4")
-  js$disableTab("step5")
+  # js$disableTab("step2")
+  # js$disableTab("step3")
+  # js$disableTab("step4")
+  # js$disableTab("step5")
   
   # function to check the extension of input files
   validateFile <- function(filename) {
