@@ -294,12 +294,11 @@ server <- function(input, output, session) {
   sortlevels4ggplot <- function(df, v) {
     if(input$nbLevel > 1) {
       if(orderingMoreonelev() == "alphaorder_moreonelev" | orderingMoreonelev() == "specificorder_moreonelev"){
-        levels(df[, v]) <- rev(levels(df[, v]))
+        df[, v] <- factor(df[, v], levels = rev(sort(levels(df[, v]))))
       }
     } else {
       if(orderingOnelev() == "alphaorder_onelev" | orderingOnelev() == "specificorder_onelev"){
-        levels(df[, v]) <- rev(levels(df[, v]))
-      }
+        df[, v] <- factor(df[, v], levels = rev(sort(levels(df[, v]))))      }
     }
     return(df)
   }
@@ -655,7 +654,6 @@ server <- function(input, output, session) {
       updateNumericInput(session, "maxdoseCurvesplot", value = round(max(BMD) * 2, 2))
     })
     
-    myextendedmergeddata <- sortlevels4ggplot(myextendedmergeddata, mypathclasslabel)
     mytrendplot <- DRomics::curvesplot(myextendedmergeddata, 
                                        xmin = mindoseCurvesplot(),
                                        xmax = maxdoseCurvesplot(),
