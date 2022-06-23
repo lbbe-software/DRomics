@@ -193,10 +193,10 @@ ui <- fluidPage(
                       
                       wellPanel(
                         fixedRow(
-                          column(2, style='border-right:1px solid #9c5c16;',
-                                 HTML("<font face=verdana size=3 color=#9c5c16><b>Selection of items to plot &nbsp;</b></font>"), 
+                          column(3, style='border-right:1px solid #9c5c16;',
+                                 HTML("<font face=verdana size=3 color=#9c5c16><b>Selection of annotation groups to plot &nbsp;</b></font>"), 
                                  shinyBS::bsButton("helplabel1step2", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
-                                 shinyBS::bsPopover("helplabel1step2", "", helplabel1step2, placement = "right", trigger = "hover", options = NULL),
+                                 shinyBS::bsPopover("helplabel1step2", "", helplabel1step2, placement = "right", trigger = "hover", options = list(container = "body")),
                                  br(), 
                                  br(), 
                                  sliderInput("minNbItem", "Minimum for the number of items",
