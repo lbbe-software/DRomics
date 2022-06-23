@@ -358,11 +358,11 @@ ui <- fluidPage(
                           ))),
                       wellPanel(
                         fixedRow(
-                          column(2, 
-                                 splitLayout(cellWidths = c("70%", "30%"),
+                          column(3, 
+                                 splitLayout(cellWidths = c("60%", "40%"),
                                              checkboxInput("doselogtransfoCurvesplot", label = HTML("<b>Dose log transformation</b>"), value = FALSE),
                                              shinyBS::bsButton("helplabel1step4", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
-                                             shinyBS::bsPopover("helplabel1step4", "", helplabel1step4, placement = "right", trigger = "hover", options = NULL)
+                                             shinyBS::bsPopover("helplabel1step4", "", helplabel1step4, placement = "right", trigger = "hover", options = list(container = "body"))
                                  ),
                                  numericInput("mindoseCurvesplot", label = "Minimal dose for the x range", value = 0, width = "60%"),
                                  numericInput("maxdoseCurvesplot", label = "Maximal dose for the x range", value = 1, width = "60%")
