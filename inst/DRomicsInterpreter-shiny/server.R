@@ -326,7 +326,7 @@ server <- function(input, output, session) {
         mysensitivityplot <- DRomics::sensitivityplot(myextendedmergeddata, 
                                                       BMDtype = BMDtypesensitivityPlot(), 
                                                       group = mypathclasslabel,
-                                                      ECDF_plot = FALSE,
+                                                      ECDF_plot = myECDFplot,
                                                       BMDsummary = BMDsummarysensitivityPlot(), 
                                                       BMD_log_transfo = FALSE)
       }
