@@ -200,7 +200,7 @@ server <- function(input, output, session) {
                          selected = input$BMDtypesensitivityPlot
       )
       updateNumericInput(session, "BMDmax", 
-                         label = "BMDmax", 
+                         label = "Maximum for the BMD summary value", 
                          value = ceiling(max(mydata$BMD.xfold)), 
                          min = 0, step = 0.1)
       }
@@ -217,7 +217,7 @@ server <- function(input, output, session) {
                          selected = input$BMDtypesensitivityPlot
       )
       updateNumericInput(session, "BMDmax", 
-                         label = "BMDmax", 
+                         label = "Maximum for the BMD summary value", 
                          value = ceiling(max(mydata$BMD.zSD)), 
                          min = 0, step = 0.1)
       }
