@@ -507,8 +507,7 @@ The argument add.label set at TRUE will display item identifiers instead of poin
 ```{r}
 bmdplotwithgradient(annotres, BMDtype = "zSD",
                     facetby = "path_class", 
-                    add.label = TRUE) +
-  theme(strip.text.x = element_text(size = 6))
+                    add.label = TRUE)
 
 ```
 
