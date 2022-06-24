@@ -1,4 +1,5 @@
 update.packages(repos = "http://cran.univ-lyon1.fr", ask = FALSE, checkBuild = TRUE)
+BiocManager::install(ask = FALSE, update = TRUE)
 if(!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 if(!requireNamespace("DESeq2", quietly = TRUE)) {
     if(!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
