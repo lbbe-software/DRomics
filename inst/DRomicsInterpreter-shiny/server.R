@@ -717,21 +717,39 @@ server <- function(input, output, session) {
     
     
     if(isTRUE(colorbyCurvesplot())) {
-      mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
-                                          xmin = mindoseCurvesplot(),
-                                          xmax = maxdoseCurvesplot(),
-                                          dose_log_transfo = doselogtransfoCurvesplot(),
-                                          facetby = myfacetbycolumnsCurvesplot,
-                                          facetby2 = myfacetbyrowsCurvesplot,
-                                          colorby = "trend") + 
-        ggplot2::labs(col = "trend")
+      if(input$nbLevel > 1) {
+        mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
+                                            xmin = mindoseCurvesplot(),
+                                            xmax = maxdoseCurvesplot(),
+                                            dose_log_transfo = doselogtransfoCurvesplot(),
+                                            facetby = myfacetbycolumnsCurvesplot,
+                                            facetby2 = myfacetbyrowsCurvesplot,
+                                            colorby = "trend") + 
+          ggplot2::labs(col = "trend")
+      } else {
+        mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
+                                            xmin = mindoseCurvesplot(),
+                                            xmax = maxdoseCurvesplot(),
+                                            dose_log_transfo = doselogtransfoCurvesplot(),
+                                            facetby = myfacetbycolumnsCurvesplot,
+                                            colorby = "trend") + 
+          ggplot2::labs(col = "trend")
+      }
     } else {
-      mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
-                                          xmin = mindoseCurvesplot(),
-                                          xmax = maxdoseCurvesplot(),
-                                          dose_log_transfo = doselogtransfoCurvesplot(),
-                                          facetby = myfacetbycolumnsCurvesplot,
-                                          facetby2 = myfacetbyrowsCurvesplot)
+      if(input$nbLevel > 1) {
+        mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
+                                            xmin = mindoseCurvesplot(),
+                                            xmax = maxdoseCurvesplot(),
+                                            dose_log_transfo = doselogtransfoCurvesplot(),
+                                            facetby = myfacetbycolumnsCurvesplot,
+                                            facetby2 = myfacetbyrowsCurvesplot)
+      } else {
+        mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
+                                            xmin = mindoseCurvesplot(),
+                                            xmax = maxdoseCurvesplot(),
+                                            dose_log_transfo = doselogtransfoCurvesplot(),
+                                            facetby = myfacetbycolumnsCurvesplot)
+      }
     }
     output$buttonDownloadCurvesplot <- downloadHandler(
       filename = function(){

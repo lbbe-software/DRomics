@@ -374,11 +374,13 @@ ui <- fluidPage(
                                               choices = list("Annotation" = "annotation",
                                                              "Experimental level" = "explevel")
                                  )),
-                          column(2,
-                                 radioButtons("facetbyrowsCurvesplot", label = "Facet by (for rows)", 
-                                              choices = list("Annotation" = "annotation",
-                                                             "Experimental level" = "explevel")
-                                 )),
+                          conditionalPanel(condition = "input.nbLevel > 1",
+                                           column(2,
+                                                  radioButtons("facetbyrowsCurvesplot", label = "Facet by (for rows)", 
+                                                               choices = list("Annotation" = "annotation",
+                                                                              "Experimental level" = "explevel")
+                                                  ))
+                          ),
                           column(2,
                                  fixedRow(
                                    checkboxInput("colorbyCurvesplot", label = HTML("<b>Color by trend</b>"), value = FALSE)
