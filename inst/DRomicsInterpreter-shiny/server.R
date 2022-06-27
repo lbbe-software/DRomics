@@ -26,7 +26,7 @@ server <- function(input, output, session) {
                  fileInput(paste0('annotationData', i), 'Annotation data', width = '100%', accept = c('.csv', '.txt')),
                  selectInput(paste0("id_annotationData", i), "ID to merge", "")),
           column(2,
-                 textInput(paste0("label", i), "Label of level"))
+                 textInput(paste0("label", i), "Label of level", paste0("explevel", i )))
         )
       )
     })
