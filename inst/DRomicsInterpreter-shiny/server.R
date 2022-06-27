@@ -455,7 +455,7 @@ server <- function(input, output, session) {
   shapebyBMDplot <- eventReactive(input$buttonRunStep3, {input$shapebyBMDplot})
   colorbyBMDplot <- eventReactive(input$buttonRunStep3, {input$colorbyBMDplot})
     
-  extendedresforBMD <- function() {
+  extendedresforBMD <- eventReactive(input$buttonRunStep3, {
     validate(
       need(input$annotcheckboxBMDplot, "Please choose at least one annotation")
     )
@@ -465,7 +465,7 @@ server <- function(input, output, session) {
     myextendedresforBMD <- myextendedmergeddata[myextendedmergeddata[, mypathclasslabel] %in% input$annotcheckboxBMDplot, ]
     return(list("myextendedresforBMD" = myextendedresforBMD,
                 "mypathclasslabel" = mypathclasslabel))
-  }
+  })
   
   ############ BMD plot ############
   output$bmdplot <- renderPlot({
