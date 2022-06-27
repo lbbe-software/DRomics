@@ -629,6 +629,9 @@ server <- function(input, output, session) {
   ############ STEP 4 ############
   ################################################################################################
   
+  # get the selected annotation levels when the 'Run' button in step3 in clicked to update the checkbox group in step4
+  annotcheckboxBMDplotforCurvesplot <- eventReactive(input$buttonRunStep3, {input$annotcheckboxBMDplot})
+  
   # Create the checkboxGroupInput for Curves plots
   observe({
     sortextendedres <- sortextendedres()
@@ -639,7 +642,7 @@ server <- function(input, output, session) {
     updateCheckboxGroupInput(session, "annotcheckboxCurvesplot",
                              label = "Choose at least one annotation",
                              choices = mylevels, 
-                             selected = input$annotcheckboxBMDplot 
+                             selected = annotcheckboxBMDplotforCurvesplot()
     )
     
     # check all boxes if the button 'selectallCurvesplot' is clicked
