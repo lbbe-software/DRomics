@@ -305,11 +305,13 @@ ui <- fluidPage(
                                               choices = list("Annotation" = "annotation",
                                                              "Experimental level" = "explevel")
                                  )),
-                          column(2,
-                                 radioButtons("facetbyrowsBMDplot", label = "Facet by (for rows)", 
-                                              choices = list("Annotation" = "annotation",
-                                                             "Experimental level" = "explevel")
-                                 )),
+                          conditionalPanel(condition = "input.nbLevel > 1",
+                                           column(2,
+                                                  radioButtons("facetbyrowsBMDplot", label = "Facet by (for rows)", 
+                                                               choices = list("Annotation" = "annotation",
+                                                                              "Experimental level" = "explevel")
+                                                  ))
+                          ),
                           column(2,
                                  fixedRow(
                                    checkboxInput("shapebyBMDplot", label = HTML("<b>Shape by trend</b>"), value = FALSE),
