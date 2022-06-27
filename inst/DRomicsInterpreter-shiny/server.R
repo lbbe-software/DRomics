@@ -637,14 +637,28 @@ server <- function(input, output, session) {
   })
   
   
-  ############ curves plot ############
-  output$curvesplot <- renderPlot({
+  
+  extendedresforCurvesplot <- eventReactive(input$buttonRunStep4, {
+    validate(
+      need(input$annotcheckboxCurvesplot, "Please choose at least one annotation")
+    )
     sortextendedres <- sortextendedres()
     myextendedmergeddata <- sortextendedres$myextendedmergeddata
     mypathclasslabel <- sortextendedres$mypathclasslabel
+    myextendedresforCurvesplot <- myextendedmergeddata[myextendedmergeddata[, mypathclasslabel] %in% input$annotcheckboxCurvesplot, ]
+    return(list("myextendedresforCurvesplot" = myextendedresforCurvesplot,
+                "mypathclasslabel" = mypathclasslabel))
+  })
+  
+  
+  ############ curves plot ############
+  output$curvesplot <- renderPlot({
+    myextendedresforCurvesplot <- extendedresforCurvesplot()
+    myextendedresforCurvesplot <- myextendedresforCurvesplot$myextendedresforCurvesplot
+    mypathclasslabel <- myextendedresforCurvesplot$mypathclasslabel
     
     # get the BMD values in the combined, merged sorted and selected data frame
-    BMD <- myextendedmergeddata[, paste0("BMD.", input$BMDtypeBMDPlot)]
+    BMD <- myextendedresforCurvesplot[, paste0("BMD.", input$BMDtypeBMDPlot)]
     
     # Update the min and max doses by default according to the log transformation
     observeEvent(input$doselogtransfoCurvesplot, {
@@ -656,11 +670,19 @@ server <- function(input, output, session) {
       updateNumericInput(session, "maxdoseCurvesplot", value = round(max(BMD) * 2, 2))
     })
     
-    mytrendplot <- DRomics::curvesplot(myextendedmergeddata, 
-                                       xmin = mindoseCurvesplot(),
-                                       xmax = maxdoseCurvesplot(),
-                                       dose_log_transfo = doselogtransfoCurvesplot(),
-                                       colorby = colorbyCurvesplot())
+    if(isTRUE(colorbyCurvesplot())) {
+      mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot, 
+                                          xmin = mindoseCurvesplot(),
+                                          xmax = maxdoseCurvesplot(),
+                                          dose_log_transfo = doselogtransfoCurvesplot(),
+                                          colorby = "trend") + 
+        ggplot2::labs(col = "trend")
+    } else {
+      mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot, 
+                                          xmin = mindoseCurvesplot(),
+                                          xmax = maxdoseCurvesplot(),
+                                          dose_log_transfo = doselogtransfoCurvesplot())
+    }
     output$buttonDownloadCurvesplot <- downloadHandler(
       filename = function(){
         "curvesplot.pdf"

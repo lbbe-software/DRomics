@@ -393,6 +393,7 @@ ui <- fluidPage(
                         br(), br(),
                         div(align = "center", downloadButton("buttonDownloadCurvesplot", "Download Curves Plot", icon = icon("fas fa-download"))),
                       ),
+                      br(), br(), br(), br()
              ),
              
              ####################################################################################
