@@ -470,14 +470,6 @@ server <- function(input, output, session) {
   ############ BMD plot ############
   output$bmdplot <- renderPlot({
     
-    fnvaluecheckbox <- function(valuecheckbox, pathclasslabel) {
-      if(valuecheckbox == "annotation") {
-        return(pathclasslabel)
-      } else if (valuecheckbox == "explevel") {
-        return("experimental_level")
-      }
-    }
-    
     myextendedresforBMD <- extendedresforBMD()
     myfacetbycolumnsBMDplot <- fnvaluecheckbox(facetbycolumnsBMDplot(), myextendedresforBMD$mypathclasslabel)
     myfacetbyrowsBMDplot <- fnvaluecheckbox(facetbyrowsBMDplot(), myextendedresforBMD$mypathclasslabel)
@@ -620,6 +612,8 @@ server <- function(input, output, session) {
   maxdoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$maxdoseCurvesplot})
   doselogtransfoCurvesplot <- eventReactive(input$buttonRunStep4, {input$doselogtransfoCurvesplot})
   colorbyCurvesplot <- eventReactive(input$buttonRunStep4, {input$colorbyCurvesplot})
+  facetbycolumnsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbycolumnsCurvesplot})
+  facetbyrowsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbyrowsCurvesplot})
   
   # Update the choice selected in 'facetby' in step4 according to 'facetby' in step3
   observeEvent(input$facetbycolumnsBMDplot, {
@@ -651,12 +645,11 @@ server <- function(input, output, session) {
   
   ############ curves plot ############
   output$curvesplot <- renderPlot({
+    
     myextendedresforCurvesplot <- extendedresforCurvesplot()
-    myextendedresforCurvesplot <- myextendedresforCurvesplot$myextendedresforCurvesplot
-    mypathclasslabel <- myextendedresforCurvesplot$mypathclasslabel
     
     # get the BMD values in the combined, merged sorted and selected data frame
-    BMD <- myextendedresforCurvesplot[, paste0("BMD.", input$BMDtypeBMDPlot)]
+    BMD <- myextendedresforCurvesplot$myextendedresforCurvesplot[, paste0("BMD.", input$BMDtypeBMDPlot)]
     
     # Update the min and max doses by default according to the log transformation
     observeEvent(input$doselogtransfoCurvesplot, {
@@ -668,18 +661,26 @@ server <- function(input, output, session) {
       updateNumericInput(session, "maxdoseCurvesplot", value = round(max(BMD) * 2, 2))
     })
     
+    myfacetbycolumnsCurvesplot <- fnvaluecheckbox(facetbycolumnsCurvesplot(), myextendedresforCurvesplot$mypathclasslabel)
+    myfacetbyrowsCurvesplot <- fnvaluecheckbox(facetbyrowsCurvesplot(), myextendedresforCurvesplot$mypathclasslabel)
+    
+    
     if(isTRUE(colorbyCurvesplot())) {
-      mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot, 
+      mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
                                           xmin = mindoseCurvesplot(),
                                           xmax = maxdoseCurvesplot(),
                                           dose_log_transfo = doselogtransfoCurvesplot(),
+                                          facetby = myfacetbycolumnsCurvesplot,
+                                          facetby2 = myfacetbyrowsCurvesplot,
                                           colorby = "trend") + 
         ggplot2::labs(col = "trend")
     } else {
-      mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot, 
+      mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
                                           xmin = mindoseCurvesplot(),
                                           xmax = maxdoseCurvesplot(),
-                                          dose_log_transfo = doselogtransfoCurvesplot())
+                                          dose_log_transfo = doselogtransfoCurvesplot(),
+                                          facetby = myfacetbycolumnsCurvesplot,
+                                          facetby2 = myfacetbyrowsCurvesplot)
     }
     output$buttonDownloadCurvesplot <- downloadHandler(
       filename = function(){

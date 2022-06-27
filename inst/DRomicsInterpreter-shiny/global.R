@@ -103,3 +103,11 @@ selectgroups <- function(extendedres, group, explev,
   
   return(subextendedres)
 }
+
+fnvaluecheckbox <- function(valuecheckbox, pathclasslabel) {
+  if(valuecheckbox == "annotation") {
+    return(pathclasslabel)
+  } else if (valuecheckbox == "explevel") {
+    return("experimental_level")
+  }
+}
