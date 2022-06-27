@@ -61,16 +61,21 @@ remotes::install_github("aursiber/DRomics", build_vignettes = TRUE)
 ```
 
 
-# The shiny app 
-`DRomics-shiny` can be run on a R session, doing:
-```r
-shiny::runApp(system.file("DRomics-shiny", package = "DRomics"))
-```
+# Two shiny apps 
+The two shiny apps that work with DRomics are available :
 
-or online at:
-<a href="http://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomics-shiny/" target="_blank">http://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomics-shiny/</a>
+- on the LBBE shiny server at
+    - https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomics-shiny/
+    - https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsInterpreter-shiny/
+- in the Biosphere cloud, if you or your lab is a partner of the IFB (Institut Français de Bioinformatique), at https://biosphere.france-bioinformatique.fr/catalogue/appliance/176/
+- locally in your R session doing:
+  - `install.packages(c("shiny", "shinyBS", "shinycssloaders", "shinyjs", "shinyWidgets", "sortable"))`
+  - `shiny::runApp(system.file("DRomics-shiny", package = "DRomics"))`
+  - `shiny::runApp(system.file("DRomicsInterpreter-shiny", package = "DRomics"))`
 
-This shiny app is runing with the development version of DRomics.
+These shiny apps are runing with the development version of DRomics.
+
+
 
 # Authors & Contacts
 If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at dromics@univ-lyon1.fr .
