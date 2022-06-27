@@ -439,8 +439,11 @@ server <- function(input, output, session) {
       shinyjs::disable("shapebyBMDplot")
   })
   
-  # Update the choices available in 'facetby2' according to 'facetby'
+  # Update the choices available in 'facetby' when there is only one level and in 'facetby2' according to 'facetby'
   observeEvent(input$facetbycolumnsBMDplot, {
+    if(input$nbLevel == 1)
+      updateRadioButtons(session, "facetbycolumnsBMDplot", choices = list("Annotation" = "annotation"), selected = "annotation")
+    
     if(input$facetbycolumnsBMDplot == "annotation")
       updateRadioButtons(session, "facetbyrowsBMDplot", choices = list("Experimental level" = "explevel"), selected = "explevel")
     else if(input$facetbycolumnsBMDplot == "explevel")
@@ -673,8 +676,11 @@ server <- function(input, output, session) {
                          selected = input$facetbycolumnsBMDplot)
   })
   
-  # Update the choices available in 'facetby2' according to 'facetby'
+  # Update the choices available in 'facetby' when there is only one level and in 'facetby2' according to 'facetby'
   observeEvent(input$facetbycolumnsCurvesplot, {
+    if(input$nbLevel == 1)
+      updateRadioButtons(session, "facetbycolumnsCurvesplot", choices = list("Annotation" = "annotation"), selected = "annotation")
+    
     if(input$facetbycolumnsCurvesplot == "annotation")
       updateRadioButtons(session, "facetbyrowsCurvesplot", choices = list("Experimental level" = "explevel"), selected = "explevel")
     else if(input$facetbycolumnsCurvesplot == "explevel")
