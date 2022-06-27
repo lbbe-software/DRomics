@@ -455,7 +455,7 @@ server <- function(input, output, session) {
   shapebyBMDplot <- eventReactive(input$buttonRunStep3, {input$shapebyBMDplot})
   colorbyBMDplot <- eventReactive(input$buttonRunStep3, {input$colorbyBMDplot})
     
-  extendedresforBMD <- eventReactive(input$buttonRunStep3, {
+  extendedresforBMD <- function() {
     validate(
       need(input$annotcheckboxBMDplot, "Please choose at least one annotation")
     )
@@ -465,7 +465,7 @@ server <- function(input, output, session) {
     myextendedresforBMD <- myextendedmergeddata[myextendedmergeddata[, mypathclasslabel] %in% input$annotcheckboxBMDplot, ]
     return(list("myextendedresforBMD" = myextendedresforBMD,
                 "mypathclasslabel" = mypathclasslabel))
-  })
+  }
   
   ############ BMD plot ############
   output$bmdplot <- renderPlot({
@@ -636,9 +636,7 @@ server <- function(input, output, session) {
       updateRadioButtons(session, "facetbyrowsCurvesplot", choices = list("Annotation" = "annotation"), selected = "annotation")
   })
   
-  
-  
-  extendedresforCurvesplot <- eventReactive(input$buttonRunStep4, {
+  extendedresforCurvesplot <- function() {
     validate(
       need(input$annotcheckboxCurvesplot, "Please choose at least one annotation")
     )
@@ -648,7 +646,7 @@ server <- function(input, output, session) {
     myextendedresforCurvesplot <- myextendedmergeddata[myextendedmergeddata[, mypathclasslabel] %in% input$annotcheckboxCurvesplot, ]
     return(list("myextendedresforCurvesplot" = myextendedresforCurvesplot,
                 "mypathclasslabel" = mypathclasslabel))
-  })
+  }
   
   
   ############ curves plot ############
