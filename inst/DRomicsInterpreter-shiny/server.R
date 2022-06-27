@@ -352,10 +352,16 @@ server <- function(input, output, session) {
     ############ trend plot ############
     output$trendplot <- renderPlot({
       myextendedmergeddata <- sortlevels4ggplot(myextendedmergeddata, mypathclasslabel)
-      mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
-                                        group = mypathclasslabel, 
-                                        facetby = "experimental_level", 
-                                        add.color = TRUE)
+      if(input$nbLevel > 1) {
+        mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
+                                          group = mypathclasslabel, 
+                                          facetby = "experimental_level", 
+                                          add.color = TRUE)
+      } else {
+        mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
+                                          group = mypathclasslabel, 
+                                          add.color = TRUE)
+      }
       shinyjs::showElement('text1_step2', time = 0)
       output$buttonDownloadTrendplot <- downloadHandler(
         filename = function(){
