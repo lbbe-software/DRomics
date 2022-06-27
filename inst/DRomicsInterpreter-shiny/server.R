@@ -248,6 +248,7 @@ server <- function(input, output, session) {
   BMDsummarysensitivityPlot <- eventReactive(input$buttonRunStep2, {input$BMDsummarysensitivityPlot})
   orderingOnelev <- eventReactive(input$buttonRunStep2, {input$ordering_onelev})
   orderingMoreonelev <- eventReactive(input$buttonRunStep2, {input$ordering_moreonelev})
+  labelssorted <- eventReactive(input$buttonRunStep2, {input$labelssorted})
   BMDmax <- eventReactive(input$buttonRunStep2, {
     validate(
       need(input$BMDmax >= 0, "BMDmax must be a positive number.")
@@ -279,7 +280,7 @@ server <- function(input, output, session) {
       levelorder <- names(sort(table(myextendedmergeddata[, mypathclasslabel]), decreasing = FALSE))
     
     } else if((orderingOnelev() == "specificorder_onelev" & input$nbLevel == 1) | (orderingMoreonelev() == "specificorder_moreonelev" & input$nbLevel > 1)) {
-      levelorder <- input$labelssorted
+      levelorder <- labelssorted()
     } else {
       levelorder <- levels(myextendedmergeddata[, mypathclasslabel])
     }
@@ -294,11 +295,12 @@ server <- function(input, output, session) {
   sortlevels4ggplot <- function(df, v) {
     if(input$nbLevel > 1) {
       if(orderingMoreonelev() == "alphaorder_moreonelev" | orderingMoreonelev() == "specificorder_moreonelev"){
-        df[, v] <- factor(df[, v], levels = rev(sort(levels(df[, v]))))
+        df[, v] <- factor(df[, v], levels = rev(levels(df[, v])))
       }
     } else {
       if(orderingOnelev() == "alphaorder_onelev" | orderingOnelev() == "specificorder_onelev"){
-        df[, v] <- factor(df[, v], levels = rev(sort(levels(df[, v]))))      }
+        df[, v] <- factor(df[, v], levels = rev(levels(df[, v])))
+      }
     }
     return(df)
   }
