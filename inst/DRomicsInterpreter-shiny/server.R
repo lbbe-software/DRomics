@@ -235,7 +235,7 @@ server <- function(input, output, session) {
     myfirstannotationData <- annotationData(1)
     mypathclasslabel <-  names(myfirstannotationData)[which(names(myfirstannotationData) != input$id_annotationData1)]
     
-    namestosort <- levels(myextendedmergeddata[, mypathclasslabel])
+    namestosort <- sort(levels(myextendedmergeddata[, mypathclasslabel]))
     sortable::rank_list(text = HTML("<b>Drag and drop the labels to sort them as you wish</b>"),
                         labels = namestosort, 
                         input_id = "labelssorted",
