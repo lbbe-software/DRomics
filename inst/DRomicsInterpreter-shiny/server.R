@@ -674,20 +674,12 @@ server <- function(input, output, session) {
       }
     })
   })
- 
     
-  mindoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$mindoseCurvesplot})
-  maxdoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$maxdoseCurvesplot})
-  doselogtransfoCurvesplot <- eventReactive(input$buttonRunStep4, {input$doselogtransfoCurvesplot})
-  colorbyCurvesplot <- eventReactive(input$buttonRunStep4, {input$colorbyCurvesplot})
-  facetbycolumnsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbycolumnsCurvesplot})
-  facetbyrowsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbyrowsCurvesplot})
-  
   # Update the choice selected in 'facetby' in step4 according to 'facetby' in step3
-  observeEvent(input$facetbycolumnsBMDplot, {
+  observe({
       updateRadioButtons(session, "facetbycolumnsCurvesplot", 
                          choices = list("Annotation" = "annotation", "Experimental level" = "explevel"), 
-                         selected = input$facetbycolumnsBMDplot)
+                         selected = facetbycolumnsBMDplot())
   })
   
   # Update the choices available in 'facetby' when there is only one level
@@ -695,7 +687,7 @@ server <- function(input, output, session) {
     if(input$nbLevel == 1)
       updateRadioButtons(session, "facetbycolumnsCurvesplot", choices = list("Annotation" = "annotation"), selected = "annotation")
     else
-      updateRadioButtons(session, "facetbycolumnsCurvesplot", choices = list("Annotation" = "annotation", "Experimental level" = "explevel", selected = "annotation"))
+      updateRadioButtons(session, "facetbycolumnsCurvesplot", choices = list("Annotation" = "annotation", "Experimental level" = "explevel"), selected = "annotation")
   })
   
   # Update the choices available in 'facetby2' according to 'facetby'
@@ -705,6 +697,13 @@ server <- function(input, output, session) {
     else if(input$facetbycolumnsCurvesplot == "explevel")
       updateRadioButtons(session, "facetbyrowsCurvesplot", choices = list("Annotation" = "annotation"), selected = "annotation")
   })
+  
+  mindoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$mindoseCurvesplot})
+  maxdoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$maxdoseCurvesplot})
+  doselogtransfoCurvesplot <- eventReactive(input$buttonRunStep4, {input$doselogtransfoCurvesplot})
+  colorbyCurvesplot <- eventReactive(input$buttonRunStep4, {input$colorbyCurvesplot})
+  facetbycolumnsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbycolumnsCurvesplot})
+  facetbyrowsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbyrowsCurvesplot})
   
   extendedresforCurvesplot <- function() {
     validate(
