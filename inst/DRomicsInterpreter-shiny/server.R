@@ -750,6 +750,7 @@ server <- function(input, output, session) {
     if(isTRUE(colorbyCurvesplot())) {
       if(input$nbLevel > 1) {
         mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
+                                            free.y.scales = TRUE,
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxdoseCurvesplot(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
@@ -758,7 +759,8 @@ server <- function(input, output, session) {
                                             colorby = "trend") + 
           ggplot2::labs(col = "trend")
       } else {
-        mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
+        mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
+                                            free.y.scales = TRUE,
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxdoseCurvesplot(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
@@ -768,14 +770,16 @@ server <- function(input, output, session) {
       }
     } else {
       if(input$nbLevel > 1) {
-        mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
+        mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
+                                            free.y.scales = TRUE,
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxdoseCurvesplot(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
                                             facetby = myfacetbycolumnsCurvesplot,
                                             facetby2 = myfacetbyrowsCurvesplot)
       } else {
-        mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
+        mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
+                                            free.y.scales = TRUE,
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxdoseCurvesplot(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
