@@ -698,33 +698,16 @@ server <- function(input, output, session) {
       updateRadioButtons(session, "facetbyrowsCurvesplot", choices = list("Annotation" = "annotation"), selected = "annotation")
   })
   
-  mindoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$mindoseCurvesplot})
-  maxdoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$maxdoseCurvesplot})
-  doselogtransfoCurvesplot <- eventReactive(input$buttonRunStep4, {input$doselogtransfoCurvesplot})
-  colorbyCurvesplot <- eventReactive(input$buttonRunStep4, {input$colorbyCurvesplot})
-  facetbycolumnsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbycolumnsCurvesplot})
-  facetbyrowsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbyrowsCurvesplot})
   
-  extendedresforCurvesplot <- function() {
-    validate(
-      need(input$annotcheckboxCurvesplot, "Please choose at least one annotation")
-    )
+  # Update the min and max doses by default according to the log transformation and to the annotation levels selected
+  observeEvent(input$annotcheckboxCurvesplot, {
     sortextendedres <- sortextendedres()
     myextendedmergeddata <- sortextendedres$myextendedmergeddata
     mypathclasslabel <- sortextendedres$mypathclasslabel
     myextendedresforCurvesplot <- myextendedmergeddata[myextendedmergeddata[, mypathclasslabel] %in% input$annotcheckboxCurvesplot, ]
-    return(list("myextendedresforCurvesplot" = myextendedresforCurvesplot,
-                "mypathclasslabel" = mypathclasslabel))
-  }
-  
-  
-  ############ curves plot ############
-  output$curvesplot <- renderPlot({
-    
-    myextendedresforCurvesplot <- extendedresforCurvesplot()
     
     # get the BMD values in the combined, merged sorted and selected data frame
-    BMD <- myextendedresforCurvesplot$myextendedresforCurvesplot[, paste0("BMD.", input$BMDtypeBMDPlot)]
+    BMD <- myextendedresforCurvesplot[, paste0("BMD.", input$BMDtypeBMDPlot)]
     
     # Update the min and max doses by default according to the log transformation
     observeEvent(input$doselogtransfoCurvesplot, {
@@ -735,10 +718,34 @@ server <- function(input, output, session) {
       }
       updateNumericInput(session, "maxdoseCurvesplot", value = round(max(BMD) * 2, 2))
     })
+  })
+  
+  mindoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$mindoseCurvesplot})
+  maxdoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$maxdoseCurvesplot})
+  doselogtransfoCurvesplot <- eventReactive(input$buttonRunStep4, {input$doselogtransfoCurvesplot})
+  colorbyCurvesplot <- eventReactive(input$buttonRunStep4, {input$colorbyCurvesplot})
+  facetbycolumnsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbycolumnsCurvesplot})
+  facetbyrowsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbyrowsCurvesplot})
+  
+  extendedresforCurvesplot <- eventReactive(input$buttonRunStep4, {
+    validate(
+      need(input$annotcheckboxCurvesplot, "Please choose at least one annotation")
+    )
+    sortextendedres <- sortextendedres()
+    myextendedmergeddata <- sortextendedres$myextendedmergeddata
+    mypathclasslabel <- sortextendedres$mypathclasslabel
+    myextendedresforCurvesplot <- myextendedmergeddata[myextendedmergeddata[, mypathclasslabel] %in% input$annotcheckboxCurvesplot, ]
+    return(list("myextendedresforCurvesplot" = myextendedresforCurvesplot,
+                "mypathclasslabel" = mypathclasslabel))
+  })
+  
+  
+  ############ curves plot ############
+  output$curvesplot <- renderPlot({
     
+    myextendedresforCurvesplot <- extendedresforCurvesplot()
     myfacetbycolumnsCurvesplot <- fnvaluecheckbox(facetbycolumnsCurvesplot(), myextendedresforCurvesplot$mypathclasslabel)
     myfacetbyrowsCurvesplot <- fnvaluecheckbox(facetbyrowsCurvesplot(), myextendedresforCurvesplot$mypathclasslabel)
-    
     
     if(isTRUE(colorbyCurvesplot())) {
       if(input$nbLevel > 1) {
