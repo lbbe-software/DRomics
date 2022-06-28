@@ -46,7 +46,7 @@ ui <- fluidPage(
                                              follow a normal distribution for each dose or concentration, with a common standard error.
                                              DRomics should not be used on other types of data.", br(), br(),
                                                         "Next, for interpretation of results in light of a biological annotation, you can use the ",
-                                                        a("DRomicsInterpreter-shiny application", href = "https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsMultiLevels-shiny/", TARGET="_blank", style="color:#f28d0f;"), ".",
+                                                        a("DRomicsInterpreter-shiny application", href = "https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsInterpreter-shiny/", TARGET="_blank", style="color:#f28d0f;"), ".",
                                                         style="text-align:justify;"),
                                         br(),
                                         h4("The DRomics-shiny application runs on the ", 
