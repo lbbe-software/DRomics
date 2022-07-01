@@ -1,1 +1,1 @@
-Workflow of the second Shiny app for DRomics
+Interpretation of DRomics results in light of a biological annotation
