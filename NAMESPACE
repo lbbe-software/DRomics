@@ -60,4 +60,5 @@ export(ecdfquantileplot)
 export(trendplot)
 export(sensitivityplot)
 export(bmdplot)
+export(selectgroups)
 

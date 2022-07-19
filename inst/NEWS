@@ -1,4 +1,10 @@
 === DRomics : Dose response for omics ===
+Version 2.5-0 
+=======================
+NEW FEATURES
+- Add of the function selectgroups() to select most represented and/or
+most sensitive groups on which to focus for biological interpretation.
+
 
 Version 2.4-0 
 =======================

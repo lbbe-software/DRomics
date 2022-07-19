@@ -1,6 +1,10 @@
 
 require(DRomics)
-# (1) An example from data published by Larras et al. 2020
+visualize <- FALSE # put to TRUE for a manual check 
+
+if (visualize)
+{
+  # (1) An example from data published by Larras et al. 2020
 # in Journal of Hazardous Materials
 # https://doi.org/10.1016/j.jhazmat.2020.122727
 
@@ -65,8 +69,6 @@ sensitivityplot(subannotres, BMDtype = "zSD",
                 group = "path_class", 
                 BMDsummary = "median")
 
-#\donttest{
-  
   # same plot in log10 BMD scale (not interesting on this example
   # but could be on another one) 
   sensitivityplot(annotres, BMDtype = "zSD",
@@ -154,4 +156,4 @@ sensitivityplot(subannotres, BMDtype = "zSD",
                   group = "path_class", colorby = "molecular.level", 
                   BMDsummary = "first.quartile")
   
-#}
+}

@@ -1,7 +1,7 @@
 # Select groups (corresponding to different biological annotations or groups of annotations)
 # that we want to focus on using trendplot, sensitivityplot, bmdplotwithgradient ...
-# - the selection can be based on the minimal nb of item in each group
-# and optionnally on the BMDsummary value in each group
+# - the selection can be based on the minimal nb of items in each group
+# and/or on the BMDsummary value in each group.
 # - if there is more than one experimental level, the selection of groups 
 # is made separately in each experimental level, so a group may be selected
 # for one experimental level and removed for another one
