@@ -96,17 +96,23 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     gg <- gg + geom_point(stat = 'identity')  +  coord_flip() +
       labs(x = "", y = "BMD 25th quantiles") 
         
-  } else
-  
-  if (BMDsummary == "median" | BMDsummary == "median.and.IQR")
-  {
+  } else {
     if (missing(colorby))
       gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(secondquartile), 
-                           size = quote(nb_of_items))) else
+                             size = quote(nb_of_items))) 
+    else {
+      if (BMDsummary == "median") {
       gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(secondquartile), 
-                             color = quote(level), alpha = I(0.5),
+                             color = quote(level), 
                              size = quote(nb_of_items)))
-      gg <- gg + geom_point(stat = 'identity') + coord_flip() 
+      } else {
+        gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(secondquartile), 
+                               color = quote(level), alpha = I(0.5),
+                               size = quote(nb_of_items)))
+      }
+    }
+    gg <- gg + geom_point(stat = 'identity') + coord_flip() 
+    
     if (BMDsummary == "median")
       gg <- gg + labs(x = "", y = "BMD medians") else
       gg <- gg + geom_errorbar(aes_(ymin = quote(firstquartile), 
