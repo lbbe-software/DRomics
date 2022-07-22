@@ -808,6 +808,7 @@ server <- function(input, output, session) {
   
   output$printRCode <- renderText({
     
+    # STEP 1
     text <- c("library(DRomics)",
               "",
               "# Step 1",
@@ -826,6 +827,21 @@ server <- function(input, output, session) {
       )
     }
     
+    text <- c(text, paste0("str(myextendedmergeddata)"))
+    
+    for (i in 1:input$nbLevel) {
+      text <- c(text, 
+                paste0("head(myextendedmergeddata[myextendedmergeddata$experimental_level == '", eval(parse(text = paste0("levels(myextendedmergeddata$experimental_level)[", i, "]"))), "', ], 3)")
+      )
+    }
+    
+    # STEP 2
+    
+    # STEP 3
+    
+    # STEP 4
+    
+    # download button
     output$buttonDownRCode <- downloadHandler(
       filename = function(){
         paste0("Rcode-", Sys.Date(), ".R")
