@@ -405,7 +405,18 @@ ui <- fluidPage(
              ####################################################################################
              tabPanel(HTML("<font face=verdana size=3 color=#9c5c16>R code to go further</font>"),
                       value = "step5",
-                      br(), HTML("<font face=verdana size=5 color=#9c5c16><b>R code to go further</b></font>"), br(), br(), br(),
+                      fixedRow(
+                        column(8, 
+                               br(), HTML("<font face=verdana size=5 color=#9c5c16><b>R CODE TO GO FURTHER</b></font>"), br(), br(), br(),
+                               tags$blockquote("To see what more you can do using the R package, we recommend you to consult the ", 
+                                               a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_0.pdf", TARGET="_blank", style="color:#f28d0f;"),
+                                               " and the ", 
+                                               a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_0.pdf", TARGET="_blank", style="color:#f28d0f;"),
+                                               " of the package."), 
+                               br(), 
+                               downloadButton("buttonDownRCode", "Download R Code", icon = icon("fas fa-download"), style = 'background-color:#e6e6e6; color:#000000; border-color:#9d9d9d;'), br(), br(),
+                               verbatimTextOutput('printRCode'), br(), br()
+                        ))
              )
              
   )
