@@ -49,7 +49,7 @@ jobs:
       - name: Install bioconductor packages
         run: |
           install.packages("BiocManager")
-          BiocManager::install(c('DESeq2','limma'))
+          BiocManager::install(c('DESeq2','limma', "SummarizedExperiment"))
         shell: Rscript {0}
           
       - name: Query dependencies
