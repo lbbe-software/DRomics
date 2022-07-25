@@ -4,6 +4,8 @@ Version 2.5-0
 NEW FEATURES
 - Add of the function selectgroups() to select most represented and/or
 most sensitive groups on which to focus for biological interpretation.
+- Add of an RNAseq data with batch effect (zebraf)
+- Add of PCAdataplot() a function to visualize omic data
 
 
 Version 2.4-0 

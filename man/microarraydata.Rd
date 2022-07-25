@@ -119,12 +119,13 @@ Marie-Laure Delignette-Muller
 # (1) import, check and normalization of microarray data 
 # (an example on a subsample of a greater data set published in Larras et al. 2018
 # Transcriptomic effect of triclosan in the chlorophyte Scenedesmus vacuolatus)
-#
 datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", 
   package="DRomics")
 o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 print(o)
 plot(o)
+PCAdataplot(o)
+
 
 # If you want to use your own data set just replace datafilename, 
 # the first argument of microarraydata(), 
