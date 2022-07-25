@@ -808,6 +808,9 @@ server <- function(input, output, session) {
   
   output$printRCode <- renderText({
     
+    req(input$DRomicsData1)
+    req(input$annotationData1)
+    
     # STEP 1
     text <- c("library(DRomics)",
               "",
@@ -831,7 +834,7 @@ server <- function(input, output, session) {
     
     for (i in 1:input$nbLevel) {
       text <- c(text, 
-                paste0("head(myextendedmergeddata[myextendedmergeddata$experimental_level == '", eval(parse(text = paste0("levels(myextendedmergeddata$experimental_level)[", i, "]"))), "', ], 3)")
+                paste0("head(myextendedmergeddata[myextendedmergeddata$experimental_level == levels(myextendedmergeddata$experimental_level)[", i, "], ], 3)")
       )
     }
     
