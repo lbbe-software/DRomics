@@ -268,8 +268,7 @@ server <- function(input, output, session) {
                                          explev = "experimental_level", 
                                          BMDtype = BMDtypesensitivityPlot(),
                                          BMDsummary = substr(BMDsummarysensitivityPlot(), 1, 5), 
-                                         nitemsmin = minNbItem(), 
-                                         selectateachexplev = TRUE)
+                                         nitemsmin = minNbItem())
     
     # alphabetic ordering of mypathclasslabel groups
     if((orderingOnelev() == "alphaorder_onelev" & input$nbLevel == 1) | (orderingMoreonelev() == "alphaorder_moreonelev" & input$nbLevel > 1)) {
@@ -811,7 +810,7 @@ server <- function(input, output, session) {
     req(input$DRomicsData1)
     req(input$annotationData1)
     
-    # STEP 1
+    ##### STEP 1 #####
     text <- c("library(DRomics)",
               "",
               "# Step 1",
@@ -831,18 +830,44 @@ server <- function(input, output, session) {
     }
     
     text <- c(text, paste0("str(myextendedmergeddata)"))
-    
     for (i in 1:input$nbLevel) {
       text <- c(text, 
                 paste0("head(myextendedmergeddata[myextendedmergeddata$experimental_level == levels(myextendedmergeddata$experimental_level)[", i, "], ], 3)")
       )
     }
     
-    # STEP 2
     
-    # STEP 3
+    ##### STEP 2 #####
+    text <- c(text, "", "", "# Step 2",
+              paste0("mypathclasslabel <-  names(annotdata1)[which(names(annotdata1) != '", input$id_annotationData1, "')]"),
+              paste0("myextendedmergeddata <- selectgroups(extendedres = myextendedmergeddata, BMDmax = ", 
+                     input$BMDmax, ", group = mypathclasslabel, explev = 'experimental_level', BMDtype = '", input$BMDtypesensitivityPlot, 
+                     "', BMDsummary = '", match.arg(input$BMDsummarysensitivityPlot, c('first.quartile', 'median')), 
+                     "', nitemsmin = ", input$minNbItem, ")")
+    )
     
-    # STEP 4
+    if((input$ordering_onelev == "alphaorder_onelev" & input$nbLevel == 1) | (input$ordering_moreonelev == "alphaorder_moreonelev" & input$nbLevel > 1)) {
+      text <- c(text, paste0("levelorder <- sort(levels(myextendedmergeddata[, mypathclasslabel]), decreasing = FALSE) # ordered by alphabetic order"))
+    } else if((input$ordering_onelev == "numbitemorder_onelev" & input$nbLevel == 1) | (input$ordering_moreonelev == "numbitemorder_moreonelev" & input$nbLevel > 1)) {
+      text <- c(text, paste0("levelorder <- names(sort(table(myextendedmergeddata[, mypathclasslabel]), decreasing = FALSE)) # ordered by number of item"))
+      
+    } else if((input$ordering_onelev == "specificorder_onelev" & input$nbLevel == 1) | (input$ordering_moreonelev == "specificorder_moreonelev" & input$nbLevel > 1)) {
+      text <- c(text, paste0("levelorder <- ", input$labelssorted, " # ordered by specific order"))
+    } else {
+      text <- c(text, paste0("levelorder <- levels(myextendedmergeddata[, mypathclasslabel]) # ordered by levels order"))
+    }
+    
+    text <- c(text, paste0("myextendedmergeddata[, mypathclasslabel] <- factor(myextendedmergeddata[, mypathclasslabel], levels = levelorder)"))
+    
+    
+    
+    ##### STEP 3 #####
+    text <- c(text, "", "", "# Step 3")
+    
+    
+    ##### STEP 4 #####
+    text <- c(text, "", "", "# Step 4")
+    
     
     # download button
     output$buttonDownRCode <- downloadHandler(
