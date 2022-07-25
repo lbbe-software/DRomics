@@ -2,6 +2,7 @@
 import(stats)
 import(graphics)
 import(ggplot2)
+import(ggfortify)
 importFrom("limma", normalizeBetweenArrays, lmFit, eBayes, topTable)
 importFrom("DESeq2", rlog, vst, varianceStabilizingTransformation, DESeq, results, DESeqDataSetFromMatrix)
 importFrom("SummarizedExperiment", assay)
@@ -61,4 +62,5 @@ export(trendplot)
 export(sensitivityplot)
 export(bmdplot)
 export(selectgroups)
+export(PCAdataplot)
 
