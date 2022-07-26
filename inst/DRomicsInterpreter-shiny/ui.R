@@ -241,7 +241,7 @@ ui <- fluidPage(
                           ),
                           column(1,
                                  br(),
-                                 div(align="right", actionButton("buttonRunStep2", "Run", icon = icon("fas fa-cog"), style='font-size:200%'))
+                                 div(align="right", actionButton("buttonRunStep2", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
                           )
                         )),
                       fixedRow(
@@ -320,7 +320,7 @@ ui <- fluidPage(
                           ),
                           column(1,
                                  br(),
-                                 div(align="right", actionButton("buttonRunStep3", "Run", icon = icon("fas fa-cog"), style='font-size:200%'))
+                                 div(align="right", actionButton("buttonRunStep3", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
                                  )
                           )
                       ),
@@ -388,7 +388,7 @@ ui <- fluidPage(
                           ),
                           column(1,
                                  br(),
-                                 div(align="right", actionButton("buttonRunStep4", "Run", icon = icon("fas fa-cog"), style='font-size:200%'))
+                                 div(align="right", actionButton("buttonRunStep4", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
                           )
                         )
                       ),

@@ -176,7 +176,7 @@ ui <- fluidPage(
                                       accept = c('.csv', '.txt')),
                             h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
                             h5("See ", a("here", href = "DRomicspkg/RNAseq_sample.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'RNAseq_sample.txt'), " an example file"),
-                            icon("exclamation-triangle"), "Be aware that counts are automatically rounded to ensure compatibility of counts from Kallisto or Salmon with the tool.",
+                            icon("triangle-exclamation"), "Be aware that counts are automatically rounded to ensure compatibility of counts from Kallisto or Salmon with the tool.",
                             br(), br(),
                             splitLayout(cellWidths = c("40%", "60%"),
                                         textInput('bgdose_rnaseq', "Background dose", 0),
@@ -208,7 +208,7 @@ ui <- fluidPage(
                                         bsPopover("bgdose_help3", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
                             ),
                             hr(), 
-                            icon("exclamation-triangle"), "We recommend you to check that your metabolomics data were correctly pretreated before importation. In particular data (metabolomic signal) should have been log-transformed, without replacing 0 values by NA values (consider using the half minimum method instead for example).",
+                            icon("triangle-exclamation"), "We recommend you to check that your metabolomics data were correctly pretreated before importation. In particular data (metabolomic signal) should have been log-transformed, without replacing 0 values by NA values (consider using the half minimum method instead for example).",
                             h5("See ", a("here", href = "informations_metabolo_pretreatment.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " more information about metabolomics data pretreatment")
                           ),
                           
@@ -228,7 +228,7 @@ ui <- fluidPage(
                                         bsPopover("bgdose_help4", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
                             ),
                             hr(), 
-                            icon("exclamation-triangle"),
+                            icon("triangle-exclamation"),
                             "We recommend you to check that your anchoring data are continuous and expressed in a scale that enables the use of a normal error model (a transformation of data may be needed for some endpoints). If this assumption is not respected, results of selection and further steps may be inaccurate."
                           ),
                           
@@ -274,7 +274,7 @@ ui <- fluidPage(
                                    hr(),
                                    fixedRow(
                                      column(12, align="center",
-                                            actionButton("buttonRunStep2", "Run", icon = icon("fas fa-cog"), style='font-size:200%')
+                                            actionButton("buttonRunStep2", "Run", icon = icon("fas fa-gear"), style='font-size:200%')
                                      )
                                    ), br(), 
                                    fixedRow(
@@ -310,7 +310,7 @@ ui <- fluidPage(
                                      )),
                                    br(),
                                    h5("See ", a("here", href = "informations_modelling_procedure.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the dose reponse modelling procedure"),
-                                   icon("exclamation-triangle"),
+                                   icon("triangle-exclamation"),
                                    "These ongoing calculations can take from minutes to about an hour. Your patience should be proportional to the size of your data and the chosen FDR.",
                                    hr(), 
                                    radioButtons('plottypeDrcfit', 
