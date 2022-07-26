@@ -89,7 +89,7 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# A toy example on a very small subsample of a microarray data set) 
+# (1) A toy example on a very small subsample of a microarray data set) 
 #
 datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", 
 package="DRomics")
@@ -98,7 +98,7 @@ o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01)
 f <- drcfit(s_quad, progressbar = TRUE)
 
-# (1) 
+# (1.a) 
 # Default plot of all the curves 
 #
 curvesplot(f$fitres, xmax = max(f$omicdata$dose))
@@ -126,7 +126,7 @@ curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend")
 curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend",
   free.y.scales =  TRUE)
   
-# (2) 
+# (1.b) 
 # Plot of all the curves playing with y0shift and scaling
 #
 # without shifting y0 values to 0
@@ -136,7 +136,7 @@ curvesplot(f$fitres, xmax = max(f$omicdata$dose), y0shift = FALSE)
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
   y0shift = TRUE, scaling = TRUE)
 
-# (3) 
+# (1.c) 
 # Plot of all the curves colored by model, with one facet per trend
 #
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
@@ -151,7 +151,7 @@ curvesplot(f$fitres, xmax = max(f$omicdata$dose),
   facetby = "trend", colorby = "model", 
   line.size = 1, line.alpha = 0.5)
   
-# (4) an example on a microarray data set (a subsample of a greater data set)
+# (2) an example on a microarray data set (a subsample of a greater data set)
 #
 datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
 
@@ -162,13 +162,14 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 
 # plot split by trend and model
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
-facetby = "trend",facetby2 = "model")
+facetby = "trend", facetby2 = "model")
 
-# plot split by typology
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), facetby = "typology")
+# plot split by trend and model with scaling
+curvesplot(f$fitres, xmax = max(f$omicdata$dose),
+scaling = TRUE,
+facetby = "trend", facetby2 = "model")
 
-
-# (5) An example from data published by Larras et al. 2020
+# (3) An example from data published by Larras et al. 2020
 # in Journal of Hazardous Materials
 # https://doi.org/10.1016/j.jhazmat.2020.122727
 
@@ -193,6 +194,12 @@ head(extendedres)
 curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 1,
            colorby = "trend",
            xmin = 0, xmax = 8) 
+
+# Plot of the scaled dose-response curves by pathway colored by trend
+curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 1,
+           colorby = "trend", scaling = TRUE,
+           xmin = 0, xmax = 8) 
+
 
 # Plot of the dose-response curves split by pathway and by trend
 # for a selection pathway

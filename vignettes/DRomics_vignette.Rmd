@@ -517,14 +517,16 @@ as below for the group "Lipid metabolism". In that case in can be useful
 to control the limits of the color gradient and the limits
 on the x-axis in order to use the same x-scale and signal-scale,
 as in the following example (see ?bmdplotwithgradient for details).
+As below you can also focus on the shape of the response skipping the 
+amplitude of the changes to the control by scaling each dose-response curve.
 
 ```{r}
 annotres_lipid <- annotres[annotres$path_class == "Lipid metabolism",] 
 
 bmdplotwithgradient(annotres_lipid, BMDtype = "zSD",
+                    scaling = TRUE,
                     facetby = "path_class", 
                     add.label = TRUE,
-                    limits4colgradient = c(-0.8, 0.8),
                     xmin = 0, xmax = 6.5,
                     label.size = 3) 
 
@@ -562,7 +564,7 @@ The function curvesplot() can show the dose-response curves for a specific pathw
 LMres <- annotres[annotres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
            colorby = "trend",
-           xmin = 0, xmax = 8) + labs(col = "trend")
+           xmin = 0, xmax = 6.5) + labs(col = "trend")
 ```
 
 # Help for multi-omics approaches 
@@ -698,13 +700,15 @@ bmdplot(selectedres, BMDtype = "zSD", add.CI = TRUE,
 Using the function bmdplotwithgradient() and its arguments facetby and facetby2, 
 the BMD plot with color gradient can be split here by KEGG pathway class
 and molecular level, here on a selection of pathway classes present at both molecular levels.(See ?bmdplotwithgradient for more options).
-For a better visualization, it should have been preferable to enter metabolic data 
-in DRomics in log2 instead of log10, to be in same signal scale as for transcriptomic data (indeed the amplitude of the metabolic signal is lower due to the use the log10).
+Especcially as metabolic data and transcriptomic data were not imported
+in DRomics in the same scale (in log2 for transcriptomic and log10 for metabolomic), 
+the use of the scaling option of each dose-reponse curve is interesting in such case. 
+This option focuses on the shape of responses, skipping the amplitude of changes to the control.
 
 ```{r}
 chosen_path_class <- c("Membrane transport", "Lipid metabolism", "Energy metabolism")
 selectedres <- extendedres[extendedres$path_class %in% chosen_path_class, ]
-bmdplotwithgradient(selectedres, BMDtype = "zSD",
+bmdplotwithgradient(selectedres, BMDtype = "zSD", scaling = TRUE,
                facetby = "path_class", facetby2 = "level")
 ```
 
@@ -745,7 +749,7 @@ Using the function curvesplot(), specific dose-response curves can be shown. In 
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "level", free.y.scales = TRUE, npoints = 100, line.size = 1,
            colorby = "trend",
-           xmin = 0, xmax = 8) + labs(col = "DR_trend")
+           xmin = 0, xmax = 6.5) + labs(col = "DR_trend")
 ```
 
 ### Plot of dose-response curves for a selection of pathways
@@ -759,7 +763,20 @@ facetby2. (See ?curvesplot for more options).
 curvesplot(selectedres, facetby = "path_class", facetby2 = "level",
            free.y.scales = TRUE, npoints = 100, line.size = 1,
            colorby = "trend",
-           xmin = 0, xmax = 8) + labs(col = "DR_trend")
+           xmin = 0, xmax = 6.5) + labs(col = "DR_trend")
+```
+
+A scaling of the curves (as below) can be interesting to focus on the 
+shapes of those curves, skipping the amplitude of the changes from the control.
+
+```{r}
+# Plot of the scaled dose-response curves for a specific metabolic pathway
+# in this example the "lipid metabolism" pathclass
+curvesplot(selectedres, scaling = TRUE,
+           facetby = "path_class", facetby2 = "level",
+           npoints = 100, line.size = 1,
+           colorby = "trend",
+           xmin = 0, xmax = 6.5) + labs(col = "DR_trend")
 ```
 
 

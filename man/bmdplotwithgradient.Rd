@@ -137,7 +137,7 @@ bmdplotwithgradient(r$res, BMDtype = "zSD")
 
 \donttest{
 
-# Same plot signal scaling
+# Same plot with signal scaling
 # 
 bmdplotwithgradient(r$res, BMDtype = "zSD", scaling = TRUE) 
 
@@ -215,12 +215,14 @@ head(extendedres)
 ### (2.a) BMDplot with gradient by pathway
 bmdplotwithgradient(extendedres, BMDtype = "zSD",
                      facetby = "path_class", 
+                     xmax = 7.76, # maximal tested dose in those data
                        shapeby = "trend") 
 
-# (2.b) BMDplot with gradient by pathway and trend
+### (2.a) BMDplot with gradient by pathway with scaling
 bmdplotwithgradient(extendedres, BMDtype = "zSD",
-                     facetby = "path_class",
-                     facetby2 = "trend") 
+                     facetby = "path_class", xmax = 7.76,
+                       shapeby = "trend", scaling = TRUE) 
+
 
 # (2.b) BMDplot with gradient by pathway
 # forcing the limits of the colour gradient at other 
@@ -258,8 +260,9 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       facetby = "trend", 
                       shapeby = "model") 
+# with scaling
 bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      xmax = max(f$omicdata$dose), facetby = "trend", 
+                      scaling = TRUE, facetby = "trend", 
                       shapeby = "model") 
 }
 

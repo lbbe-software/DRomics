@@ -128,6 +128,7 @@ sensitivityplot(annotres, BMDtype = "zSD",
                             group = "path_class",  
                             BMDsummary = "median.and.IQR") 
                             
+
 # (2) 
 # An example with two molecular levels
 #

@@ -65,6 +65,8 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   
   if (missing(xmax))
   {
+    warning(strwrap(prefix = "\n", initial = "\n",
+                    "We recommend you to define xmax at the maximal tested dose."))
     xmax <- max(BMD2plot$x[is.finite(BMD2plot$x)])
   }
   

@@ -49,15 +49,16 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   }
   
   
-   firstquartilefun <- function(x) quantile(x, probs = 0.25)
-  thirdquartilefun <- function(x) quantile(x, probs = 0.75)
+   firstquartilefun <- function(x) quantile(x, probs = 0.25, na.rm = TRUE)
+   secondquartilefun <- function(x) quantile(x, probs = 0.5, na.rm = TRUE)
+   thirdquartilefun <- function(x) quantile(x, probs = 0.75, na.rm = TRUE)
   
   if (missing(colorby))
   {
     dnb <- as.data.frame(table(groupby))
     colnames(dnb) <- c("groupby", "nb_of_items")
     dnb$firstquartile <- tapply(variable, groupby, firstquartilefun)
-    dnb$secondquartile <- tapply(variable, groupby, median)
+    dnb$secondquartile <- tapply(variable, groupby, secondquartilefun)
     dnb$thirdquartile <- tapply(variable, groupby, thirdquartilefun)
 
   } else
@@ -66,7 +67,7 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     dnb <- as.data.frame(table(groupby, level))
     colnames(dnb) <- c("groupby", "level","nb_of_items")
     dnb$firstquartile <- tapply(variable, level:groupby, firstquartilefun)
-    dnb$secondquartile <- tapply(variable, level:groupby, median)
+    dnb$secondquartile <- tapply(variable, level:groupby, secondquartilefun)
     dnb$thirdquartile <- tapply(variable, level:groupby, thirdquartilefun)
   }
   dnb <- dnb[dnb$nb_of_items != 0, ]
