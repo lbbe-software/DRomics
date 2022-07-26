@@ -116,6 +116,9 @@ curvesplot(r$res, xmax = max(f$omicdata$dose))
 # plot of curves colored by models
 curvesplot(r$res, xmax = max(f$omicdata$dose), colorby = "model")
 
+# plot of curves facetted by item
+curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "id")
+
 # plot of curves facetted by trends
 curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend")
 

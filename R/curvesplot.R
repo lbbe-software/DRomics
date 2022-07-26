@@ -14,7 +14,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax,
   {
     y0shift <- TRUE
     warning(strwrap(prefix = "\n", initial = "\n",
-        "y0shift was forced to TRUE as scaling is TRUE."))
+        "y0shift is forced to TRUE when scaling is TRUE."))
   }
 
   cnames <- colnames(extendedres)
