@@ -85,7 +85,7 @@ In cases where the BMD is not reached at the highest tested dose, \code{NA} is r
    rough trend of the curve (\code{trend}) defined with four classes (U, bell, increasing or decreasing shape), the
    theoretical value at the control (\code{y0}), the theoretical y range 
    for x within the range of tested doses 
-   (\code{yrange}) and 
+   (\code{yrange}), the maximal absolute y change (up or down) from the control(\code{maxychange}) and 
    for biphasic curves 
    the x value at which their extremum is reached (\code{xextrem})
    and the corresponding y value (\code{yextrem}), the BMD-zSD value (\code{BMD.zSD})

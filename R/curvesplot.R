@@ -1,6 +1,7 @@
 # Plot of fitted curves using columns of on extended dataframe to optionnally code 
 # for color and or facet 
-curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE, 
+curvesplot <- function(extendedres, xmin = 0, xmax, 
+                       y0shift = TRUE, scaling = FALSE,
                        facetby, facetby2, free.y.scales = FALSE, 
                        ncol4faceting, colorby, removelegend = FALSE,  
                         npoints = 500, line.size = 0.2, line.alpha = 1,
@@ -9,11 +10,25 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
   if (missing(extendedres) | !is.data.frame(extendedres))
     stop("The first argument of curvesplot must be a dataframe 
     (see ?curvesplot for details).")
+  if(scaling & !y0shift)
+  {
+    y0shift <- TRUE
+    warning(strwrap(prefix = "\n", initial = "\n",
+        "y0shift was forced to TRUE as scaling is TRUE."))
+  }
 
   cnames <- colnames(extendedres)
-  if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f"), cnames)))
-    stop("The first argument of curvesplot must be a dataframe
-    containing at least columns named id, model, b, c, d, e and f.")
+  if (scaling)
+  {
+    if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "y0", "maxychange"), cnames)))
+      stop("The first argument of curvesplot must be a dataframe
+    containing at least columns named id, model, b, c, d, e, f, y0 and maxychange.")
+  } else
+  {
+    if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "y0"), cnames)))
+      stop("The first argument of curvesplot must be a dataframe
+    containing at least columns named id, model, b, c, d, e, f, y0 and maxychange.")
+  }
   
     if (missing(xmax)) 
     stop("xmax must be given. You can fix it at max(f$omicdata$dose)} 
@@ -81,30 +96,43 @@ curvesplot <- function(extendedres, xmin = 0, xmax, y0shift = TRUE,
       b <- extendedres$b[i]
       d <- extendedres$d[i]
       curves2plot$y[(i-1)*npoints + 1:npoints] <- flin(x2plot, b = extendedres$b[i], 
-                             d = extendedres$d[i]) - extendedres$y0[i]*y0shift
+                             d = extendedres$d[i]) 
     } else
       if (modeli == "exponential")
       {
         curves2plot$y[(i-1)*npoints + 1:npoints] <- fExpo(x2plot, b = extendedres$b[i], 
-                       d = extendedres$d[i], e = extendedres$e[i]) - extendedres$y0[i]*y0shift
+                       d = extendedres$d[i], e = extendedres$e[i]) 
       } else
         if (modeli == "Hill")
         {
           curves2plot$y[(i-1)*npoints + 1:npoints] <- fHill(x2plot, b = extendedres$b[i], c = extendedres$c[i],
-                      d = extendedres$d[i], e = extendedres$e[i]) - extendedres$y0[i]*y0shift
+                      d = extendedres$d[i], e = extendedres$e[i]) 
         } else
           if (modeli == "Gauss-probit")
           {
             curves2plot$y[(i-1)*npoints + 1:npoints] <- fGauss5p(x2plot, b = extendedres$b[i], c = extendedres$c[i],
                        d = extendedres$d[i], e = extendedres$e[i], 
-                       f = extendedres$f[i]) - extendedres$y0[i]*y0shift
+                       f = extendedres$f[i]) 
           } else
             if (modeli == "log-Gauss-probit")
             {
               curves2plot$y[(i-1)*npoints + 1:npoints] <- fLGauss5p(x2plot, b = extendedres$b[i], c = extendedres$c[i],
                       d = extendedres$d[i], e = extendedres$e[i], 
-                      f = extendedres$f[i]) - extendedres$y0[i]*y0shift
+                      f = extendedres$f[i]) 
             }
+    if (y0shift) 
+    {
+      if (scaling) 
+      {
+        curves2plot$y[(i-1)*npoints + 1:npoints] <- 
+          (curves2plot$y[(i-1)*npoints + 1:npoints] - extendedres$y0[i]) / extendedres$maxychange[i]
+      } else
+      {
+        curves2plot$y[(i-1)*npoints + 1:npoints] <- 
+          curves2plot$y[(i-1)*npoints + 1:npoints] - extendedres$y0[i]
+      }
+    }
+    
   }
   
   # no color no facet

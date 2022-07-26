@@ -611,22 +611,25 @@ drcfit <- function(itemselect,
   
   # Calculation of the theoretical value at the control : y0
   # of the theoretical signal range on the range of tested concentration : yrange
+  # of the maximal change of y from its value at the minimal dose : maxychange
   # of the x-value that corresponds to the extremum for U and bell curves : xextrem
   ##################################################################################
   y0 <- numeric(length = nselect)
   yrange <- numeric(length = nselect)
+  maxychange <- numeric(length = nselect)
   xextrem <- numeric(length = nselect)
   xextrem[1:nselect] <- NA # will remain at NA for monotonic curves
   yextrem <- numeric(length = nselect)
   yextrem[1:nselect] <- NA # will remain at NA for monotonic curves
   
-  # calculation of y0 and yrange for linear curves
+  # calculation of y0, maxychange and yrange for linear curves
   indlin <- which(dc$model == "linear")
   vb <- dc$b[indlin]
   vd <- dc$d[indlin]
   yrange[indlin] <- abs(flin(dosemin, vb, vd) - flin(dosemax, vb, vd))
   y0[indlin] <- vd
-
+  maxychange[indlin] <- yrange[indlin]
+  
   # calculation of y0 and yrange for exponential curves
   indExpo <- which(dc$model == "exponential")
   vb <- dc$b[indExpo]
@@ -635,6 +638,7 @@ drcfit <- function(itemselect,
   yrange[indExpo] <- 
     abs(fExpo(dosemin, vb, vd, ve) - fExpo(dosemax, vb, vd, ve))
   y0[indExpo] <- vd
+  maxychange[indExpo] <- yrange[indExpo]
   
   # calculation of y0 and yrange for Hill curves
   indHill <- which(dc$model == "Hill")
@@ -645,6 +649,7 @@ drcfit <- function(itemselect,
   yrange[indHill] <- 
     abs(fHill(dosemin, vb, vc, vd, ve) - fHill(dosemax, vb, vc, vd, ve))
   y0[indHill] <- vd
+  maxychange[indHill] <- yrange[indHill]
   
   # calculation of y0, xextrem and yrange for Gauss-probit curves
   # when f != 0
@@ -656,11 +661,12 @@ drcfit <- function(itemselect,
   vf <- dc$f[indGP]
   xextr <- xextrem[indGP] <- ve + (vc - vd)*vb/(vf*sqrt(2*pi)) 
   yextr <- yextrem[indGP] <- fGauss5p(xextr, vb, vc, vd, ve, vf)
-  yrange[indGP] <- pmax(
-    abs(fGauss5p(dosemin, vb, vc, vd, ve, vf) - yextr),
-    abs(yextr - fGauss5p(dosemax, vb, vc, vd, ve, vf))
-  )
+  ydosemin <- fGauss5p(dosemin, vb, vc, vd, ve, vf)
+  ydosemax <- fGauss5p(dosemax, vb, vc, vd, ve, vf)
+  yrange[indGP] <- pmax(abs(ydosemin - yextr), abs(yextr - ydosemax))
+  maxychange[indGP] <- pmax(abs(ydosemin - yextr), abs(ydosemax - ydosemin))
   y0[indGP] <- fGauss5p(0, vb, vc, vd, ve, vf)
+  
   # when f == 0
   indGPf0 <- which((dc$model == "Gauss-probit" & dc$f == 0))
   vb <- dc$b[indGPf0]
@@ -671,6 +677,8 @@ drcfit <- function(itemselect,
   yrange[indGPf0] <- 
     abs(fGauss5p(dosemin, vb, vc, vd, ve, vf) - fGauss5p(dosemax, vb, vc, vd, ve, vf))
   y0[indGPf0] <- fGauss5p(0, vb, vc, vd, ve, vf)
+  maxychange[indGPf0] <- yrange[indGPf0]
+  
   
   # calculation of y0, xextrem and yrange for log-Gauss-probit curves
   # when f != 0
@@ -682,11 +690,12 @@ drcfit <- function(itemselect,
   vf <- dc$f[indlGP]
   xextr <- xextrem[indlGP] <- exp(log(ve) + (vc - vd)*vb/(vf*sqrt(2*pi))) 
   yextr <- yextrem[indlGP] <- fLGauss5p(xextr, vb, vc, vd, ve, vf) 
-  yrange[indlGP] <- pmax(
-    abs(fLGauss5p(dosemin, vb, vc, vd, ve, vf) - yextr),
-    abs(yextr - fLGauss5p(dosemax, vb, vc, vd, ve, vf))
-  )
+  ydosemin <- fLGauss5p(dosemin, vb, vc, vd, ve, vf)
+  ydosemax <- fLGauss5p(dosemax, vb, vc, vd, ve, vf)
+  yrange[indlGP] <- pmax(abs(ydosemin - yextr), abs(yextr - ydosemax))
+  maxychange[indlGP] <- pmax(abs(ydosemin - yextr), abs(ydosemax - ydosemin))
   y0[indlGP] <- vd
+  
   # when f == 0
   indlGPf0 <- which(dc$model == "log-Gauss-probit" & dc$f == 0)
   vb <- dc$b[indlGPf0]
@@ -697,6 +706,7 @@ drcfit <- function(itemselect,
   yrange[indlGPf0] <- 
     abs(fLGauss5p(dosemin, vb, vc, vd, ve, vf) - fLGauss5p(dosemax, vb, vc, vd, ve, vf))
   y0[indlGPf0] <- vd
+  maxychange[indlGPf0] <- yrange[indlGPf0]
   
   
   # definition of trend and typology
@@ -791,6 +801,7 @@ drcfit <- function(itemselect,
   dc$trend <- factor(trend)
   dc$y0 <- y0
   dc$yrange <- yrange
+  dc$maxychange <- maxychange
   dc$xextrem <- xextrem
   dc$yextrem <- yextrem
   

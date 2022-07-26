@@ -4,8 +4,12 @@ Version 2.5-0
 NEW FEATURES
 - Add of the function selectgroups() to select most represented and/or
 most sensitive groups on which to focus for biological interpretation.
-- Add of an RNAseq data with batch effect (zebraf)
-- Add of PCAdataplot() a function to visualize omic data
+- Add of an RNAseq data with batch effect (zebraf).
+- Add of PCAdataplot() a function to visualize omic data.
+- Add of an column named maxychange (maximal absolute y change (up or down) 
+from the control) in the output of drcfit() (and so of bmdcalc() and bmdboot())
+- Add an argument named scaling in curvesplot() that enables the scaling of 
+(y - y0) values by dividing them by maxychange (new output of drcfit)
 
 
 Version 2.4-0 
