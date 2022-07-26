@@ -9,7 +9,7 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
                             BMD_log_transfo = FALSE)
 {
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
-  BMDsummary <- match.arg(BMDsummary, c("median", "first.quartile", "median.and.IQR"))
+  BMDsummary <- match.arg(BMDsummary, c("first.quartile", "median", "median.and.IQR"))
   
   if (missing(extendedres) | !is.data.frame(extendedres))
     stop("The first argument of sensitivityplot must be a dataframe 
