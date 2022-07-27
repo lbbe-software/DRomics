@@ -58,6 +58,8 @@ When there is more than one experimental level (\code{explev} specified),
 the selection of groups 
 is made separately at each experimental level: so a group may be selected
 at one experimental level and removed at another one.
+This function eliminates rows with NA values for the chosen BMD 
+(of \code{BMDtype}) before performing the the selection.
 }
 
 

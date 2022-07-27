@@ -128,12 +128,10 @@ Marie-Laure Delignette-Muller
 # (an example on a subsample of a greater data set given in the package (see ?Scenedesmus))
 #
 datafilename <- system.file("extdata", "metabolo_sample.txt", package = "DRomics")
-
-o <- metabolomicdata(datafilename)
-# equivalent code
 o <- continuousomicdata(datafilename)
 print(o)
 plot(o)
+PCAdataplot(o)
 
 # if you want to skip the check of data
 o <- continuousomicdata(datafilename, check = FALSE)
