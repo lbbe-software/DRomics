@@ -36,6 +36,14 @@ sensitivityplot(annotres, BMDtype = "xfold",
                 group = "path_class", 
                 BMDsummary = "median.and.IQR")
 
+# after use of selectgroups
+nrow(annotres)
+annotres.s1 <- selectgroups(annotres, BMDtype = "xfold", 
+                            group = "path_class", nitemsmin = 1)
+nrow(annotres.s1)
+sensitivityplot(annotres.s1, BMDtype = "xfold",
+                group = "path_class")
+
 # (2) 
 # An example with two molecular levels
 #
@@ -61,6 +69,17 @@ str(contigextendedres)
 
 colnames(contigextendedres)
 colnames(metabextendedres)
+
+## sensitivityplot on BMDxfold on contigextendedres
+sensitivityplot(contigextendedres, BMDtype = "xfold",
+                group = "path_class")
+nrow(contigextendedres)
+contigextendedres.s1 <- selectgroups(contigextendedres,
+                                     BMDtype = "xfold", 
+                            group = "path_class", BMDmax = 2)
+nrow(contigextendedres.s1)
+sensitivityplot(contigextendedres.s1, BMDtype = "xfold",
+                group = "path_class")
 
 ### Merge metabolomic and transcriptomic results
 extendedres <- rbind(metabextendedres, contigextendedres)

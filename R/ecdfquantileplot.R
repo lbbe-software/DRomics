@@ -22,7 +22,7 @@ ecdfquantileplot <- function(variable, by, quantile.prob = 0.5, title)
   
   dnb <- as.data.frame(table(group))
   colnames(dnb) <- c("group", "nb_of_items")
-  quantilefun <- function(x) quantile(x, probs = quantile.prob)
+  quantilefun <- function(x) quantile(x, probs = quantile.prob, na.rm = FALSE)
   dnb$quantiles <- tapply(variable, group, quantilefun)
   dnb$ecdf <- (rank(dnb$quantiles) - 0.5) / nrow(dnb)
   # order by quantile

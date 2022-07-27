@@ -26,14 +26,19 @@ selectgroups <- function(extendedres, group, explev,
     if (any(!is.element(c("BMD.zSD"), cnames)))
       stop("The first argument of selectgroups must be a dataframe
       containing at least columns named id and BMD.zSD.")
-    variable <- extendedres[, "BMD.zSD"]
-  }
-  else 
+
+    # Elimination of rows with NA values 
+    extendedreswithoutNA <- extendedres[!is.na(extendedres$BMD.zSD),]
+    variable <- extendedreswithoutNA$BMD.zSD
+  } else 
   {
     if (any(!is.element(c("BMD.xfold"), cnames)))
       stop("The first argument of selectgroups must be a dataframe
       containing at least columns named id and BMD.xfold.")
-    variable <- extendedres[, "BMD.xfold"]
+
+    # Elimination of rows with NA values 
+    extendedreswithoutNA <- extendedres[!is.na(extendedres$BMD.xfold),]
+    variable <- extendedreswithoutNA$BMD.xfold
   }
   if (!is.character(group)) 
     stop("group should be a character string for the name of the column defining groups.")
@@ -50,15 +55,16 @@ selectgroups <- function(extendedres, group, explev,
            extendedres, the dataframe given in input.")
   }
   
+    
   firstquartilefun <- function(x) quantile(x, probs = 0.25)
 
   if (missing(explev))
   {
-    group_explev <- as.factor(extendedres[, group])
+    group_explev <- factor(extendedreswithoutNA[, group])
 
   } else
   {
-    group_explev <- as.factor(paste(extendedres[, group], extendedres[, explev], sep = "_"))
+    group_explev <- factor(paste(extendedreswithoutNA[, group], extendedreswithoutNA[, explev], sep = "_"))
     
   }
   dnb <- as.data.frame(table(group_explev))
@@ -77,7 +83,7 @@ selectgroups <- function(extendedres, group, explev,
     g_e2keep <- dnb[dnb$nb_of_items >= nitemsmin, "group_explev"]
   }
   
-  subextendedres <- extendedres[group_explev %in% g_e2keep, ]
+  subextendedres <- extendedreswithoutNA[group_explev %in% g_e2keep, ]
 
   return(subextendedres)
 }
