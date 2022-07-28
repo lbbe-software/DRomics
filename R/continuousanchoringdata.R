@@ -18,6 +18,7 @@ continuousanchoringdata <- function(file, backgrounddose, check = TRUE)
         stop("The argument file must be a character string ending by .txt.")
     }
     d <- read.table(file, header = FALSE)
+    colnames(d) <- c("endpoint",paste("S", 1:(ncol(d)-1), sep = ""))
   } 
   nrowd <- nrow(d)
   ncold <- ncol(d)

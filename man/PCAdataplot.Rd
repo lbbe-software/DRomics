@@ -11,7 +11,7 @@ a potential batch effect.
 }
 
 \usage{
-PCAdataplot(omicdata, batch)
+PCAdataplot(omicdata, batch, label)
 }
 
 \arguments{
@@ -22,6 +22,11 @@ functions \code{microarraydata}, \code{RNAseqdata} or
 
 \item{batch}{Optionnally a factor coding for a potential batch effect
 (factor of length the number of samples in the dataset).}
+
+\item{label}{Could be FALSE (default choice), TRUE or a character vector defining 
+the sample names. In the two last cases, the points are replaced  
+by labels of samples (so the batch 
+cannot be identified by the shape of points, but may appear in the sample names.}
 }
 
 
@@ -44,6 +49,7 @@ batch <- zebraf$batch
 o <- RNAseqdata(data4DRomics, transfo.method = "vst")
 PCAdataplot(o)
 PCAdataplot(o, batch)
+PCAdataplot(o, batch, label = TRUE)
 
 \donttest{
 # (2) on a microarray dataset (without any potential batch effect)
@@ -54,5 +60,8 @@ o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 print(o)
 plot(o)
 PCAdataplot(o)
+PCAdataplot(o, label = TRUE)
+samplenames <- paste("sample", 1:ncol(o$data), sep = "")
+PCAdataplot(o, label = samplenames)
 }
 }
