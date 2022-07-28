@@ -245,17 +245,18 @@ server <- function(input, output, session) {
   
   
   minNbItem <- eventReactive(input$buttonRunStep2, {input$minNbItem})
-  BMDtypesensitivityPlot <- eventReactive(input$buttonRunStep2, {input$BMDtypesensitivityPlot})
-  BMDsummarysensitivityPlot <- eventReactive(input$buttonRunStep2, {input$BMDsummarysensitivityPlot})
-  orderingOnelev <- eventReactive(input$buttonRunStep2, {input$ordering_onelev})
-  orderingMoreonelev <- eventReactive(input$buttonRunStep2, {input$ordering_moreonelev})
-  labelssorted <- eventReactive(input$buttonRunStep2, {input$labelssorted})
   BMDmax <- eventReactive(input$buttonRunStep2, {
     validate(
       need(input$BMDmax >= 0, "BMDmax must be a positive number.")
     )
     return(input$BMDmax)
   })
+  BMDlogtransfoSensitivityplot <- eventReactive(input$buttonRunStep2, {input$BMDlogtransfoSensitivityplot})
+  BMDtypesensitivityPlot <- eventReactive(input$buttonRunStep2, {input$BMDtypesensitivityPlot})
+  BMDsummarysensitivityPlot <- eventReactive(input$buttonRunStep2, {input$BMDsummarysensitivityPlot})
+  orderingOnelev <- eventReactive(input$buttonRunStep2, {input$ordering_onelev})
+  orderingMoreonelev <- eventReactive(input$buttonRunStep2, {input$ordering_moreonelev})
+  labelssorted <- eventReactive(input$buttonRunStep2, {input$labelssorted})
   
   sortextendedres <- eventReactive(input$buttonRunStep2, {
     
@@ -322,7 +323,7 @@ server <- function(input, output, session) {
                                                       colorby = "experimental_level",
                                                       ECDF_plot = FALSE,
                                                       BMDsummary = BMDsummarysensitivityPlot(), 
-                                                      BMD_log_transfo = FALSE)
+                                                      BMD_log_transfo = BMDlogtransfoSensitivityplot())
       } else {
         myECDFplot <- if(orderingOnelev() == "BMDorder_onelev") {TRUE} else {FALSE}
         mysensitivityplot <- DRomics::sensitivityplot(myextendedmergeddata, 
@@ -330,7 +331,7 @@ server <- function(input, output, session) {
                                                       group = mypathclasslabel,
                                                       ECDF_plot = myECDFplot,
                                                       BMDsummary = BMDsummarysensitivityPlot(), 
-                                                      BMD_log_transfo = FALSE)
+                                                      BMD_log_transfo = BMDlogtransfoSensitivityplot())
       }
       
       shinyjs::showElement('text2_step2', time = 0)

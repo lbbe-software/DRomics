@@ -214,6 +214,9 @@ ui <- fluidPage(
                                  numericInput("BMDmax", label = "Maximum for the BMD summary value", value = 0, min = 0, step = 0.1, width = "70%")
                           ),
                           column(1, 
+                                 checkboxInput("BMDlogtransfoSensitivityplot", label = HTML("<b>Log transformation of the BMD</b>"), value = FALSE),
+                          ),
+                          column(1, 
                                  radioButtons("BMDtypesensitivityPlot", label = "BMD type", 
                                               choices = list("zSD" = "zSD", 
                                                              "xfold" = "xfold")
@@ -305,7 +308,7 @@ ui <- fluidPage(
                                  )),
                           column(2, 
                                  checkboxInput("addciBMDplot", label = HTML("<b>Add CI</b> (only for the BMD plot without gradient)"), value = FALSE),
-                                 checkboxInput("BMDlogtransfoBMDplot", label = HTML("<b>log transformation of the BMD</b>"), value = FALSE),
+                                 checkboxInput("BMDlogtransfoBMDplot", label = HTML("<b>Log transformation of the BMD</b>"), value = FALSE),
                                  checkboxInput("addlabelBMDplot", label = HTML("<b>Add labels</b>"), value = FALSE)
                                  ),
                           column(2,
