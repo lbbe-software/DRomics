@@ -60,7 +60,9 @@ server <- function(input, output, session) {
   output$plotPCAData <- renderPlot({
     if(inTypeData() != 'continuousanchoringdata') {
       ff <- filedata()
-      PCAdataplot(ff)
+      PCAdataplot(ff, label = TRUE) +
+        ggplot2::ggtitle("Principal Component Analysis plot of omic data") + 
+        ggplot2::theme(plot.title = element_text(face = "bold", hjust = 0.5))
     }
   })
   
