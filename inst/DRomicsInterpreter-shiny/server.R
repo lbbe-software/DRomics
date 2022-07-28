@@ -223,6 +223,7 @@ server <- function(input, output, session) {
       }
   })
   
+  maxDoseXScale <- eventReactive(input$buttonRunStep1, {input$maxDoseXScale})
   
   ################################################################################################
   ############ STEP 2 ############
