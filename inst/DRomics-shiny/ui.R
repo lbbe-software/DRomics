@@ -245,6 +245,11 @@ ui <- fluidPage(
                           verbatimTextOutput('printOmicData'),
                           br(),
                           withSpinner(plotOutput("plotOmicData", width = "100%", height = "900px"), type = 4, color = '#9c5c16'),
+                          br(),
+                          conditionalPanel(
+                            condition = "input.typeData != 'continuousanchoringdata'",
+                            withSpinner(plotOutput("plotPCAData", width = "100%", height = "900px"), type = 4, color = '#9c5c16')
+                          ),
                           br()
                         )
                       )

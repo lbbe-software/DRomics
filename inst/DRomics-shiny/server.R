@@ -56,6 +56,13 @@ server <- function(input, output, session) {
     if(!"message"%in%names(ff))
       plot(ff, range = 1e10)
   })
+
+  output$plotPCAData <- renderPlot({
+    if(inTypeData() != 'continuousanchoringdata') {
+      ff <- filedata()
+      PCAdataplot(ff)
+    }
+  })
   
   
   ####################################################################################
