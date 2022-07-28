@@ -63,5 +63,5 @@ export(sensitivityplot)
 export(bmdplot)
 export(selectgroups)
 export(PCAdataplot)
-
+export(formatdata4DRomics)
 

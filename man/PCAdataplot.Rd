@@ -40,19 +40,7 @@ Marie-Laure Delignette-Muller
 
 \examples{
 
-# (1) an example on an RNAseq dataset with a potential batch effect 
-#
-data(zebraf)
-str(zebraf)
-data4DRomics <- zebraf$RNAseq_sample_48hpf
-batch <- zebraf$batch
-o <- RNAseqdata(data4DRomics, transfo.method = "vst")
-PCAdataplot(o)
-PCAdataplot(o, batch)
-PCAdataplot(o, batch, label = TRUE)
-
-\donttest{
-# (2) on a microarray dataset (without any potential batch effect)
+# (1) on a microarray dataset
 # 
 datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", 
   package="DRomics")
@@ -63,5 +51,18 @@ PCAdataplot(o)
 PCAdataplot(o, label = TRUE)
 samplenames <- paste("sample", 1:ncol(o$data), sep = "")
 PCAdataplot(o, label = samplenames)
+
+
+\donttest{
+# (2) an example on an RNAseq dataset with a potential batch effect 
+#
+data(zebraf)
+str(zebraf)
+data4DRomics <- formatdata4DRomics(signalmatrix = zebraf$counts, 
+                           dose = zebraf$dose)
+o <- RNAseqdata(data4DRomics, transfo.method = "vst")
+PCAdataplot(o, batch = zebraf$batch)
+PCAdataplot(o, label = TRUE)
+
 }
 }
