@@ -8,6 +8,7 @@ library(ggplot2, quietly = TRUE)
 options(shiny.maxRequestSize=30*1024^2)
 
 texthelpnblevel <- "The maximal number of experimental levels is 10. The experimental levels can be for example different molecular levels (transcriptomics, metabolomis, ...), different experimental time points or different biological models (different species, different experimental settings), ..."
+texthelpmaxdosexscale <- "We recommand you to fix it at the maximal tested dose/concentration. If this value is not the same for all the experimental levels, keep the smallest one to prevent extrapolation of dose response curves in plots."
 helplabel1step1 <- "Each file for annotation data must have exactly two columns."
 helplabel2step1 <- "If there are multiple experimental levels, the labels chosen must be unique. All spaces in the labels are removed."
 

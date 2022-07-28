@@ -153,13 +153,21 @@ ui <- fluidPage(
                       br(), HTML("<font face=verdana size=5 color=#9c5c16><b>Import and merge of DRomics results and annotation data</b></font>"), br(), br(), br(),
                       
                       fluidRow(
-                        column(2,
+                        column(1,
                                numericInput("nbLevel", "Number of experimental levels", value = 1, min = 1, max = 10, step = 1)
                         ),
-                        column(3, style = "margin-top: 25px;", 
+                        column(2, style = "margin-top: 25px;", 
                                shinyBS::bsButton("nblevel_help", label = "", icon = icon("info"), size = "small"),
                                shinyBS::bsPopover("nblevel_help", "", texthelpnblevel, placement = "right", trigger = "hover", options = NULL)
-                        )),
+                        ),
+                        column(2,
+                               numericInput("maxDoseXScale", "Maximal dose/concentration for definition of x-scale of plots", value = 10, min = 1, max = 1000, step = 1, width = "100%")
+                        ), 
+                        column(3, style = "margin-top: 25px;", 
+                               shinyBS::bsButton("maxdosexscale_help", label = "", icon = icon("info"), size = "small"),
+                               shinyBS::bsPopover("maxdosexscale_help", "", texthelpmaxdosexscale, placement = "right", trigger = "hover", options = NULL)
+                        )
+                        ),
                       
                       br(),
                       uiOutput("inputstep1"),
