@@ -125,6 +125,7 @@ o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 print(o)
 plot(o)
 PCAdataplot(o)
+PCAdataplot(o, label = TRUE)
 
 
 # If you want to use your own data set just replace datafilename, 
