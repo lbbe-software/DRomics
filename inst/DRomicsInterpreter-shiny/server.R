@@ -199,11 +199,7 @@ server <- function(input, output, session) {
                          choices = "xfold",
                          selected = input$BMDtypesensitivityPlot
       )
-      updateNumericInput(session, "BMDmax", 
-                         label = "Maximum for the BMD summary value", 
-                         value = ceiling(max(mydata$BMD.xfold)), 
-                         min = 0, step = 0.1)
-      }
+    }
     
     if(!length(grep("xfold", mycolnames))){
       updateRadioButtons(session, "BMDtypesensitivityPlot",
@@ -216,11 +212,23 @@ server <- function(input, output, session) {
                          choices = "zSD",
                          selected = input$BMDtypesensitivityPlot
       )
+    }
+  })
+  
+  observe({
+    mydata <- mergeddata()
+    if(input$BMDtypesensitivityPlot == "zSD") {
       updateNumericInput(session, "BMDmax", 
                          label = "Maximum for the BMD summary value", 
-                         value = ceiling(max(mydata$BMD.zSD)), 
+                         value = ceiling(max(mydata$BMD.zSD, na.rm = TRUE)), 
                          min = 0, step = 0.1)
-      }
+    }
+    else if(input$BMDtypesensitivityPlot == "xfold") {
+      updateNumericInput(session, "BMDmax", 
+                         label = "Maximum for the BMD summary value", 
+                         value = ceiling(max(mydata$BMD.xfold, na.rm = TRUE)), 
+                         min = 0, step = 0.1)
+    }
   })
   
   maxDoseXScale <- eventReactive(input$buttonRunStep1, {input$maxDoseXScale})
