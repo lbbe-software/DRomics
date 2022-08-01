@@ -742,12 +742,10 @@ server <- function(input, output, session) {
       } else {
         updateNumericInput(session, "mindoseCurvesplot", value = 0)
       }
-      updateNumericInput(session, "maxdoseCurvesplot", value = round(max(BMD) * 2, 2))
     })
   })
   
   mindoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$mindoseCurvesplot})
-  maxdoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$maxdoseCurvesplot})
   doselogtransfoCurvesplot <- eventReactive(input$buttonRunStep4, {input$doselogtransfoCurvesplot})
   colorbyCurvesplot <- eventReactive(input$buttonRunStep4, {input$colorbyCurvesplot})
   facetbycolumnsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbycolumnsCurvesplot})
@@ -778,7 +776,7 @@ server <- function(input, output, session) {
         mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
                                             free.y.scales = TRUE,
                                             xmin = mindoseCurvesplot(),
-                                            xmax = maxdoseCurvesplot(),
+                                            xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
                                             facetby = myfacetbycolumnsCurvesplot,
                                             facetby2 = myfacetbyrowsCurvesplot,
@@ -788,7 +786,7 @@ server <- function(input, output, session) {
         mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
                                             free.y.scales = TRUE,
                                             xmin = mindoseCurvesplot(),
-                                            xmax = maxdoseCurvesplot(),
+                                            xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
                                             facetby = myfacetbycolumnsCurvesplot,
                                             colorby = "trend") + 
@@ -799,7 +797,7 @@ server <- function(input, output, session) {
         mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
                                             free.y.scales = TRUE,
                                             xmin = mindoseCurvesplot(),
-                                            xmax = maxdoseCurvesplot(),
+                                            xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
                                             facetby = myfacetbycolumnsCurvesplot,
                                             facetby2 = myfacetbyrowsCurvesplot)
@@ -807,7 +805,7 @@ server <- function(input, output, session) {
         mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
                                             free.y.scales = TRUE,
                                             xmin = mindoseCurvesplot(),
-                                            xmax = maxdoseCurvesplot(),
+                                            xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
                                             facetby = myfacetbycolumnsCurvesplot)
       }
