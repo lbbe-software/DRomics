@@ -126,7 +126,7 @@ print.microarraydata <- function(x, ...)
     cat("Data were normalized between arrays using the following method:", x$norm.method, "\n")
 }
 
-plot.microarraydata <- function(x, ...) 
+plot.microarraydata <- function(x, range4boxplot = 1e6, ...) 
 {
   if (!inherits(x, "microarraydata"))
     stop("Use only with 'microarraydata' objects.")
@@ -137,16 +137,16 @@ plot.microarraydata <- function(x, ...)
     ymin <- min(x$data.beforenorm, x$data)
     ymax <- max(x$data.beforenorm, x$data)
     par(mfrow = c(1,2), xaxt = "n")
-    boxplot(x$data.beforenorm, xlab = "Samples", ylab = "Signal", 
+    boxplot(x$data.beforenorm, xlab = "Samples", ylab = "Signal", range = range4boxplot,
             main = paste("Microarray data before normalization"), ylim = c(ymin, ymax), ...) 
-    boxplot(x$data, xlab = "Samples", ylab = "Signal", 
+    boxplot(x$data, xlab = "Samples", ylab = "Signal", range = range4boxplot,
             main = paste("Microarray data after", x$norm.method,"normalization"), 
             ylim = c(ymin, ymax), ...) 
     
   } else
   {
     par(xaxt = "n")
-    boxplot(x$data, xlab = "Samples", ylab = "Signal", 
+    boxplot(x$data, xlab = "Samples", ylab = "Signal", range = range4boxplot, 
             main = paste("Microarray data without normalization")) 
   }
   par(def.par)    

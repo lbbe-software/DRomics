@@ -14,6 +14,10 @@ that enables the scaling of the shifted signal (y - y0) by dividing
 it by maxychange (new output of drcfit).
 - Add the function formatdata4DRomics() to format data for DRomics from the 
 matrix of the signal measurements and the vector of observed/tested doses.
+- Add range4boxplot by default fixed at 1e6 to the arguments of plot functions of 
+RNAseqdata(), microarraydata() and continuousomicdata() objects, 
+to prevent the automatic plot of many outliers as individual points and so
+produce lighter plot files.
 
 BUG FIXES
 - Make sensitivityplot works even when BMDsummary is not given in input 

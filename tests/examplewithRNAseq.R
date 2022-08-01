@@ -8,20 +8,21 @@ doboot <- FALSE
 datafilename <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
 # small data set 'less than 1000 items (999)
 (o.vst <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst"))
-plot(o.vst, range = 1e6)
+plot(o.vst)
 
 if (visualize) # too long computation !
 {
+  plot(o.vst, range = 1.5) # boxplot visualizing outliers
   (o.vst.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "vst",
                             transfo.blind = FALSE))
-  plot(o.vst.notblind, range = 1e6)
+  plot(o.vst.notblind)
   
   (o.rlog <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog"))
-  plot(o.rlog, range = 1e6)
+  plot(o.rlog)
   
   (o.rlog.notblind <- RNAseqdata(datafilename, check = TRUE, transfo.method = "rlog",
                                 transfo.blind = FALSE))
-  plot(o.rlog.notblind, range = 1e6)
+  plot(o.rlog.notblind)
   
 }
 

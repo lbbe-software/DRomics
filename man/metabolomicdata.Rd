@@ -37,7 +37,7 @@ continuousomicdata(file, backgrounddose, check = TRUE)
 metabolomicdata(file, backgrounddose, check = TRUE)
 
 \method{print}{continuousomicdata}(x, \dots)
-\method{plot}{continuousomicdata}(x, \dots)
+\method{plot}{continuousomicdata}(x, range4boxplot = 1e6, \dots)
 }
 
 \arguments{
@@ -63,6 +63,10 @@ alternatives are illustrated below in examples.}
 \item{check}{If TRUE the format of the input file is checked.}
 
 \item{x}{An object of class \code{"continuousomicdata"}.}
+
+\item{range4boxplot}{An argument passed to boxplot(), fixed by default at 1e6 
+  to prevent the producing of very large plot files due to many outliers. 
+  Can be put at 1.5 to obtain more classical boxplots.}
 
 \item{\dots}{ further arguments passed to print or plot functions.}
 }

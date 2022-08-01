@@ -24,7 +24,7 @@ omicdata(file, backgrounddose, check = TRUE,
   norm.method = c("cyclicloess", "quantile", "scale", "none"))
 
 \method{print}{microarraydata}(x, \dots)
-\method{plot}{microarraydata}(x, \dots)
+\method{plot}{microarraydata}(x, range4boxplot = 1e6, \dots)
 }
 
 \arguments{
@@ -53,6 +53,10 @@ normalization is performed using the function normalizeBetweenArrays of the
 \code{limma} package using the specified method.}
 
 \item{x}{An object of class \code{"microarraydata"}.}
+
+\item{range4boxplot}{An argument passed to boxplot(), fixed by default at 1e6 
+  to prevent the producing of very large plot files due to many outliers. 
+  Can be put at 1.5 to obtain more classical boxplots.}
 
 \item{\dots}{ further arguments passed to print or plot functions.}
 }

@@ -124,13 +124,13 @@ data are automatically normalized with respect to library size and transformed i
 
 ```{r}
 (o.RNAseq <- RNAseqdata(RNAseqfilename, transfo.method = "vst"))
-plot(o.RNAseq, cex.main = 0.8, col = "green", range = 1e6)
+plot(o.RNAseq, cex.main = 0.8, col = "green")
 ```
 
-In the previous example the argument range (internally passed to boxplot)
-is put to a high value just to plot true minimum and maximum
-values and to prevent the automatic plot of many outliers 
-as individual points in the plot of raw counts.
+<!-- In the previous example the argument range (internally passed to boxplot) -->
+<!-- is put to a high value just to plot true minimum and maximum -->
+<!-- values and to prevent the automatic plot of many outliers  -->
+<!-- as individual points in the plot of raw counts. -->
 
 ### An example with microarray data 
 
@@ -150,7 +150,7 @@ microarrayfilename <- system.file("extdata", "transcripto_sample.txt", package =
 
 ```{r}
 (o.microarray <- microarraydata(microarrayfilename, norm.method = "quantile"))
-plot(o.microarray, cex.main = 0.8, col = "green", range = 1e6)
+plot(o.microarray, cex.main = 0.8, col = "green")
 
 ```
 
@@ -172,7 +172,7 @@ As an example, a basic procedure for this pre-treatment of metabolomic data coul
 
 ```{r}
 (o.metabolo <- continuousomicdata(metabolofilename))
-plot(o.metabolo, col = "green", range = 1e6)
+plot(o.metabolo, col = "green")
 ```
 
 We renamed metabolomicdata() to continuousomicdata() (while keeping the first name available) to offer its use to other continuous omic data such as proteomics data or RT-QPCR data. 

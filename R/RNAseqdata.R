@@ -195,7 +195,7 @@ print.RNAseqdata <- function(x, ...)
                      and tranformed using the following method: ", x$transfo.method)), fill = TRUE)
 }
 
-plot.RNAseqdata <- function(x, ...) 
+plot.RNAseqdata <- function(x, range4boxplot = 1e6, ...) 
 {
   if (!inherits(x, "RNAseqdata"))
     stop("Use only with 'RNAseqdata' objects.")
@@ -206,12 +206,12 @@ plot.RNAseqdata <- function(x, ...)
   par(mfrow = c(1,2), xaxt = "n")
   boxplot(x$raw.counts, xlab = "Samples", ylab = "Raw counts", 
           main = paste("Raw data"), 
-          ylim = c(ymin.rc, ymax.rc), ...) 
+          ylim = c(ymin.rc, ymax.rc), range = range4boxplot, ...) 
   ymin.log <- min(x$data)
   ymax.log <- max(x$data)
   boxplot(x$data, xlab = "Samples", ylab = "Signal", 
           main = paste("Normalized and transformed data"), 
-          ylim = c(ymin.log, ymax.log), ...)   
+          ylim = c(ymin.log, ymax.log), range = range4boxplot, ...)   
   par(def.par)    
 }
 
