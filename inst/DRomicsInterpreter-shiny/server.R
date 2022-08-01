@@ -774,7 +774,7 @@ server <- function(input, output, session) {
     if(isTRUE(colorbyCurvesplot())) {
       if(input$nbLevel > 1) {
         mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
-                                            free.y.scales = TRUE,
+                                            free.y.scales = TRUE, scaling = TRUE,
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
@@ -784,7 +784,7 @@ server <- function(input, output, session) {
           ggplot2::labs(col = "trend")
       } else {
         mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
-                                            free.y.scales = TRUE,
+                                            free.y.scales = TRUE, scaling = TRUE,
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
@@ -795,7 +795,7 @@ server <- function(input, output, session) {
     } else {
       if(input$nbLevel > 1) {
         mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
-                                            free.y.scales = TRUE,
+                                            free.y.scales = TRUE, scaling = TRUE,
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
@@ -803,7 +803,7 @@ server <- function(input, output, session) {
                                             facetby2 = myfacetbyrowsCurvesplot)
       } else {
         mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
-                                            free.y.scales = TRUE,
+                                            free.y.scales = TRUE, scaling = TRUE,
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
