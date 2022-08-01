@@ -478,6 +478,15 @@ server <- function(input, output, session) {
   shapebyBMDplot <- eventReactive(input$buttonRunStep3, {input$shapebyBMDplot})
   colorbyBMDplot <- eventReactive(input$buttonRunStep3, {input$colorbyBMDplot})
     
+  # min doses by default according to the log transformation
+  xmin_bmdplotwotgradient <- eventReactive(input$BMDlogtransfoBMDplot, {
+    if(input$doselogtransfoCurvesplot) {
+      return(round(min(BMD) / 2, 2))
+    } else {
+      return(0)
+    }
+  })
+  
   extendedresforBMD <- eventReactive(input$buttonRunStep3, {
     validate(
       need(input$annotcheckboxBMDplot, "Please choose at least one annotation")
@@ -500,6 +509,8 @@ server <- function(input, output, session) {
     if(isTRUE(shapebyBMDplot())) {
       if(input$nbLevel > 1) {
         mybmdplotwithgradient <- DRomics::bmdplotwithgradient(myextendedresforBMD$myextendedresforBMD,
+                                                              xmin = xmin_bmdplotwotgradient(),
+                                                              xmax = maxDoseXScale(),
                                                               facetby = myfacetbycolumnsBMDplot,
                                                               facetby2 = myfacetbyrowsBMDplot,
                                                               shapeby = "trend",
@@ -507,6 +518,8 @@ server <- function(input, output, session) {
                                                               BMD_log_transfo = BMDlogtransfoBMDplot())
       } else {
         mybmdplotwithgradient <- DRomics::bmdplotwithgradient(myextendedresforBMD$myextendedresforBMD,
+                                                              xmin = xmin_bmdplotwotgradient(),
+                                                              xmax = maxDoseXScale(),
                                                               facetby = myfacetbycolumnsBMDplot,
                                                               shapeby = "trend",
                                                               add.label = addlabelBMDplot(),
@@ -553,12 +566,16 @@ server <- function(input, output, session) {
     } else {
       if(input$nbLevel > 1) {
         mybmdplotwithgradient <- DRomics::bmdplotwithgradient(myextendedresforBMD$myextendedresforBMD,
+                                                              xmin = xmin_bmdplotwotgradient(),
+                                                              xmax = maxDoseXScale(),
                                                               facetby = myfacetbycolumnsBMDplot,
                                                               facetby2 = myfacetbyrowsBMDplot,
                                                               add.label = addlabelBMDplot(),
                                                               BMD_log_transfo = BMDlogtransfoBMDplot())
       } else {
         mybmdplotwithgradient <- DRomics::bmdplotwithgradient(myextendedresforBMD$myextendedresforBMD,
+                                                              xmin = xmin_bmdplotwotgradient(),
+                                                              xmax = maxDoseXScale(),
                                                               facetby = myfacetbycolumnsBMDplot,
                                                               add.label = addlabelBMDplot(),
                                                               BMD_log_transfo = BMDlogtransfoBMDplot())
