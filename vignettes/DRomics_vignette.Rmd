@@ -55,27 +55,62 @@ Whatever the type of data imported in DRomics,
 data can be imported from a .txt file (e.g. "mydata.txt") containing one row per item, after the first row coding for doses or concentrations for each sample (each column except the first one),
 with the first column corresponding to the identifier of each item (identifier of the probe, transcript, metabolite, ..., or name of the endpoint for anchoring data), 
 and the other columns giving the responses of the item for each sample. In the first row, after a name for the identifier column, we must have the tested doses or concentrations in a numeric format for the corresponding sample
-(for example, if there are triplicates for each treatment, the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). This file is imported within DRomics using the function read.table() with its default field separator (sep argument). 
+(for example, if there are triplicates for each treatment, the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). This file will be imported within DRomics using an internal call to the function read.table() with its default field separator (sep argument). 
 
-Alternatively an R object of class data.frame 
-can be directly given in input, corresponding to the output of read.table(file, header = FALSE) on a file described as above. 
+Different examples of .txt files formatted for the DRomics workflow
+are available in the package, such as the one named 
+"RNAseq_sample.txt". You can have a look of how the data are coded in this file using the
+following code. To use a local dataset formatted in the same way, such use a datafilename
+of type "yourchosenname.txt".
 
-You can see below an example of a RNAseq data set that is available in DRomics both as an R object (named Zhou_kidney_pce) and as a text file named "RNAseq_sample.txt" containing just
-a sample of the previous one.
 
 ```{r}
-# Load and look at the first line of the R object
-data(Zhou_kidney_pce)
-nrow(Zhou_kidney_pce)
-head(Zhou_kidney_pce)
-
 # Import the text file just to see what will be automatically imported
 datafilename <- system.file("extdata", "RNAseq_sample.txt", package = "DRomics")
-# for your local file datafilename choose the name: "yourchosenname.txt"
+# Have a look of what information is coded in this file
 d <- read.table(file = datafilename, header = FALSE)
 nrow(d)
 head(d)
 ```
+
+**Alternatively an R object of class data.frame 
+can be directly given in input**, that corresponds to the output of 
+read.table(file, header = FALSE) on a file described as above. 
+
+You can see below an example of an RNAseq data set that is available in DRomics as an R object (named Zhou_kidney_pce) and which is an extended version (more rows) of the previous dataset coded in "RNAseq_sample.txt".
+
+```{r}
+# Load and look at the dataset directly coded as an R object
+data(Zhou_kidney_pce)
+nrow(Zhou_kidney_pce)
+head(Zhou_kidney_pce)
+```
+
+**If your data are already imported in R in a different format, you can use the
+formatdata4DRomics() function to build an R object directly useable by the DRomics
+workflow**. 
+formatdata4DRomics() needs two arguments, 
+the matrix of the data with one row for each item and one column for each sample, 
+and the numeric vector coding for the dose for each sample. The names of the samples
+can be added in a third optional argument. Below is an example
+using a RNAseq dataset of the package coded as an R object named zebraf. 
+
+```{r}
+# Load and look at the data as initially coded
+data(zebraf)
+str(zebraf)
+
+# Formating of data for use in DRomics
+# 
+data4DRomics <- formatdata4DRomics(signalmatrix = zebraf$counts, 
+                           dose = zebraf$dose)
+# Look at the dataset coded as an R object
+nrow(data4DRomics)
+head(data4DRomics)
+```
+
+**We recommend you to carefully look at the following sections to check that you use the good scale for you data which depends on the type of measured signal 
+(counts of reads, fluorescence signal, ...).**
 
 ### Types of data that may be imported in DRomics
 

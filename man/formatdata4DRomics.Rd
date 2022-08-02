@@ -14,15 +14,17 @@ formatdata4DRomics(signalmatrix, dose, samplenames)
 
 \arguments{
 \item{signalmatrix}{the matrix of the data with one row for each item and one column
-for each sample. Depending of the type of measured signal, look at the help of the corresponding
-importation function espacially to check that you use the good scale of data
+for each sample. The row names of this matrix will be taken to identify
+  the items.
+  Depending of the type of measured signal, look at the help of the corresponding
+importation function especially to check that you use the good scale of data
 \code{\link{RNAseqdata}}, \code{\link{microarraydata}}, \code{\link{continuousomicdata}} and
   \code{\link{continuousanchoringdata}}.}
 
 \item{dose}{a numeric vector giving the dose for each sample.}
 
 \item{samplenames}{a character vector giving the names of the samples 
-(optional argument - if not given, the row names of signalmatrix are taken as sample names).}
+(optional argument - if not given, the col names of signalmatrix are taken as sample names).}
 }
 
 \value{ 
