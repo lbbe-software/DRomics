@@ -17,7 +17,7 @@ variance stabilizing transformation or regularized logarithm.
 }
 
 \usage{
-RNAseqdata(file, backgrounddose, check = TRUE, transfo.method = c("rlog", "vst"), 
+RNAseqdata(file, backgrounddose, check = TRUE, transfo.method, 
           transfo.blind = TRUE, round.counts = FALSE)
 
 \method{print}{RNAseqdata}(x, \dots)
@@ -48,7 +48,8 @@ alternatives are illustrated below in examples.}
 \item{transfo.method}{The method chosen to transform raw counts in a log2 scale
 using the
   \code{DESeq2}: \code{"rlog"} for regularized logarithm or
-  \code{"vst"} for variance stabilizing transformation.}
+  \code{"vst"} for variance stabilizing transformation. If missing, default value
+  defined at \code{"rlog"} for datasets with less than 30 samples and at \code{"vst"} if not}
 
 \item{transfo.blind}{Argument given to function \code{\link{rlog}} or \code{\link{vst}},
   see \code{\link{rlog}} and \code{\link{vst}} for an explaination, by default

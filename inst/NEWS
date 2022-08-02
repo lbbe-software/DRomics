@@ -18,6 +18,8 @@ matrix of the signal measurements and the vector of observed/tested doses.
 RNAseqdata(), microarraydata() and continuousomicdata() objects, 
 to prevent the automatic plot of many outliers as individual points and so
 produce lighter plot files.
+- Change the default value of transfo.method in RNAseqdata() (put at "vst" 
+when the number of samples is large than 30)
 
 BUG FIXES
 - Make sensitivityplot works even when BMDsummary is not given in input 

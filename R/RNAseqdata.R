@@ -1,7 +1,7 @@
 ### import, check normalize and transform RNAseq data
 
 RNAseqdata <- function(file, backgrounddose, check = TRUE, 
-                       transfo.method = c("rlog", "vst"), 
+                       transfo.method, 
                        transfo.blind = TRUE, round.counts = FALSE)
 {
   if (is.data.frame(file))
@@ -27,7 +27,8 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
   nrowdata <- nrowd - 1
-
+  ncoldata <- ncold - 1
+  
   if(any(!complete.cases(data)))
     stop("RNAseqdata() should not be used with data including NA values.")
   
@@ -58,7 +59,13 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
   }
   
   # Normalization and count data transformation using DESeq2
-  transfo.method <- match.arg(transfo.method, c("rlog", "vst"))
+  if (missing(transfo.method))
+  {
+    if (ncoldata > 30) transfo.method <- "vst" else transfo.method <- "rlog"
+  } else
+  {
+    transfo.method <- match.arg(transfo.method, c("rlog", "vst"))
+  }
   if(transfo.method == "rlog")
     cat(strwrap(paste0("Just wait, the transformation using regularized logarithm (rlog) may take a few minutes.\n")), fill = TRUE)
   
