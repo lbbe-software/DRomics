@@ -27,7 +27,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax,
   {
     if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "y0"), cnames)))
       stop("The first argument of curvesplot must be a dataframe
-    containing at least columns named id, model, b, c, d, e, f, y0 and maxychange.")
+    containing at least columns named id, model, b, c, d, e, f and y0.")
   }
   
     if (missing(xmax)) 
