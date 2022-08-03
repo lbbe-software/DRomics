@@ -31,6 +31,7 @@ ecdfquantileplot <- function(variable, by, quantile.prob = 0.5, title)
   dnb$group <- factor(dnb$group, levels = dnb$group)
   g <- ggplot(dnb, aes_(x = quote(group), y = quote(quantiles), size = quote(nb_of_items))) + 
     geom_point(stat = 'identity')  +  
-    coord_flip() + labs(title = title)
+    coord_flip() + labs(title = title) + 
+    scale_size_continuous(breaks = as.integer)
   return(g)
 }
