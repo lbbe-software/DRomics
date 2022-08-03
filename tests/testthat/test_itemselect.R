@@ -2,7 +2,7 @@ context("itemselect_count")
 test_that("itemselect works as expected on the number of selected probes",
   {
     skip_on_cran()
-    skip_on_os(c("mac", "linux", "solaris"))
+    skip_on_ci()
     datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
     (o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
     (s_quad0p001 <- itemselect(o, select.method = "quadratic", FDR = 0.001))
