@@ -37,12 +37,16 @@ knitr::opts_chunk$set(echo = TRUE,
 This vignette is intended to help users to start using the DRomics package. It is complementary to the reference manual where you can find more details on
 each function of the package. The first part of this vignette (Main workflow, 
 steps 1 to 4)
-could also help users of the Shiny application. If you do not want
+could also help users of the first Shiny application also named DRomics. 
+The second part (Help for biological interpretation of DRomics outputs)
+could also help users of the second Shiny application named DRomicsInterpreter.
+
+If you do not want
 to use R functions, you can skip the pieces of code and focus on the explanations
 and on the outputs that are also given in the Shiny application. And if one day 
 you want go further using the R functions, we recommend you to start
 from the whole R code corresponding to your analysis 
-that is provided on the last page of the Shiny application. 
+that is provided on the last page of each of the two Shiny applications. 
 
 # Main workflow 
 
@@ -113,7 +117,7 @@ head(data4DRomics)
 **We recommend you to carefully look at the following sections to check that you use the good scale for you data which depends on the type of measured signal 
 (counts of reads, fluorescence signal, ...).**
 
-### Types of data that may be imported in DRomics
+### Types of data that may be imported in DRomics {#datatypes}
 
 DRomics offers the possibility to work on different types of omics
 data (see following subsections for their description) 
@@ -247,7 +251,7 @@ In the following, you will also find an example of **experimental data collected
 from the Bioconductor package **sva** to correct for this batch effect and to use our PCAplot()
 function to visualize this batch effect and the impact of the batch effect correction on data.
 
-### An example with in situ (observational) RNAseq data
+### An example with in situ (observational) RNAseq data {#insitudata}
 
 One of the problem that may occur in particular with in situ data, is the absence of real
 control samples, corresponding to a strictly null exposure dose or concentration.
@@ -272,7 +276,7 @@ datafilename <- system.file("extdata", "insitu_RNAseq_sample.txt", package="DRom
 plot(o.insitu)
 ```
 
-### An example of RNAseq data from an experiment with a batch effect
+### An example of RNAseq data from an experiment with a batch effect {#batcheffect}
 
 When omics data are collected through a design with a known batch effect, 
 the DRomics function PCAplot() can be used as in the example below to visualize
@@ -537,13 +541,18 @@ plot(f, BMDoutput = b)
 
 # Help for biological interpretation of DRomics outputs
 
-This section illustrates functions of DRomics that are meant to help the biological interpretation of outputs. The idea is to augment the output dataframe with new column(s) bringing biological information such as provided by functional annotation of the items (e.g. KEGG pathway classes or GO terms) then to use this information to organize the visualisation of the DRomics output. 
+This section illustrates functions of DRomics that are meant to help the biological interpretation of outputs. The idea is to augment the output dataframe with new column(s) bringing biological information such as provided by functional annotation of the items (e.g. kegg pathway classes or GO terms) then to use this information to organize the visualisation of the DRomics output.
 
-Below is used an example from a metabolomic data set previously analysed using DRomics. 
+The Shiny application 
+DRomicsInterpreter can be used to implement all the steps described in this vignette without to code them in R. But in any case, the biological annotation of items selected in the first DRomics workflow must have been done using a database such as the Gene Ontology (GO) of the kegg databases.
+
+In this section we will first present a simple example from a metabolomic data and then a example with two molecular levels using a metabolomic and transcriptomic data from the same experiment, to illustrate how to compare the responses at different experimental levels (in this example different molecular levels). The different experimental levels could also be different time points, 
+different experimental settings, different species, ...
 
 ## Enrichment of the dataframe of DRomics results with functional annotation {#enrich}
 
-This enrichment is not done using DRomics functions, but with relevant R functions such as merge().
+This enrichment is not done using DRomics functions, but with relevant R functions such as merge(), but can be done using the Shiny application
+DRomicsInterpreter.
 
 An example of how to proceed:
 
@@ -583,9 +592,9 @@ annotres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
 head(annotres)
 ```
 
-## BMD ECDF plot by functional group
+## Various plots of results by functional group
 
-### BMD ECDF plot split by group defined from functional annotation
+### BMD ECDF plots split by group defined from functional annotation
 
 Using the function bmdplot() and its argument facetby, the BMD ECDF plot can be split
 by group (here by KEGG pathway class). 
@@ -609,8 +618,6 @@ ecdfplotwithCI(variable = annotres$BMD.zSD,
                CI.col = annotres$trend) + labs(col = "trend")
 ```
 
-### BMD ECDF plot with color gradient split by group defined from functional annotation
-
 Using the function bmdplotwithgradient() and its argument facetby, the BMD plot with color gradient can be split here by KEGG pathway class. (See ?bmdplotwithgradient for more options).
 
 ```{r}
@@ -619,8 +626,7 @@ bmdplotwithgradient(annotres, BMDtype = "zSD",
                     shapeby = "trend") + labs(shape = "trend")
 ```
 
-### the same representation with labels of items (so without shapeby)
-
+The same representation with labels of items (so without shapeby).
 The argument add.label set at TRUE will display item identifiers instead of points. 
 
 ```{r}
@@ -652,7 +658,7 @@ bmdplotwithgradient(annotres_lipid, BMDtype = "zSD",
 ```
 
 
-## Sensitivity plot of functional groups
+### Sensitivity plot of functional groups
 
 It is also possible to show a summary of BMD values in each pathway/category as a given summary (argument BMDsummary which can be "first.quartile", "median" or "median.and.IQR" for
 medians with the interquartile range as an interval) using the function sensitivityplot(). 
@@ -666,7 +672,7 @@ sensitivityplot(annotres, BMDtype = "zSD",
                  BMDsummary = "first.quartile") 
 ```
 
-## Trend plot per functional group
+### Trend plot per functional group
 
 It is possible to represent the repartition of trends in each functional group
 using function trendplot() (see ?trendplot for details).
@@ -675,7 +681,7 @@ using function trendplot() (see ?trendplot for details).
 trendplot(annotres, group = "path_class") 
 ```
 
-## Plot of dose-response curves for a specific functional group 
+### Plot of dose-response curves for a specific functional group 
 
 The function curvesplot() can show the dose-response curves for a specific pathway/category with arguments left to the choice of the user. In this example, only results related to the "lipid metabolism" pathway class are kept. The plot is split by id (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
 
@@ -686,13 +692,12 @@ curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
            xmin = 0, xmax = 6.5) + labs(col = "trend")
 ```
 
-# Help for multi-omics approaches 
+## Interpretation of DRomics results taking into account an experimental level for example in a multi-omics approach  
 
-This section illustrates functions of DRomics that are meant to help the interpretation of outputs by linking several omics levels. The idea is to augment the output dataframe with new column(s) bringing information on the molecular level, then to use this information to organize the visualisation of the DRomics output. 
+This section illustrates functions of DRomics that are meant to help the interpretation of outputs by taking into account different experimental levels (different molecular levels, different time points, different experimental settings, ...). The idea is to augment the output dataframe with new column(s) bringing information on this experimental level, then to use this information to organize the visualisation of the DRomics output. 
 
-Below is used an example linking a  transcriptomic (microarray) and a metabolomic data set issued from the same experiment. 
-
-## An example with metabolomics and transcriptomics data for *Scenedesmus* and triclosan (cf. Larras *et al.* 2020)
+Below is used an example corresponding to a multi-omics approach, the experimental level corresponding to the molecular level, with a transcriptomic (microarray) and a metabolomic data set issued from the same experiment. 
+This example uses metabolomics and transcriptomics data for *Scenedesmus* and triclosan published by Larras *et al.* in 2020.
 
 ### Enrichment of the dataframes of DRomics results with functional annotation
 
@@ -722,8 +727,9 @@ The [previouly created](#enrich) metabolomics dataframe (extended results with f
 metabextendedres <- annotres
 ```
 
-### Binding of transcriptomics and metabolomics dataframes
-The next step is the binding of dataframes at both levels adding a variable (named level) coding for the level (here a factor with two levels, metabolites and contigs).
+### Binding of the dataframes corresponding the results at each experimental level
+The next step is the binding of dataframes at the different levels (here
+transcriptomics and metabolomics dataframes) by adding a variable (here named level) coding for the level (here a factor with two levels, metabolites and contigs).
 
 ```{r}
 extendedres <- rbind(metabextendedres, contigextendedres)
@@ -732,13 +738,10 @@ extendedres$level <- factor(c(rep("metabolites", nrow(metabextendedres)),
 str(extendedres)
 ```
 
-## Comparison of results obtained at different molecular levels using basic R functions
+### Comparison of results obtained at the different levels using basic R functions
 
-Below are examples of illustrations that can be used to compare the results obtained at several levels of biological organization using basic R functions.
-
-### Frequencies of pathways per molecular level
-
-Here basic R functions are used to compute and plot frequencies of pathways by molecular levels.
+Below are examples of illustrations that can be used to compare the results obtained at several levels of biological organization using basic R functions
+for example to compute and plot frequencies of pathways by molecular levels as below.
 
 ```{r}
 (t.pathways <- table(extendedres$path_class, extendedres$level)) 
@@ -750,23 +753,24 @@ barplot(t(t.pathways), beside = TRUE, horiz = TRUE,
 par(original.par)
 ```
 
-### Proportions of pathways per molecular level
+To do the same plot in proportions, just apply the function
+prop.table() to the table of frequencies t.pathways.
 
-Here basic R functions are used to compute and plot proportions of pathways by molecular levels.
+<!-- ### Proportions of pathways per molecular level -->
 
-```{r}
-(t.prop.pathways <- prop.table(t.pathways, margin = 2)) 
-original.par <- par()
-par(las = 2, mar = c(4,13,1,1))
-barplot(t(t.prop.pathways), beside = TRUE, horiz = TRUE, 
-        cex.names = 0.7, legend.text = TRUE, 
-        main = "Proportion of pathways")
-par(original.par)
-```
+<!-- Here basic R functions are used to compute and plot proportions of pathways by molecular levels. -->
 
-### ECDF plot of BMD_zSD by pathway using different colors or facets for molecular levels
+<!-- ```{r} -->
+<!-- (t.prop.pathways <- prop.table(t.pathways, margin = 2))  -->
+<!-- original.par <- par() -->
+<!-- par(las = 2, mar = c(4,13,1,1)) -->
+<!-- barplot(t(t.prop.pathways), beside = TRUE, horiz = TRUE,  -->
+<!--         cex.names = 0.7, legend.text = TRUE,  -->
+<!--         main = "Proportion of pathways") -->
+<!-- par(original.par) -->
+<!-- ``` -->
 
-Here the ggplot2 grammar is used to plot the ECDF of BMD_zSD using different colors or facets for the different molecular levels.
+Here the ggplot2 grammar is used to plot the ECDF of BMD_zSD using different colors for the different molecular levels.
 
 ```{r}
 if (require(ggplot2))
@@ -777,28 +781,33 @@ if (require(ggplot2))
 }
 ```
 
-```{r}
-if (require(ggplot2))
-{
-   ggplot(extendedres, aes(x = BMD.zSD)) + facet_wrap(~ level) +
-      stat_ecdf(geom = "step") + ylab("ECDF")
-   
-}
-```
 
-## Comparison of results obtained at different molecular levels using DRomics functions
+<!-- ```{r} -->
+<!-- if (require(ggplot2)) -->
+<!-- { -->
+<!--    ggplot(extendedres, aes(x = BMD.zSD)) + facet_wrap(~ level) + -->
+<!--       stat_ecdf(geom = "step") + ylab("ECDF") -->
 
-With DRomics functions bmdplot(), bmdplotwithgradient(), sensitivityplot(), trendplot() and curvesplot(), 
-it is also possible to easily integrate different molecular levels (or another grouping level).
+<!-- } -->
+<!-- ``` -->
+
+<!-- ### Comparison of results obtained at different molecular levels using DRomics functions -->
+
+<!-- With DRomics functions bmdplot(), bmdplotwithgradient(), sensitivityplot(), trendplot() and curvesplot(),  -->
+<!-- it is also possible to easily integrate different molecular levels (or another grouping level). -->
 
 
-### ECDF plot of BMD_zSD per pathway and molecular level
+### ECDF plot of BMD_zSD per pathway and molecular level using DRomics functions
 
-Using the function bmdplot() and its argument facetby, the BMD ECDF plot can be split
-by group (here by KEGG pathway class) and colored or split by molecular level. 
+Using the function bmdplot() the BMD ECDF plot can be colored or split by experimental level and/or split
+by group (here by KEGG pathway class) as below. 
 (See ?bmdplot for more options).
 
 ```{r}
+# BMD ECDF plot split by molecular level
+bmdplot(extendedres, BMDtype = "zSD", 
+                    facetby = "level") 
+# BMD ECDF plot colored by molecular level and plit by group
 bmdplot(extendedres, BMDtype = "zSD", 
                     facetby = "path_class", 
                     colorby = "level") + labs(col = "molecular level")
@@ -814,7 +823,7 @@ bmdplot(selectedres, BMDtype = "zSD", add.CI = TRUE,
                     facetby2 = "level") + labs(col = "trend")
 ```
 
-### BMD ECDF plot with color gradient split by pathway and molecular level
+### BMD ECDF plot with color gradient split by pathway and experimental level
 
 Using the function bmdplotwithgradient() and its arguments facetby and facetby2, 
 the BMD plot with color gradient can be split here by KEGG pathway class
@@ -831,7 +840,7 @@ bmdplotwithgradient(selectedres, BMDtype = "zSD", scaling = TRUE,
                facetby = "path_class", facetby2 = "level")
 ```
 
-### Sensitivity plot per pathway and molecular level
+### Sensitivity plot per pathway and experimental level
 
 Using the function sensitivityplot() and its arguments group and colorby, 
 it is possible to show a summary of BMD values with size of points coding for the number
@@ -844,11 +853,11 @@ sensitivityplot(extendedres, BMDtype = "zSD",
                 BMDsummary = "first.quartile") 
 ```
 
-### Plot of the trend repartition per pathway and molecular level
+### Plot of the trend repartition per pathway and experimental level
 
 Using the function trendplot() and its arguments facetby it is possible 
 to show the repartition of trends of responses in each pathway class 
-for both molecular levels.
+for both experimental levels.
 
 ```{r}
 # Preliminary optional alphabetic ordering of path_class groups
