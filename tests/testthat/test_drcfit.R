@@ -2,6 +2,7 @@ context("drcfit_model")
 test_that("drcfit works as expected on the model results",
   {
     skip_on_cran()
+    skip_on_os(c("mac", "linux", "solaris"))
     skip_on_ci()
     datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
     o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
