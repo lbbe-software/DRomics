@@ -446,6 +446,10 @@ server <- function(input, output, session) {
     })
   })
   
+  observe({
+    updateCheckboxInput(session, "BMDlogtransfoBMDplot", value = input$BMDlogtransfoSensitivityplot)
+  })
+  
   # Deactivate 'shapeby' if 'addlabel' is checked
   observeEvent(input$addlabelBMDplot, {
     if(!isTRUE(input$addlabelBMDplot))
