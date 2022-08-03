@@ -28,17 +28,33 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   
   if (BMDtype == "zSD")
   {  
-    if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "BMD.zSD"), cnames)))
-      stop("The first argument of bmdplotwithgradient must be a dataframe
-      containing at least columns named id, model, b, c, d, e, f and BMD.zSD.")
+    if (scaling)
+    {
+      if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "y0", "maxychange", "BMD.zSD"), cnames)))
+        stop("The first argument of bmdplotwithgradient must be a dataframe
+      containing at least columns named id, model, b, c, d, e, f, y0, maxychange and BMD.zSD.")
+    } else
+    {
+      if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "y0", "BMD.zSD"), cnames)))
+        stop("The first argument of bmdplotwithgradient must be a dataframe
+      containing at least columns named id, model, b, c, d, e, f, y0 and BMD.zSD.")
+    }
     
     BMD2plot <- data.frame(x = extendedres$BMD.zSD, id = extendedres$id)
   }
   else 
   {
-    if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "BMD.xfold"), cnames)))
-      stop("The first argument of bmdplotwithgradient must be a dataframe
-      containing at least columns named id, model, b, c, d, e, f and BMD.xfold.")
+    if (scaling)
+    {
+      if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "y0", "maxychange", "BMD.xfold"), cnames)))
+        stop("The first argument of bmdplotwithgradient must be a dataframe
+      containing at least columns named id, model, b, c, d, e, f, y0, maxychange and BMD.xfold.")
+    } else
+    {
+      if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "y0", "BMD.xfold"), cnames)))
+        stop("The first argument of bmdplotwithgradient must be a dataframe
+      containing at least columns named id, model, b, c, d, e, f, y0 and BMD.xfold.")
+    }
     
     BMD2plot <- data.frame(x = extendedres$BMD.xfold, id = extendedres$id)
   }
