@@ -7,6 +7,7 @@ output:
   # pdf_document:
     toc: yes
     number_sections: yes
+    toc_depth: 4
 
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
@@ -147,7 +148,7 @@ the Bioconductor package **DESeq2** while continuous data
 of the Bioconductor package **limma**. 
 
 
-### An example with RNAseq data 
+#### An example with RNAseq data 
 
 ```{r}
 RNAseqfilename <- system.file("extdata", "RNAseq_sample.txt", package = "DRomics")
@@ -174,7 +175,7 @@ plot(o.RNAseq, cex.main = 0.8, col = "green")
 <!-- values and to prevent the automatic plot of many outliers  -->
 <!-- as individual points in the plot of raw counts. -->
 
-### An example with microarray data 
+#### An example with microarray data 
 
 For single-channel microarray data, imperatively imported in log
 scale (classical and recommended log2 scale), you can choose the between array 
@@ -201,7 +202,7 @@ by to the boxplot() function in order
 to enable long whiskers to be plotted, without individualizing extreme values, 
 just to make the obtained figure lighter.
 
-### An example with metabolomic data
+#### An example with metabolomic data
 
 ```{r}
 metabolofilename <- system.file("extdata", "metabolo_sample.txt", package = "DRomics")
@@ -221,7 +222,7 @@ We renamed metabolomicdata() to continuousomicdata() (while keeping the first na
 As for metabolomic data, the pretreatment of other continuous omic data data must be done before importation of data, and data must be imported in a scale that enables the use of a 
 normal error model. This strong hypothesis is required both for selection of items and for dose-reponse modelling.
 
-### An example with continuous anchoring apical data 
+#### An example with continuous anchoring apical data 
 
 ```{r}
 anchoringfilename <- system.file("extdata", "apical_anchoring.txt", package = "DRomics")
@@ -251,7 +252,7 @@ In the following, you will also find an example of **experimental data collected
 from the Bioconductor package **sva** to correct for this batch effect and to use our PCAplot()
 function to visualize this batch effect and the impact of the batch effect correction on data.
 
-### An example with in situ (observational) RNAseq data {#insitudata}
+#### An example with in situ (observational) RNAseq data {#insitudata}
 
 One of the problem that may occur in particular with in situ data, is the absence of real
 control samples, corresponding to a strictly null exposure dose or concentration.
@@ -276,7 +277,7 @@ datafilename <- system.file("extdata", "insitu_RNAseq_sample.txt", package="DRom
 plot(o.insitu)
 ```
 
-### An example of RNAseq data from an experiment with a batch effect {#batcheffect}
+#### An example with RNAseq data from an experiment with a batch effect {#batcheffect}
 
 When omics data are collected through a design with a known batch effect, 
 the DRomics function PCAplot() can be used as in the example below to visualize
