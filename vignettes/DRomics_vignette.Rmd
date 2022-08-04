@@ -587,7 +587,9 @@ DRomicsInterpreter-shiny can be used to implement all the steps described in thi
 In this section we will first present a simple example from a metabolomic data and then a example with two molecular levels using a metabolomic and transcriptomic data from the same experiment, to illustrate how to compare the responses at different experimental levels (in this example different molecular levels). The different experimental levels could also be different time points, 
 different experimental settings, different species, ...
 
-## Augmentation of the data frame of DRomics results with biological annotation {#augmentation}
+## Interpretation of DRomics results in a simple case with only one data set obtained in one experimental condition
+
+### Augmentation of the data frame of DRomics results with biological annotation {#augmentation}
 
 This Augmentation is not done using DRomics functions, but with relevant R functions such as merge(). 
 Nevertheless it is possible to perform it without R coding within the Shiny application
@@ -631,9 +633,9 @@ extendedres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
 head(extendedres)
 ```
 
-## Various plots of results by biological group
+### Various plots of results by biological group
 
-### BMD ECDF plots split by group defined from biological annotation {#bmdplot}
+#### BMD ECDF plots split by group defined from biological annotation {#bmdplot}
 
 Using the function bmdplot() and its argument facetby, the BMD ECDF plot can be split
 by group (here by KEGG pathway class). 
@@ -688,7 +690,7 @@ bmdplotwithgradient(extendedres_lipid, BMDtype = "zSD",
 ```
 
 
-### Sensitivity plot of biological groups {#sensitivityplot}
+#### Sensitivity plot of biological groups {#sensitivityplot}
 
 It is also possible to show a summary of BMD values in each pathway/category as a given summary (argument BMDsummary which can be "first.quartile", "median" or "median.and.IQR" for
 medians with the interquartile range as an interval) using the function sensitivityplot(). 
@@ -702,7 +704,7 @@ sensitivityplot(extendedres, BMDtype = "zSD",
                  BMDsummary = "first.quartile") 
 ```
 
-### Trend plot per biological group {#trendplot}
+#### Trend plot per biological group {#trendplot}
 
 It is possible to represent the repartition of trends in each biological group
 using function trendplot() (see ?trendplot for details).
@@ -711,16 +713,7 @@ using function trendplot() (see ?trendplot for details).
 trendplot(extendedres, group = "path_class") 
 ```
 
-### Plot of dose-response curves for a specific biological group {#curvesplot}
-
-The function curvesplot() can show the dose-response curves for a specific pathway/category with arguments left to the choice of the user. In this example, only results related to the "lipid metabolism" pathway class are kept. The plot is split by id (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
-
-```{r}
-LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
-curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
-           colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "trend")
-```
+#### Plot of dose-response curves per biological group {#curvesplot}
 
 The function curvesplot() can show the dose-response curves obtained for different groups
 (or one chosen group). As for the use of bmdplotwithgradient(), the scaling of those curves can be used
@@ -728,9 +721,17 @@ as soon as you want to focus on the shape of them, and not on the amplitude of t
 in your dataset. Below is a code to plot the dose-response curves split by biological group (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
 
 ```{r}
+# Plot of all the scaled dose-reponse curves split by path class
 curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100, line.size = 1,
            colorby = "trend", xmin = 0, xmax = 6.5) + labs(col = "trend")
+
+# Plot of the unscaled dose-reponses for one chosen group, split by metabolite
+LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
+curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
+           colorby = "trend",
+           xmin = 0, xmax = 6.5) + labs(col = "trend")
 ```
+
 
 ## Interpretation of DRomics results taking into account an experimental level for example in a multi-omics approach  {#multilevels}
 
@@ -778,7 +779,7 @@ extendedres$explevel <- factor(c(rep("metabolites", nrow(metabextendedres)),
 str(extendedres)
 ```
 
-### Comparison of results obtained at the different levels using basic R functions {#comparison}
+### Comparison of results obtained at the different experimental levels using basic R functions {#comparisonR}
 
 Below are examples of illustrations that can be used to compare the results obtained at several levels of biological organization using basic R functions
 for example to compute and plot frequencies of pathways by molecular levels as below.
@@ -837,9 +838,11 @@ if (require(ggplot2))
 <!-- it is also possible to easily integrate different molecular levels (or another grouping level). -->
 
 
-### ECDF plot of BMD_zSD per pathway and molecular level using DRomics functions
+### Comparison of results obtained at the different experimental levels using DRomics functions {#comparisonDRomics}
 
-Using the function bmdplot() the BMD ECDF plot can be colored or split by experimental level and/or split
+#### ECDF plot of BMD values per group and experimental level using DRomics functions
+
+Using the function bmdplot() the ECDF plot of the BMD-zSD values can be colored or split by experimental level and/or split
 by group (here by KEGG pathway class) as below. 
 (See ?bmdplot for more options, for example to add confidence intervals, ...,
 as in [the previous section presenting bmdplot()](#bmdplot)).
@@ -848,7 +851,8 @@ as in [the previous section presenting bmdplot()](#bmdplot)).
 # BMD ECDF plot split by molecular level
 bmdplot(extendedres, BMDtype = "zSD", 
                     facetby = "explevel") 
-# BMD ECDF plot colored by molecular level and plit by group
+
+# BMD ECDF plot colored by molecular level and split by path class
 bmdplot(extendedres, BMDtype = "zSD", 
                     facetby = "path_class", 
                     colorby = "explevel") + labs(col = "molecular level")
@@ -864,20 +868,22 @@ bmdplot(extendedres, BMDtype = "zSD",
 <!--                     facetby2 = "explevel") + labs(col = "trend") -->
 <!-- ``` -->
 
-### Plot of the trend repartition per pathway and experimental level
+#### Plot of the trend repartition per group and experimental level
 
 Using the function trendplot() and its arguments facetby it is possible 
-to show the repartition of trends of responses in each pathway class 
-for both experimental levels.
+to show the repartition of trends of responses in each biological group 
+for all experimental levels.
 
 ```{r}
 # Preliminary optional alphabetic ordering of path_class groups
 extendedres$path_class <- factor(extendedres$path_class, 
                 levels = sort(levels(extendedres$path_class), decreasing = TRUE))
+
+# Trend plot
 trendplot(extendedres, group = "path_class", facetby = "explevel") 
 ```
 
-### Sensitivity plot per pathway and experimental level
+#### Sensitivity plot per group and experimental level
 
 Using the function sensitivityplot() and its arguments group and colorby, 
 it is possible to show a summary of BMD values with size of points coding for the number
@@ -891,38 +897,40 @@ sensitivityplot(extendedres, BMDtype = "zSD",
 ```
 
 
-### Selection on groups on which to focus using the selectgroups() function
+#### Selection on groups on which to focus using the selectgroups() function
 
 When the number of biological groups obtained after annotation of items
-selected in the deose-response modeling workflow is too high, it may be useful
-to select groups on whch to focus, to enhance the visibility of plots.
+selected in the dose-response modeling workflow is too high, it may be useful
+to select groups on which to focus, to enhance the visibility of plots.
 This can be done for example using results of enrichment procedures in the case 
 where enrichment is possible (e.g. for sequenced organisms). One could also
 use selection criteria on the number of items representing each biological
 group (to select the most represented) and/or on the BMD summary value 
-(to select the most sensitive groups). The selectgroups() function can be used for this purpose as in the example below.
-
-!!!!!!!!!!!! revoir selectgroups pour que ça sélectionne tous les niveaux expérimentaux
-!!!!!!!!!!!! si l'un respect les conditions 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!!!!!!!!!!!!!!!!! J'en suis là !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+(to select the most sensitive groups). The selectgroups() function can be used for this purpose as in the example below (see ?selectgroups for details).
+When using this function you can choose to keep the results of all
+the experimental levels (for comparison purpose)
+as soon as the criteria are met for the group
+for at least one experimental level (as in the example below fixing the argument
+keepallexplev at TRUE).
 
 ```{r}
 selectedres <- selectgroups(extendedres, 
-                         group = "path_class", 
-                         BMDmax = 1, 
+                         group = "path_class",
+                         explev = "explevel",
+                         BMDmax = 0.75,
                          BMDtype = "zSD", 
                          BMDsummary = "first.quartile",
-                         nitems = 1)
+                         nitems = 3,
+                         keepallexplev = TRUE)
 
 # BMDplot on this selection
 bmdplot(selectedres, BMDtype = "zSD", add.CI = TRUE,
-                    facetby = "path_class",
-                     facetby2 = "explevel") + labs(col = "trend")
+                    facetby = "path_class", facetby2 = "explevel",
+                    colorby = "trend") + labs(col = "trend")
 ```
 
 
-### BMD ECDF plot with color gradient split by pathway and experimental level
+#### BMD ECDF plot with color gradient split by group and experimental level
 
 Using the function bmdplotwithgradient() and its arguments facetby and facetby2, 
 the BMD plot with color gradient can be split here by KEGG pathway class
@@ -930,41 +938,38 @@ and molecular level, here on a selection of pathway classes present at both mole
 Especially as metabolic data and transcriptomic data were not imported
 in DRomics in the same scale (in log2 for transcriptomic and log10 for metabolomic), 
 the use of the scaling option of each dose-reponse curve is interesting in such case. 
-This option focuses on the shape of responses, skipping the amplitude of changes to the control.
+This option focuses on the shape of responses, skipping the amplitude of changes to the control. Below is an example of BMD plot with color gradient on
+a manual selection of groups.
 
 ```{r}
-chosen_path_class <- c("Membrane transport", "Lipid metabolism", "Energy metabolism")
-selectedres <- extendedres[extendedres$path_class %in% chosen_path_class, ]
-bmdplotwithgradient(selectedres, BMDtype = "zSD", scaling = TRUE,
+# Manual selection of groups on which to focus
+chosen_path_class <- c("Nucleotide metabolism", 
+                       "Membrane transport", 
+                       "Lipid metabolism", 
+                       "Energy metabolism")
+selectedres2 <- extendedres[extendedres$path_class %in% chosen_path_class, ]
+bmdplotwithgradient(selectedres2, BMDtype = "zSD", scaling = TRUE,
                facetby = "path_class", facetby2 = "explevel")
 ```
 
 
-### Plot of the dose-response curves for a specific metabolic pathway
+#### Plot of the dose-response curves for a selection of groups
 
-Using the function curvesplot(), specific dose-response curves can be shown. In this example, first only results related to the "lipid metabolism" pathway class are kept. Then, the plot is split by molecular level (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
+Using the function curvesplot(), specific dose-response curves can be shown. In this example, first only results related to the "lipid metabolism" pathway class are kept. Then, the plot is split by molecular level (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options). The scaling of the curves 
+used in the second plot of the following example can be interesting to focus on the 
+shapes of those curves, skipping the amplitude of the changes from the control.
+This helps to evaluate the homogeneity of the shapes of the responses within each group.
+
 
 ```{r}
-# Plot of the dose-response curves for a specific metabolic pathway
-# in this example the "lipid metabolism" pathclass
+# Plot of the unscaled dose-response curves for the "lipid metabolism" path class
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "explevel", free.y.scales = TRUE, npoints = 100, line.size = 1,
            colorby = "trend",
            xmin = 0, xmax = 6.5) + labs(col = "DR_trend")
-```
 
-### Plot of dose-response curves for a selection of pathways
-
-The same plot can be drawn for several chosen pathways with the use of argument
-facetby2. (See ?curvesplot for more options).
-A scaling of the curves (as below) can be interesting to focus on the 
-shapes of those curves, skipping the amplitude of the changes from the control.
-This helps to evaluate the homogeneity of the shapes of the responses within each group.
-
-```{r}
-# Plot of the scaled dose-response curves for a specific metabolic pathway
-# in this example the "lipid metabolism" pathclass
-curvesplot(selectedres, scaling = TRUE,
+# Plot of the scaled dose-response curves for previously chosen path classes
+curvesplot(selectedres2, scaling = TRUE,
            facetby = "path_class", facetby2 = "explevel",
            npoints = 100, line.size = 1,
            colorby = "trend",
