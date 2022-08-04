@@ -96,11 +96,30 @@ similaritycalc <- function(extendedres, xmin = 0, xmax,
   # from a dataframe with column x, id, y, facetby
   similaritycalc.1G <- function(d1G)
   {
-    m1G <- unstack(d1G, select = y, y ~ facetby)
+    m1G <- as.matrix(unstack(data.frame(y = d1G$y, id = factor(d1G$id)), y ~ id))
+    cormatrix <- abs(cor(m1G))
+    mut <- cormatrix[upper.tri(cormatrix, diag = FALSE)]
+    mean(mut)
+    # median(mut)
+    # quantile(mut, probs = 0.25)
+    # quantile(mut, probs = 0.75)
   }
   
+  if (missing(facetby2)) 
+  {
+    res <- by(curves2plot, curves2plot$facetby, similaritycalc.1G)
+    output <- data.frame(group = names(res), meanabscor = as.vector(res))
+
+  }
+  else
+  { 
+    curves2plot$facetbyfacetby2 <- 
+      paste(curves2plot$facetby, curves2plot$facetby2, sep = "_")
+    res <- by(curves2plot, curves2plot$facetbyfacetby2, similaritycalc.1G)
+    output <- data.frame(group = names(res), meanabscor = as.vector(res))
+  }
   
-  return(curves2plot)
+  return(output)
   
   #   gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id))) +
   #     geom_line(size = line.size, alpha = line.alpha) 
@@ -148,17 +167,10 @@ str(annot)
 extendedres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
 head(extendedres)
 
-s1 <- similaritycalc(extendedres, facetby = "path_class", npoints = 10, 
-           xmin = 0, xmax = 8) 
-str(s1)
-head(s1, 20)
+(s1 <- similaritycalc(extendedres, facetby = "path_class", npoints = 100, 
+           xmin = 0, xmax = 8) )
 
-!!!!!!!!!!!!!!!!! J'EN SUIS LA !!!!!!!!!!!!!!!!!!
-d1G <- s1[s1$facetby == "Amino acid metabolism", ]
-head(d1G)
-m1G <- as.matrix(unstack(data.frame(y = d1G$y, id = factor(d1G$id)), y ~ id))
-m1G 
-(cormatrix <- abs(cor(m1G)))
+
 
 # (2) 
 # An example with two molecular levels
@@ -195,10 +207,7 @@ extendedres2$path_class <- factor(extendedres2$path_class,
                                  levels = sort(levels(extendedres2$path_class), 
                                                decreasing = TRUE))
 
-s2 <- similaritycalc(extendedres2, facetby = "path_class", 
+(s2 <- similaritycalc(extendedres2, facetby = "path_class", 
                      facetby2 = "molecular.level", 
                      npoints = 10, 
-                     xmin = 0, xmax = 8) 
-str(s2)
-nrow(s2)
-head(s2, 20)
+                     xmin = 0, xmax = 8) )
