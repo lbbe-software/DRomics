@@ -11,8 +11,9 @@ based on their sensitivity (BMD summary value) and their representativeness
 
 \usage{
 selectgroups(extendedres, group, explev,
-   BMDmax, BMDtype = c("zSD", "xfold"), BMDsummary = c("first.quartile", "median" ),
-   nitemsmin = 3)
+   BMDmax, BMDtype = c("zSD", "xfold"), 
+   BMDsummary = c("first.quartile", "median" ),
+   nitemsmin = 3, keepallexplev = FALSE)
    
 }
 
@@ -46,6 +47,9 @@ or \code{"median"} (for choice of median of BMD values per group).}
 to the most represented (can be put at 1 if you do not want to select on this
 number: not recommended.}
 
+\item{keepallexplev}{If TRUE (default value at FALSE), if a group is selected
+at at least one experimental level, it will be be keeped in the selection at all 
+the experimental levels.}
 }
 
 \details{
@@ -171,7 +175,7 @@ str(extendedres)
 # optional inverse alphabetic ordering of groups for the plot
 extendedres$path_class <- factor(extendedres$path_class, 
                 levels = sort(levels(extendedres$path_class), decreasing = TRUE))
-### sensitivity plot of both molecular levels before and after selection of 
+### (2.1) sensitivity plot of both molecular levels before and after selection of 
 #   most sensitive groups
 sensitivityplot(extendedres, BMDtype = "zSD",
                 group = "path_class", colorby = "molecular.level",
@@ -179,12 +183,27 @@ sensitivityplot(extendedres, BMDtype = "zSD",
 extendedres.2 <- selectgroups(extendedres, 
                          group = "path_class",
                          explev = "molecular.level",
-                         BMDmax = 1.25, 
+                         BMDmax = 1, 
                          BMDtype = "zSD", 
                          BMDsummary = "first.quartile",
                          nitemsmin = 1)
 sensitivityplot(extendedres.2, BMDtype = "zSD",
                 group = "path_class", , colorby = "molecular.level",
+                BMDsummary = "first.quartile")
+### (2.2) same selection but keeping all the experimental as soon
+# as the selection criterion is met for at least one experimental level
+extendedres.3 <- selectgroups(extendedres, 
+                         group = "path_class",
+                         explev = "molecular.level",
+                         BMDmax = 1, 
+                         BMDtype = "zSD", 
+                         BMDsummary = "first.quartile",
+                         nitemsmin = 1,
+                         keepallexplev = TRUE)
+extendedres.2
+extendedres.3
+sensitivityplot(extendedres.3, BMDtype = "zSD",
+                group = "path_class", colorby = "molecular.level",
                 BMDsummary = "first.quartile")
 
 

@@ -2,7 +2,8 @@ selectgroups <- function(extendedres, group, explev,
                               BMDmax, 
                               BMDtype = c("zSD", "xfold"), 
                               BMDsummary = c("first.quartile", "median" ),
-                              nitemsmin = 3
+                              nitemsmin = 3,
+                              keepallexplev = FALSE
                          )
 {
   if (missing(extendedres) | !is.data.frame(extendedres))
@@ -57,6 +58,7 @@ selectgroups <- function(extendedres, group, explev,
   } else
   {
     group_explev <- factor(paste(extendedreswithoutNA[, group], extendedreswithoutNA[, explev], sep = "_"))
+    group_allexplev <- factor(extendedreswithoutNA[, group])
     
   }
   dnb <- as.data.frame(table(group_explev))
@@ -75,7 +77,14 @@ selectgroups <- function(extendedres, group, explev,
     g_e2keep <- dnb[dnb$nb_of_items >= nitemsmin, "group_explev"]
   }
   
-  subextendedres <- extendedreswithoutNA[group_explev %in% g_e2keep, ]
+  if (keepallexplev & !missing(explev))
+  {
+    g2keep <- unique(group_allexplev[group_explev %in% g_e2keep])
+    subextendedres <- extendedreswithoutNA[group_allexplev %in% g2keep, ]
+  } else
+  {
+    subextendedres <- extendedreswithoutNA[group_explev %in% g_e2keep, ]
+  }
 
   return(subextendedres)
 }
