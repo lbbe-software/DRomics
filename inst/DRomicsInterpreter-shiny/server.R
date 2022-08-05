@@ -128,6 +128,7 @@ server <- function(input, output, session) {
   ######
   
   mergeddata <- eventReactive(input$buttonRunStep1, {
+    validate(need(input$maxDoseXScale, "Please fill in the maximal dose/concentration for definition of x-scale of plots."))
     myextendedmergeddata <- list()
     alllabels <- rep(NA, input$nbLevel)
     for (i in 1:input$nbLevel) {
@@ -231,7 +232,7 @@ server <- function(input, output, session) {
     }
   })
   
-  maxDoseXScale <- eventReactive(input$buttonRunStep1, {input$maxDoseXScale})
+  maxDoseXScale <- eventReactive(input$buttonRunStep1, {as.numeric(input$maxDoseXScale)})
   
   ################################################################################################
   ############ STEP 2 ############

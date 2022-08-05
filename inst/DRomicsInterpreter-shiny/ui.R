@@ -161,7 +161,7 @@ ui <- fluidPage(
                                shinyBS::bsPopover("nblevel_help", "", texthelpnblevel, placement = "right", trigger = "hover", options = NULL)
                         ),
                         column(2,
-                               numericInput("maxDoseXScale", "Maximal dose/concentration for definition of x-scale of plots", value = 10, min = 1, max = 1000, step = 1, width = "100%")
+                               textInput("maxDoseXScale", "Maximal dose/concentration for definition of x-scale of plots", width = "100%")
                         ), 
                         column(3, style = "margin-top: 25px;", 
                                shinyBS::bsButton("maxdosexscale_help", label = "", icon = icon("info"), size = "small"),
