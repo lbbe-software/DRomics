@@ -906,7 +906,8 @@ This can be done for example using results of enrichment procedures in the case
 where enrichment is possible (e.g. for sequenced organisms). One could also
 use selection criteria on the number of items representing each biological
 group (to select the most represented) and/or on the BMD summary value 
-(to select the most sensitive groups). The selectgroups() function can be used for this purpose as in the example below (see ?selectgroups for details).
+(to select the most sensitive groups). The selectgroups() function can be used 
+for this purpose as in the example below (see ?selectgroups for details).
 When using this function you can choose to keep the results of all
 the experimental levels (for comparison purpose)
 as soon as the criteria are met for the group
