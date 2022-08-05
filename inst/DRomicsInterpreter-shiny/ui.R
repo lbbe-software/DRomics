@@ -100,7 +100,7 @@ ui <- fluidPage(
                                            " and on ",
                                            a("this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"), "."),
                                         h4("You can find help about the DRomicsInterpreter-shiny application and the DRomics package in a ",
-                                           a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_0.pdf", TARGET="_blank", style="color:#f28d0f;"), " and a ",
+                                           a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_1.pdf", TARGET="_blank", style="color:#f28d0f;"), " and a ",
                                            a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_0.pdf", TARGET="_blank", style="color:#f28d0f;"), "."
                                         )
                         )),
@@ -421,7 +421,7 @@ ui <- fluidPage(
                         column(8, 
                                br(), HTML("<font face=verdana size=5 color=#9c5c16><b>R CODE TO GO FURTHER</b></font>"), br(), br(), br(),
                                tags$blockquote("To see what more you can do using the R package, we recommend you to consult the ", 
-                                               a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_0.pdf", TARGET="_blank", style="color:#f28d0f;"),
+                                               a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_1.pdf", TARGET="_blank", style="color:#f28d0f;"),
                                                " and the ", 
                                                a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_0.pdf", TARGET="_blank", style="color:#f28d0f;"),
                                                " of the package."), 
