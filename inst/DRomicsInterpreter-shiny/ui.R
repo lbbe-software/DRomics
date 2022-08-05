@@ -393,7 +393,7 @@ ui <- fluidPage(
                           ),
                           column(2,
                                  fixedRow(
-                                   checkboxInput("colorbyCurvesplot", label = HTML("<b>Color by trend</b>"), value = FALSE)
+                                   checkboxInput("colorbyCurvesplot", label = HTML("<b>Color by trend</b>"), value = TRUE)
                                  )
                           ),
                           column(1,
