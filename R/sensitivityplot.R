@@ -128,6 +128,6 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   if (BMD_log_transfo)
     gg <- gg + scale_y_log10()
   
-  gg <- gg + scale_size_continuous(breaks = as.integer)
+  gg <- gg + scale_size_continuous(breaks = c(min(dnb$nb_of_items), median(dnb$nb_of_items), max(dnb$nb_of_items)))
   return(gg)
 }
