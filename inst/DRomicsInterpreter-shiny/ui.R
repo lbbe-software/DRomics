@@ -207,6 +207,8 @@ ui <- fluidPage(
                                  shinyBS::bsPopover("helplabel1step2", "", helplabel1step2, placement = "right", trigger = "hover", options = list(container = "body")),
                                  br(), 
                                  br(), 
+                                 checkboxInput("keepAllExplev", label = HTML("<b>Keep all experimental levels</b>"), value = FALSE),
+                                 br(), 
                                  sliderInput("minNbItem", "Minimum for the number of items",
                                              width = "90%", 
                                              min = 1, max = 10, step = 1, ticks = TRUE, 

@@ -253,6 +253,7 @@ server <- function(input, output, session) {
   })
   
   
+  keepAllExplev <- eventReactive(input$buttonRunStep2, {input$keepAllExplev})
   minNbItem <- eventReactive(input$buttonRunStep2, {input$minNbItem})
   BMDmax <- eventReactive(input$buttonRunStep2, {
     validate(
@@ -279,7 +280,8 @@ server <- function(input, output, session) {
                                          explev = "experimental_level", 
                                          BMDtype = BMDtypesensitivityPlot(),
                                          BMDsummary = substr(BMDsummarysensitivityPlot(), 1, 5), 
-                                         nitemsmin = minNbItem())
+                                         nitemsmin = minNbItem(),
+                                         keepallexplev = keepAllExplev())
     
     # alphabetic ordering of mypathclasslabel groups
     if((orderingOnelev() == "alphaorder_onelev" & input$nbLevel == 1) | (orderingMoreonelev() == "alphaorder_moreonelev" & input$nbLevel > 1)) {
@@ -877,7 +879,8 @@ server <- function(input, output, session) {
               paste0("myextendedmergeddata <- selectgroups(extendedres = myextendedmergeddata, BMDmax = ", 
                      input$BMDmax, ", group = mypathclasslabel, explev = 'experimental_level', BMDtype = '", input$BMDtypesensitivityPlot, 
                      "', BMDsummary = '", match.arg(input$BMDsummarysensitivityPlot, c('first.quartile', 'median')), 
-                     "', nitemsmin = ", input$minNbItem, ")")
+                     "', nitemsmin = ", input$minNbItem, 
+                     ", keepallexplev = ", input$keepAllExplev, ")")
     )
     
     if((input$ordering_onelev == "alphaorder_onelev" & input$nbLevel == 1) | (input$ordering_moreonelev == "alphaorder_moreonelev" & input$nbLevel > 1)) {

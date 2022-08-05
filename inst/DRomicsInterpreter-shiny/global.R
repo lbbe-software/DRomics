@@ -12,7 +12,7 @@ texthelpmaxdosexscale <- "We recommand you to fix it at the maximal tested dose/
 helplabel1step1 <- "Each file for annotation data must have exactly two columns."
 helplabel2step1 <- "If there are multiple experimental levels, the labels chosen must be unique. All spaces in the labels are removed."
 
-helplabel1step2 <- "To limit the number of annotation groups, you can use the thresholds on the number of items representing the group and/or the BMDsummary value of the group."
+helplabel1step2 <- "To limit the number of annotation groups, you can use the thresholds on the number of items representing the group and/or the BMDsummary value of the group. You can also choose to keep the results of all the experimental levels as soon as the criteria are met for at least one experimental level."
 
 helplabel1step4 <- "For this plot, it is necessary to define the range of the dose (for example corresponding to the range of the tested/observed doses) and when using a log scale for the dose, a strictly positive value must be given for the minimum (a value below the smallest non null tested dose is recommended)."
 
