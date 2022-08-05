@@ -893,14 +893,15 @@ server <- function(input, output, session) {
     text <- c(text, paste0("myextendedmergeddata[, mypathclasslabel] <- factor(myextendedmergeddata[, mypathclasslabel], levels = levelorder)"))
     
     
+    text <- c(text, "", "", "More code will be available soon.")
     
-    ##### STEP 3 #####
-    text <- c(text, "", "", "# Step 3")
-    
-    
-    ##### STEP 4 #####
-    text <- c(text, "", "", "# Step 4")
-    
+    # ##### STEP 3 #####
+    # text <- c(text, "", "", "# Step 3")
+    # 
+    # 
+    # ##### STEP 4 #####
+    # text <- c(text, "", "", "# Step 4")
+    # 
     
     # download button
     output$buttonDownRCode <- downloadHandler(
