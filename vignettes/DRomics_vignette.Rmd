@@ -80,8 +80,8 @@ that is provided on the last page of each of the two Shiny applications.
 #### Importation of data from a unique text file {#textfile}
 
 Whatever the type of data imported in DRomics (e.g. RNAseq, microarray, metabolomic data),
-data can be imported from a .txt file (e.g. "mydata.txt") organized with one row per item (e.g. transcript, probe, metabolite) and one column per sample. In the first row, after a name for the item identifier column (e.g. "id"), we must have the tested doses or concentrations in a numeric format for the corresponding sample
-(for example, if there are triplicates for each treatment, the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). The first column must give the identifier of each item (identifier of the probe, transcript, metabolite, ..., or name of the endpoint for anchoring data), 
+data can be imported from a .txt file (e.g. "mydata.txt") organized with one row per item (e.g. transcript, probe, metabolite) and one column per sample. In an additional first row, after a name for the item identifier (e.g. "id"), we must have the tested doses or concentrations in a numeric format for the corresponding sample
+(for example, if there are triplicates for each treatment, the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). An additional first column must give the identifier of each item (identifier of the probe, transcript, metabolite, ..., or name of the endpoint for anchoring data), 
 and the other columns give the responses of the item for each sample.  This file will be imported within DRomics using an internal call to the function read.table() with its default field separator (sep argument). 
 
 Different examples of .txt files formatted for the DRomics workflow
@@ -165,14 +165,14 @@ but also on continuous anchoring data.
 (except the first one coding for the doses or concentrations)
 **correspond to different endpoints that may correspond to different
 types of data** (e.g. biomass, length,..), but all are assumed continuous data
-compatible with a normal error distribution (e.g. after logarithmic transformation) for the 
+compatible with a Gaussian (normal) error distribution (e.g. after logarithmic transformation) for the 
 selection and modelling steps.
 
 Three types of omics data may be imported in DRomics using the following functions:
 
 + **RNAseqdata()** should be used to import **RNAseq as counts of reads**,
 + **microarraydata()** should be used to import **single-channel microarray data in log2 scale**,
-+ **continuousomicdata()** should be used to import **other continuous omics data** such as metabolomics, proteomics,..., **in a scale that enables the use of a normal error model** 
++ **continuousomicdata()** should be used to import **other continuous omics data** such as metabolomics, proteomics,..., **in a scale that enables the use of a Gaussian error model** 
 in Steps [2](#step2) and [3](#step3). metabolomicdata() is the former name, but still available, of this function.
 
 In Steps [1](#step1) and [2](#step2) **count data** are internally analysed using 
@@ -193,8 +193,7 @@ For RNAseq data, imperatively imported in raw counts, you have to choose the tra
 method used to stabilize the variance 
 ("rlog" or "vst"). In the example below "vst" was used 
 to make this vignette quick to compile, 
-but **"rlog" is recommended and chosen by default even if more computer intensive than "vst"**
-(except when the number of samples is very large (> 30) as encountered for in situ data for example, see ?RNAseqdata and the [section dedicated to in situ data](#insitudata) for details on this point). 
+but **"rlog" is recommended and chosen by default even if more computer intensive than "vst" except when the number of samples is very large (> 30)** (as encountered for in situ data for example: see ?RNAseqdata and the [section dedicated to in situ data](#insitudata) for details on this point). 
 Whatever the chosen method, 
 data are automatically normalized with respect to library size and transformed in log2 scale.
 
@@ -211,7 +210,7 @@ scale (classical and recommended log2 scale), you can choose between array
 normalization methods ("cyclicloess", "quantile", "scale" or "none"). 
 In the example below "quantile" was used 
 to make this vignette quick to compile, 
-but **"cyclicloess" is strongly recommended and chosen by default even if more computer intensive than the others** 
+but **"cyclicloess" is recommended and chosen by default even if more computer intensive than the others** 
 (see ?microarraydata for details).
 
 
@@ -234,7 +233,7 @@ metabolofilename <- system.file("extdata", "metabolo_sample.txt", package = "DRo
 # metabolofilename <- "yourchosenname.txt" # for a local file
 ```
 
-No normalization nor transformation is provided in the function continuousomicdata(). The pre-treatment of metabolomic data must be done before importation of data, and data must be imported in log scale, so that they can be directly modelled using a normal error model. This strong hypothesis is required both for selection of items and for dose-reponse modelling. In the context of a multi-omics approach we recommend the use of a log2 transformation, instead of the classical log10 for such data, so as to facilitate the comparison of
+No normalization nor transformation is provided in the function continuousomicdata(). The pre-treatment of metabolomic data must be done before importation of data, and data must be imported in log scale, so that they can be directly modelled using a Gaussian error model. This strong hypothesis is required both for selection of items and for dose-reponse modelling. In the context of a multi-omics approach we recommend the use of a log2 transformation, instead of the classical log10 for such data, so as to facilitate the comparison of
 results obtained with transcriptomics data generally handled in a log2 scale.
 
 As an example, a basic procedure for the pre-treatment of metabolomic data could follow the three steps described thereafter: i) removing of metabolites for which the proportion of missing data (non detected) across all the samples is too high (more than 20 to 50 percents according to your tolerance level); ii) retrieving of missing values data using half minimum method (i.e. half of the minimum value found for a metabolite across all samples); iii) log-transformation of values. If a scaling to the total intensity (normalization by sum of signals in each sample) or another normalization is necessary and pertinent, we recommend to do it before those three previously described steps.
@@ -248,7 +247,7 @@ The metabolomicdata() function was renamed continuousomicdata() in the recent ve
 of the package (while keeping the first name available) 
 to offer its use to other continuous omic data such as proteomics data or RT-qPCR data. 
 As for metabolomic data, the pre-treatment of other continuous omic data must be done before importation, and data must be imported in a scale that enables the use of a 
-normal error model. This strong hypothesis is required both for selection of items and for dose-response modelling.
+Gaussian error model. This strong hypothesis is required both for selection of items and for dose-response modelling.
 
 #### An example with continuous anchoring apical data {#apicalexample}
 
@@ -257,7 +256,7 @@ anchoringfilename <- system.file("extdata", "apical_anchoring.txt", package = "D
 # anchoringfilename <- "yourchosenname.txt" # for a local file
 ```
 
-No transformation is provided in the function continuousanchoringdata(). If needed the pre-treatment of data must be done before importation of data, so that they can be directly modelled using a normal error model. This strong hypothesis is required both for selection of responsive endpoints and for dose-reponse modelling. 
+No transformation is provided in the function continuousanchoringdata(). If needed the pre-treatment of data must be done before importation of data, so that they can be directly modelled using a Gaussian error model. This strong hypothesis is required both for selection of responsive endpoints and for dose-reponse modelling. 
 
 For such data the plot() function provides a dose-response plot for each endpoint.
 In this example the argument backgrounddose is used to specify that doses below  or equal to 0.1
@@ -277,7 +276,7 @@ The DRomics workflow was first developed for data collected through a typical
 dose-response experiment, with a reasonable number of tested doses (or concentrations - at least 4 in addition to the control and ideally 6 to 8)
 and a small number of replicates per dose. Recently we made some modifications in the package to make possible the use of designs with only 3 doses in addition to the control even if this type of design is not recommended for dose-response modeling.
 **We also extended our workflow to handle in situ (or observational) datasets**, 
-for which there are **no replication, as the dose (or concentration) is not controlled**
+for which there is **no replication, as the dose (or concentration) is not controlled**
 (see the next subsection for an example and more information on the handling of such data).
 In the following, you will also find an example of **experimental data collected using a design with a batch effect** with an explanation of a simple way to use functions 
 from the Bioconductor package [sva](https://bioconductor.org/packages/release/bioc/html/sva.html) to correct for this batch effect and to use our PCAplot()
@@ -287,9 +286,9 @@ function to visualize this batch effect and the impact of the batch effect corre
 
 One of the problem that may occur in particular with in situ data, is the absence of real
 control samples, corresponding to a strictly null exposure dose or concentration.
-To prevent an hazardous calculation of the BMD by extrapolation in such a case, 
+**To prevent an hazardous calculation of the BMD by extrapolation in such a case, 
 one should use the argument backgrounddose to define the maximal measured dose 
-that can be considered as a negligible dose. 
+that can be considered as a negligible dose.**
 All doses below  or equal to the value given in backgrounddose will be fixed at 0, 
 so as to be considered at the background level of exposition. 
 
@@ -311,9 +310,9 @@ plot(o.insitu)
 #### An example with RNAseq data from an experiment with a batch effect {#batcheffect}
 
 When omics data are collected through a design with a known batch effect, 
-the DRomics function PCAplot() can be used as in the example below to visualize
-the impact of this batch effect on the data, and functions from specific
-packages can be used to correct for the batch effect as in the example below.
+the **DRomics function PCAplot() can be used as in the example below to visualize
+the impact of this batch effect on the data**, and **functions from specific
+packages can be used to correct for the batch effect** as in the example below.
 We recommend the use of functions ComBat() and ComBat_seq() from the Bioconductor
 **sva** package for this purpose, respectively for microarray 
 (or other continuous omic data) and RNAseq data. Below is an example using 
@@ -354,20 +353,15 @@ PCAdataplot(o.BEC, batch = zebraf$batch)
 
 For the second step of the workflow, the function itemselect() must be used with the output of the function used in [step 1](#step1) as first argument (output of RNAseqdata(), microarraydata(), continuousomicdata() or continuousanchoringdata()). Below is an example with microarray data.
 
-The false discovery rate (FDR) corresponds to the expected proportion of items that will be falsely
-detected as responsive. With a very large data set it is important to define a selection step based
-on an FDR not only to reduce the number of items to be further processed, but also to remove
-too noisy dose-response signals that may impair the quality of the results.
+The **false discovery rate (FDR) corresponds to the expected proportion of items that will be falsely detected as responsive**. **With a very large data set** it is important to define a selection step based
+on an FDR not only **to reduce the number of items to be further processed**, but also **to remove too noisy dose-response signals that may impair the quality of the results**.
 We recommend to set a value between 0.001 and 0.1 depending of the initial number of items. 
 When this number is very high (more than several tens of thousands),
 we recommend a FDR less than 0.05 (0.001 to 0.01) to increase the robustness of the results ([Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document)).
 
-Concerning the method used for selection, we recommend the default choice ("quadratic") for a typical omics dose-response design (many doses/concentrations with few replicates
-per condition). It enables the selection of both monotonic and 
-biphasic dose-response relationships. If you want to focus on monotonic dose-response relationships, the "linear" method could be chosen. For a design with a small number of doses/concentrations and many replicates 
+Concerning the method used for selection, **we recommend the default choice ("quadratic") for a typical omics dose-response design (many doses/concentrations with few replicates per condition)**. It enables the **selection of both monotonic and biphasic dose-response relationships**. If you want to focus on monotonic dose-response relationships, the "linear" method could be chosen. For a design with a small number of doses/concentrations and many replicates 
 (not optimal for dose-response modelling), the "ANOVA" method could be preferable.
-For in situ data (observational data without replicates due to uncontrolled dose), only trend tests
-will be proposed as the use of an ANOVA test in absence of replicates for some conditions is not reasonable.
+**For in situ data** (observational data without replicates due to uncontrolled dose), **only trend tests will be proposed** as the use of an ANOVA test in absence of replicates for some conditions is not reasonable.
 
 See ?itemselect and [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) for details.
 
@@ -379,7 +373,7 @@ See ?itemselect and [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02
 
 ### Fit
 
-For Step 3 the function drcfit() must be simply used with the output of itemselect() as first argument. Description of the fitted models and of the procedure to select the best fit are described in [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) and in ?drcfit. **The former use of the AIC** (Akaike criterion-
+For Step 3 the function drcfit() must be simply used with the output of itemselect() as first argument. **Description of the fitted models** and of the procedure to **select the best fit based on an information criterion** are described in [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) and in ?drcfit. **The former use of the AIC** (Akaike criterion-
 default information criterion used for the selection of the best fit model in DRomics versions
 < 2.2-0) was **replaced by the use of the AICc** (second-order Akaike criterion)
 in order to prevent the overfitting that may occur with dose-response designs
@@ -397,7 +391,7 @@ accelerate the computation (see ?drcfit for details).
 
 In the following you can see the first ten lines of the output data frame 
 on our example (see ?drcfit for a complete description
-of the columns of the output data frame.) This output data frame provides information such as best-fit model, parameter value, coordinates of particular points, and the trend of the curve (among increasing, decreasing, U-shaped, bell-shaped) 
+of the columns of the output data frame.) **This output data frame provides information such as best-fit model, parameter value, coordinates of particular points, and the trend of the curve (among increasing, decreasing, U-shaped, bell-shaped)** 
 
 ```{r}
 head(f$fitres, 10)
@@ -406,9 +400,7 @@ head(f$fitres, 10)
 ### Plot of fitted curves
 
 By default the plot() function used on the output of the drcfit() function 
-provides the first 20 fitted curves (or the ones you specify using the argument items) with observed points. Fitted curves are represented in red, replicates are
-represented in open circles and means of replicates at each dose/concentration
-are represented by solid circles. All the fitted curves may be
+provides the first 20 fitted curves (or the ones you specify using the argument items) with observed points. **Fitted curves are represented in red, replicates are represented in open circles and means of replicates at each dose/concentration are represented by solid circles**. All the fitted curves may be
 saved in a pdf file using the plotfit2pdf() function (see ?drcfit).
 
 ```{r}
@@ -418,8 +410,7 @@ plot(f)
 The fitted curves may be represented using a log
 scale for the dose/concentration using argument dose_log_transfo (see ?drcfit for details and examples).
 
-Another specific plot function named targetplot() can be used to
-plot targeted items, whether they were or not selected in step 2 and fitted in step 3. See an example below and details in ?targetplot
+Another **specific plot function named targetplot() can be used to plot targeted items, whether they were or not selected** in step 2 and fitted in step 3. See an example below and details in ?targetplot
 
 ```{r}
 targetitems <- c("88.1", "1", "3", "15")
@@ -428,7 +419,7 @@ targetplot(targetitems, f = f)
 
 ### Plot of residuals
 
-To check the assumption of the normal error model, two types of residual plots can
+**To check the assumption of the Gaussian error model**, two types of residual plots can
 be used ("dose_residuals" or "fitted_residuals"). The residual plots for
 all items may also be
 saved in a pdf file using the plotfit2pdf() function (see ?drcfit).
@@ -442,16 +433,16 @@ plot(f, plot.type = "dose_residuals")
 
 ### Calculation of BMD
 
-The two types of benchmark doses (BMD-zSD and BMD-xfold) proposed by 
-the EFSA (2017) are systematically calculated
+The **two types of benchmark doses (BMD-zSD and BMD-xfold) proposed by the EFSA (2017) are systematically calculated**
 for each fitted dose-response curve using the function bmdcalc() with the output
-of the drcfit() function as a first argument (see [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) 
-or ?drcfit for details).
+of the drcfit() function as a first argument, 
+**but we strongly recommend the use of the first one (BMD-zSD)** for reasons explained in [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) 
+(or see ?bmdcalc for details on this function).
 
-The argument z, by default at 1, is used to define the BMD-zSD as the dose at which the response is reaching y0 +/- z * SD, with y0 the level at the control given by the dose-response fitted model and SD the residual standard deviation of the dose-response fitted model. 
+The argument $z$, by default at 1, is used to define the BMD-zSD as the dose at which the response is reaching the BMR (benchmark response) defined as $y_0 \pm z \times SD$, with $y_0$ the level at the control given by the dose-response fitted model and $SD$ the residual standard deviation of the dose-response fitted model. 
 
-The argument x, 
-by default at 10 (for 10%), is used to define the BMD-xfold as the dose at which the response is reaching y0 +/- (x/100) * y0.
+The argument $x$, 
+by default at 10 (for 10%), is used to define the BMD-xfold as the dose at which the response is reaching the BMR defined as $y_0 \pm \frac{x}{100} \times y_0$.
 
 ```{r}
 (r <- bmdcalc(f, z = 1, x = 10))
@@ -519,8 +510,7 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
 It is possible to add the output of bmdcalc()
 in the argument BMDoutput of the plot() function of drcfit() to add BMD values
 (when defined) as a 
-vertical line on each fitted curve. Horizontal dotted lines corresponding to the two BMR potential
-values will be also added.
+**vertical line on each fitted curve**. **Horizontal dotted lines corresponding to the two BMR potential values will be also added**.
 All the fitted curves may also be
 saved in the same way in a pdf file using the plotfit2pdf() function (see ?drcfit).
 
@@ -653,7 +643,7 @@ bmdplot(extendedres, BMDtype = "zSD", add.CI = TRUE,
                     colorby = "trend") + labs(col = "trend")
 ```
 
-The function ecdfplotwithCI() can also used as an alternative as below to provide the same plot
+The function ecdfplotwithCI() can also be used as an alternative as below to provide the same plot
 differing just by the coloring of intervals only. (See ?ecdfplotwithCI for more options.)
 
 ```{r, eval = FALSE}
