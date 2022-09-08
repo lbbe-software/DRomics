@@ -878,7 +878,7 @@ server <- function(input, output, session) {
               paste0("mypathclasslabel <-  names(annotdata1)[which(names(annotdata1) != '", input$id_annotationData1, "')]"),
               paste0("myextendedmergeddata <- selectgroups(extendedres = myextendedmergeddata, BMDmax = ", 
                      input$BMDmax, ", group = mypathclasslabel, explev = 'experimental_level', BMDtype = '", input$BMDtypesensitivityPlot, 
-                     "', BMDsummary = '", match.arg(input$BMDsummarysensitivityPlot, c('first.quartile', 'median')), 
+                     "', BMDsummary = '", match.arg(substr(input$BMDsummarysensitivityPlot, 1, 5), c('first.quartile', 'median')), 
                      "', nitemsmin = ", input$minNbItem, 
                      ", keepallexplev = ", input$keepAllExplev, ")")
     )
