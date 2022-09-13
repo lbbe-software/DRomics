@@ -35,6 +35,17 @@ knitr::opts_chunk$set(echo = TRUE,
 
 # Introduction {#introduction}
 
+DRomics is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to **omics data** obtained using a **typical dose-response design**, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates to use DRomics).
+
+After a first step which consists in **importing**, **checking** and if needed **normalizing/transforming** the data ([step 1](#step1)), the aim of the proposed workflow is to **select monotonic and/or biphasic significantly responsive items** (e.g. probes, contigs, metabolites) ([step 2](#step2)), to **choose the best-fit model** among a predefined family of monotonic and biphasic models to describe the response of each selected item ([step 3](#step3)), and to **derive a benchmark dose** or concentration from each fitted curve ([step 4](#step4)). Those steps can be performed in R using DRomics functions, or using the **shiny application named DRomics-shiny**.
+
+In the available version, DRomics supports **single-channel microarray data** (in log2 scale), **RNAseq data** (in raw counts) and
+other **continuous omics data** such as metabolomics or proteomics (in log scale). In order to link responses across biological levels based on a common method, DRomics also handles **apical data** as long as they are **continuous and follow a Gaussian (normal) distribution** for each dose or concentration, with a **constant standard error**.
+
+DRomics does not provide an annotation pipeline, but provides **functions to help the interpretation** of the workflow results in view of a **common biological annotation** (obtained outside of DRomics using databases such as KEGG or Gene Ontology). It enables a **multi-omics approach**, with the comparison of
+the response at the different levels of organization. It can also be used to **compare the response** at one organization level, but measured under **different experimental conditions** (e.g. different time points). 
+This interpretation can be performed in R using DRomics functions, or using a **second shiny application DRomicsInterpreter-shiny**.
+
 This vignette is intended to help users to start using the DRomics package. It is complementary to the reference manual where you can find more details on
 each function of the package. The first part of this vignette ([Main workflow, 
 steps 1 to 4](#mainworkflow))
@@ -73,7 +84,7 @@ that is provided on the last page of each of the two Shiny applications.
 # Main workflow {#mainworkflow}
 
 
-## Step 1: importation, check and normalization / transformation of data if needed
+## Step 1: importation, check and normalization / transformation of data if needed {#step1}
 
 ### General format of imported data
 
@@ -456,9 +467,10 @@ targetitems <- c("88.1", "1", "3", "15")
 targetplot(targetitems, f = f)
 ```
 
-### Plot of residuals
+### Plot of residuals {#residuals}
 
-**To check the assumption of the Gaussian error model**, two types of residual plots can
+**To check the assumption of the Gaussian error model** (see the [section on least squares](#leastsquares)), 
+two types of residual plots can
 be used ("dose_residuals" or "fitted_residuals"). The residual plots for
 all items may also be
 saved in a pdf file using the plotfit2pdf() function (see ?drcfit).
@@ -554,6 +566,59 @@ legend("topright", legend = "log-Gauss-probit, c < d, f < 0", bty = "n")
 
 ```
 
+### Reminder on least squares regression {#leastsquares}
+
+It is important when using DRomics to have in mind that the dose-response models are fitted
+using the **least squares regression**, assuming an **additive Gaussian (normal) error model** for the observed signal.
+It is why the scale under which you should import your data is very important, as a log (or pseudo-log) transformation
+is necessary to meet the use conditions of the model for some types of data.
+Let us recall the formulation of the Gaussian model defining the signal (after transformation if needed) $y$
+as a function of the dose (or concentration) $x$, $f$ being one of the five models previously described,
+and $\theta$ the vector of its parameters (of length 2 to 5).
+
+$$y = f(x, \theta) + \epsilon$$ with $$\epsilon \sim N(0, \sigma)$$ 
+$N(0, \sigma)$ representing the Gaussian (normal) distribution of standard deviation (SD) $\sigma$.
+
+In this model, the residual standard deviation $\sigma$ is assumed constant. It is the classical "homoscedasticity" hypothesis (see the following figure for an illustration). The examination of residuals (see the section on [plot of residuals](#residuals)) is a good way to check
+that the error model is not strongly violated.
+
+
+```{r, echo = FALSE,  fig.height = 4, fig.width = 7, results = "hide", out.width="80%"}
+par(mar = c(0.1, 0.1, 0.1, 0.1))
+datafilename <- system.file("extdata", "apical_anchoring.txt", package = "DRomics")
+o_ls <- continuousanchoringdata(datafilename, check = TRUE, backgrounddose = 0.1)
+s_ls <- itemselect(o_ls)
+f_ls <- drcfit(s_ls)
+growth <- f_ls$fitres[1,]
+#plot(f)
+plot(o_ls$dose, o_ls$data[1,], xlab = "dose", ylab = "signal", 
+     pch = 16, xlim = c(0, 30), ylim = c(-20, 80))
+xfin <- seq(0, 80, length.out = 100)
+#plot(x, x+100, ylim = c(0, 7), xlab = "dose", ylab = "signal")
+valb <- growth$b; valc <- growth$c; vald <- growth$d 
+vale <- growth$e; valf <- growth$f
+ytheo <- DRomics:::fGauss5p(xfin, valb, valc, vald, vale, valf)
+lines(xfin, ytheo, col = "red", lwd = 2)
+
+# Ajout de lois normales en vertical
+doseu <- sort(unique(o_ls$dose))
+ytheou <- DRomics:::fGauss5p(doseu, valb, valc, vald, vale, valf)
+sy <- growth$SDres
+npts <- 50 # nb de points par normale
+coefsurx <- 12
+tracenormale <- function(indice)
+{
+  x <- doseu[indice]
+  my <- ytheou[indice]
+  yplot <- seq(my - 2*sy, my+2*sy, length.out = npts)
+  xplot <- dnorm(yplot, mean = my, sd = sy)
+  lines(coefsurx*xplot+x, yplot, col = "red", lwd = 2)
+  segments(x, my - 2*sy, x, my + 2*sy, lty = 3, col = "blue")
+}
+sapply(1:7, tracenormale)
+
+```
+
 
 
 
@@ -568,7 +633,9 @@ of the drcfit() function as a first argument,
 (or see ?bmdcalc for details on this function).
 
 For the **recommended BMD-zSD**,the argument $z$, by default at 1, is used to define the **BMD-zSD** as the dose at which the response is reaching the **BMR (benchmark response)** defined as
-$$BMR = y_0 \pm z \times SD$$ with $y_0$ the level at the control given by the dose-response fitted model and $SD$ the residual standard deviation of the dose-response fitted model. 
+$$BMR = y_0 \pm z \times SD$$ with $y_0$ the level at the control given by the dose-response fitted model and $SD$ 
+the residual standard deviation of the dose-response fitted model
+(also named $\sigma$ in the [previous mathematical definition of the Gaussian model](#leastsquares)). 
 
 For the less recommended BMD-xfold, the argument $x$, 
 by default at 10 (for 10%), is used to define the BMD-xfold as the dose at which the response is reaching the BMR defined as $BMR = y_0 \pm \frac{x}{100} \times y_0$.
@@ -1119,7 +1186,7 @@ the BMD plot with color gradient can be split here by KEGG pathway class
 and molecular level, here on a selection of pathway classes present at both molecular levels.(See ?bmdplotwithgradient for more options).
 Especially as **metabolomic data and transcriptomic data were not imported in DRomics in the same scale** 
 (in log2 for transcriptomics and log10 for metabolomics), 
-the **use of the scaling option of each dose-reponse curve is interesting here**. 
+the **use of the scaling option of each dose-response curve is interesting here**. 
 This option focuses on the shape of responses, skipping the amplitude of changes to the control. Below is an example of BMD plot with color gradient on
 a manual selection of groups.
 
