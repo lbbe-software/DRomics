@@ -82,7 +82,7 @@ targetplot <- function(items, f, add.fit = TRUE, dose_log_transfo = FALSE)
 
   g <- ggplot(dataobs, aes_(x = quote(dose), y = quote(signal))) + geom_point(shape = 1) +
     facet_wrap(~ id, scales = "free_y") +
-    geom_point(data = dataobsmean, shape = 19)
+    geom_point(data = dataobsmean, shape = 19) + theme_classic()
   
   if (add.fit) 
   {

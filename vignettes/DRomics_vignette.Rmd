@@ -494,7 +494,7 @@ default information criterion used in DRomics versions
 in order to **prevent the overfitting** that may occur with dose-response designs
 with a small number of data points, as recommended
 and now classically done in regression 
-(Hurvich and Tsai, 1989; Burnham and Anderson DR, 2004).
+([Hurvich and Tsai, 1989](https://www.stat.berkeley.edu/~binyu/summer08/Hurvich.AICc.pdf); Burnham and Anderson DR, 2004).
 
 As the call to the drcfit() function may take time when the number of pre-selected items is large, 
 by default a progressbar is provided.
@@ -545,7 +545,9 @@ targetplot(targetitems, f = f)
 
 **To check the assumption of the Gaussian error model** (see the [section on least squares](#leastsquares)), 
 two types of residual plots can
-be used ("dose_residuals" or "fitted_residuals"). The residual plots for
+be used, `"dose_residuals"`  for plot of residuals against the observed doses/concentrations, 
+or `"fitted_residuals"` for plot of residuals
+against fitted values of the modeled signal. The residual plots for
 all items may also be
 saved in a pdf file using the plotfit2pdf() function (see ?drcfit).
 
@@ -558,36 +560,38 @@ plot(f, plot.type = "dose_residuals")
 
 The best fit model is chosen among the five following models describing the observed signal $y$ as a function of $x$ the dose (or concentration):
 
-* the **linear model**: $$y = d + bx$$ with **2 parameters**,  $b$ the slope and $d$ the mean signal at control. 
-* the **exponential model**: $$y = d + b(exp(\frac{x}{e})-1)$$ with **3 parameters**,
+* the **linear model**: $$y = d + b \times x$$ with **2 parameters**,  $b$ the slope and $d$ the mean signal at control. 
+* the **exponential model**: $$y = d + b \times \left(exp\left(\frac{x}{e}\right)-1\right)$$ with **3 parameters**,  
 $b$ a shape parameter, $d$ the mean signal at control, $e$ a shape parameter.
   + When $e>0$ the dose response curve - DRC - is increasing if
-$b>0$ and decreasing if $b<0$, with no asymptote for high doses.).
+$b>0$ and decreasing if $b<0$, with no asymptote for high doses.
   + When $e<0$ the DRC is increasing if
 $b<0$ and decreasing if $b>0$, with an asymptote at $d-b$ for high doses.
 * the **Hill model**: $$y = c + \frac{d-c}{1+(\frac{x}{e})^b}$$ with **4 parameters**,  
 $b$ ($>0$) a shape parameter, 
-$c$ the asymtotic signal for high doses, $d$ the mean signal at control, and $e$ the dose at the inflection point ($>0$).
-* the **Gauss-probit model**: $$y = fexp(-0.5(\frac{x-e}{b})^2)+d+(c-d)\Phi(\frac{x-e}{b})$$ 
-with **5 parameters**,
+$c$ the asymtotic signal for high doses, $d$ the mean signal at control, and $e$ ($>0$) 
+the dose at the inflection point of the sigmoid.
+* the **Gauss-probit model** built as the sum of a Gauss and a probit part sharing the same parameters as defined below:$$y = f \times exp\left(-0.5 \left(\frac{x-e}{b}\right)^2\right) +d+(c-d) \times \Phi\left(\frac{x-e}{b}\right)$$ 
+with **5 parameters**,  
 $b$ ($>0$) a shape parameter corresponding to the standard deviation
-of the Gaussian part, 
-$c$ the asymtotic signal for high dose,
+of the Gauss part of the model, 
+$c$ the asymtotic signal for high doses,
 $d$ the asymptotic signal on the left of the DRC (generally corresponding to a fictive negative dose),
-$e$ ($>0$) a shape parameter corresponding to the mean of the Gaussian part, and 
-$f$ the amplitude of the Gaussian part, which is U-shape if $f<0$ and bell-shape if $f>0$.
-$\Phi$ represents the cumulative distribution function (CDF) of the standard normal distribution.
-This model encompasses **two simplifed versions with 4 parameters**, one **monotonic** when $f=0$ and one with **symmetrical asymptotes** (when $c=d$).
-* the **log-Gauss-probit model**: $$y = fexp(-0.5(\frac{ln(x)-ln(e)}{b})^2)+d+(c-d)\Phi(\frac{ln(x)-ln(e)}{b})$$ 
-$\Phi$ representing the cumulative distribution function (CDF) of the standard normal distribution,
-with **4 or 5 parameters** among
+$e$ ($>0$) a shape parameter corresponding to the mean of the Gauss part of the model, and 
+$f$ the amplitude and sign of the Gauss part of the model (the model is U-shaped if $f<0$ and bell-shaped if $f<0$).    
+$\Phi$ represents the cumulative distribution function (CDF) of the standard Gauss (also named normal or Gaussian) distribution.  
+This model encompasses **two simplifed versions with 4 parameters**, one **monotonic** (for $f=0$) and one with **symmetrical asymptotes** (for $c=d$).
+* the **log-Gauss-probit model**, a variant of the previous one with on the log scale of the dose: $$y = f \times exp\left(-0.5\left(\frac{ln(x)-ln(e)}{b}\right)^2\right)
++d+(c-d) \times \Phi\left(\frac{ln(x)-ln(e)}{b}\right)$$  
+with **5 parameters**,      
 $b$ ($>0$) a shape parameter corresponding to the standard deviation
-of the Gaussian part, 
+of the Gauss part of the model, 
 $c$ the asymtotic signal for high dose,
 $d$ the asymptotic signal on the left of the DRC, reached at the control (for $ln(x) = ln(0) = -\infty$),
-$ln(e)$ ($>0$) a shape parameter corresponding to the mean of the Gaussian part, and 
-$f$ the amplitude of the Gaussian part, which is U-shape if $f<0$ and bell-shape if $f>0$.
-As the previous one, this model encompasses **two simplifed versions with 4 parameters**, one **monotonic** when $f=0$ and one with **symmetrical asymptotes** (when $c=d$).
+$ln(e)$ ($>0$) a shape parameter corresponding to the mean of the Gauss part of the model, and 
+$f$ the amplitude and sign of the Gauss part of the model (the model is U-shaped if $f<0$ and bell-shaped if $f<0$).  
+$\Phi$ represents the cumulative distribution function (CDF) of the standard Gauss distribution.  
+As the previous one, this model encompasses **two simplifed versions with 4 parameters**, one **monotonic** (for $f=0$) and one with **symmetrical asymptotes** (for $c=d$).
 
 This family of five models was built to be able to describe a wide range of monotonic and biphasic
 DRC. In the following plot were represented typologies of curves that can be described using those models, depending of the definition of their parameters.
@@ -644,17 +648,17 @@ legend("topright", legend = "log-Gauss-probit, c < d, f < 0", bty = "n")
 
 It is important when using DRomics to have in mind that the dose-response models are fitted
 using the **least squares regression**, assuming an **additive Gaussian (normal) error model** for the observed signal.
-It is why the scale under which you should import your data is very important, as a log (or pseudo-log) transformation
-is necessary to meet the use conditions of the model for some types of data.
+It is why the scale under which you should import your data is very important: a log (or pseudo-log) transformation
+may be necessary to meet the use conditions of the model for some types of data.  
 Let us recall the formulation of the Gaussian model defining the signal (after transformation if needed) $y$
 as a function of the dose (or concentration) $x$, $f$ being one of the five models previously described,
 and $\theta$ the vector of its parameters (of length 2 to 5).
 
 $$y = f(x, \theta) + \epsilon$$ with $$\epsilon \sim N(0, \sigma)$$ 
-$N(0, \sigma)$ representing the Gaussian (normal) distribution of standard deviation (SD) $\sigma$.
+$N(0, \sigma)$ representing the Gaussian (normal) distribution of mean $0$ and standard deviation (SD) $\sigma$.
 
-In this model, the residual standard deviation $\sigma$ is assumed constant. It is the classical "homoscedasticity" hypothesis (see the following figure for an illustration). The examination of residuals (see the section on [plot of residuals](#residuals)) is a good way to check
-that the error model is not strongly violated.
+In this model, the **residual standard deviation $\sigma$ is assumed constant**. It is the classical "homoscedasticity" hypothesis (see the following figure for an illustration). The examination of residuals (see the section on [plot of residuals](#residuals)) is a good way to check
+that the error model is not strongly violated on your data.
 
 
 ```{r, echo = FALSE,  fig.height = 4, fig.width = 7, results = "hide", out.width="80%"}
@@ -686,7 +690,7 @@ tracenormale <- function(indice)
   my <- ytheou[indice]
   yplot <- seq(my - 2*sy, my+2*sy, length.out = npts)
   xplot <- dnorm(yplot, mean = my, sd = sy)
-  lines(coefsurx*xplot+x, yplot, col = "red", lwd = 2)
+  lines(coefsurx*xplot+x, yplot, col = "blue", lwd = 2)
   segments(x, my - 2*sy, x, my + 2*sy, lty = 3, col = "blue")
 }
 sapply(1:7, tracenormale)
@@ -700,11 +704,17 @@ sapply(1:7, tracenormale)
 
 ### Calculation of BMD
 
-The **two types of benchmark doses (BMD-zSD and BMD-xfold) proposed by the EFSA (2017) are systematically calculated**
-for each fitted dose-response curve using the function bmdcalc() with the output
+The **two types of benchmark doses (BMD-zSD and BMD-xfold) proposed by the [EFSA (2017)](https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2017.4658) are systematically calculated**
+for each fitted dose-response curve using the function **bmdcalc()** with the output
 of the drcfit() function as a first argument, 
 **but we strongly recommend the use of the first one (BMD-zSD)** for reasons explained in [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) 
-(or see ?bmdcalc for details on this function).
+(see ?bmdcalc for details on this function).
+
+
+```{r}
+(r <- bmdcalc(f, z = 1, x = 10))
+```
+
 
 For the **recommended BMD-zSD**,the argument $z$, by default at 1, is used to define the **BMD-zSD** as the dose at which the response is reaching the **BMR (benchmark response)** defined as
 $$BMR = y_0 \pm z \times SD$$ with $y_0$ the level at the control given by the dose-response fitted model and $SD$ 
@@ -712,15 +722,18 @@ the residual standard deviation of the dose-response fitted model
 (also named $\sigma$ in the [previous mathematical definition of the Gaussian model](#leastsquares)). 
 
 For the less recommended BMD-xfold, the argument $x$, 
-by default at 10 (for 10%), is used to define the BMD-xfold as the dose at which the response is reaching the BMR defined as $BMR = y_0 \pm \frac{x}{100} \times y_0$.
-
-```{r}
-(r <- bmdcalc(f, z = 1, x = 10))
-```
+by default at 10 (for 10%), is used to define the BMD-xfold as the dose at which the response is reaching the BMR defined as $BMR = y_0 \pm \frac{x}{100} \times y_0$. So this second BMD 
+version does not take into account the residual standard deviation, and is strongly dependent
+of the magnitude of $y_0$, which may be a problem if the signal at the control is close to 0, 
+which is not rare on omics data that are classically handled on log scale.
 
 In the following you can see the first lines of the output data frame 
 of the function bmdcalc()
-on our example. An extensive description of the outputs of the complete DRomics workflow is provided in the 
+on our example. BMD values are coded `NA` when the BMR stands within the 
+range of response values defined by the model but outside the range of tested doses,
+and `NaN` when the BMR stands outside 
+the range of response values defined by the model due to asymptotes.  
+An extensive description of the outputs of the complete DRomics workflow is provided in the 
 [last section of the main workflow](#outputs). 
 You can also see ?bmdcalc for a complete description of the columns of the output data frame.
 
@@ -740,7 +753,7 @@ plot(r, BMDtype = "zSD", plottype = "ecdf")
 Different alternative plots are proposed (see ?bmdcalc for details)
 that can be obtained using the argument plottype to choose the type of plot 
 ("ecdf", "hist" or "density") and the argument by to split the
-plot by "trend", "model" or "typology". 
+plot for example by "trend". 
 
 <!-- Below is an example -->
 <!-- of a density plot of BMD-zSD split by trend of dose-response -->
@@ -757,18 +770,11 @@ On a BMD ECDF plot one can add a **color gradient for each item** coding for
 the **intensity of the signal** (after shift of the control signal at 0) 
 as a function of the dose (see ?bmdplotwithgradient for details
 and an example below).
-
-<!-- ```{r} -->
-<!-- bmdplotwithgradient(r$res, BMDtype = "zSD", -->
-<!--                     facetby = "trend",  -->
-<!--                     shapeby = "model") + labs(shape = "model") -->
-<!-- ``` -->
-
 It is generally necessary to use the argument line.size to manually
 adjust the width of lines in that plot as the default value does not always give
 a satisfactory resut. It is also recommended (but not mandatory
-and it is note the default option) to scale the signal
-as below using the argument scaling if you want to focus on the 
+and it is not the default option for this argument) to scale the signal
+as below using the argument `scaling` if you want to focus on the 
 shape of the dose-reponse curves and not on the amplitude of the signal change.
 
 ```{r}
@@ -782,11 +788,11 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
 
 ### Calculation of confidence intervals on the BMDs by bootstrap {#bootstrap}
 
-Confidence intervals on BMD values can be calculated by bootstrap.
+**Confidence intervals on BMD values** can be calculated by **bootstrap**.
 As the call to this function may take much time, by default a progressbar is provided and some arguments can be used to specify parallel computing to
 accelerate the computation (see ?bmdboot for details).
 
-In the example below a small number of iterations was used just 
+In the example below, a small number of iterations was used just 
 to make this vignette quick to compile, but **the default value of the argument niter (1000) should be considered as a minimal value to obtain stable results**.
 
 ```{r}
@@ -804,7 +810,7 @@ An extensive description of the outputs of the complete DRomics workflow is prov
 head(b$res)
 ```
 
-The plot() function applied on the output the bmdboot() function
+The plot() function applied on the output of the bmdboot() function
 gives an ECDF plot of the chosen BMD with the confidence interval
 of each BMD (see ?bmdcalc for examples). By default BMDs with an infinite 
 confidence interval bound are not plotted.
@@ -817,20 +823,21 @@ confidence interval bound are not plotted.
 ### Plot of fitted curves with BMD values and confidence intervals
 
 It is possible to add the output of bmdcalc() (or of bmdboot())
-in the argument BMDoutput of the plot() function of drcfit() to add BMD values
+in the argument BMDoutput of the plot() function of drcfit(), in order to add BMD values
 (when defined) as a 
-**vertical line on each fitted curve** and **bounds of the confidence intervals** 
+**vertical line on each fitted curve**, and **bounds of the confidence intervals** 
 (when successfully calculated) as **two dashed lines**. 
 **Horizontal dotted lines corresponding to the two BMR potential values will be also added**. 
 See an example below.
-All the fitted curves may also be
-saved in the same way in a pdf file using the plotfit2pdf() function (see ?drcfit).
 
 ```{r}
-plot(f, BMDoutput = b) 
 # If you do not want to add the confidence intervals just replace b
 # the output of bmdboot() by r the output of bmdcalc()
+plot(f, BMDoutput = b) 
 ```
+
+All the fitted curves may also be
+saved in the same way in a pdf file using the plotfit2pdf() function (see ?drcfit).
 
 ### Description of the outputs of the complete DRomics workflow {#outputs}
 
@@ -891,43 +898,43 @@ on BMD values (in `r$res` with `r` is the output of bmdcalc()).
 
 # Help for biological interpretation of DRomics outputs {#interpreter}
 
-This section illustrates functions of DRomics that are meant to help the biological interpretation of outputs. The idea is to **augment the output data frame with a new column bringing biological information** such as provided by **biological annotation** of the items (e.g. kegg pathway classes or GO terms) then to **use this information to organize the visualisation** of the DRomics output.
+This section illustrates functions that were developed in DRomics to help the biological interpretation of outputs. The idea is to **augment the output data frame with a new column bringing biological information**, generally provided by **biological annotation** of the items (e.g. kegg pathway classes or GO terms), and then to **use this information to organize the visualisation** of the DRomics output.
 
 The shiny application 
-DRomicsInterpreter-shiny can be used to implement all the steps described in this vignette without coding them in R. But in any case, the biological annotation of items selected in the first DRomics workflow must be done outside DRomics using a database such as the Gene Ontology (GO) of the kegg databases.
+DRomicsInterpreter-shiny can be used to implement all the steps described in this vignette without coding them in R. But in any case, **the biological annotation of items selected in the first DRomics workflow must be previously done outside DRomics using a database such as the Gene Ontology (GO) of the kegg databases.**
 
-In this section we will **first present a simple example from a metabolomic dataset** and then **an example with two molecular levels using metabolomic and transcriptomic data** from the same experiment, to illustrate how to **compare the responses at different experimental levels** (in this example different molecular levels). The different experimental levels could also be different time points, 
+In this section we will **first present [a simple example from a metabolomic dataset](#monolevel)** and then **[an example with two molecular levels] (#multilevels) using metabolomic and transcriptomic data** from the same experiment, to illustrate how to **compare the responses at different experimental levels** (in this example different molecular levels). The different experimental levels could also be different time points, 
 different experimental settings, different species, ...
 
-## Interpretation of DRomics results in a simple case with only one data set obtained in one experimental condition
+## Interpretation of DRomics results in a simple case with only one data set obtained in one experimental condition {#monolevel}
 
 ### Augmentation of the data frame of DRomics results with biological annotation {#augmentation}
 
-This augmentation is not done using DRomics functions, but with relevant R functions such as merge(). 
-Nevertheless it is possible to perform it without R coding within the **shiny application DRomicsInterpreter-shiny**. 
+This augmentation is not done using DRomics functions, but using simple R functions such as merge(). 
+Nevertheless it is possible to perform this augmentation without coding in R, using the **shiny application DRomicsInterpreter-shiny**. 
 Report to the [introduction section](#introduction) to see how to launch the shiny application.
 
-An example of how to proceed:
+Here is an example of how to proceed:
 
-1. **Import the data frame with DRomics results to be used: the output `$res` of bmdcalc() or bmdboot() functions from Step 4 of the main DRomics workflow.**
+1. **Import the data frame with DRomics results: the output `$res` of bmdcalc() or bmdboot() functions from Step 4 of the main DRomics workflow.**
 
-(This step will not be necessary if previous steps are done directly in R using the DRomics package as described previously in this vignette
-(see the [section describing this output data frame](#outputs)). We did it to take a real example that took a long time to run but from which results are stored in the package.)
+This step is not be necessary if previous steps were done directly in R, using the DRomics package, as described previously in this vignette
+(see the [section describing this output data frame](#outputs)). 
+We did it in this example, in order to take a real example that took a long time to completely run, but from which results are stored in the package.
 
 ```{r}
-# code to import the file for this example in our package
+# code to import the file for this example stored in our package
 resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package = "DRomics")
 res <- read.table(resfilename, header = TRUE, stringsAsFactors = TRUE)
 
-# to see the first lines of this file
+# to see the first lines of this data frame
 head(res)
 ```
 
-2. **Import the data frame with biological annotation (or any other descriptor/category you want to use, here KEGG pathway classes) of each item present in the 'res' file.**
+2. **Import the data frame with biological annotation** (or any other descriptor/category you want to use), here KEGG pathway classes of each item present in the 'res' file.
 
-Examples are embedded in the DRomics package, but be cautious, generally this file must be produced by the user. Each item may have more than one annotation (*i.e.* more than one line). If you are in a case where the biological annotation was done before the dose-response modeling, 
-so **if items were annotated whatever they were selected by the DRomics workflow or not**, 
-you might **previously reduce the dimension of your annotation file by selecting only the items selected by the DRomics workflow**. 
+Examples are embedded in the DRomics package, but be cautious, generally this file must be produced by the user. Each item may have more than one annotation (*i.e.* more than one line). If **items were annotated whatever they were selected by the DRomics workflow or not**, 
+you might **previously reduce the dimension of your annotation file by selecting only the items present in the DRomics output**. 
 It is not mandatory but recommended if your annotation file is of high dimension.
 
 ```{r}
@@ -936,17 +943,20 @@ annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", package = "
 # annotfilename <- "yourchosenname.txt" # for a local file
 annot <- read.table(annotfilename, header = TRUE, stringsAsFactors = TRUE)
 
-# to see the first lines of this file
+# to see the first lines of this data frame
 head(annot)
 ```
 
 3. **Merging of both previous data frames in order to obtain a so-called 'extendedres' data frame gathering, for each item, metrics derived from the DRomics workflow and biological annotation.**
 
 Arguments by.x and by.y of the merge() function 
-indicate the column name in res and annot data frames, respectively, that must be used for the merging.  
+indicate the column name in res and annot data frames respectively, that must be used for the merging.  
 
 ```{r}
+# Merging
 extendedres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
+
+# to see the first lines of the merged data frame
 head(extendedres)
 ```
 
@@ -954,7 +964,7 @@ head(extendedres)
 
 #### BMD ECDF plots split by group defined from biological annotation {#bmdplot}
 
-Using the function bmdplot() and its argument facetby, the BMD ECDF plot can be split
+Using the function bmdplot() and its argument `facetby`, the BMD ECDF plot can be split
 by group (here by KEGG pathway class). 
 Confidence intervals can be added on this plot and color coding for trend in this example
 (See ?bmdplot for more options).
@@ -966,7 +976,7 @@ bmdplot(extendedres, BMDtype = "zSD", add.CI = TRUE,
 ```
 
 The function ecdfplotwithCI() can also be used as an alternative as below to provide the same plot
-differing just by the coloring of intervals only. (See ?ecdfplotwithCI for more options.)
+differing by the coloring of intervals only. (See ?ecdfplotwithCI for more options.)
 
 ```{r, eval = FALSE}
 ecdfplotwithCI(variable = extendedres$BMD.zSD, 
@@ -976,7 +986,7 @@ ecdfplotwithCI(variable = extendedres$BMD.zSD,
                CI.col = extendedres$trend) + labs(col = "trend")
 ```
 
-Using the function bmdplotwithgradient() and its argument facetby, the BMD plot with color gradient can be split here by KEGG pathway class. (See ?bmdplotwithgradient for more options).
+Using the function bmdplotwithgradient() and its argument `facetby`, the BMD plot with color gradient can be split here by KEGG pathway class. (See ?bmdplotwithgradient for more options).
 
 ```{r}
 bmdplotwithgradient(extendedres, BMDtype = "zSD",
@@ -985,11 +995,12 @@ bmdplotwithgradient(extendedres, BMDtype = "zSD",
                     shapeby = "trend") + labs(shape = "trend")
 ```
 
-One can focus on a group of interest, for instance the group "Lipid metabolism", and add the labels of items
-using argument add.label as below to display item identifiers instead of points. 
+One can **focus on a group of interest**, for instance the group "Lipid metabolism", and add the **labels of items**
+using argument `add.label` as below to display item identifiers instead of points. 
 In that case in can be useful 
 to control the limits of the color gradient and the limits
-on the x-axis in order to use the same x-scale and signal-scale,
+on the x-axis in order to use the same x-scale and signal-scale as in the global
+previous plot,
 as in the following example (see ?bmdplotwithgradient for details).
 
 ```{r}
@@ -1008,9 +1019,10 @@ bmdplotwithgradient(extendedres_lipid, BMDtype = "zSD",
 
 #### Sensitivity plot of biological groups {#sensitivityplot}
 
-It is also possible to show a **summary of BMD values in each pathway/category** as a **chosen summary** 
-(argument BMDsummary which can be **"first.quartile", "median" or "median.and.IQR"** for
-medians with the interquartile range as an interval) using the function sensitivityplot(). 
+It is also possible to visualize the sensitivity of **each biological group** 
+using the sensitivityplot() function, choosing a **BMD summary** 
+with the argument `BMDsummary` fixed at `"first.quartile"`, `"median"` or `"median.and.IQR"` (for
+medians with the interquartile range as an interval). 
 Moreover, this function will provide **information on the number of items** involved in each pathway/category
 (coding for the size of the points). (See ?sensitivityplot for more options).
 
@@ -1025,7 +1037,7 @@ sensitivityplot(extendedres, BMDtype = "zSD",
 #### Trend plot per biological group {#trendplot}
 
 It is possible to represent the **repartition of trends in each biological group**
-using function trendplot() (see ?trendplot for details).
+using the trendplot() function (see ?trendplot for details).
 
 ```{r}
 trendplot(extendedres, group = "path_class") 
@@ -1041,7 +1053,12 @@ in your dataset. Below is a code to plot the dose-response curves split by biolo
 # Plot of all the scaled dose-reponse curves split by path class
 curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100, line.size = 1,
            colorby = "trend", xmin = 0, xmax = 6.5) + labs(col = "trend")
+```
 
+It is also possible using this function to visualize the modeled respons of each item of
+one biological group, as below:
+
+```{r}
 # Plot of the unscaled dose-reponses for one chosen group, split by metabolite
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
@@ -1050,12 +1067,16 @@ curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
 ```
 
 
-## Interpretation of DRomics results taking into account an experimental level for example in a multi-omics approach  {#multilevels}
+## Comparison of DRomics results obtained at different experimental levels, for example in a multi-omics approach  {#multilevels}
 
-This section illustrates functions of DRomics that are meant to help the interpretation of outputs by taking into account **different experimental levels (different molecular levels, different time points, different experimental settings, ...)**. The idea is to perform
+This section illustrates how to use DRomics functions to help the interpretation of outputs from 
+different data sets obtained at **different experimental levels (different molecular levels, different time points, different experimental settings, ...)**. The idea is 
+
+  + to perform
 the augmentation of the DRomics output data frame obtained at each experimental level ([as previously described for one level](#augmentation)),
-to bind the augmented data frames and add a column coding for the experimental level and to use this column
-to organize the visualisation of the DRomics output and so make possible the **comparison of the responses between each experimental levels**. 
+  + to bind the augmented data frames and add a column coding for the experimental level and 
+  + to use this column
+to organize the visualisation of the DRomics output and so make possible the **comparison of the responses between experimental levels**. 
 
 
 Below is used **an example corresponding to a multi-omics approach**, the experimental level corresponding to the molecular level, with a transcriptomic (microarray) and a metabolomic data set issued from the same experiment. 
@@ -1066,7 +1087,7 @@ Report to the [introduction section](#introduction) to see how to launch the shi
 
 ### Augmentation of the data frames of DRomics results with biological annotation
 
-Following the same steps as described before [for one level](#augmentation), below is an example of R code to import the DRomics results for microarray data, and to merge them with information on biological annotation.
+Following the same steps as described before [for one level](#augmentation), below is an example of R code to **import the DRomics results for microarray data**, and to **merge them with the data frame giving on biological annotation of selected items**.
 
 ```{r}
 # 1. Import the data frame with DRomics results to be used
@@ -1081,8 +1102,8 @@ contigannot <- read.table(contigannotfilename, header = TRUE, stringsAsFactors =
 
 # 3. Merging of both previous data frames   
 contigextendedres <- merge(x = contigres, y = contigannot, by.x = "id", by.y = "contig")
-# to see the structure of this data frame
-str(contigextendedres)
+# to see the first lines of the data frame
+head(contigextendedres)
 ```
 
 The [previouly created](#augmentation) metabolomics data frame (extended results with biological annotation) is renamed for the sake of homogeneity.
@@ -1092,19 +1113,21 @@ metabextendedres <- extendedres
 ```
 
 ### Binding of the data frames corresponding the results at each experimental level {#binding}
-The next step is the binding of data frames at the different levels (here
-transcriptomics and metabolomics data frames) by adding a variable (here named level) coding for the level (here a factor with two levels, metabolites and contigs).
+The next step is the **bind of the augmented data frames** of results obtained at the different levels (here
+transcriptomics and metabolomics data frames) and the **add of a variable** (here named level) **coding for the level** (here a factor with two levels, metabolites and contigs).
 
 ```{r}
 extendedres <- rbind(metabextendedres, contigextendedres)
 extendedres$explevel <- factor(c(rep("metabolites", nrow(metabextendedres)),
                               rep("contigs", nrow(contigextendedres))))
-str(extendedres)
+# to see the first lines of the data frame
+head(extendedres)
 ```
 
 ### Comparison of results obtained at the different experimental levels using basic R functions {#comparisonR}
 
-Below are examples of illustrations that can be used to compare the results obtained at several levels of biological organization using basic R functions
+Below are examples of illustrations that can be made using basic R functions
+to globally compare the results obtained at the different experimental levels, 
 for example to compute and plot frequencies of pathways by molecular levels as below.
 
 ```{r}
@@ -1118,7 +1141,7 @@ par(original.par)
 ```
 
 To do the same plot in proportions, just apply the function
-prop.table() to the table of frequencies t.pathways.
+prop.table() to the table of frequencies `t.pathways`.
 
 <!-- ### Proportions of pathways per molecular level -->
 
@@ -1193,7 +1216,7 @@ bmdplot(extendedres, BMDtype = "zSD",
 
 #### Plot of the trend repartition per group and experimental level
 
-Using the function trendplot() and its arguments facetby it is possible 
+Using the function trendplot() and its arguments `facetby` it is possible 
 to show the repartition of trends of responses in each biological group 
 for all experimental levels.
 
@@ -1208,7 +1231,7 @@ trendplot(extendedres, group = "path_class", facetby = "explevel")
 
 #### Sensitivity plot per group and experimental level
 
-Using the function sensitivityplot() and its arguments group and colorby, 
+Using the function sensitivityplot() and its arguments `group` and `colorby`, 
 it is possible to show a summary of BMD values with size of points coding for the number
 of items in each group as in the example, where the 25th quartiles of BMD values are represented per KEGG pathway class for each molecular level. (See ?sensitivityplot for more options).
 
@@ -1227,14 +1250,15 @@ to **select groups on which to focus**, to **enhance the visibility of plots**.
 This can be done for example using results of enrichment procedures in the case 
 where enrichment is possible (e.g. for sequenced organisms). One could also
 use selection criteria based **on the number of items in each biological group** 
-(argument nitems, to select the **most represented groups**) and/or **on the BMD summary value** 
-(argument BMDmax, to select the **most sensitive groups**). 
-The selectgroups() function can be used for this purpose as in the example below (see ?selectgroups for details).
+(argument `nitems`, to select the **most represented groups**, 
+represented by more than `nitems`) and/or **on the BMD summary value** 
+(argument `BMDmax`, to select the **most sensitive groups**, so those below `BMDmax`). 
+The selectgroups() function can be used for this purpose as in the example below (see ?selectgroups for details).  
 When using this function you may optionally choose to keep the results of all
 the experimental levels (for comparison purpose)
 as soon as the criteria are met for the group
 for at least one experimental level (as in the example below fixing the argument
-keepallexplev at TRUE).
+`keepallexplev` at `TRUE`).
 
 ```{r}
 selectedres <- selectgroups(extendedres, 
@@ -1255,14 +1279,9 @@ bmdplot(selectedres, BMDtype = "zSD", add.CI = TRUE,
 
 #### BMD ECDF plot with color gradient split by group and experimental level
 
-Using the function bmdplotwithgradient() and its arguments facetby and facetby2, 
-the BMD plot with color gradient can be split here by KEGG pathway class
-and molecular level, here on a selection of pathway classes present at both molecular levels.(See ?bmdplotwithgradient for more options).
-Especially as **metabolomic data and transcriptomic data were not imported in DRomics in the same scale** 
-(in log2 for transcriptomics and log10 for metabolomics), 
-the **use of the scaling option of each dose-response curve is interesting here**. 
-This option focuses on the shape of responses, skipping the amplitude of changes to the control. Below is an example of BMD plot with color gradient on
-a manual selection of groups.
+Using the function bmdplotwithgradient() and its arguments `facetby` and `facetby2`, 
+the BMD plot with color gradient can be split here by group and experimental level,
+as on the example below on a manual selection of pathway classes present at both molecular levels.(See ?bmdplotwithgradient for more options).
 
 ```{r}
 # Manual selection of groups on which to focus
@@ -1275,13 +1294,19 @@ bmdplotwithgradient(selectedres2, BMDtype = "zSD", scaling = TRUE,
                facetby = "path_class", facetby2 = "explevel")
 ```
 
+Especially as **metabolomic data and transcriptomic data were not imported in DRomics in the same scale** 
+(in log2 for transcriptomics and log10 for metabolomics), 
+the **use of the scaling option of each dose-response curve is interesting here**. 
+This option focuses on the shape of responses, skipping the amplitude of changes to the control.
+
 
 #### Plot of the dose-response curves for a selection of groups
 
-Using the function curvesplot(), specific dose-response curves can be shown. In this example, first only results related to the "lipid metabolism" pathway class are kept. Then, the plot is split by molecular level (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options). The scaling of the curves 
-used in the second plot of the following example can be interesting to focus on the 
-shapes of those curves, skipping the amplitude of the changes from the control.
-This helps to evaluate the homogeneity of the shapes of the responses within each group.
+Using the function curvesplot(), specific dose-response curves can be explored. 
+In the following example, only results related to the "lipid metabolism" pathway class are explored, using the argument `facetby` to split by experimental level. 
+In the second example, the plot is split by biological group using the argument `facetby`
+and by
+experimental level using the argument `facetby2` . (See ?curvesplot for more options). 
 
 
 ```{r}
@@ -1299,6 +1324,15 @@ curvesplot(selectedres2, scaling = TRUE,
            xmin = 0, xmax = 6.5) + labs(col = "DR_trend")
 ```
 
+The scaling of the curves only used 
+in the second plot can be interesting to focus on the 
+shapes of those curves, skipping the amplitude of the changes from the control.
+This helps to evaluate the homogeneity of the shapes of the responses within each group.
+It may for example interesting to observe in this example, that some transcriptomics responses (contigs)
+are gathering the same shape (when we use the scaling option) just differing by their sign (increasing / decreasing, or U-shape/bell-shape), which does not clearly appear when
+dose-response curves are not scaled (as in the first plot).
+
+
 
 # References 
 
@@ -1306,9 +1340,9 @@ curvesplot(selectedres2, scaling = TRUE,
 
 + EFSA Scientific Committee, Hardy A, Benford D, Halldorsson T, Jeger MJ, Knutsen KH, ...
 & Schlatter JR  (2017). Update: use of the benchmark dose approach in risk assessment.
-EFSA Journal, 15(1), e04658.
+EFSA Journal, 15(1), e04658.[https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2017.4658](https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2017.4658)
 
-+ Hurvich, CM, Tsai, CL (1989). Regression and time series model selection in small samples. Biometrika, 76(2), 297-307.
++ Hurvich, CM, Tsai, CL (1989). Regression and time series model selection in small samples. Biometrika, 76(2), 297-307.[https://www.stat.berkeley.edu/~binyu/summer08/Hurvich.AICc.pdf](https://www.stat.berkeley.edu/~binyu/summer08/Hurvich.AICc.pdf)
 
 + Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics : a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental Science & Technology. [https://pubs.acs.org/doi/10.1021/acs.est.8b04752](https://pubs.acs.org/doi/10.1021/acs.est.8b04752).
 You can also find this article at : [https://hal.archives-ouvertes.fr/hal-02309919](https://hal.archives-ouvertes.fr/hal-02309919)
