@@ -40,46 +40,49 @@ DRomics is a freely available on-line tool for dose-response (or concentration-r
 After a first step which consists in **importing**, **checking** and if needed **normalizing/transforming** the data ([step 1](#step1)), the aim of the proposed workflow is to **select monotonic and/or biphasic significantly responsive items** (e.g. probes, contigs, metabolites) ([step 2](#step2)), to **choose the best-fit model** among a predefined family of monotonic and biphasic models to describe the response of each selected item ([step 3](#step3)), and to **derive a benchmark dose** or concentration from each fitted curve ([step 4](#step4)). Those steps can be performed in R using DRomics functions, or using the **shiny application named DRomics-shiny**.
 
 In the available version, DRomics supports **single-channel microarray data** (in log2 scale), **RNAseq data** (in raw counts) and
-other **continuous omics data** such as metabolomics or proteomics (in log scale). In order to link responses across biological levels based on a common method, DRomics also handles **apical data** as long as they are **continuous and follow a Gaussian (normal) distribution** for each dose or concentration, with a **constant standard error**.
+other **continuous omics data** such as metabolomics or proteomics (in log scale). In order to link responses across biological levels based on a common method, DRomics also handles **continuous apical data** as long as they meet the use conditions of **least squares regression** (homoscedastic Gaussian regression, see the [section on least squares](#leastsquares) for a reminder if needed).
 
-DRomics does not provide an annotation pipeline, but provides **functions to help the interpretation** of the workflow results in view of a **common biological annotation** (obtained outside of DRomics using databases such as KEGG or Gene Ontology). It enables a **multi-omics approach**, with the comparison of
-the response at the different levels of organization. It can also be used to **compare the response** at one organization level, but measured under **different experimental conditions** (e.g. different time points). 
+As built in the environmental risk assessment context where omics data are more often collected on non-sequenced species or species communities, DRomics does not provide an annotation pipeline. 
+The **annotation of items selected by DRomics** may be complex in this context, and **must be done outside DRomics** using databases such as KEGG or Gene Ontology.
+**DRomics functions** can then be used to help the interpretation of the workflow results in view of the **biological annotation**. It enables a **multi-omics approach**, with the comparison of
+the responses at the different levels of organization (in view of a common biological annotation). 
+It can also be used to **compare the responses** at one organization level, but measured under **different experimental conditions** (e.g. different time points). 
 This interpretation can be performed in R using DRomics functions, or using a **second shiny application DRomicsInterpreter-shiny**.
 
 This vignette is intended to help users to start using the DRomics package. It is complementary to the reference manual where you can find more details on
 each function of the package. The first part of this vignette ([Main workflow, 
 steps 1 to 4](#mainworkflow))
-could also help users of the first **Shiny application named DRomics-shiny**. 
+could also help users of the first **shiny application DRomics-shiny**. 
 The second part ([Help for biological interpretation of DRomics outputs](#interpreter))
-could also help users of the **second Shiny application named DRomicsInterpreter-shiny**.
+could also help users of the **second shiny application DRomicsInterpreter-shiny**.
 
-Both Shiny applications can be used locally in your R session after installation
-of the package and of some required Shiny tools (see below and on the DRomics
+Both shiny applications can be used locally in your R session after installation
+of the package and of some required shiny tools (see below and on the DRomics
 web page is you need some more help to install the package: [https://lbbe.univ-lyon1.fr/fr/dromics](https://lbbe.univ-lyon1.fr/fr/dromics))
 
 ```{r, eval = FALSE}
-# Installation of required Shiny packages
+# Installation of required shiny packages
 install.packages(c("shiny", "shinyBS", "shinycssloaders", "shinyjs", "shinyWidgets", "sortable"))
 
-# Launch of the first Shiny application DRomics-shiny 
+# Launch of the first shiny application DRomics-shiny 
 shiny::runApp(system.file("DRomics-shiny", package = "DRomics"))
 
-# Launch of the second Shiny application DRomicsInterpreter-shiny
+# Launch of the second shiny application DRomicsInterpreter-shiny
 shiny::runApp(system.file("DRomicsInterpreter-shiny", package = "DRomics"))
 ```
 
 If you do not want to install the package on your computer, you can also launch the 
-two Shiny applications from the Shiny server of our lab, respectively at [https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomics-shiny/](https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomics-shiny/)
+two shiny applications from the shiny server of our lab, respectively at [https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomics-shiny/](https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomics-shiny/)
 and [https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsInterpreter-shiny/](https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsInterpreter-shiny/).
 
 
 If you do not want
-to use R functions and prefer to use the Shiny applications, 
-locally on your computer or from our Shiny server, you can skip the pieces of code and focus on the explanations
-and on the outputs that are also given in the Shiny applications. And if one day 
+to use R functions and prefer to use the shiny applications, 
+locally on your computer or from our shiny server, you can skip the pieces of code and focus on the explanations
+and on the outputs that are also given in the shiny applications. And if one day 
 you want go further using the R functions, we recommend you to start
 from the whole R code corresponding to your analysis 
-that is provided on the last page of each of the two Shiny applications. 
+that is provided on the last page of each of the two shiny applications. 
 
 # Main workflow {#mainworkflow}
 
@@ -98,8 +101,9 @@ and the other columns give the responses of the item for each sample.  This file
 Different examples of .txt files formatted for the DRomics workflow
 are available in the package, such as the one named 
 "RNAseq_sample.txt". You can have a look of how the data are coded in this file using the
-following code. To use a local dataset formatted in the same way, such use a datafilename
-of type "yourchosenname.txt".
+following code. 
+**To use a local dataset formatted in the same way, such use a datafilename
+of type `"yourchosenname.txt"`.**
 
 
 ```{r}
@@ -129,8 +133,7 @@ head(Zhou_kidney_pce)
 
 If your data are already imported in R in a **different format as the one described above**,
 you can use the
-formatdata4DRomics() function to build an R object directly useable by the DRomics
-workflow**. 
+**formatdata4DRomics() function to build an R object directly useable by the DRomics workflow**. 
 formatdata4DRomics() needs two arguments in input:
 
 + the **matrix of the data** with **one row for each item** and **one column for each sample**,
@@ -155,8 +158,23 @@ nrow(data4DRomics)
 head(data4DRomics)
 ```
 
-**We recommend you to carefully look at the following sections to check that you use the good scale for you data, which depends on the type of measured signal 
-(counts of reads, fluorescence signal, ...).**
+<!-- ::: {#BECAREFUL1 style="color: red;"} -->
+<!-- **We recommend you to carefully look at the following sections to check that you use the good scale for you data, which depends on the type of measured signal  -->
+<!-- (counts of reads, fluorescence signal, ...).** -->
+<!-- ::: -->
+
+<!-- > Whatever the way you format your data, **we strongly recommend you to carefully look at the following sections** to **check that you use the good scale for you data**, which **depends on the type of measured signal ** -->
+<!-- (counts of reads, fluorescence signal, ...). -->
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+Whatever the way you format your data, **we strongly recommend you to carefully look at the following sections** to **check that you use the good scale for you data**, which **depends on the type of measured signal **
+(counts of reads, fluorescence signal, ...).
+
+</div>
 
 ### What types of data can be analyzed using DRomics ?  {#datatypes}
 
@@ -173,23 +191,18 @@ but also on continuous anchoring data.
 (except the first one coding for the doses or concentrations)
 **correspond to different endpoints that may correspond to different
 types of data** (e.g. biomass, length,..), but all are assumed continuous data
-compatible with a Gaussian (normal) error distribution (e.g. after logarithmic transformation) for the 
-selection and modeling steps.
+compatible with a Gaussian (normal) error model (after transformation
+if needed, e.g. logarithmic transformation) for the 
+selection and modeling steps (see the [section on least squares](#leastsquares) if you need a reminder
+on the is condition).
 
 **Three types of omics data** may be imported in DRomics using the following functions:
 
 + **RNAseqdata()** should be used to import **RNAseq as counts of reads** (for details look at the example with [RNAseq data](#RNAseqexample)),
 + **microarraydata()** should be used to import **single-channel microarray data in log2 scale** (for details look at the example with [microarray data](#microarrayexample)),
-+ **continuousomicdata()** should be used to import **other continuous omics data** such as metabolomics, proteomics,..., **in a scale that enables the use of a Gaussian error model** (for details look at the example with [metabolomic omics data](#metabolomicexample)) 
-in Steps [2](#step2) and [3](#step3).
++ **continuousomicdata()** should be used to import **other continuous omics data** such as metabolomics, proteomics,..., **in a scale that enables the use of a Gaussian error model** (for details look at the example with [metabolomic omics data](#metabolomicexample)).
 
-In Steps [1](#step1) and [2](#step2) **count data** are internally analysed using 
-functions of 
-the Bioconductor package [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) while continuous data 
-(**microarray data and other continuous omics data**) are internally analysed using functions
-of the Bioconductor package [limma](https://www.bioconductor.org/packages/release/bioc/html/limma.html). 
-
-It is also possible to import in DRomics **continuous anchoring data** measured at the apical level, 
+It is also possible to import in DRomics **continuous anchoring data** measured at the apical level,
 especially for **sake of comparison of benchmark doses** (see [Step 4](#step4) for definition of BMD) estimated **at different levels of organization** but using **the same metrics**. 
 Nevertheless, one should keep in mind that the DRomics workflow was optimized for an automatic analysis of 
 high throughput omics data (especially implying a selection and modeling steps on high-dimensional data)
@@ -197,21 +210,32 @@ and that
 **other tools may be better suited for the sole analysis of apical dose-response data**
 (for details look at the example with [continuous apical data](#apicalexample)). 
 
+In Steps 1 and 2 **count data** are internally analysed using 
+functions of 
+the Bioconductor package [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html),
+continuous omics data 
+(**microarray data and other continuous omics data**) are internally analysed using functions
+of the Bioconductor package [limma](https://www.bioconductor.org/packages/release/bioc/html/limma.html) and
+**continuous anchoring data** are internally analysed using the classical lm() function. 
+
+
 
 ##### An example with RNAseq data {#RNAseqexample}
+
+For RNAseq data, **imperatively imported in raw counts** (if your counts come from Kallisto 
+or Salmon put add the argument `round.counts = TRUE` in order to round them),
+you have to choose the transformation
+method used to stabilize the variance 
+("rlog" or "vst"). In the example below "vst" was used 
+to make this vignette quick to compile, 
+but **"rlog" is recommended and chosen by default even if more computer intensive than "vst" except when the number of samples is very large (> 30)** (as encountered for *in situ* data for example: see ?RNAseqdata and the [section dedicated to *in situ* data](#insitudata) for details on this point). 
+Whatever the chosen method, 
+**data are automatically normalized with respect to library size and transformed in log2 scale**.
 
 ```{r}
 RNAseqfilename <- system.file("extdata", "RNAseq_sample.txt", package = "DRomics")
 # RNAseqfilename <- "yourchosenname.txt" # for a local file
 ```
-
-For RNAseq data, **imperatively imported in raw counts**, you have to choose the transformation
-method used to stabilize the variance 
-("rlog" or "vst"). In the example below "vst" was used 
-to make this vignette quick to compile, 
-but **"rlog" is recommended and chosen by default even if more computer intensive than "vst" except when the number of samples is very large (> 30)** (as encountered for in situ data for example: see ?RNAseqdata and the [section dedicated to in situ data](#insitudata) for details on this point). 
-Whatever the chosen method, 
-data are automatically normalized with respect to library size and transformed in log2 scale.
 
 
 ```{r}
@@ -219,12 +243,15 @@ data are automatically normalized with respect to library size and transformed i
 plot(o.RNAseq, cex.main = 0.8, col = "green")
 ```
 
+The plot of the output shows the distribution of the signal on all the contigs/genes, for each sample, 
+before and after the normalization and transformation of data.
+
 ##### An example with microarray data {#microarrayexample}
 
 For single-channel microarray data, **imperatively imported in log
 scale** (classical and recommended log2 scale), you can choose between array 
 normalization methods ("cyclicloess", "quantile", "scale" or "none"). 
-In the example below "quantile" was used 
+In the example below, "quantile" was used 
 to make this vignette quick to compile, 
 but **"cyclicloess" is recommended and chosen by default even if more computer intensive than the others** 
 (see ?microarraydata for details).
@@ -239,88 +266,97 @@ microarrayfilename <- system.file("extdata", "transcripto_sample.txt", package =
 ```{r}
 (o.microarray <- microarraydata(microarrayfilename, norm.method = "quantile"))
 plot(o.microarray, cex.main = 0.8, col = "green")
-
 ```
 
+The plot of the output shows the distribution of the signal over all the probes, for each sample, 
+before and after the normalization of data.
+
 ##### An example with metabolomic data {#metabolomicexample}
+
+**Neither normalization nor transformation** is provided in the function continuousomicdata(). The **pre-treatment of metabolomic data must be done before importation of data**, and **data must be imported in log scale**, so that they can be directly modelled using a **Gaussian (normal) error model**. This strong hypothesis is required both for selection of items and for dose-reponse modeling (see the [section on least squares](#leastsquares) for a reminder if needed). In the context of a multi-omics approach we recommend the use of a log2 transformation, instead of the classical log10 for such data, so as to facilitate the comparison of
+results obtained with transcriptomics data generally handled in a log2 scale.
+
+For instance, a basic procedure for the pre-treatment of metabolomic data could follow the three steps described thereafter: i) removing of metabolites for which the proportion of missing data (non detected) across all the samples is too high (more than 20 to 50 percents according to your tolerance level); ii) retrieving of missing values data using half minimum method (i.e. half of the minimum value found for a metabolite across all samples); iii) log-transformation of values. If a scaling to the total intensity (normalization by sum of signals in each sample) or another normalization is necessary and pertinent, we recommend to do it before those three previously described steps.
 
 ```{r}
 metabolofilename <- system.file("extdata", "metabolo_sample.txt", package = "DRomics")
 # metabolofilename <- "yourchosenname.txt" # for a local file
 ```
 
-No normalization nor transformation is provided in the function continuousomicdata(). The **pre-treatment of metabolomic data must be done before importation of data**, and **data must be imported in log scale**, so that they can be directly modelled using a **Gaussian (normal) error model**. This strong hypothesis is required both for selection of items and for dose-reponse modeling. In the context of a multi-omics approach we recommend the use of a log2 transformation, instead of the classical log10 for such data, so as to facilitate the comparison of
-results obtained with transcriptomics data generally handled in a log2 scale.
-
-As an example, a basic procedure for the pre-treatment of metabolomic data could follow the three steps described thereafter: i) removing of metabolites for which the proportion of missing data (non detected) across all the samples is too high (more than 20 to 50 percents according to your tolerance level); ii) retrieving of missing values data using half minimum method (i.e. half of the minimum value found for a metabolite across all samples); iii) log-transformation of values. If a scaling to the total intensity (normalization by sum of signals in each sample) or another normalization is necessary and pertinent, we recommend to do it before those three previously described steps.
 
 ```{r}
 (o.metabolo <- continuousomicdata(metabolofilename))
 plot(o.metabolo, col = "green")
 ```
 
+The plot of the output shows the distribution of the signal over all the metabolites, for each sample.
+
 The deprecated metabolomicdata() function was renamed continuousomicdata() in the recent versions
 of the package (while keeping the first name available) 
 to **offer its use to other continuous omic data** such as **proteomics data** or **RT-qPCR data**. 
 As for metabolomic data, the **pre-treatment** of other continuous omic data must be done **before importation**, 
 and **data must be imported in a scale that enables the use of a 
-Gaussian error model**. This strong hypothesis is required both for selection of items and for dose-response modeling.
+Gaussian error model** as this strong hypothesis is required both for selection of items and for dose-response modeling.
 
 ##### An example with continuous anchoring apical data {#apicalexample}
+
+No transformation is provided in the function continuousanchoringdata(). **If needed the pre-treatment of data must be done before importation of data**, so that they can be directly modelled using a **Gaussian error model**. This strong hypothesis is required both for selection of responsive endpoints and for dose-reponse modeling (see the [section on least squares](#leastsquares) for a reminder if needed). 
+
 
 ```{r}
 anchoringfilename <- system.file("extdata", "apical_anchoring.txt", package = "DRomics")
 # anchoringfilename <- "yourchosenname.txt" # for a local file
 ```
 
-No transformation is provided in the function continuousanchoringdata(). **If needed the pre-treatment of data must be done before importation of data**, so that they can be directly modelled using a **Gaussian error model**. This strong hypothesis is required both for selection of responsive endpoints and for dose-reponse modeling. 
-
-For such data the plot() function provides a dose-response plot for each endpoint.
-In this example the argument backgrounddose is used to specify that doses below  or equal to 0.1
+In the following example the argument backgrounddose is used to specify that doses below  or equal to 0.1
 are considered as 0 in the DRomics workflow.
 Specifying this argument is necessary when there is no dose at 0 in the data (see [section
-on in situ data](#insitudata) for details on this point). 
+on *in situ* data](#insitudata) for details on this point). 
 
-```{r}
+```{r, fig.width = 7, fig.height = 3}
 (o.anchoring <- continuousanchoringdata(anchoringfilename, backgrounddose = 0.1))
 plot(o.anchoring)
 ```
 
+For such data the plot() function simply provides a dose-response plot for each endpoint.
 
 #### Handling of data collected through specific designs {#specificdesigns}
 
 The DRomics workflow was first developed for data collected through a typical
 dose-response experiment, with a reasonable number of tested doses (or concentrations - at least 4 in addition to the control and ideally 6 to 8)
-and a small number of replicates per dose. Recently we made some modifications in the package to make possible the use of designs with only 3 doses in addition to the control even if this type of design is not recommended for dose-response modeling.
+and a small number of replicates per dose. Recently we made some modifications in the package to **make possible the use of designs with only 3 doses in addition to the control even if this type of design is not recommended for dose-response modeling**.
 
-**We also extended our workflow to handle in situ (or observational) datasets**, 
+**We also extended our workflow to handle *in situ* (observational) data**, 
 for which there is **no replication, as the dose (or concentration) is not controlled**
 (see [an example with in situ data](#insitudata) for more details).
-It is also possible to handle **experimental data collected using a design with a batch effect** using
+
+It is also now possible to handle **experimental data collected using a design with a batch effect** using
 DRomics together with functions 
 from the Bioconductor package [sva](https://bioconductor.org/packages/release/bioc/html/sva.html) 
-to correct for this batch effect before selection and modeling steps.  We also developed the PCAplot()
-function to help visualizing this batch effect and the impact of the **batch effect correction (BEC)** on data
+to correct for this batch effect before selection and modeling steps.  We also developed the 
+**PCAplot() function to help visualizing this batch effect** and the impact of the **batch effect correction (BEC)** on data
 (see [an example with RNAseq data from an experiment with a batch effect](#batcheffect) for more details 
 on how to handle such a case
-and see ?PCAplot for details on this specific function that could also be used to identify potential outlier samples).
+and see ?PCAplot for details on this specific function **that could also be used to identify potential outlier samples**).
 
-##### An example with in situ (observational) RNAseq data {#insitudata}
+##### An example with *in situ* (observational) RNAseq data {#insitudata}
 
-One of the problem that may occur in particular with in situ data, is the absence of real
+One of the problem that may occur in particular with *in situ* data, is the absence of real
 control samples, corresponding to a strictly null exposure dose or concentration.
 **To prevent an hazardous calculation of the BMD (see [Step 4](#step4) for definition of BMD) by extrapolation in such a case, 
 one should use the argument backgrounddose to define the maximal measured dose 
 that can be considered as a negligible dose.**
 All doses below  or equal to the value given in backgrounddose will be fixed at 0, 
-so as to be considered at the background level of exposition. 
+so as to be considered at the **background level of exposition**. 
 
-For in situ data (and more generally for data with a very large number of samples),
-the use of the rlog transformation in RNAseqdata() is not recommended, both for speed
-reason and because you are more likely to encounter a problem with the rlog transformation in 
-case of outliers in such a case (see  [https://support.bioconductor.org/p/105334/](https://support.bioconductor.org/p/105334/)
-for an explanation of the author of [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) and just force the transfo.method to 
-"rlog" in the following example to see an example of problems with outliers).
+For *in situ* data (and more generally for data with a very large number of samples),
+the **use of the rlog transformation in RNAseqdata() is not recommended**, both for speed
+reason and because you are **more likely to encounter a problem with the rlog transformation in 
+case of outliers** in such a case (see  [https://support.bioconductor.org/p/105334/](https://support.bioconductor.org/p/105334/)
+for an explanation of the author of [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) 
+and if you want to see an example of problems that may appear with outliers in that case, 
+just force the `transfo.method` to 
+`"rlog"` in the following example).
 
 ```{r}
 datafilename <- system.file("extdata", "insitu_RNAseq_sample.txt", package="DRomics")
@@ -330,55 +366,93 @@ datafilename <- system.file("extdata", "insitu_RNAseq_sample.txt", package="DRom
 plot(o.insitu)
 ```
 
+The plot of the output shows the distribution of the signal on all the contigs, for each sample 
+(here the box plots are stuck to each other due to the large number of samples), 
+before and after the normalization and transformation of data.
+
+
 ##### An example with RNAseq data from an experiment with a batch effect {#batcheffect}
 
-When omics data are collected through a design with a known batch effect, 
+When omics data are collected through a **design with a known potential batch effect**, 
 the **DRomics function PCAplot()** can be used as in the example below to 
-**visualize the impact of this batch effect on the data**, 
-and **functions from specific packages** can be used to **correct for the batch effect**.
+**visualize the impact of this batch effect on the data**. 
+If it seems necessary, **functions from specific packages** can then 
+be used to perform **batch effect correction (BEC)**.
 We recommend the use of functions **ComBat()** and **ComBat_seq()** from the Bioconductor
-**sva** package for this purpose, respectively for **microarray** 
-(or other continuous omic data) and **RNAseq data** (as **sva** is a Bioconductor package 
-it must be installed in the same as **DESeq2** and **limma** - if needed look at the DRomics
-web page to get the good instruction: 
+**[sva](https://bioconductor.org/packages/release/bioc/html/sva.html)** package for this purpose, respectively for **microarray** 
+(or other continuous omic data) and **RNAseq data**.
+
+As **[sva](https://bioconductor.org/packages/release/bioc/html/sva.html)** is a Bioconductor package, 
+it must be installed in the same way as **[DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)** and **[limma](https://www.bioconductor.org/packages/release/bioc/html/limma.html)** previously to be loaded. 
+If needed look at the DRomics
+web page to get the good instruction to install Bioconductor packages: 
 [https://lbbe.univ-lyon1.fr/fr/dromics](https://lbbe.univ-lyon1.fr/fr/dromics)). 
+
 Below is an example using 
-ComBat-seq() on RNAseq data with batch effect.
+ComBat-seq() on RNAseq data with batch effect. As the sva package does not import
+the RNAseq data in the same format as DRomics, it is necessary to use the DRomics
+function formatdata4DRomics() to interoperate between ComBat-seq in DRomics functions
+(see the [section on importation as an R object](#Robject) for details on this function 
+or ?formatdata4DRomics).
 
 ```{r}
 # Load of data
 data(zebraf)
 str(zebraf)
 
+# Look at the design of this dataset
+xtabs(~ zebraf$dose + zebraf$batch)
+```
+
+It appears in this design that the data were obtained using to batches,
+with only the controlled condition (null dose) appearing in both batches. 
+
+```{r}
 # Formating of data using the formatdata4DRomics() function
 data4DRomics <- formatdata4DRomics(signalmatrix = zebraf$counts, 
                            dose = zebraf$dose)
 
-# Normalization and transformation of data 
-(o <- RNAseqdata(data4DRomics, transfo.method = "vst"))
+# Importation of data just to use DRomics functions
+# As only raw data will be given to ComBat_seq after
+(o <- RNAseqdata(data4DRomics))
 
 # PCA plot to visualize the batch effect
 PCAdataplot(o, batch = zebraf$batch)
+```
 
+The PCA plot shows an impact of the batch effect, that clearly appears
+on controls (red points) which were obtained on two different batches.
+
+```{r, results = "hide", message = FALSE}
 # Batch effect correction using ComBat_seq{sva}
 require(sva)
 BECcounts <- ComBat_seq(as.matrix(o$raw.counts), 
                         batch = as.factor(zebraf$batch), 
                         group = as.factor(o$dose)) 
+```
 
+```{r}
 # Formating of data after batch effect correction
 BECdata4DRomics <- formatdata4DRomics(signalmatrix = BECcounts, 
                                    dose = o$dose)
-(o.BEC <- RNAseqdata(BECdata4DRomics, transfo.method = "vst"))
+o.BEC <- RNAseqdata(BECdata4DRomics)
 
 # PCA plot after batch effect correction
 PCAdataplot(o.BEC, batch = zebraf$batch)
 ```
 
+The PCA plot after BEC shows the impact of the correction on the batch effect
+that is no more visible on controls (red points).
+
 
 ## Step 2: selection of significantly responding items {#step2}
 
-For the second step of the workflow, the function itemselect() must be used with the output of the function used in [step 1](#step1) as first argument (output of RNAseqdata(), microarraydata(), continuousomicdata() or continuousanchoringdata()). Below is an example with microarray data.
+For the second step of the workflow, the function **itemselect()** must be used simply
+**taking as input in a first argument the output of the function used in [step 1](#step1)** (output of RNAseqdata(), microarraydata(), continuousomicdata() or continuousanchoringdata()). Below is an example with microarray data.
+
+```{r}
+(s_quad <- itemselect(o.microarray, select.method = "quadratic", FDR = 0.01))
+```
 
 The **false discovery rate (FDR) corresponds to the expected proportion of items that will be falsely detected as responsive**. **With a very large data set** it is important to define a selection step based
 on an FDR not only **to reduce the number of items to be further processed**, but also **to remove too noisy dose-response signals that may impair the quality of the results**.
@@ -388,12 +462,12 @@ we recommend a FDR less than 0.05 (0.001 to 0.01) to increase the robustness of 
 
 Concerning the method used for selection, **we recommend the default choice ("quadratic") for a typical omics dose-response design (many doses/concentrations with few replicates per condition)**. It enables the **selection of both monotonic and biphasic dose-response relationships**. If you want to focus on monotonic dose-response relationships, the "linear" method could be chosen. For a design with a small number of doses/concentrations and many replicates 
 (not optimal for dose-response modeling), the "ANOVA" method could be preferable.
-**For in situ data** (observational data without replicates due to uncontrolled dose), **only trend tests will be proposed** as the use of an ANOVA test in absence of replicates for some conditions is not reasonable.
+**For *in situ* data** (observational data without replicates due to uncontrolled dose), **only trend tests will be proposed** as the use of an ANOVA test in absence of replicates for some conditions is not reasonable.
 
 Each of the three methods proposed for this selection step is based on the use of a simple model 
 (quadratic,linear or ANOVA-type)
 linking the signal to the dose in a rank scale. This model is internally fitted to data by an **empirical 
-Bayesian approach** using the respective packages **DESeq2** and **limma** for **RNAseq data** and 
+Bayesian approach** using the respective packages **[DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)** and **[limma](https://www.bioconductor.org/packages/release/bioc/html/limma.html)** for **RNAseq data** and 
 **microarray or continuous omics data**, 
 and by classical **linear regression** using the lm() function for **continuous anchoring data**.
 The adjustment of p-values according to the specified FDR is performed in any case, even for 
@@ -402,17 +476,14 @@ continuous anchoring data, so as to ensure the unicity of the workflow independe
 See ?itemselect for more details and [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) 
 comparison of the three proposed methods on an example.
 
-```{r}
-(s_quad <- itemselect(o.microarray, select.method = "quadratic", FDR = 0.01))
-```
 
 ## Step 3: fit of dose-response models, choice of the best fit for each curve {#step3}
 
 ### Fit of the best model
 
-For Step 3 the function drcfit() must be simply used with the output of itemselect() as first argument.
+For Step 3 the function drcfit() simply **takes as input in a first argument the output of itemselect()**.
 For each item selected in Step 2, the model that best fits the dose-response data is chosen among 
-a **family of five simple models built to describe a wide variety of monotonic and biphasic dose-response curves (DRC)** (and exclusively monotonic and biphasic curves : it why 
+a **family of five simple models built to describe a wide variety of monotonic and biphasic dose-response curves (DRC)** (and exclusively monotonic and biphasic curves : it is why more flexible models such as
 polynomial third and fourth order classical polynomial models were deliberately not considered). For a complete description of those models see the [last section of Step 3](#models) or [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document). 
 
 The procedure used to **select the best fit** is based on an **information criterion** as described in [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) and in ?drcfit. 
@@ -425,7 +496,8 @@ with a small number of data points, as recommended
 and now classically done in regression 
 (Hurvich and Tsai, 1989; Burnham and Anderson DR, 2004).
 
-As the call to this the drcfit() function may take time, by default a progressbar is provided.
+As the call to the drcfit() function may take time when the number of pre-selected items is large, 
+by default a progressbar is provided.
 Some arguments of this function can be used to specify **parallel computing to accelerate the computation** (see ?drcfit for details). 
 
 ```{r}
@@ -434,17 +506,19 @@ Some arguments of this function can be used to specify **parallel computing to a
 
 In the following you can see the first lines of the output data frame 
 on our example (see ?drcfit for a complete description
-of the columns of the output data frame.) **This output data frame provides information such as best-fit model, parameter value, coordinates of particular points, and the trend of the curve (among increasing, decreasing, U-shaped, bell-shaped)**. 
-
-```{r}
-head(f$fitres)
-```
+of the columns of the output data frame.) This output data frame provides information for each item, such as **the best-fit model**, **its parameter values**, the **standard residual error (SDres)** 
+(see the section on [least squares](#leastsquares) for his definition), **coordinates of particular points**, and the **trend of the curve** (among increasing, decreasing, U-shaped, bell-shaped). 
 
 An extensive description of the outputs of the complete DRomics workflow is provided in the 
 [last section of the main workflow](#outputs). Note that the number of items successfully fitted
 (output of Step 3) is
 often smaller that the number of items selected in Step 2, as for some of the selected items, all models
 may fail to converge or fail to significantly better describe the data than the constant model.
+
+
+```{r}
+head(f$fitres)
+```
 
 ### Plot of fitted curves
 
@@ -458,7 +532,7 @@ plot(f)
 
 The fitted curves may be **represented using a log scale** for dose/concentration, 
 which will be more suited in case where the range of observed doses/concentrations is very wide,
-using argument dose_log_transfo (see ?drcfit for details and examples).
+using argument `dose_log_transfo` (see ?drcfit for details and examples).
 
 Another **specific plot function named targetplot() can be used to plot targeted items, whether they were or not selected** in step 2 and fitted in step 3. See an example below and details in ?targetplot
 
@@ -819,7 +893,7 @@ on BMD values (in `r$res` with `r` is the output of bmdcalc()).
 
 This section illustrates functions of DRomics that are meant to help the biological interpretation of outputs. The idea is to **augment the output data frame with a new column bringing biological information** such as provided by **biological annotation** of the items (e.g. kegg pathway classes or GO terms) then to **use this information to organize the visualisation** of the DRomics output.
 
-The Shiny application 
+The shiny application 
 DRomicsInterpreter-shiny can be used to implement all the steps described in this vignette without coding them in R. But in any case, the biological annotation of items selected in the first DRomics workflow must be done outside DRomics using a database such as the Gene Ontology (GO) of the kegg databases.
 
 In this section we will **first present a simple example from a metabolomic dataset** and then **an example with two molecular levels using metabolomic and transcriptomic data** from the same experiment, to illustrate how to **compare the responses at different experimental levels** (in this example different molecular levels). The different experimental levels could also be different time points, 
@@ -830,8 +904,8 @@ different experimental settings, different species, ...
 ### Augmentation of the data frame of DRomics results with biological annotation {#augmentation}
 
 This augmentation is not done using DRomics functions, but with relevant R functions such as merge(). 
-Nevertheless it is possible to perform it without R coding within the **Shiny application DRomicsInterpreter-shiny**. 
-Report to the [introduction section](#introduction) to see how to launch the Shiny application.
+Nevertheless it is possible to perform it without R coding within the **shiny application DRomicsInterpreter-shiny**. 
+Report to the [introduction section](#introduction) to see how to launch the shiny application.
 
 An example of how to proceed:
 
@@ -986,8 +1060,8 @@ to organize the visualisation of the DRomics output and so make possible the **c
 
 Below is used **an example corresponding to a multi-omics approach**, the experimental level corresponding to the molecular level, with a transcriptomic (microarray) and a metabolomic data set issued from the same experiment. 
 This example uses metabolomics and transcriptomics data for *Scenedesmus* and triclosan published by [Larras et al. in 2020](https://doi.org/10.1016/j.jhazmat.2020.122727).
-It is possible to perform it without R coding within the **Shiny application DRomicsInterpreter-shiny**. 
-Report to the [introduction section](#introduction) to see how to launch the Shiny application.
+It is possible to perform it without R coding within the **shiny application DRomicsInterpreter-shiny**. 
+Report to the [introduction section](#introduction) to see how to launch the shiny application.
 
 
 ### Augmentation of the data frames of DRomics results with biological annotation
