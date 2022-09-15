@@ -167,9 +167,9 @@ head(data4DRomics)
 <!-- (counts of reads, fluorescence signal, ...). -->
 
 <style>
-div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+div.orange { background-color:#f28d0f; border-radius: 5px; padding: 20px;}
 </style>
-<div class = "blue">
+<div class = "orange">
 
 Whatever the way you format your data, **we strongly recommend you to carefully look at the following sections** to **check that you use the good scale for you data**, which **depends on the type of measured signal **
 (counts of reads, fluorescence signal, ...).
