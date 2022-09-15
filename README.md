@@ -7,11 +7,13 @@ All informations about DRomics can also be found at <a href="https://lbbe.univ-l
 **Keywords** : dose response modelling / benchmark dose (BMD) / environmental risk assessment / transcriptomics / proteomics / metabolomics / toxicogenomics / multi-omics
 
 # Overview
-`DRomics` is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations, at least 6, and the more the better) rather than a great number of replicates (no need of three replicates). After a first optional step which consists to import, check and if needed normalize/transform the data (step 1), the aim of the proposed workflow is to select monotonic and/or biphasic significantly responsive items (e.g. probes, metabolites) (step 2), to choose the best-fit model among a predefined family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive a benchmark dose or concentration from each fitted curve (step 4).
+`DRomics` is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates to use `DRomics`).
 
-In the available version, `DRomics` supports single-channel microarray data (in log2 scale), RNAseq data (in raw counts), metabolomics data or other continuous
-omics data and continuous anchoring data (for continuous omics or anchoring data,
-in log scale or a scale that enables the use of a normal error model).
+After a first step which consists in importing, checking and if needed normalizing/transforming the data (step 1), the aim of the proposed workflow is to select monotonic and/or biphasic significantly responsive items (e.g. probes, contigs, metabolites) (step 2), to choose the best-fit model among a predefined family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive a benchmark dose or concentration from each fitted curve (step 4). Those steps can be performed in R using `DRomics` functions, or using the shiny application named `DRomics-shiny`.
+
+In the available version, `DRomics` supports single-channel microarray data (in log2 scale), RNAseq data (in raw counts) and other continuous omics data such as metabolomics or proteomics (in log scale). In order to link responses across biological levels based on a common method, `DRomics` also handles continuous apical data as long as they meet the use conditions of least squares regression (homoscedastic Gaussian regression).
+
+As built in the environmental risk assessment context where omics data are more often collected on non-sequenced species or species communities, `DRomics` does not provide an annotation pipeline. The annotation of items selected by `DRomics` may be complex in this context, and must be done outside `DRomics` using databases such as KEGG or Gene Ontology. `DRomics` functions can then be used to help the interpretation of the workflow results in view of the biological annotation. It enables a multi-omics approach, with the comparison of the responses at the different levels of organization (in view of a common biological annotation). It can also be used to compare the responses at one organization level, but measured under different experimental conditions (e.g. different time points). This interpretation can be performed in R using `DRomics` functions, or using a second shiny application `DRomicsInterpreter-shiny`.
 
 
 # The package 
@@ -45,6 +47,8 @@ library(DRomics)
 
 # The vignette
 A vignette is attached to the `DRomics` package.
+This vignette is intended to help users to start using the `DRomics` package. It is complementary to the reference manual where you can find more details on each function of the package. The first part of this vignette (Main workflow, steps 1 to 4) could also help users of the first shiny application `DRomics-shiny`. The second part (Help for biological interpretation of `DRomics` outputs) could also help users of the second shiny application `DRomicsInterpreter-shiny`.
+
 
 The development version of the pdf of this vignette can be see 
 <a href="https://github.com/aursiber/DRomics/blob/master/DRomics_vignette.pdf" target="_blank">here</a>.
