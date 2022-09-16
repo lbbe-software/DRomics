@@ -8,7 +8,10 @@ output:
     toc: yes
     number_sections: yes
     toc_depth: 4
-
+urlcolor: blue
+linkcolor: blue
+toccolor: 'blue'
+header-includes: \renewcommand*\familydefault{\sfdefault} 
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Overview of the DRomics package} 
@@ -17,8 +20,6 @@ vignette: >
 ---
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
-# output:
-#  html_vignette
 require(DRomics)
 require(ggplot2)
 set.seed(1234)
