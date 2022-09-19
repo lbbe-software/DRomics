@@ -135,7 +135,7 @@ ui <- fluidPage(
                                         p(a("Marie-Laure Delignette-Muller", href = "https://lbbe.univ-lyon1.fr/fr/annuaires-des-membres/delignette-muller-marie-laure", TARGET = "_blank", style="color:#f28d0f;"),
                                           "- marielaure.delignettemuller@vetagro-sup.fr - Laboratoire de Biométrie et Biologie Evolutive - VetAgro Sup - Lyon - France"),
                                         p(a("Floriane Larras", href = "https://www.researchgate.net/profile/Floriane_Larras", TARGET = "_blank", style="color:#f28d0f;"),
-                                          "- floriane.larras@inrae.fr - Delegation for scientific expertise, foresight and advanced studies (DEPE) - INRAE - Paris - France"),
+                                          "- floriane.larras@kreatis.eu - KREATiS - L'Isle-d'Abeau - France"),
                                         p(a("Mechthild Schmitt-Jansen", href = "https://www.ufz.de/index.php?en=38467", TARGET = "_blank", style="color:#f28d0f;"),
                                           "- mechthild.schmitt@ufz.de - Department of Bioanalytical Ecotoxicology - Helmholtz Center for Environmental Research GmbH - Leipzig - Germany"),
                                         p(a("Aurélie Siberchicot", href = "https://lbbe.univ-lyon1.fr/fr/annuaires-des-membres/siberchicot-aurelie", TARGET = "_blank", style="color:#f28d0f;"),

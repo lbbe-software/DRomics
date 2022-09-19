@@ -88,7 +88,7 @@ Issues can be reported on https://github.com/aursiber/DRomics/issues .
 
 - Elise Billoir: elise.billoir@univ-lorraine.fr
 - Marie-Laure Delignette-Muller: marielaure.delignettemuller@vetagro-sup.fr
-- Floriane Larras: floriane.larras@inrae.fr
+- Floriane Larras: floriane.larras@kreatis.eu
 - Mechthild Schmitt-Jansen: mechthild.schmitt@ufz.de
 - Aurélie Siberchicot: aurelie.siberchicot@univ-lyon1.fr
 
