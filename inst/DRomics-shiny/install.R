@@ -1,0 +1,18 @@
+update.packages(repos = "http://cran.univ-lyon1.fr", ask = FALSE, checkBuild = TRUE)
+BiocManager::install(ask = FALSE, update = TRUE)
+if(!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+if(!requireNamespace("DESeq2", quietly = TRUE)) {
+    if(!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+    BiocManager::install("DESeq2", ask = FALSE)
+}
+if(!requireNamespace("limma", quietly = TRUE)) {
+    if(!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+    BiocManager::install("limma", ask = FALSE)
+}
+if(!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+remotes::install_github("rstudio/shiny")
+if(!requireNamespace("shinyjs", quietly = TRUE)) install.packages("shinyjs", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+if(!requireNamespace("shinyBS", quietly = TRUE)) install.packages("shinyBS", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+if(!requireNamespace("shinycssloaders", quietly = TRUE)) install.packages("shinycssloaders", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+if(!requireNamespace("tools", quietly = TRUE)) install.packages("tools", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+remotes::install_github("aursiber/DRomics") # always install 'DRomics' to always have the last version from github
