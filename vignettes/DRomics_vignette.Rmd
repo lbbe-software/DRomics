@@ -935,8 +935,9 @@ head(res)
 2. **Import the data frame with biological annotation** (or any other descriptor/category you want to use), here KEGG pathway classes of each item present in the 'res' file.
 
 Examples are embedded in the DRomics package, but be cautious, generally this file must be produced by the user. Each item may have more than one annotation (*i.e.* more than one line). If **items were annotated whatever they were selected by the DRomics workflow or not**, 
-you might **previously reduce the dimension of your annotation file by selecting only the items present in the DRomics output**. 
-It is not mandatory but recommended if your annotation file is of high dimension.
+you should **previously reduce the dimension of your annotation file by selecting only the items present in the DRomics output and that have at least one biological annotation**. 
+If each annotation stands in more than one word, you should surround each of them by quotes, or use tab as a column
+separator in your annotation file, and import it by adding `sep = "\t"` in the arguments of `read.table()`.
 
 ```{r}
 # code to import the file for this example in our package
