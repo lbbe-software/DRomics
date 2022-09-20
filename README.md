@@ -71,7 +71,9 @@ The two shiny apps that work with DRomics are available :
 - on the LBBE shiny server at
     - https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomics-shiny/
     - https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsInterpreter-shiny/
-- in the Biosphere cloud, if you or your lab is a partner of the IFB (Institut Français de Bioinformatique), at https://biosphere.france-bioinformatique.fr/catalogue/appliance/176/
+- in the Biosphere cloud, if you or your lab is a partner of the IFB (Institut Français de Bioinformatique), at
+    - https://biosphere.france-bioinformatique.fr/catalogue/appliance/176/ for DRomics-shiny
+    - https://biosphere.france-bioinformatique.fr/catalogue/appliance/209/ for DRomicsInterpreter-shiny
 - locally in your R session doing:
   - `install.packages(c("shiny", "shinyBS", "shinycssloaders", "shinyjs", "shinyWidgets", "sortable"))`
   - `shiny::runApp(system.file("DRomics-shiny", package = "DRomics"))`
