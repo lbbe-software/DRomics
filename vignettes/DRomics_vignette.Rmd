@@ -1245,7 +1245,7 @@ sensitivityplot(extendedres, BMDtype = "zSD",
 ```
 
 
-#### Selection of groups on which to focus using the selectgroups() function
+#### Selection of groups on which to focus using the selectgroups() function {#selectgroups}
 
 When the number of biological groups obtained after annotation of items is too high, it may be useful
 to **select groups on which to focus**, to **enhance the visibility of plots**.

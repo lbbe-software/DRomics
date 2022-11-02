@@ -154,7 +154,7 @@ sensitivityplot(extendedres, BMDtype = "zSD",
 dev.off()
 
 
-################# Fig 3  ######################
+################# Fig 3a  ######################
 
 chosen_path_class <- c("Membrane transport", 
                        "Lipid metabolism")
@@ -162,7 +162,7 @@ selectedres2 <- extendedres[extendedres$path_class %in% chosen_path_class, ]
 bmdplotwithgradient(selectedres2, BMDtype = "zSD", scaling = TRUE, xmax = 6.6,
               facetby = "path_class", facetby2 = "molecular.level")
 
-jpeg("Figure3.jpg", quality = 100, width=18, height=10,
+jpeg("Figure3a.jpg", quality = 100, width=12, height=10,
      units="cm", pointsize=12, res=300)
 bmdplotwithgradient(selectedres2, BMDtype = "zSD", scaling = TRUE, xmax = 6.6,
                     shapeby = "trend",
@@ -170,15 +170,15 @@ bmdplotwithgradient(selectedres2, BMDtype = "zSD", scaling = TRUE, xmax = 6.6,
                     facetby2 = "molecular.level") + labs(shape = "DR trend")
 dev.off()
 
-tiff(filename = "Figure3.tif",
-     width = 18, height = 10, units = "cm", pointsize = 12, res = 200)
+tiff(filename = "Figure3a.tif",
+     width = 12, height = 10, units = "cm", pointsize = 12, res = 200)
 bmdplotwithgradient(selectedres2, BMDtype = "zSD", scaling = TRUE, xmax = 6.6,
                     shapeby = "trend",
                     facetby = "path_class", 
                     facetby2 = "molecular.level") + labs(shape = "DR trend")
 dev.off()
 
-################# Fig 4  ######################
+################# Fig 3b  ######################
 
 curvesplot(selectedres2, facetby = "path_class", 
            facetby2 = "molecular.level", scaling = TRUE, 
@@ -186,7 +186,7 @@ curvesplot(selectedres2, facetby = "path_class",
            colorby = "trend",
            xmin = 0, xmax = 6.5) + labs(col = "DR trend") + theme_classic()
 
-jpeg("Figure4.jpg", quality = 100, width=18, height=10,
+jpeg("Figure3b.jpg", quality = 100, width=12, height=10,
      units="cm", pointsize=12, res=300)
 curvesplot(selectedres2, facetby = "path_class", 
            facetby2 = "molecular.level", scaling = TRUE, 
@@ -195,8 +195,8 @@ curvesplot(selectedres2, facetby = "path_class",
            xmin = 0, xmax = 6.5) + labs(col = "DR trend")+ theme_classic()
 dev.off()
 
-tiff(filename = "Figure4.tif",
-     width = 18, height = 10, units = "cm", pointsize = 12, res = 200)
+tiff(filename = "Figure3b.tif",
+     width = 12, height = 10, units = "cm", pointsize = 12, res = 200)
 curvesplot(selectedres2, facetby = "path_class", 
            facetby2 = "molecular.level", scaling = TRUE, 
            npoints = 100, line.size = 0.5,
