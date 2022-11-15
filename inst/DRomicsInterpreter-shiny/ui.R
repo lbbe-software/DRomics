@@ -101,7 +101,7 @@ ui <- fluidPage(
                                            a("this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"), "."),
                                         h4("You can find help about the DRomicsInterpreter-shiny application and the DRomics package in a ",
                                            a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_4.pdf", TARGET="_blank", style="color:#f28d0f;"), " and a ",
-                                           a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_0.pdf", TARGET="_blank", style="color:#f28d0f;"), "."
+                                           a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_1.pdf", TARGET="_blank", style="color:#f28d0f;"), "."
                                         )
                         )),
                         hr(style='width: 70%;'),
@@ -140,12 +140,12 @@ ui <- fluidPage(
                                           "- mechthild.schmitt@ufz.de - Department of Bioanalytical Ecotoxicology - Helmholtz Center for Environmental Research GmbH - Leipzig - Germany"),
                                         p(a("Aurélie Siberchicot", href = "https://lbbe.univ-lyon1.fr/fr/annuaires-des-membres/siberchicot-aurelie", TARGET = "_blank", style="color:#f28d0f;"),
                                           "- aurelie.siberchicot@univ-lyon1.fr - Laboratoire de Biométrie et Biologie Evolutive - Université Lyon 1 - Lyon - France")
-
+                                        
                         ))
-
+                        
                       )
              ),
-
+             
              ####################################################################################
              ####### STEP 1 #####################################################################
              ####################################################################################
@@ -156,22 +156,21 @@ ui <- fluidPage(
                         column(1,
                                numericInput("nbLevel", "Number of experimental levels", value = 1, min = 1, max = 10, step = 1)
                         ),
-                        column(2, style = "margin-top: 25px;", 
+                        column(2, style = "margin-top: 25px;padding:20px;", 
                                shinyBS::bsButton("nblevel_help", label = "", icon = icon("info"), size = "small"),
                                shinyBS::bsPopover("nblevel_help", "", texthelpnblevel, placement = "right", trigger = "hover", options = NULL)
                         ),
                         column(2,
                                textInput("maxDoseXScale", "Maximal dose/concentration for definition of x-scale of plots", width = "100%")
                         ), 
-                        column(3, style = "margin-top: 25px;", 
+                        column(3, style = "margin-top: 25px;padding:20px;", 
                                shinyBS::bsButton("maxdosexscale_help", label = "", icon = icon("info"), size = "small"),
                                shinyBS::bsPopover("maxdosexscale_help", "", texthelpmaxdosexscale, placement = "right", trigger = "hover", options = NULL)
                         )
-                        ),
+                      ),
                       
                       br(),
                       uiOutput("inputstep1"),
-                      
                       fixedRow(
                         div(align = "center", actionButton("buttonRunStep1", "Merge and Combine", icon = icon("object-group"), style='font-size:150%')), br(), br(),
                         conditionalPanel(
@@ -312,7 +311,7 @@ ui <- fluidPage(
                                  checkboxInput("addciBMDplot", label = HTML("<b>Add CI</b> (only for the BMD plot without gradient)"), value = FALSE),
                                  checkboxInput("BMDlogtransfoBMDplot", label = HTML("<b>Log transformation of the BMD</b>"), value = FALSE),
                                  checkboxInput("addlabelBMDplot", label = HTML("<b>Add labels</b>"), value = FALSE)
-                                 ),
+                          ),
                           column(2,
                                  radioButtons("facetbycolumnsBMDplot", label = "Facet by (for columns)", 
                                               choices = list("Annotation" = "annotation",
@@ -334,8 +333,8 @@ ui <- fluidPage(
                           column(1,
                                  br(),
                                  div(align="right", actionButton("buttonRunStep3", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
-                                 )
                           )
+                        )
                       ),
                       fixedRow(
                         column(6,
@@ -423,7 +422,7 @@ ui <- fluidPage(
                                tags$blockquote("To see what more you can do using the R package, we recommend you to consult the ", 
                                                a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_4.pdf", TARGET="_blank", style="color:#f28d0f;"),
                                                " and the ", 
-                                               a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_0.pdf", TARGET="_blank", style="color:#f28d0f;"),
+                                               a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_1.pdf", TARGET="_blank", style="color:#f28d0f;"),
                                                " of the package."), 
                                br(), 
                                downloadButton("buttonDownRCode", "Download R Code", icon = icon("fas fa-download"), style = 'background-color:#e6e6e6; color:#000000; border-color:#9d9d9d;'), br(), br(),
