@@ -869,7 +869,7 @@ server <- function(input, output, session) {
     for (i in 1:input$nbLevel) {
       text <- c(text, 
                 paste0("dromicsdata", i, " <- read.table('", eval(parse(text = paste0("input$DRomicsData", i, "$name"))), "', header = TRUE, stringsAsFactors = TRUE)"),
-                paste0("annotdata", i, " <- read.table('", eval(parse(text = paste0("input$annotationData", i, "$name"))), "', header = TRUE, stringsAsFactors = TRUE, sep = ", if(isTRUE(input$sep_annotationData)) {return("'\t'")} else {return("''")}, ")"),
+                paste0("annotdata", i, " <- read.table('", eval(parse(text = paste0("input$annotationData", i, "$name"))), "', header = TRUE, stringsAsFactors = TRUE, sep = ", ifelse(input$sep_annotationData, "'\t'", "''"), ")"),
                 paste0("mergeddata", i, " <- merge(x = dromicsdata", i, ", y = annotdata", i, ", by.x = '", input[[paste0("id_DRomicsData", i)]], "', by.y = '", input[[paste0("id_annotationData", i)]], "')"),
                 paste0("mergeddata", i, " <- cbind('experimental_level' = '", gsub("\\s", "", input[[paste0("label", i)]]), "', mergeddata", i, ")"),
                 paste0("mergeddata", i, "$experimental_level <- as.factor(mergeddata", i, "$experimental_level)"),
