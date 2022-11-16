@@ -39,7 +39,15 @@ server <- function(input, output, session) {
           column(4, align = "center", 
                  HTML("<font face=verdana size=3 color=#9c5c16><b>(2) Annotation data frame &nbsp;</b></font>"),
                  shinyBS::bsButton("helplabel1step1", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
-                 shinyBS::bsPopover("helplabel1step1", "", helplabel1step1, placement = "bottom", trigger = "hover", options = NULL)),
+                 shinyBS::bsPopover("helplabel1step1", "", helplabel1step1, placement = "top", trigger = "hover", options = list(container = "body")),
+                 
+                 splitLayout(cellWidths = c(277, 100), style = "margin-left:50px;padding-top:20px;",
+                             checkboxInput("sep_annotationData", label = "Only tab accepted as a column separator.", value = FALSE),
+                             shinyBS::bsButton("helplabel3step1", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
+                             shinyBS::bsPopover("helplabel3step1", "", helplabel3step1, placement = "bottom", trigger = "hover", options = list(container = "body"))
+                 )
+          ),
+          
           column(3, align = "center", 
                  HTML("<font face=verdana size=3 color=#9c5c16><b>(3) Name of the experimental level &nbsp;</b></font>"),
                  shinyBS::bsButton("helplabel2step1", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
@@ -81,8 +89,9 @@ server <- function(input, output, session) {
     X = 1:10,
     FUN = function(i) {
       observeEvent(input[[paste0("DRomicsData", i)]], {
-        updateSelectizeInput(session, paste0("id_DRomicsData", i),
-                             label = paste0("id_DRomicsData", i),
+        updateSelectizeInput(session, 
+                             inputId = paste0("id_DRomicsData", i),
+                             label = "ID to merge",
                              server = TRUE,
                              choices = names(DRData(i)),
                              selected = names(DRData(i))[1])
@@ -100,7 +109,10 @@ server <- function(input, output, session) {
     eval(parse(text=paste0("req(input$annotationData", idlev, ")")))
     eval(parse(text=paste0("validateFile(input$annotationData", idlev, ")")))
     myexpr <- paste0("input$annotationData", idlev, "$datapath")
-    annotationDF <- eval(parse(text = paste0("read.table(", myexpr, ", header = TRUE, stringsAsFactors = TRUE)")))
+    sep <- if(input$sep_annotationData) "'\t'" else "''"
+    validate(
+      need(try(annotationDF <- eval(parse(text = paste0("read.table(", myexpr, ", header = TRUE, stringsAsFactors = TRUE, sep = ", sep, ")")))), "Error reading the file")
+    )
     validate(
       need(length(colnames(annotationDF)) == 2, paste0("Your annotation data at level ", idlev," set must have exactly two columns.\nPlease update your imported data."))
     )
@@ -112,8 +124,9 @@ server <- function(input, output, session) {
     X = 1:10,
     FUN = function(i) {
       observeEvent(input[[paste0("annotationData", i)]], {
-        updateSelectizeInput(session, paste0("id_annotationData", i),
-                             label = paste0("id_annotationData", i),
+        updateSelectizeInput(session, 
+                             inputId = paste0("id_annotationData", i),
+                             label = "ID to merge",
                              server = TRUE,
                              choices = names(annotationData(i)),
                              selected = names(annotationData(i))[1])
@@ -856,7 +869,7 @@ server <- function(input, output, session) {
     for (i in 1:input$nbLevel) {
       text <- c(text, 
                 paste0("dromicsdata", i, " <- read.table('", eval(parse(text = paste0("input$DRomicsData", i, "$name"))), "', header = TRUE, stringsAsFactors = TRUE)"),
-                paste0("annotdata", i, " <- read.table('", eval(parse(text = paste0("input$annotationData", i, "$name"))), "', header = TRUE, stringsAsFactors = TRUE)"),
+                paste0("annotdata", i, " <- read.table('", eval(parse(text = paste0("input$annotationData", i, "$name"))), "', header = TRUE, stringsAsFactors = TRUE, sep = ", if(isTRUE(input$sep_annotationData)) {return("'\t'")} else {return("''")}, ")"),
                 paste0("mergeddata", i, " <- merge(x = dromicsdata", i, ", y = annotdata", i, ", by.x = '", input[[paste0("id_DRomicsData", i)]], "', by.y = '", input[[paste0("id_annotationData", i)]], "')"),
                 paste0("mergeddata", i, " <- cbind('experimental_level' = '", gsub("\\s", "", input[[paste0("label", i)]]), "', mergeddata", i, ")"),
                 paste0("mergeddata", i, "$experimental_level <- as.factor(mergeddata", i, "$experimental_level)"),
