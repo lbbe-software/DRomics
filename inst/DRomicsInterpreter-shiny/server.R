@@ -867,7 +867,7 @@ server <- function(input, output, session) {
     text <- c("library(DRomics)",
               "",
               "# Step 1",
-              "myextendedmergeddata <- list()",
+              "extendedres <- list()",
               "")
 
     for (i in 1:input$nbLevel) {
@@ -877,26 +877,26 @@ server <- function(input, output, session) {
                 paste0("mergeddata", i, " <- merge(x = dromicsdata", i, ", y = annotdata", i, ", by.x = '", input[[paste0("id_DRomicsData", i)]], "', by.y = '", input[[paste0("id_annotationData", i)]], "')"),
                 paste0("mergeddata", i, " <- cbind('experimental_level' = '", gsub("\\s", "", input[[paste0("label", i)]]), "', mergeddata", i, ")"),
                 paste0("mergeddata", i, "$experimental_level <- as.factor(mergeddata", i, "$experimental_level)"),
-                paste0("myextendedmergeddata <- rbind(myextendedmergeddata, mergeddata", i, ")"),
+                paste0("extendedres <- rbind(extendedres, mergeddata", i, ")"),
                 ""
       )
     }
     
-    text <- c(text, paste0("str(myextendedmergeddata)"))
+    text <- c(text, paste0("str(extendedres)"))
     for (i in 1:input$nbLevel) {
       text <- c(text, 
-                paste0("head(myextendedmergeddata[myextendedmergeddata$experimental_level == levels(myextendedmergeddata$experimental_level)[", i, "], ], 3)")
+                paste0("head(extendedres[extendedres$experimental_level == levels(extendedres$experimental_level)[", i, "], ], 3)")
       )
     }
     
-    text <- c(text, "", "", "# 'myextendedmergeddata' can be used as input in all functions that help to interpret of results: 'trendplot()', 'sensitivityplot()', bmdplot()', 'bmdplotwithgradient()', 'curvesplot()'")
+    text <- c(text, "", "", "# 'extendedres' can be used as input in all functions that help to interpret of results: trendplot(), sensitivityplot(), bmdplot(), bmdplotwithgradient(), curvesplot()")
     text <- c(text, "# !!! More code will be available soon !!!")
     
     
     ##### STEP 2 #####
     # text <- c(text, "", "", "# Step 2",
     #           paste0("mypathclasslabel <-  names(annotdata1)[which(names(annotdata1) != '", input$id_annotationData1, "')]"),
-    #           paste0("myextendedmergeddata <- selectgroups(extendedres = myextendedmergeddata, BMDmax = ", 
+    #           paste0("extendedres <- selectgroups(extendedres = extendedres, BMDmax = ", 
     #                  input$BMDmax, ", group = mypathclasslabel, "),
     #           paste0("  explev = 'experimental_level', BMDtype = '", input$BMDtypesensitivityPlot, 
     #                  "', BMDsummary = '", match.arg(substr(input$BMDsummarysensitivityPlot, 1, 5), c('first.quartile', 'median')), 
@@ -905,50 +905,50 @@ server <- function(input, output, session) {
     # )
     # 
     # if((input$ordering_onelev == "alphaorder_onelev" & input$nbLevel == 1) | (input$ordering_moreonelev == "alphaorder_moreonelev" & input$nbLevel > 1)) {
-    #   text <- c(text, paste0("levelorder <- sort(levels(myextendedmergeddata[, mypathclasslabel]), decreasing = FALSE) # ordered by alphabetic order"))
+    #   text <- c(text, paste0("levelorder <- sort(levels(extendedres[, mypathclasslabel]), decreasing = FALSE) # ordered by alphabetic order"))
     # } else if((input$ordering_onelev == "numbitemorder_onelev" & input$nbLevel == 1) | (input$ordering_moreonelev == "numbitemorder_moreonelev" & input$nbLevel > 1)) {
-    #   text <- c(text, paste0("levelorder <- names(sort(table(myextendedmergeddata[, mypathclasslabel]), decreasing = FALSE)) # ordered by number of item"))
+    #   text <- c(text, paste0("levelorder <- names(sort(table(extendedres[, mypathclasslabel]), decreasing = FALSE)) # ordered by number of item"))
     #   
     # } else if((input$ordering_onelev == "specificorder_onelev" & input$nbLevel == 1) | (input$ordering_moreonelev == "specificorder_moreonelev" & input$nbLevel > 1)) {
     #   text <- c(text, paste0("levelorder <- ", input$labelssorted, " # ordered by specific order"))
     # } else {
-    #   text <- c(text, paste0("levelorder <- levels(myextendedmergeddata[, mypathclasslabel]) # ordered by levels order"))
+    #   text <- c(text, paste0("levelorder <- levels(extendedres[, mypathclasslabel]) # ordered by levels order"))
     # }
     # 
-    # text <- c(text, paste0("myextendedmergeddata[, mypathclasslabel] <- factor(myextendedmergeddata[, mypathclasslabel], levels = levelorder)"))
+    # text <- c(text, paste0("extendedres[, mypathclasslabel] <- factor(extendedres[, mypathclasslabel], levels = levelorder)"))
     # 
     # if(input$nbLevel > 1) {
     #   if(input$ordering_moreonelev == 'alphaorder_moreonelev' | input$ordering_moreonelev == 'specificorder_moreonelev'){
-    #     text <- c(text, paste0("myextendedmergeddata[, mypathclasslabel] <- factor(myextendedmergeddata[, mypathclasslabel], levels = rev(levels(myextendedmergeddata[, mypathclasslabel])))"))
+    #     text <- c(text, paste0("extendedres[, mypathclasslabel] <- factor(extendedres[, mypathclasslabel], levels = rev(levels(extendedres[, mypathclasslabel])))"))
     #   }
     # } else {
     #   if(input$ordering_onelev == 'alphaorder_onelev' | input$ordering_onelev == 'specificorder_onelev'){
-    #     text <- c(text, paste0("myextendedmergeddata[, mypathclasslabel] <- factor(myextendedmergeddata[, mypathclasslabel], levels = rev(levels(myextendedmergeddata[, mypathclasslabel])))"))
+    #     text <- c(text, paste0("extendedres[, mypathclasslabel] <- factor(extendedres[, mypathclasslabel], levels = rev(levels(extendedres[, mypathclasslabel])))"))
     #   }
     # }
     # 
     # text <- c(text, "")
     # if(input$nbLevel > 1) {
-    #   text <- c(text, paste0("(mysensitivityplot <- DRomics::sensitivityplot(myextendedmergeddata, 
+    #   text <- c(text, paste0("(mysensitivityplot <- DRomics::sensitivityplot(extendedres, 
     #                                               BMDtype = '", input$BMDtypesensitivityPlot, "', 
     #                                               group = mypathclasslabel,
     #                                               colorby = 'experimental_level',
     #                                               ECDF_plot = FALSE,
     #                                               BMDsummary = '", input$BMDsummarysensitivityPlot, "', 
     #                                               BMD_log_transfo = ", input$BMDlogtransfoSensitivityplot, "))"))
-    #   text <- c(text, paste0("(mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
+    #   text <- c(text, paste0("(mytrendplot <- DRomics::trendplot(extendedres, 
     #                                     group = mypathclasslabel, 
     #                                     facetby = 'experimental_level', 
     #                                     add.color = TRUE))"))
     # } else {
     #   myECDFplot <- if(orderingOnelev() == "BMDorder_onelev") {TRUE} else {FALSE}
-    #   text <- c(text, paste0("(mysensitivityplot <- DRomics::sensitivityplot(myextendedmergeddata, 
+    #   text <- c(text, paste0("(mysensitivityplot <- DRomics::sensitivityplot(extendedres, 
     #                                               BMDtype = '", input$BMDtypesensitivityPlot, "', 
     #                                               group = mypathclasslabel,
     #                                               ECDF_plot = ", myECDFplot, ",
     #                                               BMDsummary = '", input$BMDsummarysensitivityPlot, "', 
     #                                               BMD_log_transfo = ", input$BMDlogtransfoSensitivityplot, "))"))
-    #   text <- c(text, paste0("(mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
+    #   text <- c(text, paste0("(mytrendplot <- DRomics::trendplot(extendedres, 
     #                                     group = mypathclasslabel, 
     #                                     add.color = TRUE))"))
     # }
