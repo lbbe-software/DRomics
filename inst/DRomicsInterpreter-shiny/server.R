@@ -889,7 +889,7 @@ server <- function(input, output, session) {
       )
     }
     
-    text <- c(text, "", "", "# 'extendedres' can be used as input in all functions that help to interpret of results: trendplot(), sensitivityplot(), bmdplot(), bmdplotwithgradient(), curvesplot()")
+    text <- c(text, "", "", "# 'extendedres' can be used as input of functions trendplot(), sensitivityplot(), bmdplot(), bmdplotwithgradient(), curvesplot()")
     text <- c(text, "# !!! More code will be available soon !!!")
     
     
