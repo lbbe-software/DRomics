@@ -203,41 +203,31 @@ server <- function(input, output, session) {
     mycolnames <- colnames(mydata)
     
     if(!length(grep("zSD", mycolnames))){
-      updateRadioButtons(session, "BMDtypesensitivityPlot",
+      updateRadioButtons(session, "BMDtype",
                          label = "BMD type", 
                          choices = "xfold",
                          selected = "xfold"
       )
-      updateRadioButtons(session, "BMDtypeBMDPlot",
-                         label = "BMD type", 
-                         choices = "xfold",
-                         selected = input$BMDtypesensitivityPlot
-      )
     }
     
     if(!length(grep("xfold", mycolnames))){
-      updateRadioButtons(session, "BMDtypesensitivityPlot",
+      updateRadioButtons(session, "BMDtype",
                          label = "BMD type", 
                          choices = "zSD",
                          selected = "zSD"
-      )
-      updateRadioButtons(session, "BMDtypeBMDPlot",
-                         label = "BMD type", 
-                         choices = "zSD",
-                         selected = input$BMDtypesensitivityPlot
       )
     }
   })
   
   observe({
     mydata <- mergeddata()
-    if(input$BMDtypesensitivityPlot == "zSD") {
+    if(input$BMDtype == "zSD") {
       updateNumericInput(session, "BMDmax", 
                          label = "Maximum for the BMD summary value", 
                          value = ceiling(max(mydata$BMD.zSD, na.rm = TRUE)), 
                          min = 0, step = 0.1)
     }
-    else if(input$BMDtypesensitivityPlot == "xfold") {
+    else if(input$BMDtype == "xfold") {
       updateNumericInput(session, "BMDmax", 
                          label = "Maximum for the BMD summary value", 
                          value = ceiling(max(mydata$BMD.xfold, na.rm = TRUE)), 
@@ -275,7 +265,7 @@ server <- function(input, output, session) {
     return(input$BMDmax)
   })
   BMDlogtransfoSensitivityplot <- eventReactive(input$buttonRunStep2, {input$BMDlogtransfoSensitivityplot})
-  BMDtypesensitivityPlot <- eventReactive(input$buttonRunStep2, {input$BMDtypesensitivityPlot})
+  BMDtype <- eventReactive(input$buttonRunStep2, {input$BMDtype})
   BMDsummarysensitivityPlot <- eventReactive(input$buttonRunStep2, {input$BMDsummarysensitivityPlot})
   orderingOnelev <- eventReactive(input$buttonRunStep2, {input$ordering_onelev})
   orderingMoreonelev <- eventReactive(input$buttonRunStep2, {input$ordering_moreonelev})
@@ -291,7 +281,7 @@ server <- function(input, output, session) {
                                          BMDmax = BMDmax(),
                                          group = mypathclasslabel, 
                                          explev = "experimental_level", 
-                                         BMDtype = BMDtypesensitivityPlot(),
+                                         BMDtype = BMDtype(),
                                          BMDsummary = substr(BMDsummarysensitivityPlot(), 1, 5), 
                                          nitemsmin = minNbItem(),
                                          keepallexplev = keepAllExplev())
@@ -342,7 +332,7 @@ server <- function(input, output, session) {
       myextendedmergeddata <- sortlevels4ggplot(myextendedmergeddata, mypathclasslabel)
       if(input$nbLevel > 1) {
         mysensitivityplot <- DRomics::sensitivityplot(myextendedmergeddata, 
-                                                      BMDtype = BMDtypesensitivityPlot(), 
+                                                      BMDtype = BMDtype(), 
                                                       group = mypathclasslabel,
                                                       colorby = "experimental_level",
                                                       ECDF_plot = FALSE,
@@ -351,7 +341,7 @@ server <- function(input, output, session) {
       } else {
         myECDFplot <- if(orderingOnelev() == "BMDorder_onelev") {TRUE} else {FALSE}
         mysensitivityplot <- DRomics::sensitivityplot(myextendedmergeddata, 
-                                                      BMDtype = BMDtypesensitivityPlot(), 
+                                                      BMDtype = BMDtype(), 
                                                       group = mypathclasslabel,
                                                       ECDF_plot = myECDFplot,
                                                       BMDsummary = BMDsummarysensitivityPlot(), 
@@ -464,10 +454,6 @@ server <- function(input, output, session) {
   
   observe({
     updateCheckboxInput(session, "BMDlogtransfoBMDplot", value = input$BMDlogtransfoSensitivityplot)
-  })
-  
-  observe({
-    updateRadioButtons(session, "BMDtypeBMDPlot", selected = input$BMDtypesensitivityPlot)
   })
   
   # Deactivate 'shapeby' if 'addlabel' is checked
@@ -761,7 +747,7 @@ server <- function(input, output, session) {
     myextendedresforCurvesplot <- myextendedmergeddata[myextendedmergeddata[, mypathclasslabel] %in% input$annotcheckboxCurvesplot, ]
     
     # get the BMD values in the combined, merged sorted and selected data frame
-    BMD <- myextendedresforCurvesplot[, paste0("BMD.", input$BMDtypeBMDPlot)]
+    BMD <- myextendedresforCurvesplot[, paste0("BMD.", input$BMDtype)]
     
     # Update the min and max doses by default according to the log transformation
     observeEvent(input$doselogtransfoCurvesplot, {
@@ -898,7 +884,7 @@ server <- function(input, output, session) {
     #           paste0("mypathclasslabel <-  names(annotdata1)[which(names(annotdata1) != '", input$id_annotationData1, "')]"),
     #           paste0("extendedres <- selectgroups(extendedres = extendedres, BMDmax = ", 
     #                  input$BMDmax, ", group = mypathclasslabel, "),
-    #           paste0("  explev = 'experimental_level', BMDtype = '", input$BMDtypesensitivityPlot, 
+    #           paste0("  explev = 'experimental_level', BMDtype = '", input$BMDtype, 
     #                  "', BMDsummary = '", match.arg(substr(input$BMDsummarysensitivityPlot, 1, 5), c('first.quartile', 'median')), 
     #                  "', nitemsmin = ", input$minNbItem, 
     #                  ", keepallexplev = ", input$keepAllExplev, ")")
@@ -930,7 +916,7 @@ server <- function(input, output, session) {
     # text <- c(text, "")
     # if(input$nbLevel > 1) {
     #   text <- c(text, paste0("(mysensitivityplot <- DRomics::sensitivityplot(extendedres, 
-    #                                               BMDtype = '", input$BMDtypesensitivityPlot, "', 
+    #                                               BMDtype = '", input$BMDtype, "', 
     #                                               group = mypathclasslabel,
     #                                               colorby = 'experimental_level',
     #                                               ECDF_plot = FALSE,
@@ -943,7 +929,7 @@ server <- function(input, output, session) {
     # } else {
     #   myECDFplot <- if(orderingOnelev() == "BMDorder_onelev") {TRUE} else {FALSE}
     #   text <- c(text, paste0("(mysensitivityplot <- DRomics::sensitivityplot(extendedres, 
-    #                                               BMDtype = '", input$BMDtypesensitivityPlot, "', 
+    #                                               BMDtype = '", input$BMDtype, "', 
     #                                               group = mypathclasslabel,
     #                                               ECDF_plot = ", myECDFplot, ",
     #                                               BMDsummary = '", input$BMDsummarysensitivityPlot, "', 

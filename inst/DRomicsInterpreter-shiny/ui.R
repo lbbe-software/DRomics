@@ -218,7 +218,7 @@ ui <- fluidPage(
                                  checkboxInput("BMDlogtransfoSensitivityplot", label = HTML("<b>Log transformation of the BMD</b>"), value = FALSE),
                           ),
                           column(1, 
-                                 radioButtons("BMDtypesensitivityPlot", label = "BMD type", 
+                                 radioButtons("BMDtype", label = "BMD type", 
                                               choices = list("zSD" = "zSD", 
                                                              "xfold" = "xfold")
                                  )
@@ -302,11 +302,6 @@ ui <- fluidPage(
                           ))),
                       wellPanel(
                         fixedRow(
-                          column(1, 
-                                 radioButtons("BMDtypeBMDPlot", label = "BMD type", 
-                                              choices = list("zSD" = "zSD", 
-                                                             "xfold" = "xfold")
-                                 )),
                           column(2, 
                                  checkboxInput("addciBMDplot", label = HTML("<b>Add CI</b> (only for the BMD plot without gradient)"), value = FALSE),
                                  checkboxInput("BMDlogtransfoBMDplot", label = HTML("<b>Log transformation of the BMD</b>"), value = FALSE),
