@@ -45,14 +45,11 @@ library(DRomics)
 ```
 
 
-# The vignette
-A vignette is attached to the `DRomics` package.
+# Vignette and cheat sheet
+
+A **vignette** is attached to the `DRomics` package.
 This vignette is intended to help users to start using the `DRomics` package. It is complementary to the reference manual where you can find more details on each function of the package. The first part of this vignette (Main workflow, steps 1 to 4) could also help users of the first shiny application `DRomics-shiny`. The second part (Help for biological interpretation of `DRomics` outputs) could also help users of the second shiny application `DRomicsInterpreter-shiny`.
 
-
-The development version of the pdf of this vignette can be see 
-<a href="https://github.com/aursiber/DRomics/blob/master/DRomics_vignette.pdf" target="_blank">here</a>.
- 
 This vignette can be reached by:
 ```r
 vignette("DRomics_vignette")
@@ -64,9 +61,10 @@ The following command (rather long to execute because of the large size of the v
 remotes::install_github("aursiber/DRomics", build_vignettes = TRUE)
 ```
 
+A **cheat sheet** that sum up the DRomics workflow is also available [here](https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_1.pdf).
 
 # Two shiny apps 
-The two shiny apps that work with DRomics are available :
+The two shiny apps (`DRomics-shiny` and `DRomicsInterpreter-shiny`) that work with DRomics are available :
 
 - on the LBBE shiny server at
     - https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomics-shiny/
