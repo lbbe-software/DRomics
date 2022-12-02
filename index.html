@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dose Response for Omics • DRomics</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -75,20 +75,19 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-
-<p>All informations about DRomics can also be found at <a href="https://lbbe.univ-lyon1.fr/fr/dromics" target="_blank" class="external-link">https://lbbe.univ-lyon1.fr/fr/dromics</a>.</p>
-<p><strong>Keywords</strong> : dose response modelling / benchmark dose (BMD) / environmental risk assessment / transcriptomics / proteomics / metabolomics / toxicogenomics / multi-omics</p>
 <div class="section level1">
-<div class="page-header"><h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+<div class="page-header"><h1 id="dromics-dose-response-for-omics">DRomics: Dose Response for Omics<a class="anchor" aria-label="anchor" href="#dromics-dose-response-for-omics"></a>
 </h1></div>
+
 <p><code>DRomics</code> is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates to use <code>DRomics</code>).</p>
 <p>After a first step which consists in importing, checking and if needed normalizing/transforming the data (step 1), the aim of the proposed workflow is to select monotonic and/or biphasic significantly responsive items (e.g. probes, contigs, metabolites) (step 2), to choose the best-fit model among a predefined family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive a benchmark dose or concentration from each fitted curve (step 4). Those steps can be performed in R using <code>DRomics</code> functions, or using the shiny application named <code>DRomics-shiny</code>.</p>
 <p>In the available version, <code>DRomics</code> supports single-channel microarray data (in log2 scale), RNAseq data (in raw counts) and other continuous omics data such as metabolomics or proteomics (in log scale). In order to link responses across biological levels based on a common method, <code>DRomics</code> also handles continuous apical data as long as they meet the use conditions of least squares regression (homoscedastic Gaussian regression).</p>
 <p>As built in the environmental risk assessment context where omics data are more often collected on non-sequenced species or species communities, <code>DRomics</code> does not provide an annotation pipeline. The annotation of items selected by <code>DRomics</code> may be complex in this context, and must be done outside <code>DRomics</code> using databases such as KEGG or Gene Ontology. <code>DRomics</code> functions can then be used to help the interpretation of the workflow results in view of the biological annotation. It enables a multi-omics approach, with the comparison of the responses at the different levels of organization (in view of a common biological annotation). It can also be used to compare the responses at one organization level, but measured under different experimental conditions (e.g. different time points). This interpretation can be performed in R using <code>DRomics</code> functions, or using a second shiny application <code>DRomicsInterpreter-shiny</code>.</p>
-</div>
-<div class="section level1">
-<h1 id="the-package">The package<a class="anchor" aria-label="anchor" href="#the-package"></a>
-</h1>
+<p>All informations about DRomics can also be found at <a href="https://lbbe.univ-lyon1.fr/fr/dromics" target="_blank" class="external-link">https://lbbe.univ-lyon1.fr/fr/dromics</a>.</p>
+<p><strong>Keywords</strong> : dose response modelling / benchmark dose (BMD) / environmental risk assessment / transcriptomics / proteomics / metabolomics / toxicogenomics / multi-omics</p>
+<div class="section level2">
+<h2 id="the-package">The package<a class="anchor" aria-label="anchor" href="#the-package"></a>
+</h2>
 <p>The <code>limma</code> and <code>DESeq2</code> packages from Bioconductor must be installed for the use of <code>DRomics</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
@@ -108,9 +107,9 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lbbe.univ-lyon1.fr/fr/dromics" class="external-link">DRomics</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="vignette-and-cheat-sheet">Vignette and cheat sheet<a class="anchor" aria-label="anchor" href="#vignette-and-cheat-sheet"></a>
-</h1>
+<div class="section level2">
+<h2 id="vignette-and-cheat-sheet">Vignette and cheat sheet<a class="anchor" aria-label="anchor" href="#vignette-and-cheat-sheet"></a>
+</h2>
 <p>A <strong>vignette</strong> is attached to the <code>DRomics</code> package. This vignette is intended to help users to start using the <code>DRomics</code> package. It is complementary to the reference manual where you can find more details on each function of the package. The first part of this vignette (Main workflow, steps 1 to 4) could also help users of the first shiny application <code>DRomics-shiny</code>. The second part (Help for biological interpretation of <code>DRomics</code> outputs) could also help users of the second shiny application <code>DRomicsInterpreter-shiny</code>.</p>
 <p>This vignette can be reached by:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -119,6 +118,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"aursiber/DRomics"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>A <strong>cheat sheet</strong> that sum up the DRomics workflow is also available <a href="https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_1.pdf" class="external-link">here</a>.</p>
+</div>
 </div>
 <div class="section level1">
 <h1 id="two-shiny-apps">Two shiny apps<a class="anchor" aria-label="anchor" href="#two-shiny-apps"></a>
@@ -145,10 +145,9 @@
 </li>
 </ul>
 <p>These shiny apps are runing with the development version of DRomics.</p>
-</div>
-<div class="section level1">
-<h1 id="authors--contacts">Authors &amp; Contacts<a class="anchor" aria-label="anchor" href="#authors--contacts"></a>
-</h1>
+<div class="section level2">
+<h2 id="authors--contacts">Authors &amp; Contacts<a class="anchor" aria-label="anchor" href="#authors--contacts"></a>
+</h2>
 <p>If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at <a href="mailto:dromics@univ-lyon1.fr" class="email">dromics@univ-lyon1.fr</a> .</p>
 <p>Issues can be reported on <a href="https://github.com/aursiber/DRomics/issues" class="external-link uri">https://github.com/aursiber/DRomics/issues</a> .</p>
 <ul>
@@ -164,12 +163,13 @@
 </li>
 </ul>
 </div>
-<div class="section level1">
-<h1 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
-</h1>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
 <p>If you use Dromics, you should cite: <br> Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). <em>DRomics : a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment</em>. Environmental Science &amp; Technology. <a href="https://pubs.acs.org/doi/10.1021/acs.est.8b04752" target="_blank" class="external-link">https://pubs.acs.org/doi/10.1021/acs.est.8b04752</a></p>
 <p>You can find this article at: <a href="https://hal.archives-ouvertes.fr/hal-02309919" target="_blank" class="external-link">https://hal.archives-ouvertes.fr/hal-02309919</a></p>
 <p>You can also look at the following citation for a complete example of use: <br> Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020). <em>A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus</em>. Journal of Hazardous Materials. <a href="https://doi.org/10.1016/j.jhazmat.2020.122727." target="_blank" class="external-link"></a><a href="https://doi.org/10.1016/j.jhazmat.2020.122727" class="external-link uri">https://doi.org/10.1016/j.jhazmat.2020.122727</a>.</p>
+</div>
 </div>
 
   </div>
