@@ -1,10 +1,8 @@
+# DRomics: Dose Response for Omics
+
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/DRomics)](http://cran.r-project.org/package=DRomics)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/DRomics)](https://cran.r-project.org/package=DRomics)
 [![R-CMD-check](https://github.com/aursiber/DRomics/workflows/R-CMD-check/badge.svg)](https://github.com/aursiber/DRomics/actions)
-
-All informations about DRomics can also be found at <a href="https://lbbe.univ-lyon1.fr/fr/dromics" target="_blank">https://lbbe.univ-lyon1.fr/fr/dromics</a>.
-
-**Keywords** : dose response modelling / benchmark dose (BMD) / environmental risk assessment / transcriptomics / proteomics / metabolomics / toxicogenomics / multi-omics
 
 # Overview
 `DRomics` is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates to use `DRomics`).
@@ -15,8 +13,12 @@ In the available version, `DRomics` supports single-channel microarray data (in 
 
 As built in the environmental risk assessment context where omics data are more often collected on non-sequenced species or species communities, `DRomics` does not provide an annotation pipeline. The annotation of items selected by `DRomics` may be complex in this context, and must be done outside `DRomics` using databases such as KEGG or Gene Ontology. `DRomics` functions can then be used to help the interpretation of the workflow results in view of the biological annotation. It enables a multi-omics approach, with the comparison of the responses at the different levels of organization (in view of a common biological annotation). It can also be used to compare the responses at one organization level, but measured under different experimental conditions (e.g. different time points). This interpretation can be performed in R using `DRomics` functions, or using a second shiny application `DRomicsInterpreter-shiny`.
 
+All informations about DRomics can also be found at <a href="https://lbbe.univ-lyon1.fr/fr/dromics" target="_blank">https://lbbe.univ-lyon1.fr/fr/dromics</a>.
 
-# The package 
+**Keywords** : dose response modelling / benchmark dose (BMD) / environmental risk assessment / transcriptomics / proteomics / metabolomics / toxicogenomics / multi-omics
+
+
+## The package 
 The `limma` and `DESeq2` packages from Bioconductor must be installed for the use of `DRomics`:
 
 ```r
@@ -45,7 +47,7 @@ library(DRomics)
 ```
 
 
-# Vignette and cheat sheet
+## Vignette and cheat sheet
 
 A **vignette** is attached to the `DRomics` package.
 This vignette is intended to help users to start using the `DRomics` package. It is complementary to the reference manual where you can find more details on each function of the package. The first part of this vignette (Main workflow, steps 1 to 4) could also help users of the first shiny application `DRomics-shiny`. The second part (Help for biological interpretation of `DRomics` outputs) could also help users of the second shiny application `DRomicsInterpreter-shiny`.
@@ -81,7 +83,7 @@ These shiny apps are runing with the development version of DRomics.
 
 
 
-# Authors & Contacts
+## Authors & Contacts
 If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at dromics@univ-lyon1.fr .
 
 Issues can be reported on https://github.com/aursiber/DRomics/issues .
@@ -93,7 +95,7 @@ Issues can be reported on https://github.com/aursiber/DRomics/issues .
 - Aurélie Siberchicot: aurelie.siberchicot@univ-lyon1.fr
 
 
-# Citation
+## Citation
 If you use Dromics, you should cite: <br />
 Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). 
 *DRomics : a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment*. 
