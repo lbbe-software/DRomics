@@ -1,4 +1,4 @@
-# DRomics: Dose Response for Omics
+# DRomics: Dose Response for Omics <img src="man/figures/hexsticker.png" align="right" style="float:right; height:120px;"/>
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/DRomics)](http://cran.r-project.org/package=DRomics)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/DRomics)](https://cran.r-project.org/package=DRomics)
