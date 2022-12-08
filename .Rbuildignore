@@ -5,3 +5,4 @@ drcfitplot.pdf
 README.md
 ^\.github$
 share
+_pkgdown.yml
