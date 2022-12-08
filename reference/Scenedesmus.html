@@ -276,15 +276,15 @@ In the first line, after the name for the identifier column, we have the tested 
 <span class="r-out co"><span class="r-pr">#&gt;</span> U </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 </span>
 <span class="r-in"><span><span class="va">f_apical</span><span class="op">$</span><span class="va">fitres</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               id irow    adjpvalue        model nbpar         b        c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         growth    1 4.120696e-17 Gauss-probit     5  9.894935 76.29078</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 photosynthesis    2 2.669437e-13 Gauss-probit     4 16.874128 28.65168</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          d        e         f    SDres typology trend         y0   yrange</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 21.85620 10.14859 -50.85311 5.231276     GP.U     U  0.1057541 82.63804</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 28.65168 12.88431 -40.04502 3.788006     GP.U     U -1.2674112 39.93195</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   maxychange   xextrem    yextrem</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   76.18502  5.923073  -6.347263</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   29.80601 12.884315 -11.393343</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               id irow    adjpvalue        model nbpar        b        c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         growth    1 4.120696e-17 Gauss-probit     4 12.20929 77.03040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 photosynthesis    2 2.669437e-13 Gauss-probit     4 16.87413 28.65168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          d        e         f    SDres typology trend        y0   yrange</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 77.03040  5.38810 -84.19789 5.236305     GP.U     U  0.644969 84.19784</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 28.65168 12.88431 -40.04502 3.788006     GP.U     U -1.267411 39.93195</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   maxychange  xextrem    yextrem</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   76.38538  5.38810  -7.167487</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   29.80601 12.88431 -11.393343</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f_apical</span><span class="op">)</span> </span></span>
 <span class="r-plt img"><img src="Scenedesmus-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f_apical</span>, dose_log_trans <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -299,15 +299,15 @@ In the first line, after the name for the identifier column, we have the tested 
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="va">r_apical</span> <span class="op">&lt;-</span> <span class="fu"><a href="bmdcalc.html">bmdcalc</a></span><span class="op">(</span><span class="va">f_apical</span>, z <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">r_apical</span><span class="op">$</span><span class="va">res</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               id irow    adjpvalue        model nbpar         b        c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         growth    1 4.120696e-17 Gauss-probit     5  9.894935 76.29078</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 photosynthesis    2 2.669437e-13 Gauss-probit     4 16.874128 28.65168</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          d        e         f    SDres typology trend         y0   yrange</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 21.85620 10.14859 -50.85311 5.231276     GP.U     U  0.1057541 82.63804</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 28.65168 12.88431 -40.04502 3.788006     GP.U     U -1.2674112 39.93195</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   maxychange   xextrem    yextrem  BMD.zSD   BMR.zSD  BMD.xfold   BMR.xfold</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   76.18502  5.923073  -6.347263 3.558132 -5.125522 0.02400000  0.09517868</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   29.80601 12.884315 -11.393343 2.978888 -5.055417 0.09375678 -1.39415236</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               id irow    adjpvalue        model nbpar        b        c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         growth    1 4.120696e-17 Gauss-probit     4 12.20929 77.03040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 photosynthesis    2 2.669437e-13 Gauss-probit     4 16.87413 28.65168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          d        e         f    SDres typology trend        y0   yrange</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 77.03040  5.38810 -84.19789 5.236305     GP.U     U  0.644969 84.19784</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 28.65168 12.88431 -40.04502 3.788006     GP.U     U -1.267411 39.93195</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   maxychange  xextrem    yextrem  BMD.zSD   BMR.zSD  BMD.xfold  BMR.xfold</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   76.38538  5.38810  -7.167487 2.344346 -4.591336 0.02400000  0.5804721</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   29.80601 12.88431 -11.393343 2.978888 -5.055417 0.09375678 -1.3941523</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>

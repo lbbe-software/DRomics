@@ -95,7 +95,7 @@
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"limma"</span>, <span class="st">"DESeq2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"limma"</span>, <span class="st">"DESeq2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The stable version of <code>DRomics</code> can be installed from CRAN using:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"DRomics"</span><span class="op">)</span></span></code></pre></div>
@@ -104,7 +104,7 @@
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span>   </span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"aursiber/DRomics"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"aursiber/DRomics"</span><span class="op">)</span></span></code></pre></div>
 <p>Finally load the package in your current R session with the following R command:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lbbe.univ-lyon1.fr/fr/dromics" class="external-link">DRomics</a></span><span class="op">)</span></span></code></pre></div>
@@ -118,7 +118,7 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"DRomics_vignette"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that, by default, the vignette is not installed when the package is installed through GitHub. The following command (rather long to execute because of the large size of the vignette) will allow you to access the vignette of the development version of the package you installed from GitHub:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"aursiber/DRomics"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"aursiber/DRomics"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>A <strong>cheat sheet</strong> that sum up the DRomics workflow is also available <a href="https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_1.pdf" class="external-link">here</a>.</p>
 </div>
 <div class="section level2">
@@ -126,19 +126,22 @@
 </h2>
 <p>The two shiny apps (<code>DRomics-shiny</code> and <code>DRomicsInterpreter-shiny</code>) that work with DRomics are available :</p>
 <ul>
-<li>on the LBBE shiny server at<ul>
+<li>on the LBBE shiny server at
+<ul>
 <li><a href="https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomics-shiny/" class="external-link uri">https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomics-shiny/</a></li>
 <li><a href="https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsInterpreter-shiny/" class="external-link uri">https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsInterpreter-shiny/</a></li>
 </ul>
 </li>
-<li>in the Biosphere cloud, if you or your lab is a partner of the IFB (Institut Français de Bioinformatique), at<ul>
+<li>in the Biosphere cloud, if you or your lab is a partner of the IFB (Institut Français de Bioinformatique), at
+<ul>
 <li>
 <a href="https://biosphere.france-bioinformatique.fr/catalogue/appliance/176/" class="external-link uri">https://biosphere.france-bioinformatique.fr/catalogue/appliance/176/</a> for DRomics-shiny</li>
 <li>
 <a href="https://biosphere.france-bioinformatique.fr/catalogue/appliance/209/" class="external-link uri">https://biosphere.france-bioinformatique.fr/catalogue/appliance/209/</a> for DRomicsInterpreter-shiny</li>
 </ul>
 </li>
-<li>locally in your R session doing:<ul>
+<li>locally in your R session doing:
+<ul>
 <li><code>install.packages(c("shiny", "shinyBS", "shinycssloaders", "shinyjs", "shinyWidgets", "sortable"))</code></li>
 <li><code>shiny::runApp(system.file("DRomics-shiny", package = "DRomics"))</code></li>
 <li><code>shiny::runApp(system.file("DRomicsInterpreter-shiny", package = "DRomics"))</code></li>
@@ -203,9 +206,9 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Marie-Laure Delignette-Muller <br><small class="roles"> Author </small>  </li>
-<li>Elise Billoir <br><small class="roles"> Author </small>  </li>
-<li>Aurelie Siberchicot <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Marie-Laure Delignette-Muller <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5453-3994" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Elise Billoir <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9012-3298" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Aurelie Siberchicot <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-7638-8318" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
