@@ -1,8 +1,14 @@
 template:
-  package: tidytemplate
+  package: simplex
   bootstrap: 5
 
   bslib:
     primary: "#433625"
     navbar-background: "#9c5c16"
   trailing_slash_redirect: true
+
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, tutorials, news]
+    right: [search, github]
