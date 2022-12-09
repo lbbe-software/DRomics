@@ -1,3 +1,8 @@
 template:
-  params:
-    bootswatch: readable
+  package: tidytemplate
+  bootstrap: 5
+
+  bslib:
+    primary: "#433625"
+    navbar-background: "#9c5c16"
+  trailing_slash_redirect: true
