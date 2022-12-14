@@ -882,7 +882,8 @@ The columns of this data frame are:
   + **bell shape**
   + **increasing**  
   + **decreasing** 
-* **y0**: the **theoretical value at the control**
+* y0: the y theoretical value at the control
+* yatdosemax: the theoretical y value at the maximal dose
 * yrange: the theoretical y range for x within the range of tested doses
 * maxychange: the maximal absolute y change (up or down) from the control
 * xextrem: for biphasic curves, x value at which their extremum is reached

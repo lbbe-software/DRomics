@@ -88,7 +88,8 @@ to finite values.
    \code{e} and \code{f}, (\code{NA} for non used parameters), the residual standard deviation (\code{SDres}), 
    the typology of the curve (\code{typology}, (16 class typology described in the help of the \code{drcfit} 
    function)), the rough trend of the curve (\code{trend}) defined with four classes 
-   (U, bell, increasing or decreasing shape), the theoretical value at the control (\code{y0}), 
+   (U, bell, increasing or decreasing shape), the theoretical y value at the control (\code{y0}),
+   the theoretical y value at the maximal dose \code{yatdosemax}), 
    the theoretical y range for x within the range of tested doses 
    (\code{yrange}), the maximal absolute y change (up or down) from the control(\code{maxychange}) 
    and for biphasic curves 

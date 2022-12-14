@@ -7,7 +7,8 @@ most sensitive groups on which to focus for biological interpretation.
 - Add of an RNAseq data with batch effect (zebraf) with an example of use of 
 ComBat_seq{sva} to correct the batch effect.
 - Add of PCAdataplot() a function to visualize omic data.
-- Add of a column named maxychange (maximal absolute y change (up or down) 
+- Add of 2 columns named yatdosemax (the theoretical y value at the maximal dose)
+and maxychange (the maximal absolute y change (up or down) 
 from the control) in the output of drcfit() (and so of bmdcalc() and bmdboot())
 - Add an argument named scaling in curvesplot() and bmdplotwithgradient()
 that enables the scaling of the shifted signal (y - y0) by dividing 

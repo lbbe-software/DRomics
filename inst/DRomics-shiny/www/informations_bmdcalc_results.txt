@@ -13,7 +13,8 @@ returned by the item selection step. The given results are:
 - typology: the class of typology (16 class typology as described in the 
   dose response modelling step)
 - trend: the rough trend of the curve defined with four classes (U, bell, increasing or decreasing shape)
-- y0: theoretical value at the control
+- y0: theoretical y value at the control
+- yatdosemax: the theoretical y value at the maximal dose
 - yrange: theoretical y range for x within the range of tested doses
 - maxychange: maximal absolute y change (up or down) from the control
 - xextrem: for biphasic curves, x value at which their extremum is reached
