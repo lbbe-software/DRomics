@@ -250,7 +250,8 @@ chosen model and of its parameter values :</p><ul><li><p>H.inc for increasing Hi
 <dd><p>a data frame reporting the results of the fit on each selected item 
    for which a successful fit is reached (one line per item) sorted in the ascending order of the adjusted p-values returned by function <code>itemselect</code>. The different columns correspond to the identifier of each item (<code>id</code>), the row number of this item in the initial data set (<code>irow</code>), the adjusted p-value of the selection step (<code>adjpvalue</code>), the name of the best fit model (<code>model</code>), the number of fitted parameters (<code>nbpar</code>), the values of the parameters <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code> and <code>f</code>, (<code>NA</code> for non used parameters), the residual standard deviation (<code>SDres</code>), the typology of the curve (<code>typology</code>), the
    rough trend of the curve (<code>trend</code>) defined with four classes (U, bell, increasing or decreasing shape), the
-   theoretical value at the control <code>y0</code>), the theoretical y range for x within the range of 
+   theoretical y value at the control <code>y0</code>), the
+   theoretical y value at the maximal dose <code>yatdosemax</code>), the theoretical y range for x within the range of 
    tested doses (<code>yrange</code>), the maximal absolute y change (up or down) from the control(<code>maxychange</code>) 
    and for biphasic curves 
    the x value at which their extremum is reached (<code>xextrem</code>) 
@@ -422,13 +423,13 @@ Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to sup
 <span class="r-in"><span><span class="co"># save all plots to pdf using plotfit2pdf()</span></span></span>
 <span class="r-in"><span><span class="fu">plotfit2pdf</span><span class="op">(</span><span class="va">f</span>, path2figs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Figures are stored in /tmp/RtmpLC3YxW.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Figures are stored in /tmp/RtmpvVey70.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> agg_png </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       2 </span>
 <span class="r-in"><span><span class="fu">plotfit2pdf</span><span class="op">(</span><span class="va">f</span>, plot.type <span class="op">=</span> <span class="st">"fitted_residuals"</span>, </span></span>
 <span class="r-in"><span>  nrowperpage <span class="op">=</span> <span class="fl">9</span>, ncolperpage <span class="op">=</span> <span class="fl">6</span>, path2figs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Figures are stored in /tmp/RtmpLC3YxW.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Figures are stored in /tmp/RtmpvVey70.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> agg_png </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       2 </span>
 <span class="r-in"><span></span></span>
@@ -449,20 +450,20 @@ Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to sup
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 384.1  726 2.804671e-06 Gauss-probit     4  8.595750  5.684182  5.684182</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 301.1  569 6.932747e-06  exponential     3  2.024450        NA 12.846110</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 363.1  686 7.084800e-06  exponential     3 -0.060297        NA  9.026630</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           e        f     SDres      typology trend       y0    yrange</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.538639 6.077671 0.1126233       GP.bell  bell 12.13640 1.0223735</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1.833580 1.861387 0.1411563       GP.bell  bell 12.13871 1.0167830</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  1.751051 3.683414 0.1335847       GP.bell  bell 12.04858 0.9603629</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  1.874867 6.568660 0.1379656       GP.bell  bell 12.09844 0.9323327</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -1.404111       NA 0.4905313  E.dec.convex   dec 12.84611 2.0064474</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  2.064800       NA 0.2526946 E.dec.concave   dec  9.02663 1.4359751</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   maxychange  xextrem  yextrem</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.9210336 1.538639 12.23773</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.8138568 1.833580 12.34164</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.8198452 1.751051 12.18910</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.7779264 1.874867 12.25284</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2.0064474       NA       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  1.4359751       NA       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           e        f     SDres      typology trend       y0 yatdosemax</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.538639 6.077671 0.1126233       GP.bell  bell 12.13640  11.215361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1.833580 1.861387 0.1411563       GP.bell  bell 12.13871  11.324854</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  1.751051 3.683414 0.1335847       GP.bell  bell 12.04858  11.228734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  1.874867 6.568660 0.1379656       GP.bell  bell 12.09844  11.320509</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -1.404111       NA 0.4905313  E.dec.convex   dec 12.84611  10.839662</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  2.064800       NA 0.2526946 E.dec.concave   dec  9.02663   7.590655</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      yrange maxychange  xextrem  yextrem</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.0223735  0.9210336 1.538639 12.23773</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.0167830  0.8138568 1.833580 12.34164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.9603629  0.8198452 1.751051 12.18910</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.9323327  0.7779264 1.874867 12.25284</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 2.0064474  2.0064474       NA       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1.4359751  1.4359751       NA       NA</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Look at the table of results for unsuccessful fits</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">unfitres</span><span class="op">)</span></span></span>

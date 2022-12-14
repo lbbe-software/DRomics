@@ -149,7 +149,9 @@ In cases where the BMD is not reached at the highest tested dose, <code>NA</code
    on each selected item sorted in the ascending order of the adjusted p-values returned by function <code>itemselect</code>. The different columns correspond to the identifier of each item (<code>id</code>), the row number of this item in the initial data set (<code>irow</code>), the adjusted p-value of the selection step (<code>adjpvalue</code>), the name of the best fit model (<code>model</code>), the number of fitted parameters (<code>nbpar</code>), the values of the parameters <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code> and <code>f</code>, (<code>NA</code> for non used parameters), the residual standard deviation (<code>SDres</code>), the typology of the curve (<code>typology</code>, (16 class typology described in the help of the <code>drcfit</code> 
    function)), the
    rough trend of the curve (<code>trend</code>) defined with four classes (U, bell, increasing or decreasing shape), the
-   theoretical value at the control (<code>y0</code>), the theoretical y range 
+   theoretical y value at the control (<code>y0</code>),
+   the theoretical y value at the maximal dose <code>yatdosemax</code>),
+   the theoretical y range 
    for x within the range of tested doses 
    (<code>yrange</code>), the maximal absolute y change (up or down) from the control(<code>maxychange</code>) and 
    for biphasic curves 

@@ -169,7 +169,8 @@ to finite values.</p>
    <code>e</code> and <code>f</code>, (<code>NA</code> for non used parameters), the residual standard deviation (<code>SDres</code>), 
    the typology of the curve (<code>typology</code>, (16 class typology described in the help of the <code>drcfit</code> 
    function)), the rough trend of the curve (<code>trend</code>) defined with four classes 
-   (U, bell, increasing or decreasing shape), the theoretical value at the control (<code>y0</code>), 
+   (U, bell, increasing or decreasing shape), the theoretical y value at the control (<code>y0</code>),
+   the theoretical y value at the maximal dose <code>yatdosemax</code>), 
    the theoretical y range for x within the range of tested doses 
    (<code>yrange</code>), the maximal absolute y change (up or down) from the control(<code>maxychange</code>) 
    and for biphasic curves 
@@ -262,39 +263,50 @@ to finite values.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8  88.1   88 4.566344e-04 Gauss-probit     4  2.10326007  11.157946  11.157946</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9    92   92 4.566344e-04 Gauss-probit     4  8.38175626 -27.803047 -27.803047</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10   81   81 6.448977e-04  exponential     3 -0.02571807         NA   6.713594</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           e          f     SDres      typology trend        y0    yrange</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  2.276375         NA 0.3183292  E.inc.convex   inc  7.740153 1.2435536</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1.131878  0.7204105 0.3802228       GP.bell  bell  7.585780 1.5579862</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        NA         NA 0.1648041         L.dec   dec 15.608419 0.7191107</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  3.404151         NA 0.2142472 E.dec.concave   dec 15.142111 0.7746535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1.959459 -1.6121601 0.2994936          GP.U     U  8.534547 1.1021235</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  1.074077         NA 1.1263294 E.dec.concave   dec  6.682254 3.5993188</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  1.735801 -0.9436037 0.2594717          GP.U     U  8.398699 0.8289366</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  1.755034  0.7172903 0.2131311       GP.bell  bell 11.664352 0.6684651</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.557094 37.5306822 1.1492863       GP.bell  bell  8.021106 4.1813021</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 1.357565         NA 1.1925115 E.dec.concave   dec  6.713594 3.3747657</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    maxychange  xextrem   yextrem   BMD.zSD   BMR.zSD BMD.xfold BMR.xfold</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   1.2435536       NA        NA 3.8627811  8.058482 5.6254811  8.514168</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   1.5579862 1.438980  9.143766 0.5682965  7.966002 0.7867277  8.344358</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   0.7191107       NA        NA 1.5196769 15.443615        NA 14.047577</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0.7746535       NA        NA 3.3346122 14.927864        NA 13.627900</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   0.8066266 1.959459  8.239050 4.9146813  8.834040        NA  9.388001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   3.5993188       NA        NA 5.3880603  5.555924 4.8321606  6.014028</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   0.6092640 1.735801  8.179027 4.5746396  8.658171        NA  9.238569</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   0.4575813 1.755034 11.875236 4.5680109 11.451221        NA 10.497917</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   2.4747731 2.557094  9.727635 1.1073042  9.170393 0.7057609  8.823217</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  3.3747657       NA        NA 5.2374332  5.521083 4.4795623  6.042235</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    BMD.zSD.lower BMD.zSD.upper BMD.xfold.lower BMD.xfold.upper nboot.successful</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      2.5419708     5.4286753       5.2096769       6.3162993                5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.3962742     0.6113321       0.7585065       0.8436521                3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1.2880859     1.8703357             Inf             Inf                5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      1.7779716     4.3860471             Inf             Inf                5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.8764846     4.6482205       6.2736050       6.5002417                3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      5.5427874     5.8066169       4.8002585       5.2521995                3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      0.8306628     5.0192077             Inf             Inf                4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0.8761457     1.3426806             Inf             Inf                5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      0.6833629     1.7755611       0.5927642       0.9811772                3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     4.3970279     5.6776223       3.2853394       5.1984021                4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           e          f     SDres      typology trend        y0 yatdosemax</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  2.276375         NA 0.3183292  E.inc.convex   inc  7.740153   8.983706</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1.131878  0.7204105 0.3802228       GP.bell  bell  7.585780   8.903415</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        NA         NA 0.1648041         L.dec   dec 15.608419  14.889308</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  3.404151         NA 0.2142472 E.dec.concave   dec 15.142111  14.367457</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1.959459 -1.6121601 0.2994936          GP.U     U  8.534547   9.341173</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  1.074077         NA 1.1263294 E.dec.concave   dec  6.682254   3.082935</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  1.735801 -0.9436037 0.2594717          GP.U     U  8.398699   9.007963</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  1.755034  0.7172903 0.2131311       GP.bell  bell 11.664352  11.206771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.557094 37.5306822 1.1492863       GP.bell  bell  8.021106   5.546333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 1.357565         NA 1.1925115 E.dec.concave   dec  6.713594   3.338828</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       yrange maxychange  xextrem   yextrem   BMD.zSD   BMR.zSD BMD.xfold</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.2435536  1.2435536       NA        NA 3.8627811  8.058482 5.6254811</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1.5579862  1.5579862 1.438980  9.143766 0.5682965  7.966002 0.7867277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.7191107  0.7191107       NA        NA 1.5196769 15.443615        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.7746535  0.7746535       NA        NA 3.3346122 14.927864        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1.1021235  0.8066266 1.959459  8.239050 4.9146813  8.834040        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  3.5993188  3.5993188       NA        NA 5.3880603  5.555924 4.8321606</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.8289366  0.6092640 1.735801  8.179027 4.5746396  8.658171        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.6684651  0.4575813 1.755034 11.875236 4.5680109 11.451221        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  4.1813021  2.4747731 2.557094  9.727635 1.1073042  9.170393 0.7057609</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 3.3747657  3.3747657       NA        NA 5.2374332  5.521083 4.4795623</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    BMR.xfold BMD.zSD.lower BMD.zSD.upper BMD.xfold.lower BMD.xfold.upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   8.514168     2.5419708     5.4286753       5.2096769       6.3162993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   8.344358     0.3962742     0.6113321       0.7585065       0.8436521</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  14.047577     1.2880859     1.8703357             Inf             Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  13.627900     1.7779716     4.3860471             Inf             Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   9.388001     0.8764846     4.6482205       6.2736050       6.5002417</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   6.014028     5.5427874     5.8066169       4.8002585       5.2521995</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   9.238569     0.8306628     5.0192077             Inf             Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  10.497917     0.8761457     1.3426806             Inf             Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   8.823217     0.6833629     1.7755611       0.5927642       0.9811772</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  6.042235     4.3970279     5.6776223       3.2853394       5.1984021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    nboot.successful</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                4</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="co"># plot of BMD.zSD after removing of BMDs with infinite upper bounds</span></span></span>
 <span class="r-plt img"><img src="bmdboot-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
@@ -326,24 +338,30 @@ to finite values.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 27.1   27 3.087292e-05       linear     2 -0.10844680       NA 15.608419</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 25.1   25 1.597308e-04  exponential     3 -0.12880720       NA 15.142111</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5    4    4 2.302448e-04 Gauss-probit     4  3.07918791 9.851210  9.851210</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          e          f     SDres      typology trend        y0    yrange</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.276375         NA 0.3183292  E.inc.convex   inc  7.740153 1.2435536</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.131878  0.7204105 0.3802228       GP.bell  bell  7.585780 1.5579862</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       NA         NA 0.1648041         L.dec   dec 15.608419 0.7191107</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3.404151         NA 0.2142472 E.dec.concave   dec 15.142111 0.7746535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.959459 -1.6121601 0.2994936          GP.U     U  8.534547 1.1021235</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   maxychange  xextrem  yextrem   BMD.zSD   BMR.zSD BMD.xfold BMR.xfold</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.2435536       NA       NA 3.8627811  8.058482 5.6254811  8.514168</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1.5579862 1.438980 9.143766 0.5682965  7.966002 0.7867277  8.344358</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.7191107       NA       NA 1.5196769 15.443615        NA 14.047577</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.7746535       NA       NA 3.3346122 14.927864        NA 13.627900</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.8066266 1.959459 8.239050 4.9146813  8.834040        NA  9.388001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   BMD.zSD.lower BMD.zSD.upper BMD.xfold.lower BMD.xfold.upper nboot.successful</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.9208514      5.359634       4.2658199        6.309720              933</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.2469740      0.819497       0.5080299        1.067951              562</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     0.9228184      2.100893             Inf             Inf             1000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     1.5797790      5.033988             Inf             Inf              929</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.5446487      5.151517       5.7927268             Inf              745</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          e          f     SDres      typology trend        y0 yatdosemax</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.276375         NA 0.3183292  E.inc.convex   inc  7.740153   8.983706</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.131878  0.7204105 0.3802228       GP.bell  bell  7.585780   8.903415</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       NA         NA 0.1648041         L.dec   dec 15.608419  14.889308</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3.404151         NA 0.2142472 E.dec.concave   dec 15.142111  14.367457</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.959459 -1.6121601 0.2994936          GP.U     U  8.534547   9.341173</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      yrange maxychange  xextrem  yextrem   BMD.zSD   BMR.zSD BMD.xfold</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.2435536  1.2435536       NA       NA 3.8627811  8.058482 5.6254811</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.5579862  1.5579862 1.438980 9.143766 0.5682965  7.966002 0.7867277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.7191107  0.7191107       NA       NA 1.5196769 15.443615        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.7746535  0.7746535       NA       NA 3.3346122 14.927864        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.1021235  0.8066266 1.959459 8.239050 4.9146813  8.834040        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   BMR.xfold BMD.zSD.lower BMD.zSD.upper BMD.xfold.lower BMD.xfold.upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  8.514168     1.9208514      5.359634       4.2658199        6.309720</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  8.344358     0.2469740      0.819497       0.5080299        1.067951</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 14.047577     0.9228184      2.100893             Inf             Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 13.627900     1.5797790      5.033988             Inf             Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  9.388001     0.5446487      5.151517       5.7927268             Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   nboot.successful</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1              933</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2              562</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3             1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4              929</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5              745</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot of fits with BMD values  and confidence intervals</span></span></span>
 <span class="r-in"><span><span class="co"># with the default BMD.zSD</span></span></span>
@@ -372,24 +390,30 @@ to finite values.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 27.1   27 3.087292e-05       linear     2 -0.10844680       NA 15.608419</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 25.1   25 1.597308e-04  exponential     3 -0.12880720       NA 15.142111</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5    4    4 2.302448e-04 Gauss-probit     4  3.07918791 9.851210  9.851210</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          e          f     SDres      typology trend        y0    yrange</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.276375         NA 0.3183292  E.inc.convex   inc  7.740153 1.2435536</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.131878  0.7204105 0.3802228       GP.bell  bell  7.585780 1.5579862</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       NA         NA 0.1648041         L.dec   dec 15.608419 0.7191107</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3.404151         NA 0.2142472 E.dec.concave   dec 15.142111 0.7746535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.959459 -1.6121601 0.2994936          GP.U     U  8.534547 1.1021235</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   maxychange  xextrem  yextrem   BMD.zSD   BMR.zSD BMD.xfold BMR.xfold</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.2435536       NA       NA 3.8627811  8.058482 5.6254811  8.514168</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1.5579862 1.438980 9.143766 0.5682965  7.966002 0.7867277  8.344358</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.7191107       NA       NA 1.5196769 15.443615        NA 14.047577</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.7746535       NA       NA 3.3346122 14.927864        NA 13.627900</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.8066266 1.959459 8.239050 4.9146813  8.834040        NA  9.388001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   BMD.zSD.lower BMD.zSD.upper BMD.xfold.lower BMD.xfold.upper nboot.successful</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     2.1621819     5.1130965       4.4969370        6.213131              940</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.2860352     0.7656966       0.5803256        1.023516              585</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     0.9791835     2.0226321             Inf             Inf             1000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     1.8395258     4.8914468             Inf             Inf              949</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.6371109     4.9854762       5.9397256             Inf              769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          e          f     SDres      typology trend        y0 yatdosemax</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.276375         NA 0.3183292  E.inc.convex   inc  7.740153   8.983706</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.131878  0.7204105 0.3802228       GP.bell  bell  7.585780   8.903415</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       NA         NA 0.1648041         L.dec   dec 15.608419  14.889308</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3.404151         NA 0.2142472 E.dec.concave   dec 15.142111  14.367457</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.959459 -1.6121601 0.2994936          GP.U     U  8.534547   9.341173</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      yrange maxychange  xextrem  yextrem   BMD.zSD   BMR.zSD BMD.xfold</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.2435536  1.2435536       NA       NA 3.8627811  8.058482 5.6254811</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.5579862  1.5579862 1.438980 9.143766 0.5682965  7.966002 0.7867277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.7191107  0.7191107       NA       NA 1.5196769 15.443615        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.7746535  0.7746535       NA       NA 3.3346122 14.927864        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.1021235  0.8066266 1.959459 8.239050 4.9146813  8.834040        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   BMR.xfold BMD.zSD.lower BMD.zSD.upper BMD.xfold.lower BMD.xfold.upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  8.514168     2.1621819     5.1130965       4.4969370        6.213131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  8.344358     0.2860352     0.7656966       0.5803256        1.023516</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 14.047577     0.9791835     2.0226321             Inf             Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 13.627900     1.8395258     4.8914468             Inf             Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  9.388001     0.6371109     4.9854762       5.9397256             Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   nboot.successful</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1              940</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2              585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3             1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4              949</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5              769</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
