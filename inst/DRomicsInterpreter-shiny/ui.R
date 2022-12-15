@@ -90,56 +90,55 @@ ui <- fluidPage(
                         HTML("<center><font face=verdana size=6 color=#9c5c16>Welcome to the DRomicsInterpreter-shiny application</font></center>"),
                         HTML("<center><font face=verdana size=5 color=#9c5c16>A second workflow for interpretation in light of a biological annotation</font></center>"),
                         br(), br(),
-                        fixedRow(column(8, offset = 2,
-                                        h4("DRomicsInterpreter-shiny application runs on the ",
+                        fixedRow(column(10, offset = 1,
+                                        br(),
+                                        p(strong("Links and resources")),
+                                        p("The DRomicsInterpreter-shiny application runs on the ",
                                            a("shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#f28d0f;"),
                                            "with the develoment version of the DRomics package (available on ",
                                            a("Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#f28d0f;"),")."),
-                                        h4("DRomics is also an R package, available on ",
-                                           a("CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#f28d0f;"),
-                                           " and on ",
+                                        p("DRomics is also an R package, available on ",
+                                           a("CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#f28d0f;"), ".", 
+                                          " You can find more information and help about the DRomicsInterpreter-shiny application and the DRomics package on ",
                                            a("this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"), "."),
-                                        h4("You can find help about the DRomicsInterpreter-shiny application and the DRomics package in a ",
-                                           a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_4.pdf", TARGET="_blank", style="color:#f28d0f;"), " and a ",
-                                           a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_1.pdf", TARGET="_blank", style="color:#f28d0f;"), "."
-                                        )
-                        )),
-                        hr(style='width: 70%;'),
-                        fixedRow(column(8, offset = 2,
+                                        p(" Reading the vignette first and using the cheat sheet (both are available on this ", 
+                                          a("this page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"), 
+                                          ") are recommended. "),
+                                        
+                                        br(),
                                         p(strong("Citation and publications")),
                                         p("If you use Dromics Shiny App, you should cite:"),
-                                        p("Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018).", br(),
-                                          em("DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment."), br(),
+                                        p(em("DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment."), br(),
+                                          "Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018).", 
                                           "Environmental Science & Technology.",
                                           a("https://doi.org/10.1021/acs.est.8b04752", href = "https://pubs.acs.org/doi/10.1021/acs.est.8b04752", TARGET = "_blank", style="color:#f28d0f;")),
-
-                                        br(),
                                         p("You can freely find this article at: ", a("https://hal.archives-ouvertes.fr/hal-02309919", href = "https://hal.archives-ouvertes.fr/hal-02309919", TARGET = "_blank", style="color:#f28d0f;")),
 
                                         br(),
                                         p("You can also look at the following citation for a complete example of use:"),
-                                        p("Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020).", br(),
-                                          em("A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus."), br(),
+                                        p(em("A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus."), br(),
+                                          "Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020).",
                                           "Journal of Hazardous Materials.",
                                           a("https://doi.org/10.1016/j.jhazmat.2020.122727", href = "https://doi.org/10.1016/j.jhazmat.2020.122727", TARGET = "_blank", style="color:#f28d0f;")),
 
                                         br(),
-                                        p(strong("Contacts and authors")),
+                                        p(strong("Contact")),
                                         p("If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at ", strong("dromics@univ-lyon1.fr"), "."),
                                         p("Issues can be reported on",
-                                          a("https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#f28d0f;"), "."),
+                                          a("https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#f28d0f;"), ".")
 
-                                        br(),
-                                        p(a("Elise Billoir", href = "http://bddc.liec.univ-lorraine.fr/cv/BILLOIR%20E.htm", TARGET = "_blank", style="color:#f28d0f;"),
-                                          "- elise.billoir@univ-lorraine.fr - Laboratoire Interdisciplinaire des Environnements Continentaux - Université de Lorraine - Metz - France"),
-                                        p(a("Marie-Laure Delignette-Muller", href = "https://lbbe.univ-lyon1.fr/fr/annuaires-des-membres/delignette-muller-marie-laure", TARGET = "_blank", style="color:#f28d0f;"),
-                                          "- marielaure.delignettemuller@vetagro-sup.fr - Laboratoire de Biométrie et Biologie Evolutive - VetAgro Sup - Lyon - France"),
-                                        p(a("Floriane Larras", href = "https://www.researchgate.net/profile/Floriane_Larras", TARGET = "_blank", style="color:#f28d0f;"),
-                                          "- floriane.larras@kreatis.eu - KREATiS - L'Isle-d'Abeau - France"),
-                                        p(a("Mechthild Schmitt-Jansen", href = "https://www.ufz.de/index.php?en=38467", TARGET = "_blank", style="color:#f28d0f;"),
-                                          "- mechthild.schmitt@ufz.de - Department of Bioanalytical Ecotoxicology - Helmholtz Center for Environmental Research GmbH - Leipzig - Germany"),
-                                        p(a("Aurélie Siberchicot", href = "https://lbbe.univ-lyon1.fr/fr/annuaires-des-membres/siberchicot-aurelie", TARGET = "_blank", style="color:#f28d0f;"),
-                                          "- aurelie.siberchicot@univ-lyon1.fr - Laboratoire de Biométrie et Biologie Evolutive - Université Lyon 1 - Lyon - France")
+                                        
+                        )),
+                        
+                        hr(style='width: 80%;'),
+                        fixedRow(column(10, offset = 2,
+                                        fillRow(flex = 0.11,
+                                                a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", width = 120), href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
+                                                a(img(src = "logoVetAgroSup.jpg", height = 100, width = 120), href="http://www.vetagro-sup.fr/", TARGET="_blank"),
+                                                a(img(src = "logoLyon1.png", height = 80, width = 380), href="https://www.univ-lyon1.fr/", TARGET="_blank"),
+                                                a(img(src = "LogoUniversiteLorraine.png", height = 80, width = 180), href="http://www.univ-lorraine.fr/", TARGET="_blank"),
+                                                style="text-align: center;"
+                                        )
                                         
                         ))
                         
@@ -414,11 +413,8 @@ ui <- fluidPage(
                       fixedRow(
                         column(8, 
                                br(), HTML("<font face=verdana size=5 color=#9c5c16><b>R CODE TO GO FURTHER</b></font>"), br(), br(), br(),
-                               tags$blockquote("To see what more you can do using the R package, we recommend you to consult the ", 
-                                               a("vignette", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_vignette_4.pdf", TARGET="_blank", style="color:#f28d0f;"),
-                                               " and the ", 
-                                               a("cheat sheet", href = "https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_1.pdf", TARGET="_blank", style="color:#f28d0f;"),
-                                               " of the package."), 
+                               tags$blockquote("To see what more you can do using the R package, we recommend you to consult the vignette and the cheat sheet", 
+                                               "(links to all resources ", a("here", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"),")."), 
                                br(), 
                                downloadButton("buttonDownRCode", "Download R Code", icon = icon("fas fa-download"), style = 'background-color:#e6e6e6; color:#000000; border-color:#9d9d9d;'), br(), br(),
                                verbatimTextOutput('printRCode'), br(), br()
