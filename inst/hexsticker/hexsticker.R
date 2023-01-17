@@ -4,7 +4,7 @@
 
 hexSticker::sticker(
   
-  subplot  = here::here("inst", "hexsticker", "icon.png"),
+  subplot  = magick::image_read("inst/hexsticker/icon.png"),
   package  = "DRomics",
   filename = here::here("man", "figures", "hexsticker.png"),
   
@@ -16,7 +16,7 @@ hexSticker::sticker(
   
   s_x      = 1.00,        # Subplot
   s_y      = 1.05,        # Subplot
-  s_width  = 0.85,        # Subplot
-  s_height = 0.85,        # Subplot
+  s_width  = 1.5,        # Subplot
+  s_height = 1.5,        # Subplot
   asp = 1
 )
