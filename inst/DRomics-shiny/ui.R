@@ -34,7 +34,7 @@ ui <- fluidPage(
                         HTML("<center><font face=verdana size=5 color=#9c5c16>A first workflow for dose-response modelling</font></center>"),
                         br(), br(),
                         fixedRow(column(10, offset = 1,
-                                        tags$blockquote("DRomics-shiny is a freely available on-line tool for dose-response (or concentration-response) characterization from omics data.
+                                        tags$blockquote("DRomics-shiny is a freely available tool for dose-response (or concentration-response) characterization from omics data.
                                              It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations)
                                              rather than a great number of replicates (no need of three replicates).", br(), 
                                                         "After a first optional step which consists to import, check and if needed normalize/transform the data (step 1), the aim of the proposed workflow 
