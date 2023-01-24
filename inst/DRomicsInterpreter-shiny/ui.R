@@ -131,9 +131,10 @@ ui <- fluidPage(
                         )),
                         
                         hr(style='width: 80%;'),
-                        fixedRow(column(10, offset = 2,
-                                        fillRow(flex = 0.11,
-                                                a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", width = 120), href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
+                        br(),
+                        fixedRow(column(10, offset = 3,
+                                        fillRow(flex = NA,
+                                                a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", width = 220), href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
                                                 a(img(src = "logoVetAgroSup.jpg", height = 100, width = 120), href="http://www.vetagro-sup.fr/", TARGET="_blank"),
                                                 a(img(src = "logoLyon1.png", height = 80, width = 380), href="https://www.univ-lyon1.fr/", TARGET="_blank"),
                                                 a(img(src = "LogoUniversiteLorraine.png", height = 80, width = 180), href="http://www.univ-lorraine.fr/", TARGET="_blank"),
