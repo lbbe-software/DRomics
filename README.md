@@ -62,7 +62,7 @@ The following command (rather long to execute because of the large size of the v
 remotes::install_github("aursiber/DRomics", build_vignettes = TRUE)
 ```
 
-A **cheat sheet** that sum up the DRomics workflow is also available [here](https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics_cheat_sheet_1.pdf).
+A **cheat sheet** that sum up the DRomics workflow is also available [here](https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics.pdf).
 
 ## Two shiny apps 
 The two shiny apps (`DRomics-shiny` and `DRomicsInterpreter-shiny`) that work with DRomics are available :
