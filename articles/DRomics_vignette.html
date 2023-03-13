@@ -76,7 +76,7 @@
 Delignette-Muller, Aurélie Siberchicot, Elise Billoir, Floriane
 Larras</h4>
             
-            <h4 data-toc-skip class="date">2023-02-07</h4>
+            <h4 data-toc-skip class="date">2023-03-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/aursiber/DRomics/blob/HEAD/vignettes/DRomics_vignette.Rmd" class="external-link"><code>vignettes/DRomics_vignette.Rmd</code></a></small>
       <div class="d-none name"><code>DRomics_vignette.Rmd</code></div>
@@ -832,18 +832,18 @@ details).</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drcfit.html">drcfit</a></span><span class="op">(</span><span class="va">s_quad</span>, progressbar <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Results of the fitting using the AICc to select the best fit model</span></span>
-<span><span class="co">## 24 dose-response curves out of 150 previously selected were removed </span></span>
+<span><span class="co">## 22 dose-response curves out of 150 previously selected were removed </span></span>
 <span><span class="co">## because no model could be fitted reliably.</span></span>
-<span><span class="co">## Distribution of the chosen models among the 126 fitted dose-response curves:</span></span>
+<span><span class="co">## Distribution of the chosen models among the 128 fitted dose-response curves:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##             Hill           linear      exponential     Gauss-probit </span></span>
-<span><span class="co">##                1               28               40               47 </span></span>
+<span><span class="co">##                2               29               39               49 </span></span>
 <span><span class="co">## log-Gauss-probit </span></span>
-<span><span class="co">##               10 </span></span>
-<span><span class="co">## Distribution of the trends (curve shapes) among the 126 fitted dose-response curves:</span></span>
+<span><span class="co">##                9 </span></span>
+<span><span class="co">## Distribution of the trends (curve shapes) among the 128 fitted dose-response curves:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## bell  dec  inc    U </span></span>
-<span><span class="co">##   37   37   32   20</span></span></code></pre>
+<span><span class="co">##   38   37   34   19</span></span></code></pre>
 <p>In the following you can see the first lines of the output data frame
 on our example (see ?drcfit for a complete description of the columns of
 the output data frame.) This output data frame provides information for
@@ -1029,7 +1029,9 @@ reasons explained in <a href="https://hal.archives-ouvertes.fr/hal-02309919/docu
 al. 2018</a> (see ?bmdcalc for details on this function).</p>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bmdcalc.html">bmdcalc</a></span><span class="op">(</span><span class="va">f</span>, z <span class="op">=</span> <span class="fl">1</span>, x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 60 BMD-xfold values and 0 BMD-zSD values could not be calculated (coded </span></span>
+<pre><code><span><span class="co">## 1 BMD-xfold values and 0 BMD-zSD values are not defined (coded NaN as </span></span>
+<span><span class="co">## the BMR stands outside the range of response values defined by the model).</span></span>
+<span><span class="co">## 60 BMD-xfold values and 0 BMD-zSD values could not be calculated (coded </span></span>
 <span><span class="co">## NA as the BMR stands within the range of response values defined by the </span></span>
 <span><span class="co">## model but outside the range of tested doses).</span></span></code></pre>
 <p>For the <strong>recommended BMD-zSD</strong>,the argument <span class="math inline">\(z\)</span>, by default at 1, is used to define the
@@ -1135,10 +1137,10 @@ the argument niter (1000) should be considered as a minimal value to
 obtain stable results</strong>.</p>
 <div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bmdboot.html">bmdboot</a></span><span class="op">(</span><span class="va">r</span>, niter <span class="op">=</span> <span class="fl">50</span>, progressbar <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Bootstrap confidence interval computation failed on 19 items among 126 </span></span>
+<pre><code><span><span class="co">## Bootstrap confidence interval computation failed on 17 items among 128 </span></span>
 <span><span class="co">## due to lack of convergence of the model fit for a fraction of the </span></span>
 <span><span class="co">## bootstrapped samples greater than 0.5.</span></span>
-<span><span class="co">## For 9 BMD.zSD values and 64 BMD.xfold values among 126 at least one </span></span>
+<span><span class="co">## For 4 BMD.zSD values and 68 BMD.xfold values among 128 at least one </span></span>
 <span><span class="co">## bound of the 95 percent confidence interval could not be computed due </span></span>
 <span><span class="co">## to some bootstrapped BMD values not reachable due to model asymptotes </span></span>
 <span><span class="co">## or reached outside the range of tested doses (bounds coded Inf)).</span></span></code></pre>
@@ -1215,7 +1217,7 @@ ascending order of the adjusted p-values returned by the item selection
 step.</p>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">b</span><span class="op">$</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 'data.frame':    126 obs. of  28 variables:</span></span>
+<pre><code><span><span class="co">## 'data.frame':    128 obs. of  28 variables:</span></span>
 <span><span class="co">##  $ id              : chr  "383.2" "384.2" "363.1" "383.1" ...</span></span>
 <span><span class="co">##  $ irow            : int  725 727 686 724 726 687 689 688 568 569 ...</span></span>
 <span><span class="co">##  $ adjpvalue       : num  2.08e-07 2.08e-07 2.24e-07 2.24e-07 3.41e-07 ...</span></span>
@@ -1227,7 +1229,7 @@ step.</p>
 <span><span class="co">##  $ e               : num  1.7 1.76 3.11 1.72 1.77 ...</span></span>
 <span><span class="co">##  $ f               : num  3.62 NA NA 3.58 5.01 ...</span></span>
 <span><span class="co">##  $ SDres           : num  0.157 0.16 0.218 0.169 0.158 ...</span></span>
-<span><span class="co">##  $ typology        : Factor w/ 11 levels "E.dec.concave",..: 5 1 1 5 5 1 1 1 2 2 ...</span></span>
+<span><span class="co">##  $ typology        : Factor w/ 12 levels "E.dec.concave",..: 5 1 1 5 5 1 1 1 2 2 ...</span></span>
 <span><span class="co">##  $ trend           : Factor w/ 4 levels "bell","dec","inc",..: 1 2 2 1 1 2 2 2 2 2 ...</span></span>
 <span><span class="co">##  $ y0              : num  12 12.2 9.1 12.2 12.1 ...</span></span>
 <span><span class="co">##  $ yatdosemax      : num  11.03 10.99 7.58 11.15 11.15 ...</span></span>
