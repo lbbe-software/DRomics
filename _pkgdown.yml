@@ -2,13 +2,16 @@ template:
   bootstrap: 5
   bootswatch: flatly
 
-  bslib:
-    primary: "#433625"
-    navbar-background: "#9c5c16"
+bslib:
+  primary: "#433625"
+  navbar-background: "#9c5c16"
     
   trailing_slash_redirect: true
 
-  navbar:
-    structure:
-      left:  [intro, reference, articles, tutorials, news]
-      right: [search, github]
+navbar:
+  structure:
+    left:  [intro, reference, articles, tutorials, news]
+    right: [search, github]
+    
+toc:
+  depth: 4  
