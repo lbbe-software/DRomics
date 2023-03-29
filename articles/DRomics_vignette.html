@@ -67,8 +67,6 @@
 </nav><div class="container template-article">
 
 
-
-
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Overview of the DRomics package</h1>
@@ -76,7 +74,7 @@
 Delignette-Muller, Aurélie Siberchicot, Elise Billoir, Floriane
 Larras</h4>
             
-            <h4 data-toc-skip class="date">2023-03-22</h4>
+            <h4 data-toc-skip class="date">2023-03-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/aursiber/DRomics/blob/HEAD/vignettes/DRomics_vignette.Rmd" class="external-link"><code>vignettes/DRomics_vignette.Rmd</code></a></small>
       <div class="d-none name"><code>DRomics_vignette.Rmd</code></div>
@@ -84,8 +82,9 @@ Larras</h4>
 
     
     
-<div class="section level2">
-<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+<div class="section level2" number="1">
+<h2 id="introduction">
+<span class="header-section-number">1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>DRomics is a freely available tool for dose-response (or
 concentration-response) characterization from omics data. It is
@@ -163,18 +162,24 @@ go further using the R functions, we recommend you to start from the
 whole R code corresponding to your analysis that is provided on the last
 page of each of the two shiny applications.</p>
 </div>
-<div class="section level2">
-<h2 id="mainworkflow">Main workflow<a class="anchor" aria-label="anchor" href="#mainworkflow"></a>
+<div class="section level2" number="2">
+<h2 id="mainworkflow">
+<span class="header-section-number">2</span> Main workflow<a class="anchor" aria-label="anchor" href="#mainworkflow"></a>
 </h2>
-<div class="section level3">
-<h3 id="step1">Step 1: importation, check and normalization / transformation of
-data if needed<a class="anchor" aria-label="anchor" href="#step1"></a>
+<div class="section level3" number="2.1">
+<h3 id="step1">
+<span class="header-section-number">2.1</span> Step 1: importation,
+check and normalization / transformation of data if needed<a class="anchor" aria-label="anchor" href="#step1"></a>
 </h3>
-<div class="section level4">
-<h4 id="general-format-of-imported-data">General format of imported data<a class="anchor" aria-label="anchor" href="#general-format-of-imported-data"></a>
+<div class="section level4" number="2.1.1">
+<h4 id="general-format-of-imported-data">
+<span class="header-section-number">2.1.1</span> General format of
+imported data<a class="anchor" aria-label="anchor" href="#general-format-of-imported-data"></a>
 </h4>
-<div class="section level5">
-<h5 id="textfile">Importation of data from a unique text file<a class="anchor" aria-label="anchor" href="#textfile"></a>
+<div class="section level5" number="2.1.1.1">
+<h5 id="textfile">
+<span class="header-section-number">2.1.1.1</span> Importation of
+data from a unique text file<a class="anchor" aria-label="anchor" href="#textfile"></a>
 </h5>
 <p>Whatever the type of data imported in DRomics (e.g. RNAseq,
 microarray, metabolomic data), data can be imported from a .txt file
@@ -223,8 +228,10 @@ way, such use a datafilename of type
 <span><span class="co">## 5   26   16   26   32   33</span></span>
 <span><span class="co">## 6    0    0    1    0    1</span></span></code></pre>
 </div>
-<div class="section level5">
-<h5 id="Robject">Importation of data as an R object<a class="anchor" aria-label="anchor" href="#Robject"></a>
+<div class="section level5" number="2.1.1.2">
+<h5 id="Robject">
+<span class="header-section-number">2.1.1.2</span> Importation of
+data as an R object<a class="anchor" aria-label="anchor" href="#Robject"></a>
 </h5>
 <p><strong>Alternatively an R object of class data.frame can be directly
 given in input</strong>, that corresponds to the output of
@@ -328,11 +335,15 @@ reads, fluorescence signal, …).</p>
 </div>
 </div>
 </div>
-<div class="section level4">
-<h4 id="datatypes">What types of data can be analyzed using DRomics ?<a class="anchor" aria-label="anchor" href="#datatypes"></a>
+<div class="section level4" number="2.1.2">
+<h4 id="datatypes">
+<span class="header-section-number">2.1.2</span> What types of data
+can be analyzed using DRomics ?<a class="anchor" aria-label="anchor" href="#datatypes"></a>
 </h4>
-<div class="section level5">
-<h5 id="description-of-the-classical-types-of-data-handled-by-dromics">Description of the classical types of data handled by DRomics<a class="anchor" aria-label="anchor" href="#description-of-the-classical-types-of-data-handled-by-dromics"></a>
+<div class="section level5" number="2.1.2.1">
+<h5 id="description-of-the-classical-types-of-data-handled-by-dromics">
+<span class="header-section-number">2.1.2.1</span> Description of
+the classical types of data handled by DRomics<a class="anchor" aria-label="anchor" href="#description-of-the-classical-types-of-data-handled-by-dromics"></a>
 </h5>
 <p>DRomics offers the possibility to work on different types of omics
 data (see following subsections for their description) but also on
@@ -384,8 +395,10 @@ omics data</strong>) are internally analysed using functions of the
 Bioconductor package <a href="https://www.bioconductor.org/packages/release/bioc/html/limma.html" class="external-link">limma</a>
 and <strong>continuous anchoring data</strong> are internally analysed
 using the classical lm() function.</p>
-<div class="section level6">
-<h6 id="RNAseqexample">An example with RNAseq data<a class="anchor" aria-label="anchor" href="#RNAseqexample"></a>
+<div class="section level6" number="2.1.2.1.1">
+<h6 id="RNAseqexample">
+<span class="header-section-number">2.1.2.1.1</span> An example with
+RNAseq data<a class="anchor" aria-label="anchor" href="#RNAseqexample"></a>
 </h6>
 <p>For RNAseq data, <strong>imperatively imported in raw counts</strong>
 (if your counts come from Kallisto or Salmon put add the argument
@@ -419,13 +432,15 @@ log2 scale</strong>.</p>
 <span><span class="co">## the following method: vst</span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">o.RNAseq</span>, cex.main <span class="op">=</span> <span class="fl">0.8</span>, col <span class="op">=</span> <span class="st">"green"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-6-1.png"><!-- --></p>
 <p>The plot of the output shows the distribution of the signal on all
 the contigs/genes, for each sample, before and after the normalization
 and transformation of data.</p>
 </div>
-<div class="section level6">
-<h6 id="microarrayexample">An example with microarray data<a class="anchor" aria-label="anchor" href="#microarrayexample"></a>
+<div class="section level6" number="2.1.2.1.2">
+<h6 id="microarrayexample">
+<span class="header-section-number">2.1.2.1.2</span> An example with
+microarray data<a class="anchor" aria-label="anchor" href="#microarrayexample"></a>
 </h6>
 <p>For single-channel microarray data, <strong>imperatively imported in
 log scale</strong> (classical and recommended log2 scale), you can
@@ -451,13 +466,15 @@ others</strong> (see ?microarraydata for details).</p>
 <span><span class="co">## Data were normalized between arrays using the following method: quantile</span></span></code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">o.microarray</span>, cex.main <span class="op">=</span> <span class="fl">0.8</span>, col <span class="op">=</span> <span class="st">"green"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-8-1.png"><!-- --></p>
 <p>The plot of the output shows the distribution of the signal over all
 the probes, for each sample, before and after the normalization of
 data.</p>
 </div>
-<div class="section level6">
-<h6 id="metabolomicexample">An example with metabolomic data<a class="anchor" aria-label="anchor" href="#metabolomicexample"></a>
+<div class="section level6" number="2.1.2.1.3">
+<h6 id="metabolomicexample">
+<span class="header-section-number">2.1.2.1.3</span> An example with
+metabolomic data<a class="anchor" aria-label="anchor" href="#metabolomicexample"></a>
 </h6>
 <p><strong>Neither normalization nor transformation</strong> is provided
 in the function continuousomicdata(). The <strong>pre-treatment of
@@ -497,7 +514,7 @@ recommend to do it before those three previously described steps.</p>
 <span><span class="co">## [11] "P_19" "P_21" "P_22" "P_26" "P_32" "P_34" "P_35" "P_36" "P_37" "P_38"</span></span></code></pre>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">o.metabolo</span>, col <span class="op">=</span> <span class="st">"green"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-10-1.png"><!-- --></p>
 <p>The plot of the output shows the distribution of the signal over all
 the metabolites, for each sample.</p>
 <p>The deprecated metabolomicdata() function was renamed
@@ -511,8 +528,10 @@ imported in a scale that enables the use of a Gaussian error
 model</strong> as this strong hypothesis is required both for selection
 of items and for dose-response modeling.</p>
 </div>
-<div class="section level6">
-<h6 id="apicalexample">An example with continuous anchoring apical data<a class="anchor" aria-label="anchor" href="#apicalexample"></a>
+<div class="section level6" number="2.1.2.1.4">
+<h6 id="apicalexample">
+<span class="header-section-number">2.1.2.1.4</span> An example with
+continuous anchoring apical data<a class="anchor" aria-label="anchor" href="#apicalexample"></a>
 </h6>
 <p>No transformation is provided in the function
 continuousanchoringdata(). <strong>If needed the pre-treatment of data
@@ -541,13 +560,15 @@ situ</em> data</a> for details on this point).</p>
 <span><span class="co">## [1] "growth"         "photosynthesis"</span></span></code></pre>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">o.anchoring</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-12-1.png"><!-- --></p>
 <p>For such data the plot() function simply provides a dose-response
 plot for each endpoint.</p>
 </div>
 </div>
-<div class="section level5">
-<h5 id="specificdesigns">Handling of data collected through specific designs<a class="anchor" aria-label="anchor" href="#specificdesigns"></a>
+<div class="section level5" number="2.1.2.2">
+<h5 id="specificdesigns">
+<span class="header-section-number">2.1.2.2</span> Handling of data
+collected through specific designs<a class="anchor" aria-label="anchor" href="#specificdesigns"></a>
 </h5>
 <p>The DRomics workflow was first developed for data collected through a
 typical dose-response experiment, with a reasonable number of tested
@@ -573,8 +594,10 @@ with RNAseq data from an experiment with a batch effect</a> for more
 details on how to handle such a case and see ?PCAplot for details on
 this specific function <strong>that could also be used to identify
 potential outlier samples</strong>).</p>
-<div class="section level6">
-<h6 id="insitudata">An example with <em>in situ</em> (observational) RNAseq data<a class="anchor" aria-label="anchor" href="#insitudata"></a>
+<div class="section level6" number="2.1.2.2.1">
+<h6 id="insitudata">
+<span class="header-section-number">2.1.2.2.1</span> An example with
+<em>in situ</em> (observational) RNAseq data<a class="anchor" aria-label="anchor" href="#insitudata"></a>
 </h6>
 <p>One of the problem that may occur in particular with <em>in situ</em>
 data, is the absence of real control samples, corresponding to a
@@ -629,15 +652,16 @@ outliers in that case, just force the <code>transfo.method</code> to
 <span><span class="co">## the following method: vst</span></span></code></pre>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">o.insitu</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-13-1.png"><!-- --></p>
 <p>The plot of the output shows the distribution of the signal on all
 the contigs, for each sample (here the box plots are stuck to each other
 due to the large number of samples), before and after the normalization
 and transformation of data.</p>
 </div>
-<div class="section level6">
-<h6 id="batcheffect">An example with RNAseq data from an experiment with a batch
-effect<a class="anchor" aria-label="anchor" href="#batcheffect"></a>
+<div class="section level6" number="2.1.2.2.2">
+<h6 id="batcheffect">
+<span class="header-section-number">2.1.2.2.2</span> An example with
+RNAseq data from an experiment with a batch effect<a class="anchor" aria-label="anchor" href="#batcheffect"></a>
 </h6>
 <p>When omics data are collected through a <strong>design with a known
 potential batch effect</strong>, the <strong>DRomics function
@@ -714,7 +738,7 @@ both batches.</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># PCA plot to visualize the batch effect</span></span>
 <span><span class="fu"><a href="../reference/PCAdataplot.html">PCAdataplot</a></span><span class="op">(</span><span class="va">o</span>, batch <span class="op">=</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">batch</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-15-1.png"><!-- --></p>
 <p>The PCA plot shows an impact of the batch effect, that clearly
 appears on controls (red points) which were obtained on two different
 batches.</p>
@@ -734,15 +758,17 @@ batches.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># PCA plot after batch effect correction</span></span>
 <span><span class="fu"><a href="../reference/PCAdataplot.html">PCAdataplot</a></span><span class="op">(</span><span class="va">o.BEC</span>, batch <span class="op">=</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">batch</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-17-1.png"><!-- --></p>
 <p>The PCA plot after BEC shows the impact of the correction on the
 batch effect that is no more visible on controls (red points).</p>
 </div>
 </div>
 </div>
 </div>
-<div class="section level3">
-<h3 id="step2">Step 2: selection of significantly responding items<a class="anchor" aria-label="anchor" href="#step2"></a>
+<div class="section level3" number="2.2">
+<h3 id="step2">
+<span class="header-section-number">2.2</span> Step 2: selection of
+significantly responding items<a class="anchor" aria-label="anchor" href="#step2"></a>
 </h3>
 <p>For the second step of the workflow, the function
 <strong>itemselect()</strong> must be used simply <strong>taking as
@@ -795,12 +821,15 @@ unicity of the workflow independently of the type of data.</p>
 <p>See ?itemselect for more details and <a href="https://hal.archives-ouvertes.fr/hal-02309919/document" class="external-link">Larras et
 al. 2018</a> comparison of the three proposed methods on an example.</p>
 </div>
-<div class="section level3">
-<h3 id="step3">Step 3: fit of dose-response models, choice of the best fit for each
-curve<a class="anchor" aria-label="anchor" href="#step3"></a>
+<div class="section level3" number="2.3">
+<h3 id="step3">
+<span class="header-section-number">2.3</span> Step 3: fit of
+dose-response models, choice of the best fit for each curve<a class="anchor" aria-label="anchor" href="#step3"></a>
 </h3>
-<div class="section level4">
-<h4 id="fit-of-the-best-model">Fit of the best model<a class="anchor" aria-label="anchor" href="#fit-of-the-best-model"></a>
+<div class="section level4" number="2.3.1">
+<h4 id="fit-of-the-best-model">
+<span class="header-section-number">2.3.1</span> Fit of the best
+model<a class="anchor" aria-label="anchor" href="#fit-of-the-best-model"></a>
 </h4>
 <p>For Step 3 the function drcfit() simply <strong>takes as input in a
 first argument the output of itemselect()</strong>. For each item
@@ -877,8 +906,10 @@ model.</p>
 <span><span class="co">## 5       GP.bell  bell 12.1      11.15   1.11      0.949    1.77    12.3</span></span>
 <span><span class="co">## 6 E.dec.concave   dec  9.1       7.64   1.46      1.461      NA      NA</span></span></code></pre>
 </div>
-<div class="section level4">
-<h4 id="plot-of-fitted-curves">Plot of fitted curves<a class="anchor" aria-label="anchor" href="#plot-of-fitted-curves"></a>
+<div class="section level4" number="2.3.2">
+<h4 id="plot-of-fitted-curves">
+<span class="header-section-number">2.3.2</span> Plot of fitted
+curves<a class="anchor" aria-label="anchor" href="#plot-of-fitted-curves"></a>
 </h4>
 <p>By default the plot() function used on the output of the drcfit()
 function provides the first 20 fitted curves (or the ones you specify
@@ -889,7 +920,7 @@ circles</strong>. All the fitted curves may be saved in a pdf file using
 the plotfit2pdf() function (see ?drcfit).</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-21-1.png"><!-- --></p>
 <p>The fitted curves may be <strong>represented using a log
 scale</strong> for dose/concentration, which will be more suited in case
 where the range of observed doses/concentrations is very wide, using
@@ -902,10 +933,12 @@ step 2 and fitted in step 3. See an example below and details in
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">targetitems</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"88.1"</span>, <span class="st">"1"</span>, <span class="st">"3"</span>, <span class="st">"15"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/targetplot.html">targetplot</a></span><span class="op">(</span><span class="va">targetitems</span>, f <span class="op">=</span> <span class="va">f</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-22-1.png"><!-- --></p>
 </div>
-<div class="section level4">
-<h4 id="residuals">Plot of residuals<a class="anchor" aria-label="anchor" href="#residuals"></a>
+<div class="section level4" number="2.3.3">
+<h4 id="residuals">
+<span class="header-section-number">2.3.3</span> Plot of
+residuals<a class="anchor" aria-label="anchor" href="#residuals"></a>
 </h4>
 <p><strong>To check the assumption of the Gaussian error model</strong>
 (see the <a href="#leastsquares">section on least squares</a>), two
@@ -917,11 +950,12 @@ be saved in a pdf file using the plotfit2pdf() function (see
 ?drcfit).</p>
 <div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span>, plot.type <span class="op">=</span> <span class="st">"dose_residuals"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-23-1.png"><!-- --></p>
 </div>
-<div class="section level4">
-<h4 id="models">Description of the family of dose-response models fitted in
-DRomics<a class="anchor" aria-label="anchor" href="#models"></a>
+<div class="section level4" number="2.3.4">
+<h4 id="models">
+<span class="header-section-number">2.3.4</span> Description of the
+family of dose-response models fitted in DRomics<a class="anchor" aria-label="anchor" href="#models"></a>
 </h4>
 <p>The best fit model is chosen among the five following models
 describing the observed signal <span class="math inline">\(y\)</span> as
@@ -984,10 +1018,12 @@ versions with 4 parameters</strong>, one <strong>monotonic</strong> (for
 range of monotonic and biphasic DRC. In the following plot were
 represented typologies of curves that can be described using those
 models, depending of the definition of their parameters.</p>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-24-1.png" width="768"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-24-1.png"><!-- --></p>
 </div>
-<div class="section level4">
-<h4 id="leastsquares">Reminder on least squares regression<a class="anchor" aria-label="anchor" href="#leastsquares"></a>
+<div class="section level4" number="2.3.5">
+<h4 id="leastsquares">
+<span class="header-section-number">2.3.5</span> Reminder on least
+squares regression<a class="anchor" aria-label="anchor" href="#leastsquares"></a>
 </h4>
 <p>It is important when using DRomics to have in mind that the
 dose-response models are fitted using the <strong>least squares
@@ -1013,11 +1049,15 @@ the error model is not strongly violated on your data.</p>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-25-1.png" width="80%"></p>
 </div>
 </div>
-<div class="section level3">
-<h3 id="step4">Step 4: calculation of benchmark doses (BMD)<a class="anchor" aria-label="anchor" href="#step4"></a>
+<div class="section level3" number="2.4">
+<h3 id="step4">
+<span class="header-section-number">2.4</span> Step 4: calculation
+of benchmark doses (BMD)<a class="anchor" aria-label="anchor" href="#step4"></a>
 </h3>
-<div class="section level4">
-<h4 id="calculation-of-bmd">Calculation of BMD<a class="anchor" aria-label="anchor" href="#calculation-of-bmd"></a>
+<div class="section level4" number="2.4.1">
+<h4 id="calculation-of-bmd">
+<span class="header-section-number">2.4.1</span> Calculation of
+BMD<a class="anchor" aria-label="anchor" href="#calculation-of-bmd"></a>
 </h4>
 <p>The <strong>two types of benchmark doses (BMD-zSD and BMD-xfold)
 proposed by the <a href="https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2017.4658" class="external-link">EFSA
@@ -1081,8 +1121,10 @@ the columns of the output data frame.</p>
 <span><span class="co">## 5   12.26        NA     10.89</span></span>
 <span><span class="co">## 6    8.90      5.47      8.19</span></span></code></pre>
 </div>
-<div class="section level4">
-<h4 id="plots-of-the-bmd-distribution">Plots of the BMD distribution<a class="anchor" aria-label="anchor" href="#plots-of-the-bmd-distribution"></a>
+<div class="section level4" number="2.4.2">
+<h4 id="plots-of-the-bmd-distribution">
+<span class="header-section-number">2.4.2</span> Plots of the BMD
+distribution<a class="anchor" aria-label="anchor" href="#plots-of-the-bmd-distribution"></a>
 </h4>
 <p>The default plot of the output of the bmdcalc() function provides the
 distribution of benchmark doses as an ECDF (Empirical Cumulative Density
@@ -1090,7 +1132,7 @@ Function) plot for the chosen BMD (“zSD”” or “xfold”). See an example
 below.</p>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, plottype <span class="op">=</span> <span class="st">"ecdf"</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-28-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-28-1.png"><!-- --></p>
 <p>Different alternative plots are proposed (see ?bmdcalc for details)
 that can be obtained using the argument plottype to choose the type of
 plot (“ecdf”, “hist” or “density”) and the argument by to split the plot
@@ -1119,10 +1161,12 @@ change.</p>
 <span>                    shapeby <span class="op">=</span> <span class="st">"model"</span>,</span>
 <span>                    line.size <span class="op">=</span> <span class="fl">1.2</span>,</span>
 <span>                    scaling <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>shape <span class="op">=</span> <span class="st">"model"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-29-1.png"><!-- --></p>
 </div>
-<div class="section level4">
-<h4 id="bootstrap">Calculation of confidence intervals on the BMDs by bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap"></a>
+<div class="section level4" number="2.4.3">
+<h4 id="bootstrap">
+<span class="header-section-number">2.4.3</span> Calculation of
+confidence intervals on the BMDs by bootstrap<a class="anchor" aria-label="anchor" href="#bootstrap"></a>
 </h4>
 <p><strong>Confidence intervals on BMD values</strong> can be calculated
 by <strong>bootstrap</strong>. As the call to this function may take
@@ -1186,8 +1230,10 @@ confidence interval bound are not plotted.</p>
 <!-- plot(b, BMDtype = "zSD", by = "trend")  -->
 <!-- ``` -->
 </div>
-<div class="section level4">
-<h4 id="plot-of-fitted-curves-with-bmd-values-and-confidence-intervals">Plot of fitted curves with BMD values and confidence intervals<a class="anchor" aria-label="anchor" href="#plot-of-fitted-curves-with-bmd-values-and-confidence-intervals"></a>
+<div class="section level4" number="2.4.4">
+<h4 id="plot-of-fitted-curves-with-bmd-values-and-confidence-intervals">
+<span class="header-section-number">2.4.4</span> Plot of fitted
+curves with BMD values and confidence intervals<a class="anchor" aria-label="anchor" href="#plot-of-fitted-curves-with-bmd-values-and-confidence-intervals"></a>
 </h4>
 <p>It is possible to add the output of bmdcalc() (or of bmdboot()) in
 the argument BMDoutput of the plot() function of drcfit(), in order to
@@ -1200,12 +1246,14 @@ values will be also added</strong>. See an example below.</p>
 <code class="sourceCode R"><span><span class="co"># If you do not want to add the confidence intervals just replace b</span></span>
 <span><span class="co"># the output of bmdboot() by r the output of bmdcalc()</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span>, BMDoutput <span class="op">=</span> <span class="va">b</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-32-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-32-1.png"><!-- --></p>
 <p>All the fitted curves may also be saved in the same way in a pdf file
 using the plotfit2pdf() function (see ?drcfit).</p>
 </div>
-<div class="section level4">
-<h4 id="outputs">Description of the outputs of the complete DRomics workflow<a class="anchor" aria-label="anchor" href="#outputs"></a>
+<div class="section level4" number="2.4.5">
+<h4 id="outputs">
+<span class="header-section-number">2.4.5</span> Description of the
+outputs of the complete DRomics workflow<a class="anchor" aria-label="anchor" href="#outputs"></a>
 </h4>
 <p>The <strong>output of the complete DRomics workflow</strong>, given
 in <code>b$res</code> with <code>b</code> being the output of bmdboot()
@@ -1316,8 +1364,10 @@ drcfit()) and before bootstrap calculation on BMD values (in
 </div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="interpreter">Help for biological interpretation of DRomics outputs<a class="anchor" aria-label="anchor" href="#interpreter"></a>
+<div class="section level2" number="3">
+<h2 id="interpreter">
+<span class="header-section-number">3</span> Help for biological
+interpretation of DRomics outputs<a class="anchor" aria-label="anchor" href="#interpreter"></a>
 </h2>
 <p>This section illustrates functions that were developed in DRomics to
 help the biological interpretation of outputs. The idea is to
@@ -1340,13 +1390,16 @@ to illustrate how to <strong>compare the responses at different
 experimental levels</strong> (in this example different molecular
 levels). The different experimental levels could also be different time
 points, different experimental settings, different species, …</p>
-<div class="section level3">
-<h3 id="monolevel">Interpretation of DRomics results in a simple case with only one
-data set obtained in one experimental condition<a class="anchor" aria-label="anchor" href="#monolevel"></a>
+<div class="section level3" number="3.1">
+<h3 id="monolevel">
+<span class="header-section-number">3.1</span> Interpretation of
+DRomics results in a simple case with only one data set obtained in one
+experimental condition<a class="anchor" aria-label="anchor" href="#monolevel"></a>
 </h3>
-<div class="section level4">
-<h4 id="augmentation">Augmentation of the data frame of DRomics results with biological
-annotation<a class="anchor" aria-label="anchor" href="#augmentation"></a>
+<div class="section level4" number="3.1.1">
+<h4 id="augmentation">
+<span class="header-section-number">3.1.1</span> Augmentation of the
+data frame of DRomics results with biological annotation<a class="anchor" aria-label="anchor" href="#augmentation"></a>
 </h4>
 <p>This augmentation is not done using DRomics functions, but using
 simple R functions such as merge(). Nevertheless it is possible to
@@ -1477,12 +1530,15 @@ the merging.</p>
 <span><span class="co">## 5             Inf             1000                          Membrane transport</span></span>
 <span><span class="co">## 6             Inf             1000                         Signal transduction</span></span></code></pre>
 </div>
-<div class="section level4">
-<h4 id="various-plots-of-results-by-biological-group">Various plots of results by biological group<a class="anchor" aria-label="anchor" href="#various-plots-of-results-by-biological-group"></a>
+<div class="section level4" number="3.1.2">
+<h4 id="various-plots-of-results-by-biological-group">
+<span class="header-section-number">3.1.2</span> Various plots of
+results by biological group<a class="anchor" aria-label="anchor" href="#various-plots-of-results-by-biological-group"></a>
 </h4>
-<div class="section level5">
-<h5 id="bmdplot">BMD ECDF plots split by group defined from biological
-annotation<a class="anchor" aria-label="anchor" href="#bmdplot"></a>
+<div class="section level5" number="3.1.2.1">
+<h5 id="bmdplot">
+<span class="header-section-number">3.1.2.1</span> BMD ECDF plots
+split by group defined from biological annotation<a class="anchor" aria-label="anchor" href="#bmdplot"></a>
 </h5>
 <p>Using the function bmdplot() and its argument <code>facetby</code>,
 the BMD ECDF plot can be split by group (here by KEGG pathway class).
@@ -1492,7 +1548,7 @@ trend in this example (See ?bmdplot for more options).</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bmdplot.html">bmdplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, add.CI <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>                    facetby <span class="op">=</span> <span class="st">"path_class"</span>, </span>
 <span>                    colorby <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-37-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-37-1.png"><!-- --></p>
 <p>The function ecdfplotwithCI() can also be used as an alternative as
 below to provide the same plot differing by the coloring of intervals
 only. (See ?ecdfplotwithCI for more options.)</p>
@@ -1510,7 +1566,7 @@ by KEGG pathway class. (See ?bmdplotwithgradient for more options).</p>
 <span>                    scaling <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>                    facetby <span class="op">=</span> <span class="st">"path_class"</span>, </span>
 <span>                    shapeby <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>shape <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-39-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-39-1.png"><!-- --></p>
 <p>One can <strong>focus on a group of interest</strong>, for instance
 the group “Lipid metabolism”, and add the <strong>labels of
 items</strong> using argument <code>add.label</code> as below to display
@@ -1529,10 +1585,12 @@ details).</p>
 <span>                    xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6</span>,</span>
 <span>                    label.size <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>                    line.size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-40-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-40-1.png"><!-- --></p>
 </div>
-<div class="section level5">
-<h5 id="sensitivityplot">Sensitivity plot of biological groups<a class="anchor" aria-label="anchor" href="#sensitivityplot"></a>
+<div class="section level5" number="3.1.2.2">
+<h5 id="sensitivityplot">
+<span class="header-section-number">3.1.2.2</span> Sensitivity plot
+of biological groups<a class="anchor" aria-label="anchor" href="#sensitivityplot"></a>
 </h5>
 <p>It is also possible to visualize the sensitivity of <strong>each
 biological group</strong> using the sensitivityplot() function, choosing
@@ -1549,20 +1607,24 @@ calculated here by pathway class.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/sensitivityplot.html">sensitivityplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span>
 <span>                    group <span class="op">=</span> <span class="st">"path_class"</span>,</span>
 <span>                 BMDsummary <span class="op">=</span> <span class="st">"first.quartile"</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-41-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-41-1.png"><!-- --></p>
 </div>
-<div class="section level5">
-<h5 id="trendplot">Trend plot per biological group<a class="anchor" aria-label="anchor" href="#trendplot"></a>
+<div class="section level5" number="3.1.2.3">
+<h5 id="trendplot">
+<span class="header-section-number">3.1.2.3</span> Trend plot per
+biological group<a class="anchor" aria-label="anchor" href="#trendplot"></a>
 </h5>
 <p>It is possible to represent the <strong>repartition of trends in each
 biological group</strong> using the trendplot() function (see ?trendplot
 for details).</p>
 <div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trendplot.html">trendplot</a></span><span class="op">(</span><span class="va">extendedres</span>, group <span class="op">=</span> <span class="st">"path_class"</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-42-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-42-1.png"><!-- --></p>
 </div>
-<div class="section level5">
-<h5 id="curvesplot">Plot of dose-response curves per biological group<a class="anchor" aria-label="anchor" href="#curvesplot"></a>
+<div class="section level5" number="3.1.2.4">
+<h5 id="curvesplot">
+<span class="header-section-number">3.1.2.4</span> Plot of
+dose-response curves per biological group<a class="anchor" aria-label="anchor" href="#curvesplot"></a>
 </h5>
 <p>The function curvesplot() can show the dose-response curves obtained
 for different groups (or one chosen group). As for the use of
@@ -1580,7 +1642,7 @@ options).</p>
 <code class="sourceCode R"><span><span class="co"># Plot of all the scaled dose-reponse curves split by path class</span></span>
 <span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">extendedres</span>, facetby <span class="op">=</span> <span class="st">"path_class"</span>, scaling <span class="op">=</span> <span class="cn">TRUE</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>           colorby <span class="op">=</span> <span class="st">"trend"</span>, xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-43-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-43-1.png"><!-- --></p>
 <p>It is also possible using this function to visualize the modeled
 respons of each item of one biological group, as below:</p>
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
@@ -1589,13 +1651,15 @@ respons of each item of one biological group, as below:</p>
 <span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">LMres</span>, facetby <span class="op">=</span> <span class="st">"id"</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>           colorby <span class="op">=</span> <span class="st">"trend"</span>,</span>
 <span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-44-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-44-1.png"><!-- --></p>
 </div>
 </div>
 </div>
-<div class="section level3">
-<h3 id="multilevels">Comparison of DRomics results obtained at different experimental
-levels, for example in a multi-omics approach<a class="anchor" aria-label="anchor" href="#multilevels"></a>
+<div class="section level3" number="3.2">
+<h3 id="multilevels">
+<span class="header-section-number">3.2</span> Comparison of DRomics
+results obtained at different experimental levels, for example in a
+multi-omics approach<a class="anchor" aria-label="anchor" href="#multilevels"></a>
 </h3>
 <p>This section illustrates how to use DRomics functions to help the
 interpretation of outputs from different data sets obtained at
@@ -1622,9 +1686,10 @@ transcriptomics data for <em>Scenedesmus</em> and triclosan published by
 <strong>shiny application DRomicsInterpreter-shiny</strong>. Report to
 the <a href="#introduction">introduction section</a> to see how to
 launch the shiny application.</p>
-<div class="section level4">
-<h4 id="augmentation-of-the-data-frames-of-dromics-results-with-biological-annotation">Augmentation of the data frames of DRomics results with biological
-annotation<a class="anchor" aria-label="anchor" href="#augmentation-of-the-data-frames-of-dromics-results-with-biological-annotation"></a>
+<div class="section level4" number="3.2.1">
+<h4 id="augmentation-of-the-data-frames-of-dromics-results-with-biological-annotation">
+<span class="header-section-number">3.2.1</span> Augmentation of the
+data frames of DRomics results with biological annotation<a class="anchor" aria-label="anchor" href="#augmentation-of-the-data-frames-of-dromics-results-with-biological-annotation"></a>
 </h4>
 <p>Following the same steps as described before <a href="#augmentation">for one level</a>, below is an example of R code to
 <strong>import the DRomics results for microarray data</strong>, and to
@@ -1679,9 +1744,10 @@ sake of homogeneity.</p>
 <div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metabextendedres</span> <span class="op">&lt;-</span> <span class="va">extendedres</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="binding">Binding of the data frames corresponding the results at each
-experimental level<a class="anchor" aria-label="anchor" href="#binding"></a>
+<div class="section level4" number="3.2.2">
+<h4 id="binding">
+<span class="header-section-number">3.2.2</span> Binding of the data
+frames corresponding the results at each experimental level<a class="anchor" aria-label="anchor" href="#binding"></a>
 </h4>
 <p>The next step is the <strong>bind of the augmented data
 frames</strong> of results obtained at the different levels (here
@@ -1731,9 +1797,11 @@ contigs).</p>
 <span><span class="co">## 5 metabolites</span></span>
 <span><span class="co">## 6 metabolites</span></span></code></pre>
 </div>
-<div class="section level4">
-<h4 id="comparisonR">Comparison of results obtained at the different experimental levels
-using basic R functions<a class="anchor" aria-label="anchor" href="#comparisonR"></a>
+<div class="section level4" number="3.2.3">
+<h4 id="comparisonR">
+<span class="header-section-number">3.2.3</span> Comparison of
+results obtained at the different experimental levels using basic R
+functions<a class="anchor" aria-label="anchor" href="#comparisonR"></a>
 </h4>
 <p>Below are examples of illustrations that can be made using basic R
 functions to globally compare the results obtained at the different
@@ -1767,7 +1835,7 @@ pathways by molecular levels as below.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">t.pathways</span><span class="op">)</span>, beside <span class="op">=</span> <span class="cn">TRUE</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>        cex.names <span class="op">=</span> <span class="fl">0.7</span>, legend.text <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>        main <span class="op">=</span> <span class="st">"Frequencies of pathways"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-48-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-48-1.png"><!-- --></p>
 <div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">original.par</span><span class="op">)</span></span></code></pre></div>
 <p>To do the same plot in proportions, just apply the function
@@ -1792,7 +1860,7 @@ different colors for the different molecular levels.</p>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ecdf.html" class="external-link">stat_ecdf</a></span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"step"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"ECDF"</span><span class="op">)</span></span>
 <span>   </span>
 <span><span class="op">}</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-49-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-49-1.png"><!-- --></p>
 <!-- ```{r} -->
 <!-- if (require(ggplot2)) -->
 <!-- { -->
@@ -1804,13 +1872,16 @@ different colors for the different molecular levels.</p>
 <!-- With DRomics functions bmdplot(), bmdplotwithgradient(), sensitivityplot(), trendplot() and curvesplot(),  -->
 <!-- it is also possible to easily integrate different molecular levels (or another grouping level). -->
 </div>
-<div class="section level4">
-<h4 id="comparisonDRomics">Comparison of results obtained at the different experimental levels
-using DRomics functions<a class="anchor" aria-label="anchor" href="#comparisonDRomics"></a>
+<div class="section level4" number="3.2.4">
+<h4 id="comparisonDRomics">
+<span class="header-section-number">3.2.4</span> Comparison of
+results obtained at the different experimental levels using DRomics
+functions<a class="anchor" aria-label="anchor" href="#comparisonDRomics"></a>
 </h4>
-<div class="section level5">
-<h5 id="ecdf-plot-of-bmd-values-per-group-and-experimental-level-using-dromics-functions">ECDF plot of BMD values per group and experimental level using
-DRomics functions<a class="anchor" aria-label="anchor" href="#ecdf-plot-of-bmd-values-per-group-and-experimental-level-using-dromics-functions"></a>
+<div class="section level5" number="3.2.4.1">
+<h5 id="ecdf-plot-of-bmd-values-per-group-and-experimental-level-using-dromics-functions">
+<span class="header-section-number">3.2.4.1</span> ECDF plot of BMD
+values per group and experimental level using DRomics functions<a class="anchor" aria-label="anchor" href="#ecdf-plot-of-bmd-values-per-group-and-experimental-level-using-dromics-functions"></a>
 </h5>
 <p>Using the function bmdplot() the ECDF plot of the BMD-zSD values can
 be colored or split by experimental level and/or split by group (here by
@@ -1821,13 +1892,13 @@ previous section presenting bmdplot()</a>).</p>
 <code class="sourceCode R"><span><span class="co"># BMD ECDF plot split by molecular level</span></span>
 <span><span class="fu"><a href="../reference/bmdplot.html">bmdplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, </span>
 <span>                    facetby <span class="op">=</span> <span class="st">"explevel"</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-50-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-50-1.png"><!-- --></p>
 <div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># BMD ECDF plot colored by molecular level and split by path class</span></span>
 <span><span class="fu"><a href="../reference/bmdplot.html">bmdplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, </span>
 <span>                    facetby <span class="op">=</span> <span class="st">"path_class"</span>, </span>
 <span>                    colorby <span class="op">=</span> <span class="st">"explevel"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"molecular level"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-50-2.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-50-2.png"><!-- --></p>
 <!-- Below is a focus on few pathways with split on pathway and molecular level. -->
 <!-- ```{r} -->
 <!-- chosen_path_class <- c("Membrane transport", "Lipid metabolism", "Energy metabolism") -->
@@ -1837,8 +1908,10 @@ previous section presenting bmdplot()</a>).</p>
 <!--                     facetby2 = "explevel") + labs(col = "trend") -->
 <!-- ``` -->
 </div>
-<div class="section level5">
-<h5 id="plot-of-the-trend-repartition-per-group-and-experimental-level">Plot of the trend repartition per group and experimental level<a class="anchor" aria-label="anchor" href="#plot-of-the-trend-repartition-per-group-and-experimental-level"></a>
+<div class="section level5" number="3.2.4.2">
+<h5 id="plot-of-the-trend-repartition-per-group-and-experimental-level">
+<span class="header-section-number">3.2.4.2</span> Plot of the trend
+repartition per group and experimental level<a class="anchor" aria-label="anchor" href="#plot-of-the-trend-repartition-per-group-and-experimental-level"></a>
 </h5>
 <p>Using the function trendplot() and its arguments <code>facetby</code>
 it is possible to show the repartition of trends of responses in each
@@ -1850,10 +1923,12 @@ biological group for all experimental levels.</p>
 <span></span>
 <span><span class="co"># Trend plot</span></span>
 <span><span class="fu"><a href="../reference/trendplot.html">trendplot</a></span><span class="op">(</span><span class="va">extendedres</span>, group <span class="op">=</span> <span class="st">"path_class"</span>, facetby <span class="op">=</span> <span class="st">"explevel"</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-51-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-51-1.png"><!-- --></p>
 </div>
-<div class="section level5">
-<h5 id="sensitivity-plot-per-group-and-experimental-level">Sensitivity plot per group and experimental level<a class="anchor" aria-label="anchor" href="#sensitivity-plot-per-group-and-experimental-level"></a>
+<div class="section level5" number="3.2.4.3">
+<h5 id="sensitivity-plot-per-group-and-experimental-level">
+<span class="header-section-number">3.2.4.3</span> Sensitivity plot
+per group and experimental level<a class="anchor" aria-label="anchor" href="#sensitivity-plot-per-group-and-experimental-level"></a>
 </h5>
 <p>Using the function sensitivityplot() and its arguments
 <code>group</code> and <code>colorby</code>, it is possible to show a
@@ -1865,11 +1940,12 @@ are represented per KEGG pathway class for each molecular level. (See
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/sensitivityplot.html">sensitivityplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span>
 <span>                group <span class="op">=</span> <span class="st">"path_class"</span>, colorby <span class="op">=</span> <span class="st">"explevel"</span>,</span>
 <span>                BMDsummary <span class="op">=</span> <span class="st">"first.quartile"</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-52-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-52-1.png"><!-- --></p>
 </div>
-<div class="section level5">
-<h5 id="selectgroups">Selection of groups on which to focus using the selectgroups()
-function<a class="anchor" aria-label="anchor" href="#selectgroups"></a>
+<div class="section level5" number="3.2.4.4">
+<h5 id="selectgroups">
+<span class="header-section-number">3.2.4.4</span> Selection of
+groups on which to focus using the selectgroups() function<a class="anchor" aria-label="anchor" href="#selectgroups"></a>
 </h5>
 <p>When the number of biological groups obtained after annotation of
 items is too high, it may be useful to <strong>select groups on which to
@@ -1903,11 +1979,12 @@ in the example below fixing the argument <code>keepallexplev</code> at
 <span><span class="fu"><a href="../reference/bmdplot.html">bmdplot</a></span><span class="op">(</span><span class="va">selectedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, add.CI <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                    facetby <span class="op">=</span> <span class="st">"path_class"</span>, facetby2 <span class="op">=</span> <span class="st">"explevel"</span>,</span>
 <span>                    colorby <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-53-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-53-1.png"><!-- --></p>
 </div>
-<div class="section level5">
-<h5 id="bmd-ecdf-plot-with-color-gradient-split-by-group-and-experimental-level">BMD ECDF plot with color gradient split by group and experimental
-level<a class="anchor" aria-label="anchor" href="#bmd-ecdf-plot-with-color-gradient-split-by-group-and-experimental-level"></a>
+<div class="section level5" number="3.2.4.5">
+<h5 id="bmd-ecdf-plot-with-color-gradient-split-by-group-and-experimental-level">
+<span class="header-section-number">3.2.4.5</span> BMD ECDF plot
+with color gradient split by group and experimental level<a class="anchor" aria-label="anchor" href="#bmd-ecdf-plot-with-color-gradient-split-by-group-and-experimental-level"></a>
 </h5>
 <p>Using the function bmdplotwithgradient() and its arguments
 <code>facetby</code> and <code>facetby2</code>, the BMD plot with color
@@ -1923,7 +2000,7 @@ molecular levels.(See ?bmdplotwithgradient for more options).</p>
 <span><span class="va">selectedres2</span> <span class="op">&lt;-</span> <span class="va">extendedres</span><span class="op">[</span><span class="va">extendedres</span><span class="op">$</span><span class="va">path_class</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">chosen_path_class</span>, <span class="op">]</span></span>
 <span><span class="fu"><a href="../reference/bmdplotwithgradient.html">bmdplotwithgradient</a></span><span class="op">(</span><span class="va">selectedres2</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, scaling <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>               facetby <span class="op">=</span> <span class="st">"path_class"</span>, facetby2 <span class="op">=</span> <span class="st">"explevel"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-54-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-54-1.png"><!-- --></p>
 <p>Especially as <strong>metabolomic data and transcriptomic data were
 not imported in DRomics in the same scale</strong> (in log2 for
 transcriptomics and log10 for metabolomics), the <strong>use of the
@@ -1931,8 +2008,10 @@ scaling option of each dose-response curve is interesting here</strong>.
 This option focuses on the shape of responses, skipping the amplitude of
 changes to the control.</p>
 </div>
-<div class="section level5">
-<h5 id="plot-of-the-dose-response-curves-for-a-selection-of-groups">Plot of the dose-response curves for a selection of groups<a class="anchor" aria-label="anchor" href="#plot-of-the-dose-response-curves-for-a-selection-of-groups"></a>
+<div class="section level5" number="3.2.4.6">
+<h5 id="plot-of-the-dose-response-curves-for-a-selection-of-groups">
+<span class="header-section-number">3.2.4.6</span> Plot of the
+dose-response curves for a selection of groups<a class="anchor" aria-label="anchor" href="#plot-of-the-dose-response-curves-for-a-selection-of-groups"></a>
 </h5>
 <p>Using the function curvesplot(), specific dose-response curves can be
 explored. In the following example, only results related to the “lipid
@@ -1947,7 +2026,7 @@ example, the plot is split by biological group using the argument
 <span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">LMres</span>, facetby <span class="op">=</span> <span class="st">"explevel"</span>, free.y.scales <span class="op">=</span> <span class="cn">TRUE</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>           colorby <span class="op">=</span> <span class="st">"trend"</span>,</span>
 <span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"DR_trend"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-55-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-55-1.png"><!-- --></p>
 <div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot of the scaled dose-response curves for previously chosen path classes</span></span>
 <span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">selectedres2</span>, scaling <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -1955,7 +2034,7 @@ example, the plot is split by biological group using the argument
 <span>           npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>           colorby <span class="op">=</span> <span class="st">"trend"</span>,</span>
 <span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"DR_trend"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-55-2.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-55-2.png"><!-- --></p>
 <p>The scaling of the curves only used in the second plot can be
 interesting to focus on the shapes of those curves, skipping the
 amplitude of the changes from the control. This helps to evaluate the
@@ -1969,8 +2048,9 @@ dose-response curves are not scaled (as in the first plot).</p>
 </div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<div class="section level2" number="4">
+<h2 id="references">
+<span class="header-section-number">4</span> References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <ul>
 <li><p>Burnham, KP, Anderson DR (2004). Multimodel inference:
