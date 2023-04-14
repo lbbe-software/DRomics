@@ -192,7 +192,8 @@ curvesplot(selectedres2, facetby = "path_class",
            facetby2 = "molecular.level", scaling = TRUE, 
            npoints = 100, line.size = 0.5,
            colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "DR trend")+ theme_classic()
+           xmin = 0, xmax = 6.5) + labs(col = "DR trend",
+       x = "Dose", y = "Theoretical signal (fitted curves)")+ theme_classic()
 dev.off()
 
 tiff(filename = "Figure3b.tif",
@@ -201,7 +202,8 @@ curvesplot(selectedres2, facetby = "path_class",
            facetby2 = "molecular.level", scaling = TRUE, 
            npoints = 100, line.size = 0.5,
            colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "DR trend")+ theme_classic()
+           xmin = 0, xmax = 6.5) + labs(col = "DR trend",
+        x = "Dose", y = "Theoretical signal (fitted curves)")+ theme_classic()
 dev.off()
 
 ################################################################
