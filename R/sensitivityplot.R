@@ -117,14 +117,17 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     gg <- gg + geom_point(stat = 'identity') + coord_flip() 
     
     if (BMDsummary == "median")
-      gg <- gg + labs(x = "", y = "BMD medians") else
-        gg <- gg + geom_errorbar(aes_(ymin = quote(firstquartile), 
-                                      ymax = quote(thirdquartile), size = I(1)), 
-                                 width = 0) +
-                # line to remove lines on the size legend
-                guides(size = guide_legend(override.aes = list(linetype = 0))) +
-                labs(x = "", y = "BMD medians and IQRs")
-   }    
+      gg <- gg + labs(x = "", y = "BMD medians") 
+    else {
+      print("ici")
+      gg <- gg + geom_errorbar(aes_(ymin = quote(firstquartile), 
+                                    ymax = quote(thirdquartile), linewidth = I(1)), 
+                               width = 0) +
+        # line to remove lines on the size legend
+        guides(size = guide_legend(override.aes = list(linetype = 0))) +
+        labs(x = "", y = "BMD medians and IQRs")
+      }
+  }    
   if (BMD_log_transfo)
     gg <- gg + scale_y_log10()
   
