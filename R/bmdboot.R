@@ -56,7 +56,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
   
   # progress bar
   if (progressbar)
-    pb <- txtProgressBar(min = 0, max = nitems, style = 3)
+    pb <- utils::txtProgressBar(min = 0, max = nitems, style = 3)
 
   ##### Bootstrap for one item ####################
   bootoneitem <- function(i)
@@ -76,7 +76,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
     datai <- r$omicdata$data[resitem$irow, ]
     dset <- data.frame(signal = datai, dose = dose)
     # removing lines with NA values for the signal
-    dset <- dset[complete.cases(dset$signal), ]
+    dset <- dset[stats::complete.cases(dset$signal), ]
     ndata <- nrow(dset)
 
     ############## Model expo ###########
@@ -93,7 +93,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       {
         if(bootmethod == "param")
         {
-          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
+          dsetboot[, 1] <- fitted1 + stats::rnorm(ndata, mean = 0, sd = SDresi)
         } else
         {
           dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
@@ -101,22 +101,22 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
         # fit
         if (e1 < 0)
         {
-          nlsboot <- suppressWarnings(try(nls(formula = formExp3p, data = dsetboot, start = lestimpar,
+          nlsboot <- suppressWarnings(try(stats::nls(formula = formExp3p, data = dsetboot, start = lestimpar,
                              lower = c(-Inf, -Inf, -Inf), 
                              upper = c(Inf, Inf, 0), algorithm = "port"), 
                          silent = TRUE))
         } else
         {
-          nlsboot <- suppressWarnings(try(nls(formula = formExp3p, data = dsetboot, start = lestimpar,
+          nlsboot <- suppressWarnings(try(stats::nls(formula = formExp3p, data = dsetboot, start = lestimpar,
                              lower = c(-Inf, -Inf, 0), algorithm = "port"), 
                          silent = TRUE))
         }
         if(inherits(nlsboot, "nls"))
         {
-          SDresboot <- sqrt(sum(residuals(nlsboot)^2)/(ndata - nbpari))
-          bboot <- coef(nlsboot)["b"]
-          dboot <- coef(nlsboot)["d"]
-          eboot <- coef(nlsboot)["e"]
+          SDresboot <- sqrt(sum(stats::residuals(nlsboot)^2)/(ndata - nbpari))
+          bboot <- stats::coef(nlsboot)["b"]
+          dboot <- stats::coef(nlsboot)["d"]
+          eboot <- stats::coef(nlsboot)["e"]
           y0boot <- dboot
           ydosemaxboot <- fExpo(x = dosemax, b = bboot, d = dboot, e = eboot)
           ypboot <- y0boot * ( 1 + xdiv100*sign(eboot * bboot))
@@ -144,22 +144,22 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       {
         if(bootmethod == "param")
         {
-          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
+          dsetboot[, 1] <- fitted1 + stats::rnorm(ndata, mean = 0, sd = SDresi)
         } else
         {
           dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
         }
         # fit
-        nlsboot <- suppressWarnings(try(nls(formula = formHill, data = dsetboot, start = lestimpar,
+        nlsboot <- suppressWarnings(try(stats::nls(formula = formHill, data = dsetboot, start = lestimpar,
                                              lower = c(0, -Inf, -Inf, 0), algorithm = "port"), 
                                           silent = TRUE))
         if(inherits(nlsboot, "nls"))
         {
-          SDresboot <- sqrt(sum(residuals(nlsboot)^2)/(ndata - nbpari))
-          bboot <- coef(nlsboot)["b"]
-          cboot <- coef(nlsboot)["c"]
-          dboot <- coef(nlsboot)["d"]
-          eboot <- coef(nlsboot)["e"]
+          SDresboot <- sqrt(sum(stats::residuals(nlsboot)^2)/(ndata - nbpari))
+          bboot <- stats::coef(nlsboot)["b"]
+          cboot <- stats::coef(nlsboot)["c"]
+          dboot <- stats::coef(nlsboot)["d"]
+          eboot <- stats::coef(nlsboot)["e"]
           y0boot <- dboot
           ydosemaxboot <- fHill(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot)
           ypboot <- y0boot * ( 1 + xdiv100*sign(cboot * dboot))
@@ -186,16 +186,16 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       {
         if(bootmethod == "param")
         {
-          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
+          dsetboot[, 1] <- fitted1 + stats::rnorm(ndata, mean = 0, sd = SDresi)
         } else
         {
           dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
         }
         # fit
-        linboot <- lm(signal ~ dose, data = dsetboot)
-        SDresboot <- sqrt(sum(residuals(linboot)^2)/(ndata - nbpari))
-        bboot <- coef(linboot)[2]
-        dboot <- coef(linboot)[1]
+        linboot <- stats::lm(signal ~ dose, data = dsetboot)
+        SDresboot <- sqrt(sum(stats::residuals(linboot)^2)/(ndata - nbpari))
+        bboot <- stats::coef(linboot)[2]
+        dboot <- stats::coef(linboot)[1]
         y0boot <- dboot
         ydosemaxboot <- flin(x = dosemax, b = bboot, d = dboot)
         ypboot <- y0boot * ( 1 + xdiv100*sign(bboot))
@@ -224,7 +224,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       {
         if(bootmethod == "param")
         {
-          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
+          dsetboot[, 1] <- fitted1 + stats::rnorm(ndata, mean = 0, sd = SDresi)
         } else
         {
           dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
@@ -232,7 +232,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
         # fit
         if (nbpari == 5)
         {
-          nlsboot <- suppressWarnings(try(nls(formula = formGauss5p, data = dsetboot, start = lestimpar,
+          nlsboot <- suppressWarnings(try(stats::nls(formula = formGauss5p, data = dsetboot, start = lestimpar,
                                               lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), 
                                           silent = TRUE))
         }
@@ -241,25 +241,25 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           if (f1 == 0)
           {
             lestimpar.f0 <- list(b = lestimpar$b, c = lestimpar$c, d = lestimpar$d, e = lestimpar$e)
-            nlsboot <- suppressWarnings(try(nls(formula = formprobit, data = dsetboot, start = lestimpar.f0,
+            nlsboot <- suppressWarnings(try(stats::nls(formula = formprobit, data = dsetboot, start = lestimpar.f0,
                                                 lower = c(0, -Inf, -Inf, 0), algorithm = "port"), 
                                             silent = TRUE))
           } else
           {
             lestimpar.4p <- list(b = lestimpar$b, d = lestimpar$d, e = lestimpar$e, f = lestimpar$f)
-            nlsboot <- suppressWarnings(try(nls(formula = formGauss4p, data = dsetboot, start = lestimpar.4p,
+            nlsboot <- suppressWarnings(try(stats::nls(formula = formGauss4p, data = dsetboot, start = lestimpar.4p,
                                                 lower = c(0, -Inf, 0, -Inf), algorithm = "port"), 
                                             silent = TRUE))
           }
         }
         if(inherits(nlsboot, "nls"))
         {
-          SDresboot <- sqrt(sum(residuals(nlsboot)^2)/(ndata - nbpari))
-          bboot <- coef(nlsboot)["b"]
-          if (nbpari == 5) cboot <- coef(nlsboot)["c"] else cboot <- coef(nlsboot)["d"]
-          dboot <- coef(nlsboot)["d"]
-          eboot <- coef(nlsboot)["e"]
-          fboot <- coef(nlsboot)["f"]
+          SDresboot <- sqrt(sum(stats::residuals(nlsboot)^2)/(ndata - nbpari))
+          bboot <- stats::coef(nlsboot)["b"]
+          if (nbpari == 5) cboot <- stats::coef(nlsboot)["c"] else cboot <- stats::coef(nlsboot)["d"]
+          dboot <- stats::coef(nlsboot)["d"]
+          eboot <- stats::coef(nlsboot)["e"]
+          fboot <- stats::coef(nlsboot)["f"]
           y0boot <- fGauss5p(x = 0, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
           ydosemaxboot <- fGauss5p(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
             
@@ -314,7 +314,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
       {
         if(bootmethod == "param")
         {
-          dsetboot[, 1] <- fitted1 + rnorm(ndata, mean = 0, sd = SDresi)
+          dsetboot[, 1] <- fitted1 + stats::rnorm(ndata, mean = 0, sd = SDresi)
         } else
         {
           dsetboot[, 1] <- fitted1 + sample(scale(resid1, scale = FALSE), replace = TRUE)
@@ -322,7 +322,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
         # fit
         if (nbpari == 5)
         {
-          nlsboot <- suppressWarnings(try(nls(formula = formLGauss5p, data = dsetboot, start = lestimpar,
+          nlsboot <- suppressWarnings(try(stats::nls(formula = formLGauss5p, data = dsetboot, start = lestimpar,
                                               lower =  c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), 
                                           silent = TRUE))
         }
@@ -331,25 +331,25 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           if (f1 == 0)
           {
             lestimpar.f0 <- list(b = lestimpar$b, c = lestimpar$c, d = lestimpar$d, e = lestimpar$e)
-            nlsboot <- suppressWarnings(try(nls(formula = formLprobit, data = dsetboot, start = lestimpar.f0,
+            nlsboot <- suppressWarnings(try(stats::nls(formula = formLprobit, data = dsetboot, start = lestimpar.f0,
                                                 lower = c(0, -Inf, -Inf, 0), algorithm = "port"), 
                                             silent = TRUE))
           } else
           {
             lestimpar.4p <- list(b = lestimpar$b, d = lestimpar$d, e = lestimpar$e, f = lestimpar$f)
-            nlsboot <- suppressWarnings(try(nls(formula = formLGauss4p, data = dsetboot, start = lestimpar.4p,
+            nlsboot <- suppressWarnings(try(stats::nls(formula = formLGauss4p, data = dsetboot, start = lestimpar.4p,
                                                 lower = c(0, -Inf, 0, -Inf), algorithm = "port"), 
                                             silent = TRUE))
           }
         }
         if(inherits(nlsboot, "nls"))
         {
-          SDresboot <- sqrt(sum(residuals(nlsboot)^2)/(ndata - nbpari))
-          bboot <- coef(nlsboot)["b"]
-          if (nbpari == 5 | f1 == 0) cboot <- coef(nlsboot)["c"] else cboot <- coef(nlsboot)["d"]
-          dboot <- coef(nlsboot)["d"]
-          eboot <- coef(nlsboot)["e"]
-          if (f1 == 0) fboot <- 0 else fboot <- coef(nlsboot)["f"]
+          SDresboot <- sqrt(sum(stats::residuals(nlsboot)^2)/(ndata - nbpari))
+          bboot <- stats::coef(nlsboot)["b"]
+          if (nbpari == 5 | f1 == 0) cboot <- stats::coef(nlsboot)["c"] else cboot <- stats::coef(nlsboot)["d"]
+          dboot <- stats::coef(nlsboot)["d"]
+          eboot <- stats::coef(nlsboot)["e"]
+          if (f1 == 0) fboot <- 0 else fboot <- stats::coef(nlsboot)["f"]
           y0boot <- dboot
           ydosemaxboot <- fLGauss5p(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
           
@@ -404,18 +404,18 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
 
       BMDpbooti[is.na(BMDpbooti) | BMDpbooti > dosemax] <- Inf
       BMDsdbooti[is.na(BMDsdbooti) | BMDsdbooti > dosemax] <- Inf
-      BMDp.CI <- quantile(BMDpbooti, probs = c(prob.lower, prob.upper))
+      BMDp.CI <- stats::quantile(BMDpbooti, probs = c(prob.lower, prob.upper))
       BMDplower <- BMDp.CI[1]
       BMDpupper <- BMDp.CI[2]
       
-      BMDsd.CI <- quantile(BMDsdbooti, probs = c(prob.lower, prob.upper))
+      BMDsd.CI <- stats::quantile(BMDsdbooti, probs = c(prob.lower, prob.upper))
       BMDsdlower <- BMDsd.CI[1]
       BMDsdupper <- BMDsd.CI[2]
       
       
       if (progressbar)
       {
-        setTxtProgressBar(pb, i)
+        utils::setTxtProgressBar(pb, i)
       }
       return(c(BMDsdlower, BMDsdupper, BMDplower, BMDpupper, nboot.successful))
     }

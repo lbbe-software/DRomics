@@ -31,7 +31,7 @@ calcBMD <- function(y0, delta, xext, yext, dosemin, dosemax, ydosemax, func,
         finalroot <- workwithxinlog * log(minBMD) + (1 - workwithxinlog) * minBMD
       } else
       { # then we seek the BMR above y0 
-        finalroot <- uniroot(func4uniroot, interval=firstinterval, b=b, c=c, 
+        finalroot <- stats::uniroot(func4uniroot, interval=firstinterval, b=b, c=c, 
                              d=d, e=e, g=g, threshold=threshold)$root
       }
     } else # BMR may be in the second phase 
@@ -46,7 +46,7 @@ calcBMD <- function(y0, delta, xext, yext, dosemin, dosemax, ydosemax, func,
       {
         if(c < y0 & threshold > ydosemax)
         {  # then we seek the BMR below y0 (possible only if c<y0) 
-          finalroot <- uniroot(func4uniroot, interval=secondinterval, b=b, c=c, 
+          finalroot <- stats::uniroot(func4uniroot, interval=secondinterval, b=b, c=c, 
                                d=d, e=e, g=g, threshold=threshold)$root
         }
       }
@@ -66,7 +66,7 @@ calcBMD <- function(y0, delta, xext, yext, dosemin, dosemax, ydosemax, func,
         finalroot <- workwithxinlog * log(minBMD) + (1 - workwithxinlog) * minBMD
       } else
       {
-        finalroot <- uniroot(func4uniroot, interval=firstinterval, b=b, c=c, 
+        finalroot <- stats::uniroot(func4uniroot, interval=firstinterval, b=b, c=c, 
                              d=d, e=e, g=g, threshold=threshold)$root
       }  
     }
@@ -82,7 +82,7 @@ calcBMD <- function(y0, delta, xext, yext, dosemin, dosemax, ydosemax, func,
       {
         if(c > y0 & threshold < ydosemax)
         {  # then we seek the BMR above y0 (possible only if c > y0) 
-          finalroot <- uniroot(func4uniroot, interval=secondinterval, b=b, c=c, 
+          finalroot <- stats::uniroot(func4uniroot, interval=secondinterval, b=b, c=c, 
                                d=d, e=e, g=g, threshold=threshold)$root
         }
       }

@@ -17,7 +17,7 @@ continuousanchoringdata <- function(file, backgrounddose, check = TRUE)
       if (suffix != ".txt")
         stop("The argument file must be a character string ending by .txt.")
     }
-    d <- read.table(file, header = FALSE)
+    d <- utils::read.table(file, header = FALSE)
     colnames(d) <- c("endpoint",paste("S", 1:(ncol(d)-1), sep = ""))
   } 
   nrowd <- nrow(d)
@@ -68,7 +68,7 @@ continuousanchoringdata <- function(file, backgrounddose, check = TRUE)
       a dose-response design with at least six different tested doses."))
   
   # control of the design including on rows with NA values
-  if(any(!complete.cases(data)))
+  if(any(!stats::complete.cases(data)))
   {
     containsNA <- TRUE
     nonNAdata <- !is.na(data)
@@ -109,7 +109,7 @@ print.continuousanchoringdata <- function(x, ...)
     stop("Use only with 'continuousanchoringdata' objects.")
   
   nitems <- length(x$item)
-  nitemswithNA <- nitems - sum(complete.cases(x$data))
+  nitemswithNA <- nitems - sum(stats::complete.cases(x$data))
   
   cat("Elements of the experimental design in order to check the coding of the data:\n")
   cat("Tested doses and number of replicates for each dose:\n")

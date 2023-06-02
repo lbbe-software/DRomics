@@ -18,14 +18,14 @@ microarraydata <- function(file, backgrounddose, check = TRUE,
       if (suffix != ".txt")
         stop("The argument file must be a character string ending by .txt.")
     }
-    d <- read.table(file, header = FALSE)
+    d <- utils::read.table(file, header = FALSE)
     colnames(d) <- c("item",paste("S", 1:(ncol(d)-1), sep = ""))
   }  
   nrowd <- nrow(d)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
 
-    if(any(!complete.cases(data)))
+    if(any(!stats::complete.cases(data)))
     stop("microarraydata() should not be used with data including NA values.")
   
   if (check)
@@ -131,25 +131,25 @@ plot.microarraydata <- function(x, range4boxplot = 1e6, ...)
   if (!inherits(x, "microarraydata"))
     stop("Use only with 'microarraydata' objects.")
 
-  def.par <- par(no.readonly = TRUE)
+  def.par <- graphics::par(no.readonly = TRUE)
   if (x$norm.method != "none")
   {
     ymin <- min(x$data.beforenorm, x$data)
     ymax <- max(x$data.beforenorm, x$data)
-    par(mfrow = c(1,2), xaxt = "n")
-    boxplot(x$data.beforenorm, xlab = "Samples", ylab = "Signal", range = range4boxplot,
+    graphics::par(mfrow = c(1,2), xaxt = "n")
+    graphics::boxplot(x$data.beforenorm, xlab = "Samples", ylab = "Signal", range = range4boxplot,
             main = paste("Microarray data before normalization"), ylim = c(ymin, ymax), ...) 
-    boxplot(x$data, xlab = "Samples", ylab = "Signal", range = range4boxplot,
+    graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", range = range4boxplot,
             main = paste("Microarray data after", x$norm.method,"normalization"), 
             ylim = c(ymin, ymax), ...) 
     
   } else
   {
-    par(xaxt = "n")
-    boxplot(x$data, xlab = "Samples", ylab = "Signal", range = range4boxplot, 
+    graphics::par(xaxt = "n")
+    graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", range = range4boxplot, 
             main = paste("Microarray data without normalization")) 
   }
-  par(def.par)    
+  graphics::par(def.par)    
 }
 
 

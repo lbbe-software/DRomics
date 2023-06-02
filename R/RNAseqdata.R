@@ -19,7 +19,7 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
       if (suffix != ".txt")
         stop("The argument file must be a character string ending by .txt.")
     }
-    d <- read.table(file, header = FALSE)
+    d <- utils::read.table(file, header = FALSE)
     colnames(d) <- c("item",paste("S", 1:(ncol(d)-1), sep = ""))
     
   }
@@ -29,7 +29,7 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
   nrowdata <- nrowd - 1
   ncoldata <- ncold - 1
   
-  if(any(!complete.cases(data)))
+  if(any(!stats::complete.cases(data)))
     stop("RNAseqdata() should not be used with data including NA values.")
   
   if (round.counts)
@@ -207,19 +207,19 @@ plot.RNAseqdata <- function(x, range4boxplot = 1e6, ...)
   if (!inherits(x, "RNAseqdata"))
     stop("Use only with 'RNAseqdata' objects.")
   
-  def.par <- par(no.readonly = TRUE)
+  def.par <- graphics::par(no.readonly = TRUE)
   ymin.rc <- min(x$raw.counts)
   ymax.rc <- max(x$raw.counts)
-  par(mfrow = c(1,2), xaxt = "n")
-  boxplot(x$raw.counts, xlab = "Samples", ylab = "Raw counts", 
+  graphics::par(mfrow = c(1,2), xaxt = "n")
+  graphics::boxplot(x$raw.counts, xlab = "Samples", ylab = "Raw counts", 
           main = paste("Raw data"), 
           ylim = c(ymin.rc, ymax.rc), range = range4boxplot, ...) 
   ymin.log <- min(x$data)
   ymax.log <- max(x$data)
-  boxplot(x$data, xlab = "Samples", ylab = "Signal", 
+  graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", 
           main = paste("Normalized and transformed data"), 
           ylim = c(ymin.log, ymax.log), range = range4boxplot, ...)   
-  par(def.par)    
+  graphics::par(def.par)    
 }
 
 

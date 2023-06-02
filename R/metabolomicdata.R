@@ -23,14 +23,14 @@ continuousomicdata <- function(file, backgrounddose, check = TRUE)
       if (suffix != ".txt")
         stop("The argument file must be a character string ending by .txt.")
     }
-    d <- read.table(file, header = FALSE)
+    d <- utils::read.table(file, header = FALSE)
     colnames(d) <- c("item",paste("S", 1:(ncol(d)-1), sep = ""))
   } 
   nrowd <- nrow(d)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
   
-  if(any(!complete.cases(data)))
+  if(any(!stats::complete.cases(data)))
   {
     containsNA <- TRUE
   } else containsNA <- FALSE
@@ -142,7 +142,7 @@ print.continuousomicdata <- function(x, ...)
     stop("Use only with 'continuousomicdata' objects.")
 
   nitems <- length(x$item)
-  nitemswithNA <- nitems - sum(complete.cases(x$data))
+  nitemswithNA <- nitems - sum(stats::complete.cases(x$data))
   
   cat("Elements of the experimental design in order to check the coding of the data:\n")
   cat("Tested doses and number of replicates for each dose:\n")
@@ -173,11 +173,11 @@ plot.continuousomicdata <- function(x, range4boxplot = 1e6, ...)
   if (!inherits(x, "continuousomicdata"))
     stop("Use only with 'continuousomicdata' objects.")
 
-  def.par <- par(no.readonly = TRUE)
-    par(xaxt = "n")
-    boxplot(x$data, xlab = "Samples", ylab = "Signal", 
+  def.par <- graphics::par(no.readonly = TRUE)
+    graphics::par(xaxt = "n")
+    graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", 
             main = paste("Continuous omics data"), range = range4boxplot, ...) 
-  par(def.par)    
+  graphics::par(def.par)    
 }
 
 

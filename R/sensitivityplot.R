@@ -49,9 +49,9 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   }
   
   
-   firstquartilefun <- function(x) quantile(x, probs = 0.25, na.rm = TRUE)
-   secondquartilefun <- function(x) quantile(x, probs = 0.5, na.rm = TRUE)
-   thirdquartilefun <- function(x) quantile(x, probs = 0.75, na.rm = TRUE)
+   firstquartilefun <- function(x) stats::quantile(x, probs = 0.25, na.rm = TRUE)
+   secondquartilefun <- function(x) stats::quantile(x, probs = 0.5, na.rm = TRUE)
+   thirdquartilefun <- function(x) stats::quantile(x, probs = 0.75, na.rm = TRUE)
   
   if (missing(colorby))
   {

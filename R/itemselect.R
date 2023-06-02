@@ -42,15 +42,15 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
     data <- omicdata$data
     if (select.method == "quadratic")
     {
-      design4lmFit <- model.matrix(~ doseranks + doseranks2)
+      design4lmFit <- stats::model.matrix(~ doseranks + doseranks2)
     } else
       if (select.method == "linear")
       {
-        design4lmFit <- model.matrix(~ doseranks)
+        design4lmFit <- stats::model.matrix(~ doseranks)
       } else
         if (select.method == "ANOVA")
         {
-          design4lmFit <- model.matrix(~ fdose)
+          design4lmFit <- stats::model.matrix(~ fdose)
         } 
     
     # Selection using limma    
@@ -76,9 +76,9 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
     {
       for (i in 1:nitem) # to write in a sapply in case there are a lot of endpoints
       {
-        lmFit <- lm(data[i, ] ~ doseranks + doseranks2)
-        lmFitconst <- lm(data[i, ] ~ 1)
-        a <- anova(lmFit, lmFitconst)
+        lmFit <- stats::lm(data[i, ] ~ doseranks + doseranks2)
+        lmFitconst <- stats::lm(data[i, ] ~ 1)
+        a <- stats::anova(lmFit, lmFitconst)
         pvalue[i] <- a[["Pr(>F)"]][2]
       }
     } else
@@ -86,9 +86,9 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
     {
       for (i in 1:nitem) # to write in a sapply in case there are a lot of endpoints
       {
-        lmFit <- lm(data[i, ] ~ doseranks)
-        lmFitconst <- lm(data[i, ] ~ 1)
-        a <- anova(lmFit, lmFitconst)
+        lmFit <- stats::lm(data[i, ] ~ doseranks)
+        lmFitconst <- stats::lm(data[i, ] ~ 1)
+        a <- stats::anova(lmFit, lmFitconst)
         pvalue[i] <- a[["Pr(>F)"]][2]
       }
     } else
@@ -96,15 +96,15 @@ itemselect <- function(omicdata, select.method = c("quadratic", "linear", "ANOVA
     {
       for (i in 1:nitem) # to write in a sapply in case there are a lot of endpoints
       {
-        lmFit <- lm(data[i, ] ~ fdose)
-        lmFitconst <- lm(data[i, ] ~ 1)
-        a <- anova(lmFit, lmFitconst)
+        lmFit <- stats::lm(data[i, ] ~ fdose)
+        lmFitconst <- stats::lm(data[i, ] ~ 1)
+        a <- stats::anova(lmFit, lmFitconst)
         pvalue[i] <- a[["Pr(>F)"]][2]
       }
     } 
       
     # all adjusted pvalues without sorting after Benjamini Hochberg procedure
-    wholeadjpvalue <- p.adjust(pvalue, method = "BH") 
+    wholeadjpvalue <- stats::p.adjust(pvalue, method = "BH") 
 
     selectindexnonsorted <- irow[wholeadjpvalue < FDR]
     adjpvaluenonsorted <- wholeadjpvalue[selectindexnonsorted]

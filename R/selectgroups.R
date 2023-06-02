@@ -49,7 +49,7 @@ selectgroups <- function(extendedres, group, explev,
   }
   
     
-  firstquartilefun <- function(x) quantile(x, probs = 0.25)
+  firstquartilefun <- function(x) stats::quantile(x, probs = 0.25)
 
   if (missing(explev))
   {
@@ -65,7 +65,7 @@ selectgroups <- function(extendedres, group, explev,
   colnames(dnb) <- c("group_explev", "nb_of_items")
   if (BMDsummary == "first.quartile")
     dnb$BMDsummary <- tapply(variable, group_explev, firstquartilefun) else
-    dnb$BMDsummary <- tapply(variable, group_explev, median)
+    dnb$BMDsummary <- tapply(variable, group_explev, stats::median)
   
   if (!missing(BMDmax))
   {

@@ -40,7 +40,7 @@ drcfit <- function(itemselect,
   # calculations for starting values and other uses
   dosemin <- min(dose)
   dosemax <- max(dose)
-  dosemed <- median(dose[dose!=0])
+  dosemed <- stats::median(dose[dose!=0])
   doseu <- as.numeric(colnames(data.mean)) # sorted unique doses
   
   # number of points per dose-response curve
@@ -73,7 +73,7 @@ drcfit <- function(itemselect,
   
   # progress bar
   if (progressbar)
-    pb <- txtProgressBar(min = 0, max = length(selectindex), style = 3)
+    pb <- utils::txtProgressBar(min = 0, max = length(selectindex), style = 3)
   
   # function to fit all the models an choose the best on one item
   ################################################################
@@ -99,10 +99,10 @@ drcfit <- function(itemselect,
     dset <- data.frame(signal = signal, dose = dose, doseranks = doseranks)
     
     if (containsNA)
-      if (any(!complete.cases(dset)))
+      if (any(!stats::complete.cases(dset)))
       {
         # removing lines with NA values for the signal
-        dset <- dset[complete.cases(dset$signal), ]
+        dset <- dset[stats::complete.cases(dset$signal), ]
         npts <- nrow(dset)
         ndoses <- length(unique(dset$dose))
         lessthan5doses <- ndoses < 5
@@ -126,13 +126,13 @@ drcfit <- function(itemselect,
        } 
     
     # for choice of the linear trend (decreasing or increasing)
-    modlin <- lm(signal ~ doseranks, data = dset)
-    increaseranks <- coef(modlin)[2] >= 0
+    modlin <- stats::lm(signal ~ doseranks, data = dset)
+    increaseranks <- stats::coef(modlin)[2] >= 0
     increaseminmax <- dset$dose[which.min(dset$signal)] < dset$dose[which.max(dset$signal)]
     
     # for choice of the quadratic trend (Ushape or Umbrella shape)
-    modquad <- lm(signal ~ doseranks + I(doseranks^2), data = dset)
-    Ushape <- coef(modquad)[3] >= 0
+    modquad <- stats::lm(signal ~ doseranks + I(doseranks^2), data = dset)
+    Ushape <- stats::coef(modquad)[3] >= 0
     
     ################ Expo fit (npar = 3) ###############################
     if (keepExpo)
@@ -148,30 +148,30 @@ drcfit <- function(itemselect,
       if ((increaseranks & !Ushape) | (!increaseranks & Ushape)) # e < 0
       {
         # Fit of the 3 par model
-        Expo3p.1 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.1, data = dset, 
+        Expo3p.1 <- suppressWarnings(try(stats::nls(formExp3p, start = startExpo3p.1, data = dset, 
                                              lower = c(-Inf, -Inf, -Inf), 
                                              upper = c(Inf, Inf, 0),
                                              algorithm = "port"), silent = TRUE))
         
-        Expo3p.2 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.2, data = dset, 
+        Expo3p.2 <- suppressWarnings(try(stats::nls(formExp3p, start = startExpo3p.2, data = dset, 
                                              lower = c(-Inf, -Inf, -Inf), 
                                              upper = c(Inf, Inf, 0),
                                              algorithm = "port"), silent = TRUE))
       } else # e > 0
       {
         # Fit of the 3 par model
-        Expo3p.1 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.1, data = dset, 
+        Expo3p.1 <- suppressWarnings(try(stats::nls(formExp3p, start = startExpo3p.1, data = dset, 
                                              lower = c(-Inf, -Inf, 0), 
                                              algorithm = "port"), silent = TRUE))
-        Expo3p.2 <- suppressWarnings(try(nls(formExp3p, start = startExpo3p.2, data = dset, 
+        Expo3p.2 <- suppressWarnings(try(stats::nls(formExp3p, start = startExpo3p.2, data = dset, 
                                              lower = c(-Inf, -Inf, 0), 
                                              algorithm = "port"), silent = TRUE))
       }
       #### convergence of both models
       if ((!inherits(Expo3p.1, "try-error")) & (!inherits(Expo3p.2, "try-error")))
       {
-        AICExpo3p.1 <- round(AIC(Expo3p.1, k = kcrit[3]), digits = AICdigits)
-        AICExpo3p.2 <- round(AIC(Expo3p.2, k = kcrit[3]), digits = AICdigits)
+        AICExpo3p.1 <- round(stats::AIC(Expo3p.1, k = kcrit[3]), digits = AICdigits)
+        AICExpo3p.2 <- round(stats::AIC(Expo3p.2, k = kcrit[3]), digits = AICdigits)
         if (AICExpo3p.1 < AICExpo3p.2)
         {
           Expo <- Expo3p.1
@@ -193,13 +193,13 @@ drcfit <- function(itemselect,
           if ((!inherits(Expo3p.2, "try-error")) & inherits(Expo3p.1, "try-error"))
           {
             Expo <- Expo3p.2
-            AICExpoi <- round(AIC(Expo3p.2, k = kcrit[3]), digits = AICdigits) 
+            AICExpoi <- round(stats::AIC(Expo3p.2, k = kcrit[3]), digits = AICdigits) 
           } else
             #### convergence only of Expo3p.1
             if ((!inherits(Expo3p.1, "try-error")) & inherits(Expo3p.2, "try-error"))
             {
               Expo <- Expo3p.1
-              AICExpoi <- round(AIC(Expo3p.1, k = kcrit[3]), digits = AICdigits) 
+              AICExpoi <- round(stats::AIC(Expo3p.1, k = kcrit[3]), digits = AICdigits) 
             }
     } else (AICExpoi <- Inf)
     
@@ -208,11 +208,11 @@ drcfit <- function(itemselect,
     {
       startHill <- startvalHillnls2(x = dose, y = signal, xm = doseu, ym = signalm,  
                                     increase = increaseminmax)
-      Hill <- suppressWarnings(try(nls(formHill, start = startHill, data = dset, 
+      Hill <- suppressWarnings(try(stats::nls(formHill, start = startHill, data = dset, 
                                        lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
       if (!inherits(Hill, "try-error"))
       {
-        AICHilli <- round(AIC(Hill, k = kcrit[4]), digits = AICdigits)
+        AICHilli <- round(stats::AIC(Hill, k = kcrit[4]), digits = AICdigits)
       } else 
       {
         # keepHill <- FALSE
@@ -227,7 +227,7 @@ drcfit <- function(itemselect,
       {
         startLGauss5p <- startvalLGauss5pnls(xm = doseu, ym = signalm,  
                                            Ushape = Ushape)
-        LGauss5p <- suppressWarnings(try(nls(formLGauss5p, start = startLGauss5p, data = dset,
+        LGauss5p <- suppressWarnings(try(stats::nls(formLGauss5p, start = startLGauss5p, data = dset,
                                              lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
         LGauss5psucces <- !inherits(LGauss5p, "try-error")
         # state a failure if the fitted model is out of the range of the signal
@@ -236,7 +236,7 @@ drcfit <- function(itemselect,
       }
       startLGauss4p <- startvalLGauss4pnls(xm = doseu, ym = signalm,  
                                            Ushape = Ushape)
-      LGauss4p <- suppressWarnings(try(nls(formLGauss4p, start = startLGauss4p, data = dset,
+      LGauss4p <- suppressWarnings(try(stats::nls(formLGauss4p, start = startLGauss4p, data = dset,
                                            lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
       LGauss4psucces <- !inherits(LGauss4p, "try-error")
       # state a failure if the fitted model is out of the range of the signal
@@ -249,15 +249,15 @@ drcfit <- function(itemselect,
         {
           equalcdLG <- TRUE
           LGauss <- LGauss4p
-          AICLGaussi <- round(AIC(LGauss4p, k = kcrit[4]), digits = AICdigits)
+          AICLGaussi <- round(stats::AIC(LGauss4p, k = kcrit[4]), digits = AICdigits)
         } else (AICLGaussi <- Inf)
       } else # if (lessthan5doses)
       {
         #### convergence of both models
         if ((LGauss4psucces) & (LGauss5psucces))
         {
-          AICLGauss4p <- round(AIC(LGauss4p, k = kcrit[4]), digits = AICdigits)
-          AICLGauss5p <- round(AIC(LGauss5p, k = kcrit[5]), digits = AICdigits)
+          AICLGauss4p <- round(stats::AIC(LGauss4p, k = kcrit[4]), digits = AICdigits)
+          AICLGauss5p <- round(stats::AIC(LGauss5p, k = kcrit[5]), digits = AICdigits)
           if (AICLGauss5p < AICLGauss4p)
           {
             LGauss <- LGauss5p
@@ -281,25 +281,25 @@ drcfit <- function(itemselect,
             {
               equalcdLG <- TRUE
               LGauss <- LGauss4p
-              AICLGaussi <- round(AIC(LGauss4p, k = kcrit[4]), digits = AICdigits)
+              AICLGaussi <- round(stats::AIC(LGauss4p, k = kcrit[4]), digits = AICdigits)
             } else
               #### convergence only of LGauss5p
               if ((LGauss5psucces) & (!LGauss4psucces))
               {
                 LGauss <- LGauss5p
-                AICLGaussi <- round(AIC(LGauss5p, k = kcrit[5]), digits = AICdigits)
+                AICLGaussi <- round(stats::AIC(LGauss5p, k = kcrit[5]), digits = AICdigits)
               } else (AICLGaussi <- Inf)
         
         # If LGauss5p chosen, try with f = 0
         if (enablesfequal0inLGP & (is.finite(AICLGaussi)) & (!equalcdLG))
         {
-          parLG5p <- coef(LGauss)
+          parLG5p <- stats::coef(LGauss)
           startLprobit <- list(b = parLG5p["b"], c = parLG5p["c"], d = parLG5p["d"], e = parLG5p["e"])
-          Lprobit <- suppressWarnings(try(nls(formLprobit, start = startLprobit, data = dset, 
+          Lprobit <- suppressWarnings(try(stats::nls(formLprobit, start = startLprobit, data = dset, 
                                                 lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
           if (!inherits(Lprobit, "try-error"))
           {
-            AICwithfat0 <- round(AIC(Lprobit, k = kcrit[4]), digits = AICdigits)
+            AICwithfat0 <- round(stats::AIC(Lprobit, k = kcrit[4]), digits = AICdigits)
             if (AICwithfat0 <= AICLGaussi)
             {
               AICLGaussi <- AICwithfat0
@@ -321,7 +321,7 @@ drcfit <- function(itemselect,
       {
         startGauss5p <- startvalGauss5pnls(xm = doseu, ym = signalm,  
                                          Ushape = Ushape)
-        Gauss5p <- suppressWarnings(try(nls(formGauss5p, start = startGauss5p, data = dset, 
+        Gauss5p <- suppressWarnings(try(stats::nls(formGauss5p, start = startGauss5p, data = dset, 
                                           lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
         Gauss5psucces <- !inherits(Gauss5p, "try-error")
         # state a failure if the fitted model is out of the range of the signal
@@ -330,7 +330,7 @@ drcfit <- function(itemselect,
       }
       startGauss4p <- startvalGauss4pnls(xm = doseu, ym = signalm,  
                                          Ushape = Ushape)
-      Gauss4p <- suppressWarnings(try(nls(formGauss4p, start = startGauss4p, data = dset, 
+      Gauss4p <- suppressWarnings(try(stats::nls(formGauss4p, start = startGauss4p, data = dset, 
                                           lower = c(0, -Inf, 0, -Inf), algorithm = "port"), silent = TRUE))
       Gauss4psucces <- !inherits(Gauss4p, "try-error")
       # state a failure if the fitted model is out of the range of the signal
@@ -343,15 +343,15 @@ drcfit <- function(itemselect,
         {
           equalcdG <- TRUE
           Gauss <- Gauss4p
-          AICGaussi <- round(AIC(Gauss4p, k = kcrit[4]), digits = AICdigits)
+          AICGaussi <- round(stats::AIC(Gauss4p, k = kcrit[4]), digits = AICdigits)
         } else (AICGaussi <- Inf)
       } else # if (lessthan5doses)
       {
         #### convergence of both models
         if ((Gauss4psucces) & (Gauss5psucces))
         {
-          AICGauss4p <- round(AIC(Gauss4p, k = kcrit[4]), digits = AICdigits)
-          AICGauss5p <- round(AIC(Gauss5p, k = kcrit[5]), digits = AICdigits)
+          AICGauss4p <- round(stats::AIC(Gauss4p, k = kcrit[4]), digits = AICdigits)
+          AICGauss5p <- round(stats::AIC(Gauss5p, k = kcrit[5]), digits = AICdigits)
           if (AICGauss5p < AICGauss4p)
           {
             Gauss <- Gauss5p
@@ -375,25 +375,25 @@ drcfit <- function(itemselect,
             {
               equalcdG <- TRUE
               Gauss <- Gauss4p
-              AICGaussi <- round(AIC(Gauss4p, k = kcrit[4]), digits = AICdigits)
+              AICGaussi <- round(stats::AIC(Gauss4p, k = kcrit[4]), digits = AICdigits)
             } else
               #### convergence only of Gauss5p
               if ((Gauss5psucces) & (!Gauss4psucces))
               {
                 Gauss <- Gauss5p
-                AICGaussi <- round(AIC(Gauss5p, k = kcrit[5]), digits = AICdigits)
+                AICGaussi <- round(stats::AIC(Gauss5p, k = kcrit[5]), digits = AICdigits)
               } else (AICGaussi <- Inf)
 
       # If Gauss5p chosen, try with f = 0
       if (enablesfequal0inGP & (is.finite(AICGaussi)) & (!equalcdG))
       {
-        parG5p <- coef(Gauss)
+        parG5p <- stats::coef(Gauss)
         startprobit <- list(b = parG5p["b"], c = parG5p["c"], d = parG5p["d"], e = parG5p["e"])
-        probit <- suppressWarnings(try(nls(formprobit, start = startprobit, data = dset, 
+        probit <- suppressWarnings(try(stats::nls(formprobit, start = startprobit, data = dset, 
                                             lower = c(0, -Inf, -Inf, 0), algorithm = "port"), silent = TRUE))
         if (!inherits(probit, "try-error"))
         {
-          AICwithfat0 <- round(AIC(probit, k = kcrit[4]), digits = AICdigits)
+          AICwithfat0 <- round(stats::AIC(probit, k = kcrit[4]), digits = AICdigits)
           if (AICwithfat0 <= AICGaussi)
           {
             AICGaussi <- AICwithfat0
@@ -409,14 +409,14 @@ drcfit <- function(itemselect,
     ######### Fit of the linear model ############################    
     if (keeplin)
     {
-      lin <- lm(signal ~ dose, data = dset)
-      AIClini <- round(AIC(lin, k = kcrit[2]), digits = AICdigits)
+      lin <- stats::lm(signal ~ dose, data = dset)
+      AIClini <- round(stats::AIC(lin, k = kcrit[2]), digits = AICdigits)
     } else (AIClii <- Inf)
     
     
     ######## Fit of the null model (constant) ###########################
-    constmodel <- lm(signal ~ 1, data = dset)
-    AICconsti <-  round(AIC(constmodel, k = kcrit[1]), digits = AICdigits)
+    constmodel <- stats::lm(signal ~ 1, data = dset)
+    AICconsti <-  round(stats::AIC(constmodel, k = kcrit[1]), digits = AICdigits)
 
     ######### Choice of the best fit #####################################
     ######################################################################
@@ -435,19 +435,19 @@ drcfit <- function(itemselect,
       d.i <- NA
       e.i <- NA
       f.i <- NA
-      SDres.i <- sigma(constmodel)
+      SDres.i <- stats::sigma(constmodel)
     } else
     {
       if (indmodeli == 1)
       {
         fit <- Gauss
-        par <- coef(fit)
+        par <- stats::coef(fit)
         b.i <- par["b"]
         c.i <- ifelse(equalcdG, par["d"], par["c"])
         d.i <- par["d"]
         e.i <- par["e"]
         f.i <- ifelse(fequal0G, 0, par["f"])
-        SDres.i <- sigma(fit)
+        SDres.i <- stats::sigma(fit)
         if (enablesfequal0inGP)
         {
           nbpari <- ifelse(equalcdG | fequal0G, 4, 5)
@@ -459,13 +459,13 @@ drcfit <- function(itemselect,
         if (indmodeli == 2)
         {
           fit <- LGauss
-          par <- coef(fit)
+          par <- stats::coef(fit)
           b.i <- par["b"]
           c.i <- ifelse(equalcdLG, par["d"], par["c"])
           d.i <- par["d"]
           e.i <- par["e"]
           f.i <- ifelse(fequal0LG, 0, par["f"])
-          SDres.i <- sigma(fit)
+          SDres.i <- stats::sigma(fit)
           if (enablesfequal0inLGP)
           {
             nbpari <- ifelse(equalcdLG | fequal0LG, 4, 5)
@@ -477,37 +477,37 @@ drcfit <- function(itemselect,
           if (indmodeli == 3)
           {
             fit <- Hill
-            par <- coef(fit)
+            par <- stats::coef(fit)
             b.i <- par["b"]
             c.i <- par["c"]
             d.i <- par["d"]
             e.i <- par["e"]
             f.i <- NA
-            SDres.i <- sigma(fit)
+            SDres.i <- stats::sigma(fit)
             nbpari <- 4
           } else
             if (indmodeli == 4)
             {
               fit <- Expo
-              par <- coef(fit)
+              par <- stats::coef(fit)
               b.i <- par["b"]
               c.i <- NA
               d.i <- par["d"]
               e.i <- par["e"]
               f.i <- NA
-              SDres.i <- sigma(fit)
+              SDres.i <- stats::sigma(fit)
               nbpari <- 3
             } else
               if (indmodeli == 5)
               {
                 fit <- lin
-                par <- coef(fit)
+                par <- stats::coef(fit)
                 b.i <- par[2]
                 c.i <- NA
                 d.i <- par[1]
                 e.i <- NA
                 f.i <- NA
-                SDres.i <- sigma(fit)
+                SDres.i <- stats::sigma(fit)
                 nbpari <- 2
               } 
       
@@ -515,23 +515,23 @@ drcfit <- function(itemselect,
     
     # diagnostics on residuals (quadratic trend on residuals) 
     # answer to the question: correct mean function ?
-    dset$resi <- residuals(fit)
-    modquad.resi <- lm(resi ~ doseranks + I(doseranks^2), data = dset)
-    mod0.resi <- lm(resi ~ 1, data = dset)
-    resimeantrendPi <- anova(modquad.resi, mod0.resi)[[6]][2]
+    dset$resi <- stats::residuals(fit)
+    modquad.resi <- stats::lm(resi ~ doseranks + I(doseranks^2), data = dset)
+    mod0.resi <- stats::lm(resi ~ 1, data = dset)
+    resimeantrendPi <- stats::anova(modquad.resi, mod0.resi)[[6]][2]
  
     # diagnostics on absolute value of residuals 
     # answer to the question of homoscedasticity ?
     # (quadratic trend on abs(residuals)) 
     dset$absresi <-abs(dset$resi)
-    modquad.absresi <- lm(absresi ~ doseranks + I(doseranks^2), data = dset)
-    mod0.absresi <- lm(absresi ~ 1, data = dset)
-    resivartrendPi <- anova(modquad.absresi, mod0.absresi)[[6]][2]
+    modquad.absresi <- stats::lm(absresi ~ doseranks + I(doseranks^2), data = dset)
+    mod0.absresi <- stats::lm(absresi ~ 1, data = dset)
+    resivartrendPi <- stats::anova(modquad.absresi, mod0.absresi)[[6]][2]
     
     
     if (progressbar)
     {
-      setTxtProgressBar(pb, i)
+      utils::setTxtProgressBar(pb, i)
     }
     
     return(c(indmodeli, nbpari, b.i, c.i, d.i, e.i, f.i, SDres.i,
@@ -1024,7 +1024,7 @@ plotfit2pdf <- function(x, items,
   file2plot <- paste0(path2figs, "/drcfitplot.pdf")
   message(strwrap(prefix = "\n", initial = "\n",
                   paste0("Figures are stored in ", normalizePath(path2figs), ".")))
-  pdf(file2plot, width = 7, height = 10, onefile = TRUE) # w and h in inches
+  grDevices::pdf(file2plot, width = 7, height = 10, onefile = TRUE) # w and h in inches
   
   nplotsperpage <- nrowperpage * ncolperpage
   npage <- ceiling(nrow(subd) / nplotsperpage)
@@ -1128,7 +1128,7 @@ plotfit2pdf <- function(x, items,
     }
     print(g)
   }
-  dev.off()
+  grDevices::dev.off()
   
 }
 
