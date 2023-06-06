@@ -16,7 +16,8 @@ ui <- fluidPage(
             .progress-bar {
              background-color: #9c5c16;
             }
-           "
+           ",
+           lang = "en"
       )
     )),
   
@@ -26,7 +27,7 @@ ui <- fluidPage(
   br(),
   
   navbarPage(title = "", 
-             tabPanel(img(src = "logodromics.png", width = 180),
+             tabPanel(img(src = "logodromics.png", title = "DRomics", width = 180),
                       
                       fluidRow(
                         br(), br(), 
@@ -46,7 +47,7 @@ ui <- fluidPage(
                                              follow a normal distribution for each dose or concentration, with a common standard error.
                                              DRomics should not be used on other types of data.", br(), br(),
                                                         "Next, for interpretation of results in light of a biological annotation, you can use the ",
-                                                        a("DRomicsInterpreter-shiny application", href = "https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsInterpreter-shiny/", TARGET="_blank", style="color:#f28d0f;"), ".",
+                                                        a("DRomicsInterpreter-shiny application", title = "DRomicsInterpreter-shiny application", href = "https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsInterpreter-shiny/", TARGET="_blank", style="color:#d97e0d;"), ".",
                                                         style="text-align:justify;")
                                         
                         )),
@@ -54,13 +55,13 @@ ui <- fluidPage(
                                         br(),
                                         p(strong("Links and resources")),
                                         p("The DRomics-shiny application runs on the ", 
-                                           a("shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#f28d0f;"), 
+                                           a("shiny server of the LBBE", title = "shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#d97e0d;"), 
                                            "with the develoment version of the DRomics package (available on ", 
-                                           a("Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#f28d0f;"),")."),
+                                           a("Github", title = "Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#d97e0d;"),")."),
                                         p("DRomics is also an R package, available on ", 
-                                           a("CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#f28d0f;"), 
+                                           a("CRAN", title = "CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#d97e0d;"), 
                                            " and on ",
-                                           a("this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"), 
+                                           a("this web page", title = "this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#d97e0d;"), 
                                            ", where you can find also a vignette and a cheat sheet."),
                                         
                                         br(),
@@ -69,15 +70,16 @@ ui <- fluidPage(
                                         p(em("DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment."), br(),
                                           "Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018).", 
                                           "Environmental Science & Technology.",
-                                          a("https://doi.org/10.1021/acs.est.8b04752", href = "https://pubs.acs.org/doi/10.1021/acs.est.8b04752", TARGET = "_blank", style="color:#f28d0f;")),
-                                        p("You can freely find this article at: ", a("https://hal.archives-ouvertes.fr/hal-02309919", href = "https://hal.archives-ouvertes.fr/hal-02309919", TARGET = "_blank", style="color:#f28d0f;")),
+                                          a("https://doi.org/10.1021/acs.est.8b04752", title = "https://doi.org/10.1021/acs.est.8b04752", href = "https://pubs.acs.org/doi/10.1021/acs.est.8b04752", TARGET = "_blank", style="color:#d97e0d;")),
+                                        p("You can freely find this article at: ", 
+                                          a("https://hal.archives-ouvertes.fr/hal-02309919", title = "https://hal.archives-ouvertes.fr/hal-02309919", href = "https://hal.archives-ouvertes.fr/hal-02309919", TARGET = "_blank", style="color:#d97e0d;")),
                                         
                                         
                                         br(),
                                         p(strong("Contact")),
                                         p("If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at ", strong("dromics@univ-lyon1.fr"), "."),
                                         p("Issues can be reported on",
-                                          a("https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#f28d0f;"), ".")
+                                          a("https://github.com/aursiber/DRomics/issues", title = "https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#d97e0d;"), ".")
                                         
                                         
                         )),
@@ -85,13 +87,13 @@ ui <- fluidPage(
                         br(),
                         fixedRow(column(10, offset = 2,
                                         fillRow(flex = NA,
-                                          a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", width = 220), href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
-                                          a(img(src = "logoVetAgroSup.jpg", height = 100, width = 120), href="http://www.vetagro-sup.fr/", TARGET="_blank"),
-                                          a(img(src = "logoLyon1.png", height = 80, width = 380), href="https://www.univ-lyon1.fr/", TARGET="_blank"),
-                                          a(img(src = "logoLiec.png", height = 70, width = 100), href="http://liec.univ-lorraine.fr/", TARGET="_blank"),
-                                          a(img(src = "LogoUniversiteLorraine.png", height = 80, width = 180), href="http://www.univ-lorraine.fr/", TARGET="_blank"),
-                                          a(img(src = "LogoHelmholtz.jpg", height = 80, width = 180), href="https://www.ufz.de/index.php?en=33573", TARGET="_blank"),
-                                          img(src = "flag_yellow_high.jpg", height = 70, width = 110),
+                                          a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", width = 220), title = "LBBE", href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
+                                          a(img(src = "logoVetAgroSup.jpg", height = 100, width = 120), title = "VetAgroSup", href = "http://www.vetagro-sup.fr/", TARGET="_blank"),
+                                          a(img(src = "logoLyon1.png", height = 80, width = 380), title = "Université Claude Bernard Lyon 1", href = "https://www.univ-lyon1.fr/", TARGET="_blank"),
+                                          a(img(src = "logoLiec.png", height = 70, width = 100), title = "LIEC", href = "http://liec.univ-lorraine.fr/", TARGET="_blank"),
+                                          a(img(src = "LogoUniversiteLorraine.png", height = 80, width = 180), title = "Université de Lorraine", href = "http://www.univ-lorraine.fr/", TARGET="_blank"),
+                                          a(img(src = "LogoHelmholtz.jpg", height = 80, width = 180), title = "Helmholts", href = "https://www.ufz.de/index.php?en=33573", TARGET="_blank"),
+                                          img(src = "flag_yellow_high.jpg", title = "European Union", height = 70, width = 110),
                                           style="text-align: center;"
                                         )
                                         
@@ -481,7 +483,7 @@ ui <- fluidPage(
                         column(8, 
                                br(), HTML("<font face=verdana size=5 color=#9c5c16><b>R CODE TO GO FURTHER</b></font>"), br(), br(), br(),
                                tags$blockquote("To see what more you can do using the R package, we recommend you to consult the vignette and the cheat sheet", 
-                                               "(links to all resources ", a("here", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"),")."), 
+                                               "(links to all resources ", a("here", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#d97e0d;"),")."), 
                                br(), 
                                downloadButton("buttonDownRCode", "Download R Code", icon = icon("fas fa-download"), style = 'background-color:#e6e6e6; color:#000000; border-color:#9d9d9d;'), br(), br(),
                                verbatimTextOutput('printRCode'), br(), br(),
