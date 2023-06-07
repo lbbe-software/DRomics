@@ -14,8 +14,15 @@ ui <- fluidPage(
               background-color: #c6c6c6;
             }
             .progress-bar {
-             background-color: #9c5c16;
+              background-color: #9c5c16;
+              value: #eee;
             }
+            progress::-webkit-progress-value { 
+  background-color: #4CAF50; 
+            } 
+progress::-moz-progress-bar { 
+  background-color: #4CAF50; 
+} 
            ",
            lang = "en"
       )
@@ -47,7 +54,7 @@ ui <- fluidPage(
                                              follow a normal distribution for each dose or concentration, with a common standard error.
                                              DRomics should not be used on other types of data.", br(), br(),
                                                         "Next, for interpretation of results in light of a biological annotation, you can use the ",
-                                                        a("DRomicsInterpreter-shiny application", title = "DRomicsInterpreter-shiny application", href = "https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsInterpreter-shiny/", TARGET="_blank", style="color:#d97e0d;"), ".",
+                                                        a("DRomicsInterpreter-shiny application", title = "DRomicsInterpreter-shiny application", href = "https://lbbe-shiny.univ-lyon1.fr/DRomics/inst/DRomicsInterpreter-shiny/", TARGET="_blank", style="color:#9c5c16;"), ".",
                                                         style="text-align:justify;")
                                         
                         )),
@@ -55,13 +62,13 @@ ui <- fluidPage(
                                         br(),
                                         p(strong("Links and resources")),
                                         p("The DRomics-shiny application runs on the ", 
-                                           a("shiny server of the LBBE", title = "shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#d97e0d;"), 
+                                           a("shiny server of the LBBE", title = "shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#9c5c16;"), 
                                            "with the develoment version of the DRomics package (available on ", 
-                                           a("Github", title = "Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#d97e0d;"),")."),
+                                           a("Github", title = "Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#9c5c16;"),")."),
                                         p("DRomics is also an R package, available on ", 
-                                           a("CRAN", title = "CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#d97e0d;"), 
+                                           a("CRAN", title = "CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#9c5c16;"), 
                                            " and on ",
-                                           a("this web page", title = "this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#d97e0d;"), 
+                                           a("this web page", title = "this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#9c5c16;"), 
                                            ", where you can find also a vignette and a cheat sheet."),
                                         
                                         br(),
@@ -70,16 +77,16 @@ ui <- fluidPage(
                                         p(em("DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment."), br(),
                                           "Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018).", 
                                           "Environmental Science & Technology.",
-                                          a("https://doi.org/10.1021/acs.est.8b04752", title = "https://doi.org/10.1021/acs.est.8b04752", href = "https://pubs.acs.org/doi/10.1021/acs.est.8b04752", TARGET = "_blank", style="color:#d97e0d;")),
+                                          a("https://doi.org/10.1021/acs.est.8b04752", title = "https://doi.org/10.1021/acs.est.8b04752", href = "https://pubs.acs.org/doi/10.1021/acs.est.8b04752", TARGET = "_blank", style="color:#9c5c16;")),
                                         p("You can freely find this article at: ", 
-                                          a("https://hal.archives-ouvertes.fr/hal-02309919", title = "https://hal.archives-ouvertes.fr/hal-02309919", href = "https://hal.archives-ouvertes.fr/hal-02309919", TARGET = "_blank", style="color:#d97e0d;")),
+                                          a("https://hal.archives-ouvertes.fr/hal-02309919", title = "https://hal.archives-ouvertes.fr/hal-02309919", href = "https://hal.archives-ouvertes.fr/hal-02309919", TARGET = "_blank", style="color:#9c5c16;")),
                                         
                                         
                                         br(),
                                         p(strong("Contact")),
                                         p("If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at ", strong("dromics@univ-lyon1.fr"), "."),
                                         p("Issues can be reported on",
-                                          a("https://github.com/aursiber/DRomics/issues", title = "https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#d97e0d;"), ".")
+                                          a("https://github.com/aursiber/DRomics/issues", title = "https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#9c5c16;"), ".")
                                         
                                         
                         )),
@@ -120,7 +127,6 @@ ui <- fluidPage(
                                                    'metabolomics data (in log scale)' = 'metabolomicdata',
                                                    'anchoring continuous data (in a scale that enables the use of a normal error model)' = 'continuousanchoringdata'),
                                        selected = 'microarraydata'),
-                          hr(), 
                           
                           ###### For micro-array data (default)
                           conditionalPanel(
@@ -137,7 +143,6 @@ ui <- fluidPage(
                                         bsButton("bgdose_help1", label = "", icon = icon("question"), size = "small"),
                                         bsPopover("bgdose_help1", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
                             ),
-                            hr(), 
                             radioButtons('normMethod_microarray',
                                          'Select a method to normalize the data',
                                          choices = c('cyclic loess' = 'cyclicloess',
@@ -164,7 +169,6 @@ ui <- fluidPage(
                                         bsButton("bgdose_help2", label = "", icon = icon("question"), size = "small"),
                                         bsPopover("bgdose_help2", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
                             ),
-                            hr(), 
                             radioButtons('transfoMethod_rnaseq',
                                          'Select a method to transform the data',
                                          choices = c('regularized logarithm (rlog, may take a few minutes)' = 'rlog',
@@ -188,7 +192,6 @@ ui <- fluidPage(
                                         bsButton("bgdose_help3", label = "", icon = icon("question"), size = "small"),
                                         bsPopover("bgdose_help3", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
                             ),
-                            hr(), 
                             icon("triangle-exclamation"), "We recommend you to check that your metabolomics data were correctly pretreated before importation. In particular data (metabolomic signal) should have been log-transformed, without replacing 0 values by NA values (consider using the half minimum method instead for example).",
                             h5("See ", a("here", href = "informations_metabolo_pretreatment.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " more information about metabolomics data pretreatment")
                           ),
@@ -208,12 +211,10 @@ ui <- fluidPage(
                                         bsButton("bgdose_help4", label = "", icon = icon("question"), size = "small"),
                                         bsPopover("bgdose_help4", "", text_bgdose, placement = "right", trigger = "hover", options = NULL)
                             ),
-                            hr(), 
                             icon("triangle-exclamation"),
                             "We recommend you to check that your anchoring data are continuous and expressed in a scale that enables the use of a normal error model (a transformation of data may be needed for some endpoints). If this assumption is not respected, results of selection and further steps may be inaccurate."
                           ),
                           
-                          hr(), 
                           fixedRow(
                             column(12, align="center",
                                    actionButton("buttonRunStep1", "Run", icon = icon("file-import"), style='font-size:200%')
@@ -257,7 +258,6 @@ ui <- fluidPage(
                                    br(),
                                    textInput('FDR', label = 'False Discovery Rate (FDR) for the Benjamini-Hochberg correction of p-values', value = "0.05"),
                                    h5("See ", a("here", href = "informations_FDR_choice.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the choice of FDR"),
-                                   hr(),
                                    fixedRow(
                                      column(12, align="center",
                                             actionButton("buttonRunStep2", "Run", icon = icon("fas fa-gear"), style='font-size:200%')
@@ -483,7 +483,7 @@ ui <- fluidPage(
                         column(8, 
                                br(), HTML("<font face=verdana size=5 color=#9c5c16><b>R CODE TO GO FURTHER</b></font>"), br(), br(), br(),
                                tags$blockquote("To see what more you can do using the R package, we recommend you to consult the vignette and the cheat sheet", 
-                                               "(links to all resources ", a("here", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#d97e0d;"),")."), 
+                                               "(links to all resources ", a("here", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#9c5c16;"),")."), 
                                br(), 
                                downloadButton("buttonDownRCode", "Download R Code", icon = icon("fas fa-download"), style = 'background-color:#e6e6e6; color:#000000; border-color:#9d9d9d;'), br(), br(),
                                verbatimTextOutput('printRCode'), br(), br(),
