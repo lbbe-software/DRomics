@@ -94,12 +94,12 @@ progress::-moz-progress-bar {
                         br(),
                         fixedRow(column(10, offset = 2,
                                         fillRow(flex = NA,
-                                          a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", width = 220), title = "LBBE", href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
-                                          a(img(src = "logoVetAgroSup.jpg", height = 100, width = 120), title = "VetAgroSup", href = "http://www.vetagro-sup.fr/", TARGET="_blank"),
-                                          a(img(src = "logoLyon1.png", height = 80, width = 380), title = "Université Claude Bernard Lyon 1", href = "https://www.univ-lyon1.fr/", TARGET="_blank"),
-                                          a(img(src = "logoLiec.png", height = 70, width = 100), title = "LIEC", href = "http://liec.univ-lorraine.fr/", TARGET="_blank"),
-                                          a(img(src = "LogoUniversiteLorraine.png", height = 80, width = 180), title = "Université de Lorraine", href = "http://www.univ-lorraine.fr/", TARGET="_blank"),
-                                          a(img(src = "LogoHelmholtz.jpg", height = 80, width = 180), title = "Helmholts", href = "https://www.ufz.de/index.php?en=33573", TARGET="_blank"),
+                                          a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", title = "LBBE", width = 220), title = "LBBE", href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
+                                          a(img(src = "logoVetAgroSup.jpg", title = "VetAgroSup", height = 100, width = 120), title = "VetAgroSup", href = "http://www.vetagro-sup.fr/", TARGET="_blank"),
+                                          a(img(src = "logoLyon1.png", title = "Université Claude Bernard Lyon 1", height = 80, width = 380), title = "Université Claude Bernard Lyon 1", href = "https://www.univ-lyon1.fr/", TARGET="_blank"),
+                                          a(img(src = "logoLiec.png", title = "LIEC", height = 70, width = 100), title = "LIEC", href = "http://liec.univ-lorraine.fr/", TARGET="_blank"),
+                                          a(img(src = "LogoUniversiteLorraine.png", title = "Université de Lorraine", height = 80, width = 180), title = "Université de Lorraine", href = "http://www.univ-lorraine.fr/", TARGET="_blank"),
+                                          a(img(src = "LogoHelmholtz.jpg", title = "Helmholts", height = 80, width = 180), title = "Helmholts", href = "https://www.ufz.de/index.php?en=33573", TARGET="_blank"),
                                           img(src = "flag_yellow_high.jpg", title = "European Union", height = 70, width = 110),
                                           style="text-align: center;"
                                         )
