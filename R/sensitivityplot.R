@@ -119,7 +119,6 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     if (BMDsummary == "median")
       gg <- gg + labs(x = "", y = "BMD medians") 
     else {
-      print("ici")
       gg <- gg + geom_errorbar(aes_(ymin = quote(firstquartile), 
                                     ymax = quote(thirdquartile), linewidth = I(1)), 
                                width = 0) +
