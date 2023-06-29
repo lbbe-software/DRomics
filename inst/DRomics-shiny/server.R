@@ -399,7 +399,7 @@ server <- function(input, output, session) {
               "",
               "# Other functions (bmdplot, bmdplotwithgradient, curvesplot, trendplot and sensitivityplot)",
               "# are available in the DRomics package to explore your results (see the vignette and the",
-              "# cheat sheet) and will soon be the subject of a second shiny application !"
+              "# cheat sheet) and in a second shiny application called DRomicsInterpreter-shiny!"
     )
     
     output$buttonDownRCodeFurther <- downloadHandler(
