@@ -893,6 +893,7 @@ plot.drcfit <- function(x, items,
     stop("At least one of the chosen items was not selected as responding. You should use targetplot() in that case.")
     subd <- x$fitres[inditems, ]
   }
+  subd$id <- factor(subd$id, levels = subd$id)
   g <- plotfitsubset(subd, 
                 dose = x$omicdata$dose, 
                 data = x$omicdata$data, 
@@ -966,6 +967,7 @@ plot.drcfit <- function(x, items,
   
   if (addBMD)
   {
+    subbmdres$id <- factor(subbmdres$id, levels = subd$id)
     g <- g + geom_vline(data = subbmdres,
                         aes_(xintercept = quote(BMD)), 
                         linetype = 1, colour = "red") +
