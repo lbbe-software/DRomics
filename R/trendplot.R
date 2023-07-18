@@ -38,12 +38,15 @@ trendplot <- function(extendedres, group,
     colnames(dtab) <- c("group","trend", "nb_of_items")
     dtab <- dtab[dtab$nb_of_items != 0, ]
     if (add.color)
+    {
       gg <- ggplot(dtab, aes_(x = quote(trend), y = quote(group), colour = quote(trend))) + 
         geom_point(aes_(size = quote(nb_of_items)))
-    else
+      
+    } else
+    {
       gg <- ggplot(dtab, aes_(x = quote(trend), y = quote(group))) +
         geom_point(aes_(size = quote(nb_of_items)))
-    
+    }
   } else {
     dtab <- as.data.frame(table(extendedres[, group], 
                                 extendedres[, "trend"],
@@ -51,14 +54,18 @@ trendplot <- function(extendedres, group,
     colnames(dtab) <- c("group", "trend", "facetby", "nb_of_items")
     dtab <- dtab[dtab$nb_of_items != 0, ]
     if (add.color)
+    {
       gg <- ggplot(dtab, aes_(x = quote(trend), y = quote(group), colour = quote(trend))) +
-        geom_point(aes_(size = quote(nb_of_items)))
-    else
+        geom_point(aes_(size = quote(nb_of_items))) 
+    } else
+    {
       gg <- ggplot(dtab, aes(x = quote(trend), y = quote(group))) +
         geom_point(aes_(size = quote(nb_of_items)))
+    }
     
-    if (missing(ncol4faceting)) gg <- gg + facet_wrap(~ facetby) else
-      gg <- gg + facet_wrap(~ facetby, ncol = ncol4faceting)
+    if (missing(ncol4faceting)) 
+      {gg <- gg + facet_wrap(~ facetby)} else
+      {gg <- gg + facet_wrap(~ facetby, ncol = ncol4faceting)}
   }
   
   gg <- gg + scale_size_continuous(breaks = c(min(dtab$nb_of_items), median(dtab$nb_of_items), max(dtab$nb_of_items)))

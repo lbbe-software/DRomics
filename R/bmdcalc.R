@@ -7,8 +7,7 @@ calcBMD <- function(y0, delta, xext, yext, dosemin, dosemax, ydosemax, func,
     func4uniroot <- func_xinlog
     firstinterval <- c(log(minBMD), log(xext)) 
     secondinterval <- c(log(max(xext, minBMD)), log(dosemax))
-  }
-  else
+  } else
   {
     workwithxinlog <- FALSE
     func4uniroot <- func
@@ -69,8 +68,7 @@ calcBMD <- function(y0, delta, xext, yext, dosemin, dosemax, ydosemax, func,
         finalroot <- stats::uniroot(func4uniroot, interval=firstinterval, b=b, c=c, 
                              d=d, e=e, g=g, threshold=threshold)$root
       }  
-    }
-    else  # BMR may be in the second phase
+    } else  # BMR may be in the second phase
     {
       threshold <- y0 + delta
       funcatminBMD <- 
@@ -109,15 +107,17 @@ bmdcalc <- function(f, z = 1, x = 10, minBMD, ratio2switchinlog = 100)
   dosemax <- max(f$omicdata$dose)
   dosemin <- min(f$omicdata$dose[f$omicdata$dose != 0])
   
-  if (missing(minBMD)) minBMD <- dosemin / 100  else# could be changed
-  if (minBMD > dosemin)
+  if (missing(minBMD)) {minBMD <- dosemin / 100}  else# could be changed
+  {
+    if (minBMD > dosemin)
     { 
       warning("You can fix minBMD only to a value smaller than the minimal non null tested dose.")
       minBMD <- dosemin / 100
     }
+  }
   
   if (minBMD <= 0)
-    stop("minBMD should be a stricly positive value.")
+  {stop("minBMD should be a stricly positive value.")}
 
   dcalc <- data.frame(xextrem = dfitall$xextrem, 
                       yextrem = rep(NA,nselect), 
@@ -310,9 +310,13 @@ plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"),
             stat_ecdf(geom = "step") + ylab("ECDF")
   }
   
-  if (by == "trend")  g <- g + facet_wrap(~ trend) else
-    if (by == "model") g <- g + facet_wrap(~ model) else
-      if (by == "typology") g <- g + facet_wrap(~ typology)
+  if (by == "trend")  {g <- g + facet_wrap(~ trend)} else
+  {
+    if (by == "model") {g <- g + facet_wrap(~ model)} else
+    {
+      if (by == "typology") {g <- g + facet_wrap(~ typology)}
+    }
+  }
     
   return(g)
 }

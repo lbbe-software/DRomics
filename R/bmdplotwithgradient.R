@@ -41,8 +41,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     }
     
     BMD2plot <- data.frame(x = extendedres$BMD.zSD, id = extendedres$id)
-  }
-  else 
+  } else 
   {
     if (scaling)
     {
@@ -135,11 +134,12 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     }
     g <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF), 
                                                 label = quote(id))) 
-    if (missing(facetby2)) g <- g + facet_wrap(~ facetby) else g <- g + facet_grid(facetby2 ~ facetby)
-    
+    if (missing(facetby2)) 
+      {g <- g + facet_wrap(~ facetby)} else 
+      {g <- g + facet_grid(facetby2 ~ facetby)}
   } else
   {
-    if (missing(line.size)) line.size <- 24 / nrow(BMD2plot) 
+    if (missing(line.size)) {line.size <- 24 / nrow(BMD2plot) }
     
     BMD2plot$ECDF <- (rank(BMD2plot$x, ties.method = "first") - 0.5) / ntot
     g <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF),
@@ -225,8 +225,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     if (!missing(facetby2)) 
     {
       gg <- gg + facet_grid(facetby2 ~ facetby) 
-    }
-    else
+    } else
     {
       if (missing(ncol4faceting))
       {

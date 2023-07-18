@@ -25,12 +25,15 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
       containing at least columns named id and BMD.zSD.")
     
     if (add.CI)
+    {
       BMD2plot <- data.frame(x = extendedres$BMD.zSD, id = extendedres$id,
                              upper = extendedres$BMD.zSD.upper,
-                             lower = extendedres$BMD.zSD.lower) else
+                             lower = extendedres$BMD.zSD.lower)
+    } else
+    {
       BMD2plot <- data.frame(x = extendedres$BMD.zSD, id = extendedres$id)
-  }
-  else 
+    }
+  } else 
   {
     if (any(!is.element(c("id", "BMD.xfold"), cnames)))
       stop("The first argument of bmdplot must be a dataframe
@@ -112,8 +115,7 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     if (!missing(facetby2)) 
     {
       gg <- gg + facet_grid(facetby2 ~ facetby) 
-    }
-    else
+    } else
     {
       if (missing(ncol4faceting))
       {
@@ -130,26 +132,38 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   if (!missing(shapeby))
   {
     if (!missing(colorby))
+    {
       gg <- gg + geom_point(data = BMD2plot, mapping = aes_(shape = quote(shapeby),
-                            color = quote(colorby)), size = point.size) else
+                 color = quote(colorby)), size = point.size) 
+    } else
+    {
       gg <- gg + geom_point(data = BMD2plot, mapping = aes_(shape = quote(shapeby)),
-                        size = point.size)
+                            size = point.size)
+    }
   } else
   {
     if (!missing(colorby))
+    {
       gg <- gg + geom_point(data = BMD2plot, 
-                mapping = aes_(color = quote(colorby)),size = point.size) else
-        gg <- gg + geom_point(data = BMD2plot, size = point.size)
+                            mapping = aes_(color = quote(colorby)),size = point.size)
+    } else
+    {
+      gg <- gg + geom_point(data = BMD2plot, size = point.size)
+    }
   }
   
   # Add of CIs
   if (add.CI)
   {
     if (!missing(colorby))
+    {
       gg <- gg + geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper),
-                                     color = quote(colorby)), height = 0) else
+                                     color = quote(colorby)), height = 0)
+    } else
+    {
       gg <- gg + geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper)),  
-                                               height = 0)              
+                                height = 0)
+    }                
   }
   
   # Add of labels

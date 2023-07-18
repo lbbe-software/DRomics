@@ -110,8 +110,7 @@ similaritycalc <- function(extendedres, xmin = 0, xmax,
     res <- by(curves2plot, curves2plot$facetby, similaritycalc.1G)
     output <- data.frame(group = names(res), meanabscor = as.vector(res))
 
-  }
-  else
+  } else
   { 
     curves2plot$facetbyfacetby2 <- 
       paste(curves2plot$facetby, curves2plot$facetby2, sep = "_")

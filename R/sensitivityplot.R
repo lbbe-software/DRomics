@@ -23,8 +23,7 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
       stop("The first argument of sensitivityplot must be a dataframe
       containing a column named BMD.zSD and other columns coding for group of items.")
     variable <- extendedres[, "BMD.zSD"]
-  }
-  else 
+  } else 
   {
     if (any(!is.element(c("BMD.xfold"), cnames)))
       stop("The first argument of sensitivityplot must be a dataframe
@@ -89,21 +88,25 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   if (BMDsummary == "first.quartile")
   {
     if (missing(colorby))
+    {
       gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(firstquartile), 
                              size = quote(nb_of_items)))
-    else
+    } else
+    {  
       gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(firstquartile), 
                              color = quote(level), alpha = I(0.8),
                              size = quote(nb_of_items))) 
+    }
     
     gg <- gg + geom_point(stat = 'identity')  +  coord_flip() +
       labs(x = "", y = "BMD 25th quantiles") 
     
   } else {
     if (missing(colorby))
+    {
       gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(secondquartile), 
                              size = quote(nb_of_items))) 
-    else {
+    } else {
       if (BMDsummary == "median") {
         gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(secondquartile), 
                                color = quote(level), 
@@ -117,8 +120,9 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     gg <- gg + geom_point(stat = 'identity') + coord_flip() 
     
     if (BMDsummary == "median")
+    {
       gg <- gg + labs(x = "", y = "BMD medians") 
-    else {
+    } else {
       gg <- gg + geom_errorbar(aes_(ymin = quote(firstquartile), 
                                     ymax = quote(thirdquartile), linewidth = I(1)), 
                                width = 0) +

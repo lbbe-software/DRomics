@@ -61,7 +61,7 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
   # Normalization and count data transformation using DESeq2
   if (missing(transfo.method))
   {
-    if (ncoldata > 30) transfo.method <- "vst" else transfo.method <- "rlog"
+    if (ncoldata > 30) {transfo.method <- "vst"} else {transfo.method <- "rlog"}
   } else
   {
     transfo.method <- match.arg(transfo.method, c("rlog", "vst"))

@@ -235,8 +235,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           nlsboot <- suppressWarnings(try(stats::nls(formula = formGauss5p, data = dsetboot, start = lestimpar,
                                               lower = c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), 
                                           silent = TRUE))
-        }
-        else
+        } else
         {
           if (f1 == 0)
           {
@@ -256,7 +255,9 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
         {
           SDresboot <- sqrt(sum(stats::residuals(nlsboot)^2)/(ndata - nbpari))
           bboot <- stats::coef(nlsboot)["b"]
-          if (nbpari == 5) cboot <- stats::coef(nlsboot)["c"] else cboot <- stats::coef(nlsboot)["d"]
+          if (nbpari == 5) 
+            {cboot <- stats::coef(nlsboot)["c"]} else 
+            {cboot <- stats::coef(nlsboot)["d"]}
           dboot <- stats::coef(nlsboot)["d"]
           eboot <- stats::coef(nlsboot)["e"]
           fboot <- stats::coef(nlsboot)["f"]
@@ -325,8 +326,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
           nlsboot <- suppressWarnings(try(stats::nls(formula = formLGauss5p, data = dsetboot, start = lestimpar,
                                               lower =  c(0, -Inf, -Inf, 0, -Inf), algorithm = "port"), 
                                           silent = TRUE))
-        }
-        else
+        } else
         {
           if (f1 == 0)
           {
@@ -346,10 +346,13 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
         {
           SDresboot <- sqrt(sum(stats::residuals(nlsboot)^2)/(ndata - nbpari))
           bboot <- stats::coef(nlsboot)["b"]
-          if (nbpari == 5 | f1 == 0) cboot <- stats::coef(nlsboot)["c"] else cboot <- stats::coef(nlsboot)["d"]
+          if (nbpari == 5 | f1 == 0) 
+            {cboot <- stats::coef(nlsboot)["c"]} else 
+              {cboot <- stats::coef(nlsboot)["d"]}
           dboot <- stats::coef(nlsboot)["d"]
           eboot <- stats::coef(nlsboot)["e"]
-          if (f1 == 0) fboot <- 0 else fboot <- stats::coef(nlsboot)["f"]
+          if (f1 == 0) {fboot <- 0} else 
+            {fboot <- stats::coef(nlsboot)["f"]}
           y0boot <- dboot
           ydosemaxboot <- fLGauss5p(x = dosemax, b = bboot, c = cboot, d = dboot, e = eboot, f = fboot)
           
@@ -427,13 +430,11 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
   # parallel or sequential computation
   if (parallel != "no") 
   {
-    if (parallel == "snow") type <- "PSOCK"
-    else if (parallel == "multicore") type <- "FORK"
+    if (parallel == "snow") {type <- "PSOCK"} else if (parallel == "multicore") {type <- "FORK"}
     clus <- parallel::makeCluster(ncpus, type = type)
     res <- parallel::parSapply(clus, 1:nitems, bootoneitem)
     parallel::stopCluster(clus)
-  }
-  else
+  } else
   {
     res <- sapply(1:nitems, bootoneitem)
   }
@@ -498,9 +499,13 @@ plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
   }
   nrow(dwithNA)
   
-  if (by == "trend") dwithNA$by <- res$trend else
-    if (by == "model") dwithNA$by <- res$model else
-      if (by == "typology") dwithNA$by <- res$typology 
+  if (by == "trend") {dwithNA$by <- res$trend} else
+  {
+    if (by == "model") {dwithNA$by <- res$model} else
+    {
+      if (by == "typology") {dwithNA$by <- res$typology}
+    }
+  }
   
   # Remove NA values if needed
   d <- dwithNA[!is.na(dwithNA$BMD) & !is.na(dwithNA$BMD.lower) & !is.na(dwithNA$BMD.upper), ]
@@ -575,7 +580,7 @@ plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
               alpha = 0.5, height = 0) + geom_point() + xlim(0, BMDlimmax)
       
     }
-  }  else
+  } else
   { # global plot of BMDs
     d$ECDF <- (rank(d$BMD, ties.method = "first") - 0.5) / nplotted
     if (!define.xlim)

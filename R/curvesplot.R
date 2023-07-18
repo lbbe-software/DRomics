@@ -169,8 +169,7 @@ curvesplot <- function(extendedres, xmin = 0, xmax,
     if (!missing(facetby2)) 
     {
       gg <- gg + facet_grid(facetby2 ~ facetby, scales = scales.arg) 
-    }
-    else
+    } else
     {
       if (missing(ncol4faceting))
       {

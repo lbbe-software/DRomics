@@ -93,8 +93,7 @@ fExpo <- function(x, b, d, e)
 invExpo <- function(y, b, d, e)
 {
   if ( ((e < 0) & (b < 0) & (y > d - b)) | ((e < 0) & (b > 0) & (y < d - b)) )
-    return(NaN) else
-      return(e * log(1 + (y - d) / b))
+    {return(NaN)} else {return(e * log(1 + (y - d) / b))}
 }
 
 ### Hill model and starting values
@@ -143,8 +142,8 @@ fHill <- function(x, b, c, d, e)
 invHill <- function(y, b, c, d, e)
 {
   if ( ((d < c) & (y > c)) | ((d > c) & (y < c)) )
-    return(NaN) else
-      return(e * ((d - y) / (y - c))^(1/b))
+    {return(NaN)} else
+      {return(e * ((d - y) / (y - c))^(1/b))}
 }
 
 ### Gaussian model 5 p and starting values
@@ -232,8 +231,8 @@ fprobit <- function(x, b, c, d, e)
 invprobit <- function(y, b, c, d, e)
 {
   if ( ((d < c) & (y > c)) | ((d > c) & (y < c)) )
-    return(NaN) else
-      return(e + b *stats::qnorm((y - d) / (c - d)))
+    {return(NaN)} else
+      {return(e + b *stats::qnorm((y - d) / (c - d)))}
 }
 
 
@@ -403,8 +402,8 @@ fLprobit <- function(x, b, c, d, e)
 invLprobit <- function(y, b, c, d, e)
 {
   if ( ((d < c) & (y > c)) | ((d > c) & (y < c)) )
-    return(NaN) else
-      return(e * exp(stats::qnorm((y - d) / (c - d)) *b))
+    {return(NaN)} else
+      {return(e * exp(stats::qnorm((y - d) / (c - d)) *b))}
 }
 
 

@@ -46,7 +46,7 @@ PCAdataplot <- function(omicdata, batch, label)
     }
   } else
   {
-    if (label) add.label <- TRUE else add.label <- FALSE
+    if (label) {add.label <- TRUE} else {add.label <- FALSE}
   }
   
   # colnames(pseudologdata) <- 1:ncol(pseudologdata)

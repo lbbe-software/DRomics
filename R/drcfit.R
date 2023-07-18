@@ -544,13 +544,11 @@ drcfit <- function(itemselect,
     # parallel or sequential computation
     if (parallel != "no") 
     {
-        if (parallel == "snow") type <- "PSOCK"
-        else if (parallel == "multicore") type <- "FORK"
+        if (parallel == "snow") type <- "PSOCK" else if (parallel == "multicore") type <- "FORK"
         clus <- parallel::makeCluster(ncpus, type = type)
         res <- parallel::parSapply(clus, 1:nselect, fitoneitem)
         parallel::stopCluster(clus)
-    }
-    else
+    } else
     {
         res <- sapply(1:nselect, fitoneitem)
     }
