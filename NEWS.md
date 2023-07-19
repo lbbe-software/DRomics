@@ -2,6 +2,16 @@
 
 NEW FEATURES
 
+- 
+
+BUG FIXES
+
+- Fix a bug that appeared very occasionnally in the bootstrap procedure (error in bmdboot() due to fail of the call to uniroot())
+
+# DRomics 2.5-0 
+
+NEW FEATURES
+
 - Add of the function selectgroups() to select most represented and/or
 most sensitive groups on which to focus for biological interpretation.
 - Add of an RNAseq data with batch effect (zebraf) with an example of use of 
