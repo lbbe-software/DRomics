@@ -377,8 +377,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
                                b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
                                minBMD = minBMD, ratio2switchinlog = ratio2switchinlog),
               silent = TRUE))
-            BMDpboot <- resBMDp$BMD
-            
+
             resBMDsd <- suppressWarnings(try(
               calcBMD(y0=y0boot, delta=deltasdboot, xext=xextrboot, yext=yextrboot, 
                                 dosemin = dosemin, dosemax = dosemax, ydosemax = ydosemaxboot, 
@@ -386,7 +385,6 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
                                 b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
                                 minBMD = minBMD, ratio2switchinlog = ratio2switchinlog),
               silent = TRUE))
-            BMDsdboot <- resBMDsd$BMD
           } else
           {
             ypboot <- y0boot * ( 1 + xdiv100*sign(cboot * dboot))
