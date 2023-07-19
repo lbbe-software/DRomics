@@ -251,7 +251,7 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
                                             silent = TRUE))
           }
         }
-        if(inherits(nlsboot, "nls"))
+        if (inherits(nlsboot, "nls"))
         {
           SDresboot <- sqrt(sum(stats::residuals(nlsboot)^2)/(ndata - nbpari))
           bboot <- stats::coef(nlsboot)["b"]
@@ -287,20 +287,20 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
                                 b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
                                 minBMD = minBMD, ratio2switchinlog = ratio2switchinlog),
               silent = TRUE))
-          } else
+            # return a value only if no problem with nls AND uniroot
+            if (!inherits(resBMDsd, "try-error") &  !inherits(resBMDp, "try-error"))
+            {
+              return(list(BMDp = resBMDp$BMD, BMDsd = resBMDsd$BMD))
+            } 
+          } else # if f1 == 0
           {
             ypboot <- y0boot * ( 1 + xdiv100*sign(cboot * dboot))
             BMDpboot <- pmax(invprobit(ypboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
             ysdboot <- y0boot + z*SDresboot * sign(cboot * dboot)
             BMDsdboot <- pmax(invprobit(ysdboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
+            return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
           }
-          
-          # return a value only if no problem with nls AND uniroot
-          if (!inherits(resBMDsd, "try-error") &  !inherits(resBMDp, "try-error"))
-          {
-            return(list(BMDp = resBMDp$BMD, BMDsd = resBMDsd$BMD))
-          } 
-        }
+         } # end if (inherits(nlsboot, "nls"))
       } # end fboot
     } else
     ############ END model Gauss probit ###################
@@ -385,20 +385,21 @@ bmdboot <- function(r, items = r$res$id, niter = 1000,
                                 b = bboot, c = cboot, d = dboot, e = eboot, g = fboot, 
                                 minBMD = minBMD, ratio2switchinlog = ratio2switchinlog),
               silent = TRUE))
-          } else
+            
+            # return a value only if no problem with nls AND uniroot
+            if (!inherits(resBMDsd, "try-error") &  !inherits(resBMDp, "try-error"))
+            {
+              return(list(BMDp = resBMDp$BMD, BMDsd = resBMDsd$BMD))
+            } 
+          } else # if f1 == 0
           {
             ypboot <- y0boot * ( 1 + xdiv100*sign(cboot * dboot))
             BMDpboot <- pmax(invLprobit(ypboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
             ysdboot <- y0boot + z*SDresboot * sign(cboot * dboot)
             BMDsdboot <- pmax(invLprobit(ysdboot, b= bboot, c = cboot, d = dboot, e = eboot), minBMD)
-          }
-          
-          # return a value only if no problem with nls AND uniroot
-          if (!inherits(resBMDsd, "try-error") &  !inherits(resBMDp, "try-error"))
-          {
-            return(list(BMDp = resBMDp$BMD, BMDsd = resBMDsd$BMD))
-          } 
-        }
+            return(list(BMDp = BMDpboot, BMDsd = BMDsdboot))
+          } # end if f1 == 0
+        } # end if (inherits(nlsboot, "nls"))
       } # end fboot
     }
     ############ END model log Gauss probit ###################
