@@ -5,6 +5,7 @@
 1. [ ] Add an example in the vignette where the need is obvious to work on log scale for bmdplot, sensitivity plot AND change the default for log scale in each plot (fit or BMD) AND add a warning (ML and A pour mise en place warning)
 1. [ ] Mettre l'option scaling par défaut à TRUE dans le package (comme c'est déjà fait dans l'appli shiny) et l'indiquer dans la vignette (ML)
 1. [ ] Retravailler les xlab et ylab notamment mettre scaled signal ou scaled y si scaling dans curvesplot  et dans bmdplotwithgradient dans legende scaled_signal(ML)
+1. [ ] Tenter d'ajouter en optionnel une transparence sur curvesplot()
 1. [ ] Ajouter dans vignette ou FAQ ex. d'utilisation de l'option "median.and.IQR" (ML)
 1. [ ] Faire un outil de type diag de Venn (ou montrer dans vignette pour ne pas dépendre du package utilisé) qui compare deux résultats de itemselect() (ML)
 1. [ ] Find a way to give an example in the DRomicsInterpreter shiny app
@@ -13,14 +14,13 @@ of this modification at the launch of the package ? (A)
 1. [ ] Add an explanation of minBMD and or an option to define it in Shiny (ML, A)
 1. [ ] Gérer le souci des décimales dans le sensitivityplot (taille de points) à partir d'ex. Ellis (pas de souci vu par Aurélie) et faire un meilleur choix des valeurs à afficher (sur ech log si effectifs très diff) (ML, A)
 1. [ ] dans les curvesplot en option ajouter un point là où la BMD est atteinte (ML)
-1. [ ] Ajouter des colonnes à la sortie de DRomics via bmdboot (defined.BMD.zSD, finite.CI.BMD.zSD, ...) (ML)
+1. [ ] Ajouter des colonnes à la sortie de DRomics via bmdboot (defined.BMD.zSD, finite.CI.BMD.zSD, ...) (ML) Elis et Sophie y sont favorables
 1. [ ] AJouter la publi PCI partout quand elle sera sortie (ML et A)
 1. [ ] Reformuler le keep all experimental levels ? (ML)
 1. [ ] Faire en sorte que l'on puisse appliquer plot(f, items = "unseul", BMDoutput = bootstrapfaitjusteaveccetitem) (ML)
 1. [ ] Visualisation optionnelle par lignes verticales des doses testées (tous les graphes de fit avec la dose en x) (ML)
 1. [ ] Donnez la possibilité d'ajouter le nom de pathways à côté des points sur les sensitivity pour un seul niv exp plutôt que sur l'axe des y (en alternative)  ? (A)
 1. [ ] Add Danio rerio data in the package as another example for the functions for Dromics results interpretation (with or without enrichment and/or with outlier - elimination as in the paper (IRSN) ou un autre ex. (ML)
-1. [ ] Donner la possibilité dans selectgroups de sélectionner sur une p(q)value d'enrichissement (ML)
 1. [ ] Mettre sur le share un fichier de test sur des gros jeux de données, à tester sur une VM de l'IFB de temps en temps, avec fichiers stockés ailleurs
 
 ## Shorter term 
@@ -48,6 +48,7 @@ of this modification at the launch of the package ? (A)
 1. [ ] Retravailler le modèle sigmoide, Lprobit et Gausprobit avec e = 0
 1. [ ] Utilisation du vartrend pour alerte : pb avec microarray very small sample data A DISCUTER AVEC ELISE !
 1. [ ] Essayer de mettre le filtre sur les résidus meantrend avant la sélection car parfois on doit enlever des items pour lesquels un des modèle allait. A DISCUTER AVCE ELISE !
+1. [ ] Donner la possibilité dans selectgroups de sélectionner sur une p(q)value d'enrichissement (ML) - Elise et Sophie trouve cela compliqué à expliquer
 
 
 ## Longer term 
