@@ -53,10 +53,13 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="dromics-development-version">DRomics (development version)<a class="anchor" aria-label="anchor" href="#dromics-development-version"></a></h2>
 <p>NEW FEATURES</p>
-<ul><li>Change dose_log_transfo by default at TRUE in functions plot.drcfit(), plotfit2pdf(), targetplot() and BMD_log_transfo at TRUE in functions bmdplot(), bmdplotwithgradient() and sensitivityplot().</li>
+<ul><li>Put the argument dose_log_transfo by default at TRUE in functions plot.drcfit(), plotfit2pdf(), targetplot() and BMD_log_transfo at TRUE in functions bmdplot(), bmdplotwithgradient() and sensitivityplot().</li>
 <li>Add of the argument BMD_log_transfo by default at TRUE in functions plot.bmdcalc() and plot.bmdboot().</li>
+<li>Put the argument scaling by default at TRUE in curvesplot() and bmdplotwithgradient()</li>
+<li>Add of xlab and ylab to plots from curvesplot() (signal or scaled signal for y-axis) and change the color lab in “scaled signal” in plots from bmdplotwithgradient() when the signal is scaled.</li>
 </ul><p>BUG FIXES</p>
-<ul><li>Fix a bug that appeared very occasionnally in the bootstrap procedure (error in bmdboot() due to fail of the call to uniroot())</li>
+<ul><li>Fix a bug that appeared very occasionally in the bootstrap procedure (error in bmdboot() due to fail of the call to uniroot())</li>
+<li>Define the scale of nb of items in sensitivityplot() and trendplot() to get 4 integer values from min max and rounded 0.5 and 0.75 quartiles</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.5-0" id="dromics-25-0">DRomics 2.5-0<a class="anchor" aria-label="anchor" href="#dromics-25-0"></a></h2><p class="text-muted">CRAN release: 2023-01-24</p>
