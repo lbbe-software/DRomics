@@ -2,8 +2,9 @@
 
 NEW FEATURES
 
-- Change dose_log_transfo by default at TRUE in functions plot.drcfit(), plotfit2pdf(), targetplot() and BMD_log_transfo at TRUE in functions bmdplot(), bmdplotwithgradient() and sensitivityplot().
+- Put the argument dose_log_transfo by default at TRUE in functions plot.drcfit(), plotfit2pdf(), targetplot() and BMD_log_transfo at TRUE in functions bmdplot(), bmdplotwithgradient() and sensitivityplot().
 - Add of the argument BMD_log_transfo by default at TRUE in functions plot.bmdcalc() and plot.bmdboot().
+- Put the argument scaling by default at TRUE in curvesplot() and bmdplotwithgradient()
 
 BUG FIXES
 

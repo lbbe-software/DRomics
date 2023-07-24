@@ -121,9 +121,7 @@ Marie-Laure Delignette-Muller
 \examples{
 
 # (1) 
-# A toy example on a very small subsample of a microarray data set. 
-#
-datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", 
+# A toy example on a very smalldatafilename <- system.file("extdata", "transcripto_very_small_sample.txt", 
 package="DRomics")
 
 o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
@@ -133,11 +131,13 @@ r <- bmdcalc(f)
 
 # Plot of all the BMD values with color dose-response gradient 
 #
-bmdplotwithgradient(r$res, BMDtype = "zSD") 
+bmdplotwithgradient(r$res, BMDtype = "zSD")  subsample of a microarray data set. 
+#
+
 
 \donttest{
 
-# Same plot withoutsignal scaling
+# Same plot without signal scaling
 # 
 bmdplotwithgradient(r$res, BMDtype = "zSD", scaling = FALSE) 
 
@@ -218,10 +218,10 @@ bmdplotwithgradient(extendedres, BMDtype = "zSD",
                      xmax = 7.76, # maximal tested dose in those data
                        shapeby = "trend") 
 
-### (2.a) BMDplot with gradient by pathway with scaling
+### (2.a) BMDplot with gradient by pathway without scaling
 bmdplotwithgradient(extendedres, BMDtype = "zSD",
                      facetby = "path_class", xmax = 7.76,
-                       shapeby = "trend", scaling = TRUE) 
+                       shapeby = "trend", scaling = FALSE) 
 
 
 # (2.b) BMDplot with gradient by pathway
@@ -260,15 +260,10 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       facetby = "trend", 
                       shapeby = "model") 
-# with scaling
+# without scaling
 bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      scaling = TRUE, facetby = "trend", 
+                      scaling = FALSE, facetby = "trend", 
                       shapeby = "model") 
-# with scaling in raw BMD scale
-bmdplotwithgradient(r$res, BMDtype = "zSD",
-                      scaling = TRUE, facetby = "trend", 
-                      shapeby = "model",
-                      BMD_log_transfo = FALSE)
 }
 
 }

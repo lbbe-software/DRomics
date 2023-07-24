@@ -129,7 +129,8 @@ curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend",
 # (1.b) 
 # Plot of all the curves without shifting y0 values to 0
 # and without scaling
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), y0shift = FALSE)
+curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+          scaling = FALSE, y0shift = FALSE)
 
 
 # (1.c) 
@@ -160,9 +161,9 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
 facetby = "trend", facetby2 = "model")
 
-# plot split by trend and model with scaling
+# plot split by trend and model without scaling
 curvesplot(f$fitres, xmax = max(f$omicdata$dose),
-scaling = TRUE,
+scaling = FALSE,
 facetby = "trend", facetby2 = "model")
 
 # (3) An example from data published by Larras et al. 2020
@@ -193,7 +194,7 @@ curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 1,
 
 # Plot of the dose-response curves without scaling, by pathway colored by trend
 curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 1,
-           colorby = "trend", scaling = TRUE,
+           colorby = "trend", scaling = FALSE,
            xmin = 0, xmax = 8) 
 
 
