@@ -21,7 +21,7 @@ r <- bmdcalc(f)
 #
 curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "id")
 bmdplotwithgradient(r$res, xmax = max(f$omicdata$dose),
-           add.label = TRUE, label.size = 4)
+           add.label = TRUE, label.size = 4, scaling = FALSE)
 # Plots with scaling 
 #
 curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "id",

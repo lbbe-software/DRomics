@@ -12,7 +12,7 @@ on the BMD ECDF plot, in addition to the BMD ordered values. This plot is of int
 
 \usage{
 bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
-                                   xmin, xmax, y0shift = TRUE, scaling = FALSE,
+                                   xmin, xmax, y0shift = TRUE, scaling = TRUE,
                                    facetby, facetby2, 
                                    shapeby, npoints = 50, 
                                    line.size, point.size = 1,
@@ -43,7 +43,7 @@ the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
 \item{y0shift}{If \code{TRUE} (default choice) for each item the signal is shifted
 to have the theoretical signal at the control at 0.}
 
-\item{scaling}{If \code{TRUE} for each item the signal is shifted
+\item{scaling}{If \code{TRUE}, default choice, for each item the signal is shifted
 to have the theoretical signal at the control at 0 and scaled by dividing by 
  the maximal absolute signal change (up or down) from the signal at the control
  \code{maxychange}.}
@@ -137,9 +137,9 @@ bmdplotwithgradient(r$res, BMDtype = "zSD")
 
 \donttest{
 
-# Same plot with signal scaling
+# Same plot withoutsignal scaling
 # 
-bmdplotwithgradient(r$res, BMDtype = "zSD", scaling = TRUE) 
+bmdplotwithgradient(r$res, BMDtype = "zSD", scaling = FALSE) 
 
 # Plot of all the BMD values with color dose-response gradient 
 # with definition of xmax from the maximal tested dose

@@ -3,7 +3,7 @@
 # form an extended results dataframe (e.g. with annotation of items)
 # with optionnal use of columns for shape and or facet 
 bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
-                                xmin, xmax, y0shift = TRUE, scaling = FALSE,
+                                xmin, xmax, y0shift = TRUE, scaling = TRUE,
                                 facetby, facetby2, shapeby, npoints = 50, 
                                 line.size, point.size = 1,
                                 ncol4faceting, limits4colgradient,

@@ -1,7 +1,7 @@
 # Plot of fitted curves using columns of on extended dataframe to optionnally code 
 # for color and or facet 
 curvesplot <- function(extendedres, xmin = 0, xmax, 
-                       y0shift = TRUE, scaling = FALSE,
+                       y0shift = TRUE, scaling = TRUE,
                        facetby, facetby2, free.y.scales = FALSE, 
                        ncol4faceting, colorby, removelegend = FALSE,  
                         npoints = 500, line.size = 0.2, line.alpha = 1,

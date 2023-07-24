@@ -8,7 +8,7 @@ results, possibly extended with
 additional information (e.g. groups from functional annotation) used to color and/or split the curves. }
 
 \usage{
-curvesplot(extendedres, xmin = 0, xmax, y0shift = TRUE, scaling = FALSE,
+curvesplot(extendedres, xmin = 0, xmax, y0shift = TRUE, scaling = TRUE,
                        facetby, facetby2, free.y.scales = FALSE, ncol4faceting,
                        colorby, removelegend = FALSE,  
                         npoints = 500, line.size = 0.2, 
@@ -32,7 +32,7 @@ the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
 \item{y0shift}{If \code{TRUE} (default choice) curves are all shifted to have the theoretical
  signal at the control at 0.}
 
-\item{scaling}{If \code{TRUE} curves are all shifted to have the theoretical
+\item{scaling}{If \code{TRUE}, deafult choice, curves are all shifted to have the theoretical
  signal at the control at 0 \code{y0} and scaled by dividing by 
  the maximal absolute signal change (up or down) from the signal at the control
  \code{maxychange}.}
@@ -127,14 +127,10 @@ curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend",
   free.y.scales =  TRUE)
   
 # (1.b) 
-# Plot of all the curves playing with y0shift and scaling
-#
-# without shifting y0 values to 0
+# Plot of all the curves without shifting y0 values to 0
+# and without scaling
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), y0shift = FALSE)
 
-# with shifting y0 values to 0 and scaling
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
-  y0shift = TRUE, scaling = TRUE)
 
 # (1.c) 
 # Plot of all the curves colored by model, with one facet per trend
@@ -195,7 +191,7 @@ curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 1,
            colorby = "trend",
            xmin = 0, xmax = 8) 
 
-# Plot of the scaled dose-response curves by pathway colored by trend
+# Plot of the dose-response curves without scaling, by pathway colored by trend
 curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 1,
            colorby = "trend", scaling = TRUE,
            xmin = 0, xmax = 8) 
