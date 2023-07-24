@@ -270,7 +270,9 @@ print.bmdcalc <- function(x, ...)
 plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"), 
                          plottype = c("ecdf", "hist", "density"), 
                          by = c("none", "trend", "model", "typology"), 
-                         hist.bins = 30, ...) 
+                         hist.bins = 30,
+                         BMD_log_transfo = TRUE, 
+                         ...) 
 {
   if (!inherits(x, "bmdcalc"))
     stop("Use only with 'bmdcalc' objects.")
@@ -317,7 +319,12 @@ plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"),
       if (by == "typology") {g <- g + facet_wrap(~ typology)}
     }
   }
-    
+  
+  if (BMD_log_transfo)
+  {
+    g <- g + scale_x_log10()
+  }
+  
   return(g)
 }
 

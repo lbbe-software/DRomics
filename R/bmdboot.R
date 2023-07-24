@@ -492,7 +492,8 @@ print.bmdboot <- function(x, ...)
 }
 
 plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
-                         by = c("none", "trend", "model", "typology"), CI.col = "blue",  ...) 
+                         by = c("none", "trend", "model", "typology"), 
+                         CI.col = "blue", BMD_log_transfo = TRUE, ...) 
 {
   if (!inherits(x, "bmdboot"))
     stop("Use only with 'bmdboot' objects.")
@@ -607,7 +608,12 @@ plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
         geom_errorbarh(aes_(xmin = quote(BMD.lower), xmax = quote(BMD.upper)), col = CI.col, 
                        alpha = 0.5,  height = 0) + geom_point() + xlim(0, BMDlimmax)
     }
-  } 
+  }
+  if (BMD_log_transfo)
+  {
+    g <- g + scale_x_log10()
+  }
+  
   return(g)
 }
 

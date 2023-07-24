@@ -60,15 +60,12 @@ if(visualize)
   (f <- drcfit(s, progressbar = TRUE))
   head(f$fitres)
   
-  if (require(ggplot2))
-  {
-    (r <- bmdcalc(f))
-    plot(r) + scale_x_log10()
-    (r <- bmdcalc(f, ratio2switchinlog = 1))
-    plot(r) + scale_x_log10()
-    (r <- bmdcalc(f, minBMD = 0.0001, ratio2switchinlog = 1))
-    plot(r) + scale_x_log10()
-    (r <- bmdcalc(f, minBMD = 1))
-    plot(r) + scale_x_log10()
-  }
+  (r <- bmdcalc(f))
+  plot(r)
+  (r <- bmdcalc(f, ratio2switchinlog = 1))
+  plot(r) 
+  (r <- bmdcalc(f, minBMD = 0.0001, ratio2switchinlog = 1))
+  plot(r) 
+  (r <- bmdcalc(f, minBMD = 1))
+  plot(r) 
 }

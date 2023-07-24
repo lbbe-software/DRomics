@@ -159,9 +159,7 @@ if(visualize) # too long computation !
   
   r <- bmdcalc(f, z = 1)
   plot(r) 
-  if (require(ggplot2))
-    plot(r) + scale_x_log10() # same plot in log scale of BMD
-  
+
   bmdplotwithgradient(r$res, BMDtype = "zSD") 
   bmdplotwithgradient(r$res, BMDtype = "zSD", BMD_log_transfo = FALSE) 
  

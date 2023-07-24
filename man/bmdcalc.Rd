@@ -16,7 +16,7 @@ bmdcalc(f, z = 1, x = 10, minBMD, ratio2switchinlog = 100)
 \method{plot}{bmdcalc}(x, BMDtype = c("zSD", "xfold"), 
             plottype = c("ecdf", "hist", "density"), 
             by = c("none", "trend", "model", "typology"),
-            hist.bins = 30, \dots)
+            hist.bins = 30, BMD_log_transfo = TRUE, \dots)
 }
 
 \arguments{
@@ -49,6 +49,8 @@ on a log scale of dose.}
 \item{by}{If different from \code{"none"} the plot is split by trend (if \code{"trend"}), by model (if \code{"model"}) or by typology (if \code{"typology"}).}
 
 \item{hist.bins}{The number of bins, only used for histogram(s).}
+
+\item{BMD_log_transfo}{If TRUE, default option, a log transformation of the BMD is used in the plot.}
 
 \item{\dots}{ further arguments passed to graphical or print functions.}
 
@@ -147,10 +149,14 @@ datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", pack
 (r <- bmdcalc(f))
 plot(r) 
 
-# changing the values of z and x for BMD calculation
 \donttest{
+# same plot in raw scale of BMD (without log transformation of BMD values)
+plot(r, BMD_log_transfo = FALSE) 
+
+# changing the values of z and x for BMD calculation
 (rb <- bmdcalc(f, z = 2, x = 50))
 plot(rb)
+
 }
 
 # Plot of fits with BMD values 
@@ -179,8 +185,6 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))
 plot(r) 
-if (require(ggplot2))
-  plot(r, plottype = "ecdf") + scale_x_log10() # with log10 dose scale 
 
 # different plots of BMD-zSD
 

@@ -59,8 +59,6 @@ plot(f, plot.type = "dose_residuals")
 
 r <- bmdcalc(f, z = 1)
 plot(r) 
-if (require(ggplot2))
-  plot(r) + scale_x_log10() # same plot in log scale of BMD
 plot(r, by = "trend")
 head(r$res)
 

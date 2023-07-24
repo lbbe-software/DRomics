@@ -17,7 +17,8 @@ bmdboot(r, items = r$res$id, niter = 1000,
 \method{print}{bmdboot}(x, \dots)
 
 \method{plot}{bmdboot}(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
-                   by = c("none", "trend", "model", "typology"), CI.col = "blue",  \dots) 
+                   by = c("none", "trend", "model", "typology"), 
+                   CI.col = "blue", BMD_log_transfo = TRUE,  \dots) 
 }
 
 \arguments{
@@ -55,6 +56,7 @@ NA values are given for the limits of the confidence interval.}
   
 \item{CI.col}{The color to draw the confidence intervals.}
 
+\item{BMD_log_transfo}{If TRUE, default option, a log transformation of the BMD is used in the plot.}
 
 \item{\dots}{Further arguments passed to graphical or print functions.}
 
@@ -150,8 +152,12 @@ b$res
 plot(b) # plot of BMD.zSD after removing of BMDs with infinite upper bounds
 
 \donttest{
-plot(b, remove.infinite = FALSE) # plot of BMD.zSD without removing of BMDs 
-                                 # with infinite upper bounds
+# same plot in raw scale (without log transformation of BMD values)
+plot(b, BMD_log_transfo = FALSE)
+
+# plot of BMD.zSD without removing of BMDs 
+# with infinite upper bounds
+plot(b, remove.infinite = FALSE) 
 }
 
 
@@ -192,7 +198,6 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 
 # different plots of BMD-zSD
 plot(b)
-if (require(ggplot2)) plot(b) + scale_x_log10() # in BMD log10 scale
 plot(b, by = "trend") 
 plot(b, by = "model") 
 plot(b, by = "typology") 
