@@ -181,8 +181,8 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
 if (require(ggplot2)) bmdplotwithgradient(r$res, BMDtype = "zSD",
                       facetby = "trend", shapeby = "model") + 
                       labs(col = "signal value", shape = "model") +
-                      guides(colour = guide_colourbar(order = 2),
-                      shape = guide_legend(order = 1))
+                      guides(colour = guide_colourbar(order = 1),
+                      shape = guide_legend(order = 2))
                       
 # (2)
 # Plot of BMD values with color dose-response gradient
@@ -264,6 +264,11 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                       scaling = TRUE, facetby = "trend", 
                       shapeby = "model") 
+# with scaling in raw BMD scale
+bmdplotwithgradient(r$res, BMDtype = "zSD",
+                      scaling = TRUE, facetby = "trend", 
+                      shapeby = "model",
+                      BMD_log_transfo = FALSE)
 }
 
 }
