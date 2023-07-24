@@ -67,10 +67,10 @@ subannotres <- selectgroups(annotres,
 
 sensitivityplot(subannotres, BMDtype = "zSD",
                 group = "path_class", 
-                BMDsummary = "median")
+                BMDsummary = "median",
+                BMD_log_transfo = FALSE)
 
-  # same plot in log10 BMD scale (not interesting on this example
-  # but could be on another one) 
+  # same plot in log10 BMD scale 
   sensitivityplot(annotres, BMDtype = "zSD",
                   group = "path_class",  
                   BMDsummary = "first.quartile",

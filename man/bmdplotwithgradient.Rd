@@ -19,7 +19,7 @@ bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
                                    ncol4faceting, limits4colgradient,
                                    lowercol = "darkblue", uppercol = "darkred",
                                    add.label, label.size = 2,
-                                   BMD_log_transfo = FALSE)
+                                   BMD_log_transfo = TRUE)
 }
 
 \arguments{
@@ -81,7 +81,7 @@ to have the theoretical signal at the control at 0 and scaled by dividing by
 
 \item{label.size}{Size of labels if add.label is TRUE.}
 
-\item{BMD_log_transfo}{If TRUE a log transformation of the BMD is used in the plot. 
+\item{BMD_log_transfo}{If TRUE, the default option, a log transformation of the BMD is used in the plot. 
   This option cannot be used with a null value of xmin in input.}
 
 
@@ -151,10 +151,10 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                     xmax = max(f$omicdata$dose), add.label = TRUE) 
 
-# The same plot in log scale (we have to define xmin in this case) 
+# The same plot in raw scale (we can fix xmin at 0 in this case) 
 #
-bmdplotwithgradient(r$res, BMDtype = "zSD",
-                    BMD_log_transfo = TRUE) 
+bmdplotwithgradient(r$res, BMDtype = "zSD", xmin = 0,
+                    BMD_log_transfo = FALSE) 
 
 # The same plot in log scale with defining xmin and xmax at a chosen values 
 #

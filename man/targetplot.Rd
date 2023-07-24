@@ -8,7 +8,7 @@ with fitted curves if available.
 }
 
 \usage{
-targetplot(items, f, add.fit = TRUE, dose_log_transfo = FALSE)
+targetplot(items, f, add.fit = TRUE, dose_log_transfo = TRUE)
 }
 
 \arguments{
@@ -20,8 +20,7 @@ targetplot(items, f, add.fit = TRUE, dose_log_transfo = FALSE)
 \item{add.fit}{If \code{TRUE} the fitted curve is added for items which were selected as responsive items 
 and for which a best fit model was obtained.}
 
-\item{dose_log_transfo}{to put at \code{TRUE} to use a log transformation
-for the dose axis.}
+\item{dose_log_transfo}{If \code{TRUE}, default choice, a log transformation is used on the dose axis.}
 
 }
 
@@ -55,9 +54,9 @@ targetplot(targetitems, f = f)
 
 \donttest{
 
-# The same plot in x log scale
+# The same plot in raw scale instead of default log scale
 #
-targetplot(targetitems, f = f, dose_log_transfo = TRUE)
+targetplot(targetitems, f = f, dose_log_transfo = FALSE)
 
 # The same plot in x log scale choosing x limits for plot
 if (require(ggplot2))

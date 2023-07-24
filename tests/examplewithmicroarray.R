@@ -47,9 +47,9 @@ if (visualize)
   plot(f, items = 12, plot.type = "fitted_residuals") 
   plot(f, items = 12, plot.type = "dose_residuals") 
   # plot with dose in log
-  plot(f, items = 12, plot.type = "dose_fitted", dose_log_transfo = TRUE) 
-  plot(f, items = 12, plot.type = "dose_residuals", dose_log_transfo = TRUE) 
-  plot(f, items = 12, plot.type = "fitted_residuals", dose_log_transfo = TRUE) 
+  plot(f, items = 12, plot.type = "dose_fitted", dose_log_transfo = FALSE) 
+  plot(f, items = 12, plot.type = "dose_residuals", dose_log_transfo = FALSE) 
+  plot(f, items = 12, plot.type = "fitted_residuals", dose_log_transfo = FALSE) 
 }
 
 if (visualize)

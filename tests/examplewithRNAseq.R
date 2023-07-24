@@ -101,7 +101,7 @@ if (visualize)
                    progressbar = TRUE))
   
   (idremovedinf1bis <- f1$fitres$id[!is.element(f1$fitres$id, f1bis$fitres$id)])
-  targetplot(items = idremovedinf1bis, f1) 
+  targetplot(items = idremovedinf1bis, f1, dose_log_transfo = FALSE) 
   
   (idchanged <- f1bis$fitres$id[which(f1bis$fitres$model != f1ter$fitres$model | 
                                         f1bis$fitres$f != f1ter$fitres$f)])
@@ -163,7 +163,7 @@ if(visualize) # too long computation !
     plot(r) + scale_x_log10() # same plot in log scale of BMD
   
   bmdplotwithgradient(r$res, BMDtype = "zSD") 
-  bmdplotwithgradient(r$res, BMDtype = "zSD", BMD_log_transfo = TRUE) 
+  bmdplotwithgradient(r$res, BMDtype = "zSD", BMD_log_transfo = FALSE) 
  
   # no more 0 BMD values using argument minBMD 
   # res0 <- r$res[r$res$BMD.zSD == 0, ]

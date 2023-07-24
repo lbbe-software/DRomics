@@ -15,7 +15,7 @@ bmdplot(extendedres, BMDtype = c("zSD", "xfold"),
                                    point.size = 1,
                                    ncol4faceting, 
                                    add.label = FALSE, label.size = 2,
-                                    BMD_log_transfo = FALSE)
+                                    BMD_log_transfo = TRUE)
 }
 
 \arguments{
@@ -57,8 +57,7 @@ bmdplot(extendedres, BMDtype = c("zSD", "xfold"),
 
 \item{label.size}{Size of labels if add.label is TRUE.}
 
-\item{BMD_log_transfo}{If TRUE a log transformation of the BMD is used in the plot. 
-  This option cannot be used with a null value of xmin in input.}
+\item{BMD_log_transfo}{If TRUE, default option, a log transformation of the BMD is used in the plot.}
 
 
 }
@@ -137,19 +136,18 @@ bmdplot(extendedres, BMDtype = "zSD",
                        add.CI = TRUE) 
 
 ### (1.d) BMDplot by pathway with confidence intervals 
-#         in BMD log scale
+#         in BMD raw scale (not default log scale)
 bmdplot(extendedres, BMDtype = "zSD",
                      facetby = "path_class",
                      add.CI = TRUE,
-                     BMD_log_transfo = TRUE) 
+                     BMD_log_transfo = FALSE) 
 
 ### (1.e) BMDplot by pathway with confidence intervals 
 #         colored by trend
 bmdplot(extendedres, BMDtype = "zSD",
                      facetby = "path_class",
                      add.CI = TRUE,
-                     colorby = "trend",
-                     BMD_log_transfo = TRUE) 
+                     colorby = "trend") 
 
 
 # (2) 

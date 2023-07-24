@@ -2,16 +2,17 @@
 # uses ggplot2
 plotfitsubset <- function(subd, dose, data, data.mean, npts = 50, 
                         plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"),
-                        dose_log_transfo = FALSE, nr = NULL, nc = NULL)
+                        dose_log_transfo = TRUE, nr = NULL, nc = NULL)
 {
   plot.type <- match.arg(plot.type, c("dose_fitted", "dose_residuals", "fitted_residuals"))
   
-  if ((dose_log_transfo) & (plot.type == "fitted_residuals"))
-  {
-    warning(strwrap(prefix = "\n", initial = "\n", 
-      "The log transformation of the dose axis cannot be used for 
-      this type of plot: residuals as fonction of fitted values."))
-  }
+  # removed because unnecessary and now dose_log_transfo by default at TRUE
+  # if ((dose_log_transfo) & (plot.type == "fitted_residuals"))
+  # {
+  #   warning(strwrap(prefix = "\n", initial = "\n", 
+  #     "The log transformation of the dose axis cannot be used for 
+  #     this type of plot: residuals as fonction of fitted values."))
+  # }
   
   lev <- if((!is.null(nr) & !is.null(nc)) && (length(subd$id) < (nr * nc))) {c(subd$id, strrep(" ", 1:(nr * nc - length(subd$id))))} else {subd$id}
   

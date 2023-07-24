@@ -2,7 +2,7 @@
 
 ## Top priority
 1. [ ] Retravailler les test_that (ML)
-1. [ ] Add an example in the vignette where the need is obvious to work on log scale for bmdplot, sensitivity plot AND change the default for log scale in each plot (fit or BMD) AND add a warning (ML and A pour mise en place warning)
+1. [ ] Add an example in the vignette where the need is obvious to work on log scale for bmdplot, sensitivity plot AND change the default for log scale in each plot (fit or BMD) AND add a warning (ML and A pour mise en place warning) Dans shiny appels à bmdplot(BMD_log_transfo = TRUE), bmdplotwithgradient(BMD_log_transfo = TRUE), sensitivityplot(BMD_log_transfo = TRUE), plot.drcfit(dose_log_transfo = TRUE), plotfit2pdf(dose_log_transfo = TRUE), targetplot(dose_log_transfo = TRUE) PAR CONTRE EN ATTENTE  car plus délicat à gérer - faudrait mettre une val par défaut à xmin : curvesplot(dose_log_transfo = TRUE)
 1. [ ] Mettre l'option scaling par défaut à TRUE dans le package (comme c'est déjà fait dans l'appli shiny) et l'indiquer dans la vignette (ML)
 1. [ ] Retravailler les xlab et ylab notamment mettre scaled signal ou scaled y si scaling dans curvesplot  et dans bmdplotwithgradient dans legende scaled_signal(ML)
 1. [ ] Tenter d'ajouter en optionnel une transparence sur curvesplot()

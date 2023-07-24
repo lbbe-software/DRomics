@@ -865,7 +865,7 @@ print.drcfit <- function(x, ...)
 
 plot.drcfit <- function(x, items, 
                         plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
-                        dose_log_transfo = FALSE, 
+                        dose_log_transfo = TRUE, 
                         BMDoutput, BMDtype = c("zSD", "xfold"), ...)
 {
     plot.type <- match.arg(plot.type, c("dose_fitted", "dose_residuals","fitted_residuals"))  
@@ -991,7 +991,7 @@ plot.drcfit <- function(x, items,
 
 plotfit2pdf <- function(x, items, 
                         plot.type = c("dose_fitted", "dose_residuals", "fitted_residuals"), 
-                        dose_log_transfo = FALSE, 
+                        dose_log_transfo = TRUE, 
                         BMDoutput, BMDtype = c("zSD", "xfold"),
                         nrowperpage = 6, ncolperpage = 4,
                         path2figs = getwd())

@@ -6,7 +6,7 @@
 sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
                             group, ECDF_plot = TRUE, colorby,
                             BMDsummary = c("first.quartile", "median" , "median.and.IQR"),
-                            BMD_log_transfo = FALSE)
+                            BMD_log_transfo = TRUE)
 {
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
   BMDsummary <- match.arg(BMDsummary, c("first.quartile", "median", "median.and.IQR"))

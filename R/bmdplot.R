@@ -8,7 +8,7 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
                                    point.size = 1,
                                    ncol4faceting, 
                                    add.label = FALSE, label.size = 2,
-                                    BMD_log_transfo = FALSE)
+                                    BMD_log_transfo = TRUE)
 {
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
 

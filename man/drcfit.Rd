@@ -20,11 +20,11 @@ drcfit(itemselect,
 
 \method{plot}{drcfit}(x, items, 
   plot.type = c("dose_fitted", "dose_residuals","fitted_residuals"), 
-  dose_log_transfo = FALSE, BMDoutput, BMDtype = c("zSD", "xfold"), \dots)
+  dose_log_transfo = TRUE, BMDoutput, BMDtype = c("zSD", "xfold"), \dots)
    
 plotfit2pdf(x, items, 
   plot.type = c("dose_fitted", "dose_residuals", "fitted_residuals"), 
-  dose_log_transfo = FALSE, BMDoutput, BMDtype = c("zSD", "xfold"),
+  dose_log_transfo = TRUE, BMDoutput, BMDtype = c("zSD", "xfold"),
   nrowperpage = 6, ncolperpage = 4, path2figs = getwd())
 }
 
@@ -81,8 +81,8 @@ plotfit2pdf(x, items,
   of the dose, and \code{"fitted_residuals"} for the plot of the residuals as function of 
   the fitted value.}
 
-\item{dose_log_transfo}{Put at \code{TRUE} to use a log transformation
-  for the dose axis (only available if the dose is in x-axis, so not available
+\item{dose_log_transfo}{By default at \code{TRUE} to use a log transformation
+  for the dose axis (only used if the dose is in x-axis, so not
   for \code{plot.type} \code{"fitted_residuals"}).}
 
 \item{BMDoutput}{Argument that can be used to add BMD values
@@ -233,8 +233,9 @@ s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05)
 # Default plot
 plot(f)
 \donttest{
-# The same plot with log transformation of the doses
-plot(f, dose_log_transfo = TRUE)
+# The same plot without log transformation of the doses 
+# (in raw scale of doses)
+plot(f, dose_log_transfo = FALSE)
 
 # The same plot in x log scale choosing x limits for plot
 if (require(ggplot2))
@@ -244,8 +245,8 @@ if (require(ggplot2))
 # Plot of residuals as function of the dose
 plot(f, plot.type = "dose_residuals")
 
-# Same plot of residuals with log transformation of the doses
-plot(f, plot.type = "dose_residuals", dose_log_transfo = TRUE)
+# Same plot of residuals without log transformation of the doses
+plot(f, plot.type = "dose_residuals", dose_log_transfo = FALSE)
 
 # plot of residuals as function of the fitted value
 plot(f, plot.type = "fitted_residuals")

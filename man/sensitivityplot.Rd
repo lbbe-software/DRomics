@@ -15,7 +15,7 @@ with points sized by the numbers of items per group.
 sensitivityplot(extendedres, BMDtype = c("zSD", "xfold"),
                 group, ECDF_plot = TRUE, colorby,
                 BMDsummary = c("first.quartile", "median" , "median.and.IQR"),
-                BMD_log_transfo = FALSE)
+                BMD_log_transfo = TRUE)
 }
 
 \arguments{
@@ -51,7 +51,7 @@ for the plot of first quartiles of BMD values per group,
 and \code{"median.and.IQR"} for the plot of medians with an interval corresponding
 to the inter-quartile range (IQR).}
 
-\item{BMD_log_transfo}{If TRUE a log transformation of the BMD is used in the plot.}
+\item{BMD_log_transfo}{If TRUE, default choice, a log transformation of the BMD is used in the plot.}
 }
 
 \details{
@@ -103,12 +103,11 @@ sensitivityplot(annotres, BMDtype = "zSD",
 
 \donttest{
 
-# same plot in log10 BMD scale (not interesting on this example
-# but could be on another one) 
+# same plot in raw BMD scale (so not in log scale) 
 sensitivityplot(annotres, BMDtype = "zSD",
                             group = "path_class",  
                             BMDsummary = "first.quartile",
-                            BMD_log_transfo = TRUE)
+                            BMD_log_transfo = FALSE)
 
 ### Plot of 25th quantiles of BMD-zSD calculated by pathway
 ### in the order of the levels as defined in the group input

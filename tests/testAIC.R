@@ -103,7 +103,7 @@ if (visualize)
   (id2explore <- f$fitres$id[f$fitres$model %in% c("Gauss-probit", "log-Gauss-probit") & 
                                f$fitres$f == 0])
   f$fitres[f$fitres$id %in%  id2explore, ]
-  plot(f, items = id2explore, dose_log_transfo = TRUE)
+  plot(f, items = id2explore)
   
   ###### test on apical data
   data(Scenedesmus_apical)

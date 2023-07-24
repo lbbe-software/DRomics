@@ -31,7 +31,7 @@ if (visualize)
 {
   f$fitres
   plot(f)
-  plot(f, dose_log_transfo = TRUE)
+  plot(f, dose_log_transfo = FALSE)
   plot(f, plot.type = "dose_residuals")
   
 }

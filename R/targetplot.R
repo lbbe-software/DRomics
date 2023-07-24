@@ -1,5 +1,5 @@
 # Plot of raw data and fitted curves if there is for target items 
-targetplot <- function(items, f, add.fit = TRUE, dose_log_transfo = FALSE)
+targetplot <- function(items, f, add.fit = TRUE, dose_log_transfo = TRUE)
 {
   if (!inherits(f, "drcfit"))
     stop("Use only with 'drcfit' objects, created with the function drcfit.")
