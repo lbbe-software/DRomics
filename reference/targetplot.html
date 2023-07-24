@@ -60,7 +60,7 @@ with fitted curves if available.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">targetplot</span><span class="op">(</span><span class="va">items</span>, <span class="va">f</span>, add.fit <span class="op">=</span> <span class="cn">TRUE</span>, dose_log_transfo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">targetplot</span><span class="op">(</span><span class="va">items</span>, <span class="va">f</span>, add.fit <span class="op">=</span> <span class="cn">TRUE</span>, dose_log_transfo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -80,8 +80,7 @@ and for which a best fit model was obtained.</p></dd>
 
 
 <dt>dose_log_transfo</dt>
-<dd><p>to put at <code>TRUE</code> to use a log transformation
-for the dose axis.</p></dd>
+<dd><p>If <code>TRUE</code>, default choice, a log transformation is used on the dose axis.</p></dd>
 
 
 </dl></div>
@@ -120,16 +119,16 @@ for the dose axis.</p></dd>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="va">targetitems</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"88.1"</span>, <span class="st">"1"</span>, <span class="st">"3"</span>, <span class="st">"15"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">targetplot</span><span class="op">(</span><span class="va">targetitems</span>, f <span class="op">=</span> <span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
 <span class="r-plt img"><img src="targetplot-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># The same plot in x log scale</span></span></span>
+<span class="r-in"><span><span class="co"># The same plot in raw scale instead of default log scale</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="fu">targetplot</span><span class="op">(</span><span class="va">targetitems</span>, f <span class="op">=</span> <span class="va">f</span>, dose_log_transfo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
+<span class="r-in"><span><span class="fu">targetplot</span><span class="op">(</span><span class="va">targetitems</span>, f <span class="op">=</span> <span class="va">f</span>, dose_log_transfo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="targetplot-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The same plot in x log scale choosing x limits for plot</span></span></span>

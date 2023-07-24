@@ -63,7 +63,7 @@ additional information (e.g. groups from functional annotation) used to color an
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">extendedres</span>, xmin <span class="op">=</span> <span class="fl">0</span>, <span class="va">xmax</span>, y0shift <span class="op">=</span> <span class="cn">TRUE</span>, scaling <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">extendedres</span>, xmin <span class="op">=</span> <span class="fl">0</span>, <span class="va">xmax</span>, y0shift <span class="op">=</span> <span class="cn">TRUE</span>, scaling <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                       <span class="va">facetby</span>, <span class="va">facetby2</span>, free.y.scales <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">ncol4faceting</span>,</span>
 <span>                       <span class="va">colorby</span>, removelegend <span class="op">=</span> <span class="cn">FALSE</span>,  </span>
 <span>                        npoints <span class="op">=</span> <span class="fl">500</span>, line.size <span class="op">=</span> <span class="fl">0.2</span>, </span>
@@ -98,7 +98,7 @@ the parameters (columns <code>b</code>, <code>c</code>, <code>d</code>, <code>e<
 
 
 <dt>scaling</dt>
-<dd><p>If <code>TRUE</code> curves are all shifted to have the theoretical
+<dd><p>If <code>TRUE</code>, deafult choice, curves are all shifted to have the theoretical
  signal at the control at 0 <code>y0</code> and scaled by dividing by 
  the maximal absolute signal change (up or down) from the signal at the control
  <code>maxychange</code>.</p></dd>
@@ -231,34 +231,31 @@ are used to compute theoretical dose-response curves in the range
 <span class="r-plt img"><img src="curvesplot-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span>  </span></span>
 <span class="r-in"><span><span class="co"># (1.b) </span></span></span>
-<span class="r-in"><span><span class="co"># Plot of all the curves playing with y0shift and scaling</span></span></span>
-<span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co"># without shifting y0 values to 0</span></span></span>
+<span class="r-in"><span><span class="co"># Plot of all the curves without shifting y0 values to 0</span></span></span>
+<span class="r-in"><span><span class="co"># and without scaling</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, y0shift <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> y0shift is forced to TRUE when scaling is TRUE.</span>
 <span class="r-plt img"><img src="curvesplot-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># with shifting y0 values to 0 and scaling</span></span></span>
-<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>  y0shift <span class="op">=</span> <span class="cn">TRUE</span>, scaling <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="curvesplot-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># (1.c) </span></span></span>
 <span class="r-in"><span><span class="co"># Plot of all the curves colored by model, with one facet per trend</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  facetby <span class="op">=</span> <span class="st">"trend"</span>, colorby <span class="op">=</span> <span class="st">"model"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="curvesplot-10.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="curvesplot-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># changing the number of columns</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  facetby <span class="op">=</span> <span class="st">"trend"</span>, colorby <span class="op">=</span> <span class="st">"model"</span>, ncol4faceting <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="curvesplot-11.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="curvesplot-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># playing with size and transparency of lines</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  facetby <span class="op">=</span> <span class="st">"trend"</span>, colorby <span class="op">=</span> <span class="st">"model"</span>, </span></span>
 <span class="r-in"><span>  line.size <span class="op">=</span> <span class="fl">1</span>, line.alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="curvesplot-12.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="curvesplot-11.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span>  </span></span>
 <span class="r-in"><span><span class="co"># (2) an example on a microarray data set (a subsample of a greater data set)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
@@ -309,13 +306,13 @@ are used to compute theoretical dose-response curves in the range
 <span class="r-in"><span><span class="co"># plot split by trend and model</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>facetby <span class="op">=</span> <span class="st">"trend"</span>, facetby2 <span class="op">=</span> <span class="st">"model"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="curvesplot-13.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="curvesplot-12.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># plot split by trend and model with scaling</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>scaling <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>facetby <span class="op">=</span> <span class="st">"trend"</span>, facetby2 <span class="op">=</span> <span class="st">"model"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="curvesplot-14.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="curvesplot-13.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># (3) An example from data published by Larras et al. 2020</span></span></span>
 <span class="r-in"><span><span class="co"># in Journal of Hazardous Materials</span></span></span>
@@ -408,13 +405,13 @@ are used to compute theoretical dose-response curves in the range
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">extendedres</span>, facetby <span class="op">=</span> <span class="st">"path_class"</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>           colorby <span class="op">=</span> <span class="st">"trend"</span>,</span></span>
 <span class="r-in"><span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> </span></span>
-<span class="r-plt img"><img src="curvesplot-15.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="curvesplot-14.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Plot of the scaled dose-response curves by pathway colored by trend</span></span></span>
+<span class="r-in"><span><span class="co"># Plot of the dose-response curves without scaling, by pathway colored by trend</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">extendedres</span>, facetby <span class="op">=</span> <span class="st">"path_class"</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>           colorby <span class="op">=</span> <span class="st">"trend"</span>, scaling <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> </span></span>
-<span class="r-plt img"><img src="curvesplot-16.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="curvesplot-15.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot of the dose-response curves split by pathway and by trend</span></span></span>
@@ -425,7 +422,7 @@ are used to compute theoretical dose-response curves in the range
 <span class="r-in"><span>          facetby <span class="op">=</span> <span class="st">"trend"</span>, facetby2 <span class="op">=</span> <span class="st">"path_class"</span>,</span></span>
 <span class="r-in"><span>          npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> </span></span>
-<span class="r-plt img"><img src="curvesplot-17.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="curvesplot-16.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot of the dose-response curves for a specific pathway</span></span></span>
 <span class="r-in"><span><span class="co"># in this example the "lipid metabolism" pathclass</span></span></span>
@@ -433,7 +430,7 @@ are used to compute theoretical dose-response curves in the range
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">LMres</span>, facetby <span class="op">=</span> <span class="st">"id"</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>           colorby <span class="op">=</span> <span class="st">"trend"</span>,</span></span>
 <span class="r-in"><span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> </span></span>
-<span class="r-plt img"><img src="curvesplot-18.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="curvesplot-17.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>

@@ -67,7 +67,8 @@
 <span></span>
 <span><span class="co"># S3 method for bmdboot</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, BMDtype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"zSD"</span>, <span class="st">"xfold"</span><span class="op">)</span>, remove.infinite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                   by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"trend"</span>, <span class="st">"model"</span>, <span class="st">"typology"</span><span class="op">)</span>, CI.col <span class="op">=</span> <span class="st">"blue"</span>,  <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>                   by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"trend"</span>, <span class="st">"model"</span>, <span class="st">"typology"</span><span class="op">)</span>, </span>
+<span>                   CI.col <span class="op">=</span> <span class="st">"blue"</span>, BMD_log_transfo <span class="op">=</span> <span class="cn">TRUE</span>,  <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -131,6 +132,9 @@ NA values are given for the limits of the confidence interval.</p></dd>
 <dt>CI.col</dt>
 <dd><p>The color to draw the confidence intervals.</p></dd>
 
+
+<dt>BMD_log_transfo</dt>
+<dd><p>If TRUE, default option, a log transformation of the BMD is used in the plot.</p></dd>
 
 
 <dt>...</dt>
@@ -311,9 +315,14 @@ to finite values.</p>
 <span class="r-plt img"><img src="bmdboot-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span>, remove.infinite <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># plot of BMD.zSD without removing of BMDs </span></span></span>
+<span class="r-in"><span><span class="co"># same plot in raw scale (without log transformation of BMD values)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span>, BMD_log_transfo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="bmdboot-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span>                                 <span class="co"># with infinite upper bounds</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># plot of BMD.zSD without removing of BMDs </span></span></span>
+<span class="r-in"><span><span class="co"># with infinite upper bounds</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span>, remove.infinite <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></span>
+<span class="r-plt img"><img src="bmdboot-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -366,11 +375,17 @@ to finite values.</p>
 <span class="r-in"><span><span class="co"># Plot of fits with BMD values  and confidence intervals</span></span></span>
 <span class="r-in"><span><span class="co"># with the default BMD.zSD</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span>, items <span class="op">=</span> <span class="va">chosenitems</span>, BMDoutput <span class="op">=</span> <span class="va">b.95</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="bmdboot-3.png" alt="" width="700" height="433"></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
+<span class="r-plt img"><img src="bmdboot-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># with the default BMD.xfold </span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span>, items <span class="op">=</span> <span class="va">chosenitems</span>, BMDoutput <span class="op">=</span> <span class="va">b.95</span>, BMDtype <span class="op">=</span> <span class="st">"xfold"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Transformation introduced infinite values in continuous x-axis</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 3 rows containing missing values (`geom_vline()`).</span>
-<span class="r-plt img"><img src="bmdboot-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="bmdboot-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># same bootstrap but changing the default confidence level (0.95) to 0.90</span></span></span>
 <span class="r-in"><span><span class="op">(</span><span class="va">b.90</span> <span class="op">&lt;-</span> <span class="fu">bmdboot</span><span class="op">(</span><span class="va">r</span>, items <span class="op">=</span> <span class="va">chosenitems</span>,</span></span>
@@ -483,11 +498,6 @@ to finite values.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># different plots of BMD-zSD</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> 4 BMD values for which lower and upper bounds were coded NA or with</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> lower or upper infinite bounds were removed before plotting.</span>
-<span class="r-plt img"><img src="bmdboot-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># in BMD log10 scale</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 4 BMD values for which lower and upper bounds were coded NA or with</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> lower or upper infinite bounds were removed before plotting.</span>
