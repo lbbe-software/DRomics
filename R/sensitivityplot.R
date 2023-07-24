@@ -134,6 +134,13 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   if (BMD_log_transfo)
     gg <- gg + scale_y_log10()
   
-  gg <- gg + scale_size_continuous(breaks = c(min(dnb$nb_of_items), median(dnb$nb_of_items), max(dnb$nb_of_items)))
+  if (!missing(colorby))
+  {
+    gg <- gg + labs(color = colorby)
+  }
+  
+  round.quartiles.minmax <- round(quantile(dnb$nb_of_items, probs = c(0, 0.5, 0.75, 1)))
+  gg <- gg + scale_size_continuous(breaks = as.numeric(round.quartiles.minmax)) + 
+            labs(size = "nb. of items")
   return(gg)
 }

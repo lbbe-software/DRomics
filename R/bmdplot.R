@@ -180,6 +180,17 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     gg <- gg + scale_x_log10()
   
   gg <- gg + xlab("BMD")
+  
+  if (!missing(shapeby))
+  {
+    gg <- gg + labs(shape = shapeby)
+  }
+  
+  if (!missing(colorby))
+  {
+    gg <- gg + labs(color = colorby)
+  }
+  
     
   return(gg)
 }

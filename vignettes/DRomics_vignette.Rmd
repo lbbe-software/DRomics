@@ -597,7 +597,8 @@ $\Phi$ represents the cumulative distribution function (CDF) of the standard Gau
 As the previous one, this model encompasses **two simplifed versions with 4 parameters**, one **monotonic** (for $f=0$) and one with **symmetrical asymptotes** (for $c=d$).
 
 This family of five models was built to be able to describe a wide range of monotonic and biphasic
-DRC. In the following plot were represented typologies of curves that can be described using those models, depending of the definition of their parameters.
+DRC. In the following plot were represented typologies of curves that can be described using those models, depending of the definition of their parameters. In the following plot the curves are represented with the signal in y-axis and the raw dose in x-axis. **As the range of tested or observed doses is often large**, we decided to plot model fits 
+**by default using a log scale of doses**. The **shape of models will be transformed in this log x-scale**, and **especially the linear model will no more appear as a straight line as below**. 
 
 ```{r, echo = FALSE, results = "hide", fig.height=8, fig.width = 8}
 par(mfrow = c(4,4), mar = c(0,0,0,0), xaxt = "n", yaxt = "n")
@@ -785,7 +786,7 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
                     facetby = "trend", 
                     shapeby = "model",
                     line.size = 1.2,
-                    scaling = TRUE) + labs(shape = "model")
+                    scaling = TRUE) 
 ```
 
 
@@ -977,7 +978,7 @@ Confidence intervals can be added on this plot and color coding for trend in thi
 ```{r}
 bmdplot(extendedres, BMDtype = "zSD", add.CI = TRUE, 
                     facetby = "path_class", 
-                    colorby = "trend") + labs(col = "trend")
+                    colorby = "trend") 
 ```
 
 The function ecdfplotwithCI() can also be used as an alternative as below to provide the same plot
@@ -997,7 +998,7 @@ Using the function bmdplotwithgradient() and its argument `facetby`, the BMD plo
 bmdplotwithgradient(extendedres, BMDtype = "zSD",
                     scaling = TRUE, 
                     facetby = "path_class", 
-                    shapeby = "trend") + labs(shape = "trend")
+                    shapeby = "trend") 
 ```
 
 One can **focus on a group of interest**, for instance the group "Lipid metabolism", and add the **labels of items**
@@ -1057,7 +1058,7 @@ in your dataset. Below is a code to plot the dose-response curves split by biolo
 ```{r}
 # Plot of all the scaled dose-reponse curves split by path class
 curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100, line.size = 1,
-           colorby = "trend", xmin = 0, xmax = 6.5) + labs(col = "trend")
+           colorby = "trend", xmin = 0, xmax = 6.5) 
 ```
 
 It is also possible using this function to visualize the modeled respons of each item of
@@ -1068,7 +1069,7 @@ one biological group, as below:
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
            colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "trend")
+           xmin = 0, xmax = 6.5) 
 ```
 
 
@@ -1278,7 +1279,7 @@ selectedres <- selectgroups(extendedres,
 # BMDplot on this selection
 bmdplot(selectedres, BMDtype = "zSD", add.CI = TRUE,
                     facetby = "path_class", facetby2 = "explevel",
-                    colorby = "trend") + labs(col = "trend")
+                    colorby = "trend") 
 ```
 
 
@@ -1316,17 +1317,18 @@ experimental level using the argument `facetby2` . (See ?curvesplot for more opt
 
 ```{r}
 # Plot of the unscaled dose-response curves for the "lipid metabolism" path class
+# using transparency to get an idea of density of curves with the shame shape
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
-curvesplot(LMres, facetby = "explevel", free.y.scales = TRUE, npoints = 100, line.size = 1,
-           colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "DR_trend")
+curvesplot(LMres, facetby = "explevel", free.y.scales = TRUE, npoints = 100, 
+           line.alpha = 0.4, line.size = 1, colorby = "trend",
+           xmin = 0, xmax = 6.5) + labs(col = "DR trend")
 
 # Plot of the scaled dose-response curves for previously chosen path classes
 curvesplot(selectedres2, scaling = TRUE,
            facetby = "path_class", facetby2 = "explevel",
            npoints = 100, line.size = 1,
            colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "DR_trend")
+           xmin = 0, xmax = 6.5) + labs(col = "DR trend")
 ```
 
 The scaling of the curves only used 

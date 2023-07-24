@@ -1,20 +1,20 @@
 # TODO list
 
 ## Top priority
-1. [ ] Retravailler les test_that (ML)
+1. [X] Retravailler les test_that (ML)
 1. [ ] Add an example in the vignette where the need is obvious to work on log scale for bmdplot, sensitivity plot AND change the default for log scale in each plot (fit or BMD) AND add a warning (ML and A pour mise en place warning). Dans shiny appels à bmdplot(BMD_log_transfo = TRUE), bmdplotwithgradient(BMD_log_transfo = TRUE), sensitivityplot(BMD_log_transfo = TRUE), plot.drcfit(dose_log_transfo = TRUE), plotfit2pdf(dose_log_transfo = TRUE), targetplot(dose_log_transfo = TRUE), et nouvel argument BMD_log_transfo par défaut à TRUE à 
 gérer dans les appels à plot.bmdcalc() (et plot.bmdboot() mais pas dans shiny). 
 PAR CONTRE EN ATTENTE  car plus délicat à gérer - faudrait mettre une val par défaut à xmin : curvesplot(dose_log_transfo = TRUE)
-1. [ ] Mettre l'option scaling par défaut à TRUE dans le package (comme c'est déjà fait dans l'appli shiny) et l'indiquer dans la vignette (ML)
-1. [ ] Retravailler les xlab et ylab notamment mettre scaled signal ou scaled y si scaling dans curvesplot  et dans bmdplotwithgradient dans legende scaled_signal(ML)
-1. [ ] Tenter d'ajouter en optionnel une transparence sur curvesplot()
+1. [X] Mettre l'option scaling par défaut à TRUE dans le package (comme c'est déjà fait dans l'appli shiny) et l'indiquer dans la vignette (ML)
+1. [X] Retravailler les xlab et ylab notamment mettre scaled signal ou scaled y si scaling dans curvesplot  et dans bmdplotwithgradient dans legende scaled_signal(ML)
+1. [X] Tenter d'ajouter en optionnel une transparence sur curvesplot(). Was already available. I just added more examples in ?curvesplot
 1. [ ] Ajouter dans vignette ou FAQ ex. d'utilisation de l'option "median.and.IQR" (ML)
 1. [ ] Faire un outil de type diag de Venn (ou montrer dans vignette pour ne pas dépendre du package utilisé) qui compare deux résultats de itemselect() (ML)
 1. [ ] Find a way to give an example in the DRomicsInterpreter shiny app
 of this modification at the launch of the package ? (A)
 1. [ ] Ajouter un ou deux sous-niveaux dans la vignette à laquelle on accède depuis GitHub (A)
 1. [ ] Add an explanation of minBMD and or an option to define it in Shiny (ML, A)
-1. [ ] Gérer le souci des décimales dans le sensitivityplot (taille de points) à partir d'ex. Ellis (pas de souci vu par Aurélie) et faire un meilleur choix des valeurs à afficher (sur ech log si effectifs très diff) (ML, A)
+1. [X] Gérer le souci des décimales dans le sensitivityplot (taille de points) à partir d'ex. Ellis (pas de souci vu par Aurélie) et faire un meilleur choix des valeurs à afficher (sur ech log si effectifs très diff) (ML, A)
 1. [ ] dans les curvesplot en option ajouter un point là où la BMD est atteinte (ML)
 1. [ ] Ajouter des colonnes à la sortie de DRomics via bmdboot (defined.BMD.zSD, finite.CI.BMD.zSD, ...) (ML) Elis et Sophie y sont favorables
 1. [ ] AJouter la publi PCI partout quand elle sera sortie (ML et A)

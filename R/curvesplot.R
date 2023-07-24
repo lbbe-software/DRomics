@@ -186,6 +186,19 @@ curvesplot <- function(extendedres, xmin = 0, xmax,
   
   if (dose_log_transfo)
     gg <- gg + scale_x_log10()
+
+  if (scaling)
+  {
+    gg <- gg + ylab("scaled signal") + xlab("dose")
+  } else
+  {
+    gg <- gg + ylab("signal") + xlab("dose")
+  }
+
+  if (!missing(colorby))
+  {
+    gg <- gg + labs(color = colorby)
+  }
   
   return(gg)
 }

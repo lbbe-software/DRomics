@@ -121,8 +121,8 @@ Marie-Laure Delignette-Muller
 \examples{
 
 # (1) 
-# A toy example on a very smalldatafilename <- system.file("extdata", "transcripto_very_small_sample.txt", 
-package="DRomics")
+# A toy example on a very small subsample of a microarray data set
+datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", package="DRomics")
 
 o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01)
@@ -131,8 +131,7 @@ r <- bmdcalc(f)
 
 # Plot of all the BMD values with color dose-response gradient 
 #
-bmdplotwithgradient(r$res, BMDtype = "zSD")  subsample of a microarray data set. 
-#
+bmdplotwithgradient(r$res, BMDtype = "zSD")  
 
 
 \donttest{

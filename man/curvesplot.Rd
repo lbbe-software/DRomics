@@ -146,7 +146,13 @@ curvesplot(f$fitres, xmax = max(f$omicdata$dose),
 # playing with size and transparency of lines
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
   facetby = "trend", colorby = "model", 
-  line.size = 1, line.alpha = 0.5)
+  line.size = 0.5, line.alpha = 0.8)
+curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+  facetby = "trend", colorby = "model", 
+  line.size = 0.8, line.alpha = 0.2)
+curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+  facetby = "trend",  
+  line.size = 1, line.alpha = 0.2)
   
 # (2) an example on a microarray data set (a subsample of a greater data set)
 #

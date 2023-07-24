@@ -93,7 +93,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
       stop("shapeby should be a character string for the name of the column coding for the point shape.")
     if (!is.element(shapeby, cnames))
       stop("shapeby should be a character string corresponding to the name of a column of
-           extendedres, the dataframe given in input.")
+           extendedres, the dataframe given in input.")   
     BMD2plot$shapeby <- extendedres[, shapeby]
   }
   
@@ -283,6 +283,19 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     gg <- gg + scale_x_log10()
   
   gg <- gg + xlab("BMD")
+  
+  if (scaling)
+  {
+    gg <- gg + labs(color = "scaled signal")
+  } else
+  {
+    gg <- gg + labs(color = "signal")
+  }
+  
+  if (!missing(shapeby))
+  {
+    gg <- gg + labs(shape = shapeby)
+  }
   
   return(gg)
 }
