@@ -875,8 +875,8 @@ server <- function(input, output, session) {
       )
     }
     
-    text <- c(text, "", "", "# 'extendedres' can be used as input of functions trendplot(), sensitivityplot(), bmdplot(), bmdplotwithgradient(), curvesplot()")
-    text <- c(text, "# !!! More code will be available soon !!!")
+    text <- c(text, "", "", "# For the other steps, 'extendedres' can be used as input of functions trendplot(), sensitivityplot(), bmdplot(),")
+    text <- c(text, "# bmdplotwithgradient() and curvesplot(). You can find several examples of how to use these functions in the DRomics vignette.")
     
     
     ##### STEP 2 #####

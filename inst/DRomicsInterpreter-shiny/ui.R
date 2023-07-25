@@ -206,7 +206,15 @@ ui <- fluidPage(
                                  shinyBS::bsPopover("helplabel1step2", "", helplabel1step2, placement = "right", trigger = "hover", options = list(container = "body")),
                                  br(), 
                                  br(), 
-                                 checkboxInput("keepAllExplev", label = HTML("<b>Keep all experimental levels</b>"), value = FALSE),
+                                 fluidRow(
+                                     column(6,
+                                            checkboxInput("keepAllExplev", label = HTML("<b>Keep all experimental levels</b>"), value = FALSE)
+                                     ),
+                                     column(1, style = "margin-top: 5px", 
+                                            shinyBS::bsButton("helplabel2step2", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
+                                            shinyBS::bsPopover("helplabel2step2", "", helplabel2step2, placement = "right", trigger = "hover", options = list(container = "body"))
+                                     )
+                                 ),
                                  br(), 
                                  sliderInput("minNbItem", "Minimum for the number of items",
                                              width = "90%", 
@@ -215,7 +223,7 @@ ui <- fluidPage(
                                  numericInput("BMDmax", label = "Maximum for the BMD summary value", value = 0, min = 0, step = 0.1, width = "70%")
                           ),
                           column(1, 
-                                 checkboxInput("BMDlogtransfoSensitivityplot", label = HTML("<b>Log transformation of the BMD</b>"), value = FALSE),
+                                 checkboxInput("BMDlogtransfoSensitivityplot", label = HTML("<b>Log transformation of the BMD</b>"), value = TRUE),
                           ),
                           column(1, 
                                  radioButtons("BMDtype", label = "BMD type", 
