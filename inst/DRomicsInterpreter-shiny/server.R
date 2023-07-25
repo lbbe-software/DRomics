@@ -762,6 +762,7 @@ server <- function(input, output, session) {
   mindoseCurvesplot <- eventReactive(input$buttonRunStep4, {input$mindoseCurvesplot})
   doselogtransfoCurvesplot <- eventReactive(input$buttonRunStep4, {input$doselogtransfoCurvesplot})
   colorbyCurvesplot <- eventReactive(input$buttonRunStep4, {input$colorbyCurvesplot})
+  addBMDCurvesplot <- eventReactive(input$buttonRunStep4, {input$addBMDCurvesplot})
   facetbycolumnsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbycolumnsCurvesplot})
   facetbyrowsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbyrowsCurvesplot})
   
@@ -792,6 +793,7 @@ server <- function(input, output, session) {
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
+                                            addBMD = addBMDCurvesplot(),
                                             facetby = myfacetbycolumnsCurvesplot,
                                             facetby2 = myfacetbyrowsCurvesplot,
                                             colorby = "trend") + 
@@ -802,6 +804,7 @@ server <- function(input, output, session) {
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
+                                            addBMD = addBMDCurvesplot(),
                                             facetby = myfacetbycolumnsCurvesplot,
                                             colorby = "trend") + 
           ggplot2::labs(col = "trend")
@@ -813,6 +816,7 @@ server <- function(input, output, session) {
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
+                                            addBMD = addBMDCurvesplot(),
                                             facetby = myfacetbycolumnsCurvesplot,
                                             facetby2 = myfacetbyrowsCurvesplot)
       } else {
@@ -821,6 +825,7 @@ server <- function(input, output, session) {
                                             xmin = mindoseCurvesplot(),
                                             xmax = maxDoseXScale(),
                                             dose_log_transfo = doselogtransfoCurvesplot(),
+                                            addBMD = addBMDCurvesplot(),
                                             facetby = myfacetbycolumnsCurvesplot)
       }
     }

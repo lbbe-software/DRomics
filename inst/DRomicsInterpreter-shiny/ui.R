@@ -397,7 +397,8 @@ ui <- fluidPage(
                           ),
                           column(2,
                                  fixedRow(
-                                   checkboxInput("colorbyCurvesplot", label = HTML("<b>Color by trend</b>"), value = TRUE)
+                                   checkboxInput("colorbyCurvesplot", label = HTML("<b>Color by trend</b>"), value = TRUE),
+                                   checkboxInput("addBMDCurvesplot", label = HTML("<b>Add BMD-BMR values</b>"), value = FALSE)
                                  )
                           ),
                           column(1,
