@@ -12,7 +12,9 @@ curvesplot(extendedres, xmin = 0, xmax, y0shift = TRUE, scaling = TRUE,
                        facetby, facetby2, free.y.scales = FALSE, ncol4faceting,
                        colorby, removelegend = FALSE,  
                         npoints = 500, line.size = 0.2, 
-                        line.alpha = 1, dose_log_transfo = FALSE)}
+                        line.alpha = 1, dose_log_transfo = FALSE,
+                       addBMD = FALSE, BMDtype = c("zSD", "xfold"), 
+                       point.size = 1, point.alpha = 1)}
 
 \arguments{
 \item{extendedres}{the dataframe of results provided by bmdcalc (res) or drcfit (fitres) 
@@ -65,6 +67,15 @@ the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
 \item{dose_log_transfo}{If TRUE a log transformation of the dose is used in the plot. 
   This option needs a definition of a strictly positive value of xmin in input.}
 
+\item{addBMD}{If TRUE points are added on the curve at BMD-BMR values (requires to have
+BMD and BMD values in the first argument extendedres).}
+
+\item{BMDtype}{The type of BMD to add, \code{"zSD"} (default choice) or \code{"xfold"}.}
+
+\item{point.size}{Size of the BMD-BMR points added on the curves.}
+
+\item{point.alpha}{Transparency of the BMD-BMR points added on the curves.}
+
 }
 
 \details{
@@ -101,17 +112,24 @@ f <- drcfit(s_quad, progressbar = TRUE)
 # (1.a) 
 # Default plot of all the curves 
 #
-curvesplot(f$fitres, xmax = max(f$omicdata$dose))
+curvesplot(r$res, xmax = max(f$omicdata$dose))
 
 \donttest{
+# the equivalent using the output of bmdcalc
+# which enables the add of BMD values
+r <- bmdcalc(f)
+curvesplot(r$res, xmax = max(f$omicdata$dose), addBMD = TRUE)
+
+# use of line size, point size, transparency
+curvesplot(r$res, xmax = max(f$omicdata$dose), 
+line.alpha = 0.2, line.size = 1,
+addBMD = TRUE, point.alpha = 0.3, point.size = 1.8)
+
 
 # the same plot with dose in log scale (need xmin != 0 in input)
-curvesplot(f$fitres, xmin = 0.1, xmax = max(f$omicdata$dose),
-  dose_log_transfo = TRUE)
+curvesplot(r$res, xmin = 0.1, xmax = max(f$omicdata$dose),
+  dose_log_transfo = TRUE, addBMD = TRUE)
 
-# the equivalent using the output of bmdcalc
-(r <- bmdcalc(f))
-curvesplot(r$res, xmax = max(f$omicdata$dose))
 
 # plot of curves colored by models
 curvesplot(r$res, xmax = max(f$omicdata$dose), colorby = "model")
@@ -163,12 +181,17 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 (f <- drcfit(s_quad, progressbar = TRUE))
 (r <- bmdcalc(f))
 
-# plot split by trend and model
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+# plot split by trend and model with BMR-BMD points added on curves
+# adding transparency
+curvesplot(r$res, xmax = max(f$omicdata$dose), 
+line.alpha = 0.2, line.size = 0.8,
+addBMD = TRUE, point.alpha = 0.2, point.size = 1.5,
 facetby = "trend", facetby2 = "model")
 
-# plot split by trend and model without scaling
-curvesplot(f$fitres, xmax = max(f$omicdata$dose),
+# same plot without scaling 
+curvesplot(r$res, xmax = max(f$omicdata$dose), 
+line.alpha = 0.2, line.size = 0.8,
+addBMD = TRUE, point.alpha = 0.2, point.size = 1.5,
 scaling = FALSE,
 facetby = "trend", facetby2 = "model")
 
@@ -194,12 +217,14 @@ extendedres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
 head(extendedres)
 
 # Plot of the dose-response curves by pathway colored by trend
-curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 1,
+# with BMR-BMD points added on curves
+curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 0.5,
            colorby = "trend",
-           xmin = 0, xmax = 8) 
+           xmin = 0, xmax = 8,
+           addBMD = TRUE) 
 
 # Plot of the dose-response curves without scaling, by pathway colored by trend
-curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 1,
+curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 0.5,
            colorby = "trend", scaling = FALSE,
            xmin = 0, xmax = 8) 
 
@@ -210,13 +235,13 @@ chosen_path_class <- c("Membrane transport", "Lipid metabolism")
 ischosen <- is.element(extendedres$path_class, chosen_path_class)
 curvesplot(extendedres[ischosen, ],
           facetby = "trend", facetby2 = "path_class",
-          npoints = 100, line.size = 1,
+          npoints = 100, line.size = 0.5,
            xmin = 0, xmax = 8) 
 
 # Plot of the dose-response curves for a specific pathway
 # in this example the "lipid metabolism" pathclass
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
-curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
+curvesplot(LMres, facetby = "id", npoints = 100, line.size = 0.8,
            colorby = "trend",
            xmin = 0, xmax = 8) 
 

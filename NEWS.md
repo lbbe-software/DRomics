@@ -6,6 +6,7 @@ NEW FEATURES
 - Add of the argument BMD_log_transfo by default at TRUE in functions plot.bmdcalc() and plot.bmdboot().
 - Put the argument scaling by default at TRUE in curvesplot() and bmdplotwithgradient()
 - Add of xlab and ylab to plots from curvesplot() (signal or scaled signal for y-axis) and change the color lab in "scaled signal" in  plots from bmdplotwithgradient() when the signal is scaled.
+- Add the possibility (new argument addBMD of curvesplot()) to add points at BMD-BMR values on curvesplots 
 
 BUG FIXES
 
