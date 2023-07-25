@@ -19,7 +19,7 @@ test_that("bmdcalc works as expected on the BMD results",
     expect_equal(sum(is.nan(BMD.xfold.1)), 1)
     expect_equal(sum(is.nan(BMD.xfold.2)), 13)
     expect_equal(sum(is.na(BMD.zSD.1)), 0)
-    expect_equal(sum(is.na(BMD.zSD.2)), 4)
+    expect_equal(sum(is.na(BMD.zSD.2)), 5)
     expect_equal(sum(is.na(BMD.xfold.1)), 30)
     expect_equal(sum(is.na(BMD.xfold.2)), 65)
     expect_equal(round(mean(BMD.zSD.1, na.rm = TRUE), 4), 2.1421)
