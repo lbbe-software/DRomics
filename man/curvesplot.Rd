@@ -103,7 +103,7 @@ Marie-Laure Delignette-Muller
 # (1) A toy example on a very small subsample of a microarray data set) 
 #
 datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", 
-package="DRomics")
+  package = "DRomics")
 
 o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
 s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01)
@@ -122,14 +122,12 @@ curvesplot(r$res, xmax = max(f$omicdata$dose), addBMD = TRUE)
 
 # use of line size, point size, transparency
 curvesplot(r$res, xmax = max(f$omicdata$dose), 
-line.alpha = 0.2, line.size = 1,
-addBMD = TRUE, point.alpha = 0.3, point.size = 1.8)
-
+  line.alpha = 0.2, line.size = 1,
+  addBMD = TRUE, point.alpha = 0.3, point.size = 1.8)
 
 # the same plot with dose in log scale (need xmin != 0 in input)
 curvesplot(r$res, xmin = 0.1, xmax = max(f$omicdata$dose),
   dose_log_transfo = TRUE, addBMD = TRUE)
-
 
 # plot of curves colored by models
 curvesplot(r$res, xmax = max(f$omicdata$dose), colorby = "model")
@@ -148,8 +146,7 @@ curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend",
 # Plot of all the curves without shifting y0 values to 0
 # and without scaling
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
-          scaling = FALSE, y0shift = FALSE)
-
+  scaling = FALSE, y0shift = FALSE)
 
 # (1.c) 
 # Plot of all the curves colored by model, with one facet per trend
@@ -169,8 +166,7 @@ curvesplot(f$fitres, xmax = max(f$omicdata$dose),
   facetby = "trend", colorby = "model", 
   line.size = 0.8, line.alpha = 0.2)
 curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
-  facetby = "trend",  
-  line.size = 1, line.alpha = 0.2)
+  facetby = "trend", line.size = 1, line.alpha = 0.2)
   
 # (2) an example on a microarray data set (a subsample of a greater data set)
 #
@@ -184,16 +180,15 @@ datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomic
 # plot split by trend and model with BMR-BMD points added on curves
 # adding transparency
 curvesplot(r$res, xmax = max(f$omicdata$dose), 
-line.alpha = 0.2, line.size = 0.8,
-addBMD = TRUE, point.alpha = 0.2, point.size = 1.5,
-facetby = "trend", facetby2 = "model")
+  line.alpha = 0.2, line.size = 0.8,
+  addBMD = TRUE, point.alpha = 0.2, point.size = 1.5,
+  facetby = "trend", facetby2 = "model")
 
 # same plot without scaling 
 curvesplot(r$res, xmax = max(f$omicdata$dose), 
-line.alpha = 0.2, line.size = 0.8,
-addBMD = TRUE, point.alpha = 0.2, point.size = 1.5,
-scaling = FALSE,
-facetby = "trend", facetby2 = "model")
+  line.alpha = 0.2, line.size = 0.8,
+  addBMD = TRUE, point.alpha = 0.2, point.size = 1.5,
+  scaling = FALSE, facetby = "trend", facetby2 = "model")
 
 # (3) An example from data published by Larras et al. 2020
 # in Journal of Hazardous Materials
@@ -219,32 +214,24 @@ head(extendedres)
 # Plot of the dose-response curves by pathway colored by trend
 # with BMR-BMD points added on curves
 curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 0.5,
-           colorby = "trend",
-           xmin = 0, xmax = 8,
-           addBMD = TRUE) 
+  colorby = "trend", xmin = 0, xmax = 8, addBMD = TRUE) 
 
 # Plot of the dose-response curves without scaling, by pathway colored by trend
 curvesplot(extendedres, facetby = "path_class", npoints = 100, line.size = 0.5,
-           colorby = "trend", scaling = FALSE,
-           xmin = 0, xmax = 8) 
-
+  colorby = "trend", scaling = FALSE, xmin = 0, xmax = 8) 
 
 # Plot of the dose-response curves split by pathway and by trend
 # for a selection pathway
 chosen_path_class <- c("Membrane transport", "Lipid metabolism")
 ischosen <- is.element(extendedres$path_class, chosen_path_class)
 curvesplot(extendedres[ischosen, ],
-          facetby = "trend", facetby2 = "path_class",
-          npoints = 100, line.size = 0.5,
-           xmin = 0, xmax = 8) 
+  facetby = "trend", facetby2 = "path_class",
+  npoints = 100, line.size = 0.5, xmin = 0, xmax = 8) 
 
 # Plot of the dose-response curves for a specific pathway
 # in this example the "lipid metabolism" pathclass
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "id", npoints = 100, line.size = 0.8,
-           colorby = "trend",
-           xmin = 0, xmax = 8) 
-
-
+  colorby = "trend", xmin = 0, xmax = 8) 
 }
 }

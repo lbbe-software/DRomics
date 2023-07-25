@@ -4,14 +4,14 @@ NEW FEATURES
 
 - Put the argument dose_log_transfo by default at TRUE in functions plot.drcfit(), plotfit2pdf(), targetplot() and BMD_log_transfo at TRUE in functions bmdplot(), bmdplotwithgradient() and sensitivityplot().
 - Add of the argument BMD_log_transfo by default at TRUE in functions plot.bmdcalc() and plot.bmdboot().
-- Put the argument scaling by default at TRUE in curvesplot() and bmdplotwithgradient()
-- Add of xlab and ylab to plots from curvesplot() (signal or scaled signal for y-axis) and change the color lab in "scaled signal" in  plots from bmdplotwithgradient() when the signal is scaled.
-- Add the possibility (new argument addBMD of curvesplot()) to add points at BMD-BMR values on curvesplots 
+- Put the argument scaling by default at TRUE in curvesplot() and bmdplotwithgradient().
+- Add of xlab and ylab to plots from curvesplot() (signal or scaled signal for y-axis) and change the color lab in "scaled signal" in plots from bmdplotwithgradient() when the signal is scaled.
+- Add the possibility (new argument addBMD of curvesplot()) to add points at BMD-BMR values on curvesplots.
 
 BUG FIXES
 
-- Fix a bug that appeared very occasionally in the bootstrap procedure (error in bmdboot() due to fail of the call to uniroot())
-- Define the scale of nb of items in sensitivityplot() and trendplot() to get 4 integer values from min max and rounded 0.5 and 0.75 quartiles
+- Fix a bug that appeared very occasionally in the bootstrap procedure (error in bmdboot() due to fail of the call to uniroot()).
+- Define the scale of nb of items in sensitivityplot() and trendplot() to get 4 integer values from min max and rounded 0.5 and 0.75 quartiles.
 
 # DRomics 2.5-0 
 
