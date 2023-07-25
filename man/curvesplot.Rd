@@ -112,7 +112,7 @@ f <- drcfit(s_quad, progressbar = TRUE)
 # (1.a) 
 # Default plot of all the curves 
 #
-curvesplot(r$res, xmax = max(f$omicdata$dose))
+curvesplot(f$fitres, xmax = max(f$omicdata$dose))
 
 \donttest{
 # the equivalent using the output of bmdcalc
