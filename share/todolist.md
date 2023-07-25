@@ -12,18 +12,18 @@ PAR CONTRE EN ATTENTE  car plus délicat à gérer - faudrait mettre une val par
 1. [ ] Faire un outil de type diag de Venn (ou montrer dans vignette pour ne pas dépendre du package utilisé) qui compare deux résultats de itemselect() (ML)
 1. [ ] Find a way to give an example in the DRomicsInterpreter shiny app
 of this modification at the launch of the package ? (A)
-1. [ ] Ajouter un ou deux sous-niveaux dans la vignette à laquelle on accède depuis GitHub (A)
-1. [ ] Add an explanation of minBMD and or an option to define it in Shiny (ML, A)
-1. [X] Gérer le souci des décimales dans le sensitivityplot (taille de points) à partir d'ex. Ellis (pas de souci vu par Aurélie) et faire un meilleur choix des valeurs à afficher (sur ech log si effectifs très diff) (ML, A)
+1. [ ] Ajouter un ou deux sous-niveaux dans la vignette à laquelle on accède depuis GitHub (A) IMPOSSIBLE ! Restructurer la vignettepour que la navigation soit plus simple - en parallèle de la rédaction de la FAQ dans laquelle basculeront des morceaux de la vignette en faisant attention à maintenir les liens de l'article PCI
+1. [ ] Add an explanation of minBMD in the vignette and in the step 4 of Shiny app. 1 (ML)
+1. [X] Gérer le souci des décimales dans le sensitivityplot (taille de points) : faire un meilleur choix des valeurs à afficher (sur ech log si effectifs très diff) (ML, A)
 1. [ ] dans les curvesplot en option ajouter un point là où la BMD est atteinte (ML)
 1. [ ] Ajouter des colonnes à la sortie de DRomics via bmdboot (defined.BMD.zSD, finite.CI.BMD.zSD, ...) (ML) Elis et Sophie y sont favorables
 1. [ ] AJouter la publi PCI partout quand elle sera sortie (ML et A)
-1. [ ] Reformuler le keep all experimental levels ? (ML)
+1. [ ] Mettre un bouton d'aide i à côté du keep all experimental levels dans shiny ? (ML, A)
 1. [ ] Faire en sorte que l'on puisse appliquer plot(f, items = "unseul", BMDoutput = bootstrapfaitjusteaveccetitem) (ML)
-1. [ ] Visualisation optionnelle par lignes verticales des doses testées (tous les graphes de fit avec la dose en x) (ML)
-1. [ ] Donnez la possibilité d'ajouter le nom de pathways à côté des points sur les sensitivity pour un seul niv exp plutôt que sur l'axe des y (en alternative)  ? (A)
+1. [ ] Visualisation optionnelle par lignes verticales des doses testées (mettre un ex. dans la vignette en code ?) (ML)
+1. [ ] Donnez la possibilité d'ajouter le nom de pathways à côté des points sur les sensitivity pour un seul niv exp plutôt que sur l'axe des y (en alternative) - mettre un code exemple dans la vignette car trop lourd à gérer dans la fonction. (A)
 1. [ ] Add Danio rerio data in the package as another example for the functions for Dromics results interpretation (with or without enrichment and/or with outlier - elimination as in the paper (IRSN) ou un autre ex. (ML)
-1. [ ] Mettre sur le share un fichier de test sur des gros jeux de données, à tester sur une VM de l'IFB de temps en temps, avec fichiers stockés ailleurs
+1. [ ] Mettre sur le share un fichier de test sur des gros jeux de données, à tester sur une VM de l'IFB de temps en temps, avec fichiers stockés ailleurs, pour le moment sur SeaFile (ML)
 
 ## Shorter term 
 
