@@ -6,20 +6,20 @@
 gérer dans les appels à plot.bmdcalc() (et plot.bmdboot() mais pas dans shiny). 
 PAR CONTRE EN ATTENTE  car plus délicat à gérer - faudrait mettre une val par défaut à xmin : curvesplot(dose_log_transfo = TRUE)
 1. [ ] Mettre l'option scaling par défaut à TRUE dans le package (comme c'est déjà fait dans l'appli shiny) et l'indiquer dans la vignette (ML - still to include in the vignette)
-1. [ ] Mettre un message à l'ouverture du package pour indiquer les options par défuat changées (ML - sent to Aurélie - A)
-1. [X] Retravailler les xlab et ylab notamment mettre scaled signal ou scaled y si scaling dans curvesplot  et dans bmdplotwithgradient dans legende scaled_signal(ML)
+1. [ ] Mettre un message à l'ouverture du package (startupmessage) pour indiquer les options par défaut changées (ML - sent to Aurélie - A)
+1. [X] Retravailler les xlab et ylab notamment mettre scaled signal ou scaled y si scaling dans curvesplot et dans bmdplotwithgradient dans légende scaled_signal (ML)
 1. [X] Tenter d'ajouter en optionnel une transparence sur curvesplot(). Was already available. I just added more examples in ?curvesplot
 1. [ ] Ajouter dans vignette ou FAQ ex. d'utilisation de l'option "median.and.IQR" (ML)
 1. [ ] Faire un outil de type diag de Venn (ou montrer dans vignette pour ne pas dépendre du package utilisé) qui compare deux résultats de itemselect() (ML)
 1. [ ] Find a way to give an example in the DRomicsInterpreter shiny app
 of this modification at the launch of the package ? (A)
-1. [ ] Ajouter un ou deux sous-niveaux dans la vignette à laquelle on accède depuis GitHub (A) IMPOSSIBLE ! Restructurer la vignettepour que la navigation soit plus simple - en parallèle de la rédaction de la FAQ dans laquelle basculeront des morceaux de la vignette en faisant attention à maintenir les liens de l'article PCI
-1. [ ] Add an explanation of minBMD in the vignette, in ?bmdcalcl and in the step 4 of Shiny app. 1 (ML - already done in ?bmdcalcl and in the shimy app.)
+1. [ ] Ajouter un ou deux sous-niveaux dans la vignette à laquelle on accède depuis GitHub (A) IMPOSSIBLE à cause des configurations de pkgdown ! Restructurer la vignette pour que la navigation soit plus simple - en parallèle de la rédaction de la FAQ dans laquelle basculeront des morceaux de la vignette en faisant attention à maintenir les liens de l'article PCI
+1. [ ] Add an explanation of minBMD in the vignette, in ?bmdcalcl and in the step 4 of Shiny app. 1 (ML - already done in ?bmdcalc and in the shiny app.)
 1. [X] Gérer le souci des décimales dans le sensitivityplot (taille de points) : faire un meilleur choix des valeurs à afficher (sur ech log si effectifs très diff) (ML, A)
-1. [ ] dans les curvesplot en option ajouter un point là où la BMD est atteinte (ML - still to add an example in the vignette)
+1. [ ] Dans les curvesplot, en option, ajouter un point là où la BMD est atteinte (ML - still to add an example in the vignette)
 1. [ ] Ajouter des colonnes à la sortie de DRomics via bmdboot (defined.BMD.zSD, finite.CI.BMD.zSD, ...) (ML) Elis et Sophie y sont favorables
-1. [ ] AJouter la publi PCI partout quand elle sera sortie (ML et A)
-1. [ ] Mettre un bouton d'aide i à côté du keep all experimental levels dans shiny ? (ML sent to Aurélie, A)
+1. [ ] Ajouter la publi PCI partout quand elle sera sortie (ML et A)
+1. [ ] Mettre un bouton d'aide i à côté du keep all experimental levels dans shiny (appli DRomicsInterpreter, step 2, helplabel2step2 dans global.R) (ML, A)
 1. [ ] Faire en sorte que l'on puisse appliquer plot(f, items = "unseul", BMDoutput = bootstrapfaitjusteaveccetitem) (ML)
 1. [ ] Visualisation optionnelle par lignes verticales des doses testées (mettre un ex. dans la vignette en code ?) (ML)
 1. [x] Donnez la possibilité d'ajouter le nom de pathways à côté des points sur les sensitivity pour un seul niv exp plutôt que sur l'axe des y (en alternative) - mettre un code exemple dans la vignette car trop lourd à gérer dans la fonction. (A)
@@ -29,20 +29,20 @@ of this modification at the launch of the package ? (A)
 ## Shorter term 
 
 1. [ ] Changer le jeu de données exemple RNAseq, mettre un de Gwinn avec plus de concentrations (ML)
-1. [ ] Proposer des alternatives à sensitivityplot (moyenne et 2 SD, boxplot,  + indice de similarité de forme ? (ML)
+1. [ ] Proposer des alternatives à sensitivityplot (moyenne et 2 SD, boxplot, + indice de similarité de forme) (ML)
 1. [ ] Transform sensitivityplot to return as an invisible object the numerical summaries and to do other plots (boxplots) - impossible - write a function sensitivitycalc that will be called internally by sensitivityplot (ML)
 1. [ ] Ajouter une fonction et calcul de correlation non signée 2 à 2 des courbes fittées DR au sein de chaque groupe et un graphe associé (prototype in the share) (ML)
 1. [ ] Ajouter une méthode de clustering type WGCNA basée sur cette pairwise unsigned correlation (ML)
 1. [ ] Ajouter des métriques en sortie de DRomics pour utilisation potentielle en interprétation (cf. M2 Ellis, …)
 1. [ ] Réécrire avec plus de fonctions les appels à nls (ML)
-1. [ ] envisager d'utiliser une autre procédure plus performante (cf. pb de port décrit dans la doc de nls) (ML)
+1. [ ] Envisager d'utiliser une autre procédure plus performante (cf. pb de port décrit dans la doc de nls) (ML)
 1. [ ] Implémenter d'autres modèle d'erreur (données continues censurées et données binaires) (ML)
-1.[ ] Démarrer une FAQ (ML et Elise)
+1. [ ] Démarrer une FAQ (ML et Elise)
 1. [ ] Programmation défensive si nb d’items trop petit sur le plot de sensibilité par groupe – mais quoi faire exactement ? Quantile fait de l’interpolation linéaire et sort un résultat quoiqu’il arrive - mettre juste un warning
 
 
 ## Of less priority
-1. [ ] Change the examples of DRomics data results (triclosan) to ass the column yatdosemax
+1. [ ] Change the examples of DRomics data results (triclosan) to add the column yatdosemax
 1. [X] Ajouter un test sur les outliers pour les cas excessifs cf. transcripto rainettes 2018 (implémenter sur chaque item, dès la vérification des données, sans prendre en compte la dose-réponse, une détection basée sur le Z-score modifié de Iglewicz, B., & Hoaglin, D. C. (1993). How to detect and handle outliers (Vol. 16). Asq Press. (1115 citations google scholar)) - cf. point 84 lié et réglé en partie par choix de la méthode de transfo à vst si nb samples > 30 (cf. Love)
 1. [ ] Regarder si rlog et vst laissent les 0 à une valeur commune (ties)
 1. [ ] Trouver un sous jeu de données exemple ou on arrive à calculer les IC pour des courbes probit - option enlevée - à vérifier ?
