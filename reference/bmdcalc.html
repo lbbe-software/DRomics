@@ -142,7 +142,13 @@ the best fit dose-reponse model previously obtained using the <code><a href="drc
 </ul><p>When there is no analytical solution for the BMD, it is numerically searched along the fitted 
 curve using the <code><a href="https://rdrr.io/r/stats/uniroot.html" class="external-link">uniroot</a></code> function.</p>
 <p>In cases where the BMD cannot be reached due to the asymptote at high doses, <code>NaN</code> is returned.
-In cases where the BMD is not reached at the highest tested dose, <code>NA</code> is returned.</p>
+In cases where the BMD is not reached at the highest tested dose, <code>NA</code> is returned.
+Very low BMD values obtained by extrapolation between
+0 and the smallest non null tested dose, 
+that correspond to very sensitive items (that we do not want to exclude),
+are thresholded at minBMD, an argument by default fixed at the smallest non null 
+tested dose divided by 100, but that can be fixed by the user as what he
+considers to be a negligible dose.</p>
     </div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
