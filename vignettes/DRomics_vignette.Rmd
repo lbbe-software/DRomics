@@ -1039,14 +1039,22 @@ As an example, below is an ECDF plot of 25th quantiles of BMD-zSD calculated her
 
 ```{r}
 sensitivityplot(extendedres, BMDtype = "zSD",
-                    group = "path_class",
-                 BMDsummary = "first.quartile") 
+                group = "path_class",
+                BMDsummary = "first.quartile")
 ```
 
 <!-- Ajout d'un exemple avec médiane et IQR (ML) -->
 
-<!-- Ajout d'un exemple de code pour mettre les noms de groupes à côté des points (A) -->
+You can customize the sensitivity plot and position the pathway class labels next 
+to the point instead of on the y-axis, using ggplot2 functions.
 
+```{r}
+psens <- sensitivityplot(extendedres, BMDtype = "zSD",
+                         group = "path_class",
+                         BMDsummary = "first.quartile")
+psens + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+    geom_text(aes(label = paste("   ", psens$data$groupby, "   ")),  size = 3, hjust = "inward")
+```
 
 #### Trend plot per biological group {#trendplot}
 
