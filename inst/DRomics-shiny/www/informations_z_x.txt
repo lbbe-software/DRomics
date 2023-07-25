@@ -20,9 +20,15 @@ considered CRC and z is the factor of SD (z fixed at 1 by default).
 
 We recommend the latter approach (BMD-zSD).
 
-In cases where the BMD cannot be reached due to the asymptote at high doses, 
-NaN is returned. In cases where the BMD is not reached at the highest tested 
-dose, NA is returned.
+- In cases where the BMD cannot be reached due to the asymptote at high doses, 
+NaN is returned. 
+- In cases where the BMD is not reached at the highest tested 
+dose, NA is returned. 
+- Very low BMD values obtained by extrapolation between
+0 and the smallest non null tested dose, 
+that correspond to very sensitive items (that we do not want to exclude),
+are thresholded at "minBMD", a parameter by default fixed at the smallest non null 
+tested dose divided by 100 (considered as a negligible dose).
 
 -- REFERENCES --
 

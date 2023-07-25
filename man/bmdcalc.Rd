@@ -76,6 +76,12 @@ curve using the \code{\link{uniroot}} function.
 
 In cases where the BMD cannot be reached due to the asymptote at high doses, \code{NaN} is returned.
 In cases where the BMD is not reached at the highest tested dose, \code{NA} is returned.
+Very low BMD values obtained by extrapolation between
+0 and the smallest non null tested dose, 
+that correspond to very sensitive items (that we do not want to exclude),
+are thresholded at minBMD, an argument by default fixed at the smallest non null 
+tested dose divided by 100, but that can be fixed by the user as what he
+considers to be a negligible dose.
 }
 
 \value{ 

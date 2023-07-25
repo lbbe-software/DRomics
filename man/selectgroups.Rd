@@ -48,7 +48,7 @@ to the most represented (can be put at 1 if you do not want to select on this
 number: not recommended.}
 
 \item{keepallexplev}{If TRUE (default value at FALSE), if a group is selected
-at at least one experimental level, it will be kept in the selection at all 
+for at least one experimental level, it will be kept in the selection at all 
 the experimental levels.}
 }
 
