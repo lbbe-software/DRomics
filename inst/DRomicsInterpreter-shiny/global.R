@@ -14,7 +14,7 @@ helplabel2step1 <- "If there are multiple experimental levels, the labels chosen
 helplabel3step1 <- "If at least one annotation stands in more than one word (separated by a space), you should surround each of annotation by quotes, or use tab as a column separator in your annotation file (check the box to this option)."
 
 helplabel1step2 <- "To limit the number of annotation groups, you can use the thresholds on the number of items representing the group and/or the BMDsummary value of the group. You can also choose to keep the results of all the experimental levels as soon as the criteria are met for at least one experimental level."
-helplabel2step2 <- "Must be completed"
+helplabel2step2 <- "When this option is selected, if a group is selected for at least one experimental level, it will be kept in the selection at all the experimental levels."
 
 helplabel1step4 <- "For this plot, it is necessary to define the range of the dose (for example corresponding to the range of the tested/observed doses) and when using a log scale for the dose, a strictly positive value must be given for the minimum (a value below the smallest non null tested dose is recommended)."
 
