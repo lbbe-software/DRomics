@@ -479,6 +479,7 @@ continuous anchoring data, so as to ensure the unicity of the workflow independe
 See ?itemselect for more details and [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) 
 comparison of the three proposed methods on an example.
 
+<!-- Ajout d'un exemple avec linear et diag de Venn comparant les deux (package à suggérer) (ML) -->
 
 ## Step 3: fit of dose-response models, choice of the best fit for each curve {#step3}
 
@@ -744,6 +745,8 @@ You can also see ?bmdcalc for a complete description of the columns of the outpu
 ```{r}
 head(r$res)
 ```
+
+<!-- Ajout d'une explication sur minBMD (ML) -->
 
 ### Plots of the BMD distribution
 
@@ -1039,6 +1042,11 @@ sensitivityplot(extendedres, BMDtype = "zSD",
                     group = "path_class",
                  BMDsummary = "first.quartile") 
 ```
+
+<!-- Ajout d'un exemple avec médiane et IQR (ML) -->
+
+<!-- Ajout d'un exemple de code pour mettre les noms de groupes à côté des points (A) -->
+
 
 #### Trend plot per biological group {#trendplot}
 
