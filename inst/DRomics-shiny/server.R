@@ -183,18 +183,12 @@ server <- function(input, output, session) {
         
         ##### ecdf #####
       } else if (myplottype == 'ecdf') {
-        if(as.logical(input$logbmd_ecdf)) {
           plot(mybmdcalc, BMDtype = input$BMDtype, 
                plottype = 'ecdf', 
                by = input$splitby, 
-               hist.bins = input$histbin) + scale_x_log10()
-        } else {
-          plot(mybmdcalc, BMDtype = input$BMDtype, 
-               plottype = 'ecdf', 
-               by = input$splitby, 
-               hist.bins = input$histbin)
-        }
-        
+               hist.bins = input$histbin, 
+               BMD_log_transfo = as.logical(input$logbmd_ecdf))
+          
       } else {
         plot(mybmdcalc, BMDtype = input$BMDtype, 
              plottype = myplottype, 
@@ -249,18 +243,12 @@ server <- function(input, output, session) {
             }
             
           } else if(myplottype == 'ecdf') {
-            if(as.logical(input$logbmd_ecdf)) {
               plot(mybmdcalc, BMDtype = input$BMDtype, 
                    plottype = 'ecdf', 
                    by = input$splitby, 
-                   hist.bins = input$histbin) + scale_x_log10()
-            } else {
-              plot(mybmdcalc, BMDtype = input$BMDtype, 
-                   plottype = 'ecdf', 
-                   by = input$splitby, 
-                   hist.bins = input$histbin)
-            }
-            
+                   hist.bins = input$histbin,
+                   BMD_log_transfo = as.logical(input$logbmd_ecdf))
+              
           } else {
             plot(mybmdcalc, BMDtype = input$BMDtype, 
                  plottype = myplottype, 
@@ -347,13 +335,11 @@ server <- function(input, output, session) {
                          ", facetby = '", input$splitby, "')")
                 }
               } else if(input$plottype == 'ecdf') {
-                if(as.logical(input$logbmd_ecdf)) {
-                  paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = 'ecdf', by = '", input$splitby, "', hist.bins = ", input$histbin, ") + scale_x_log10()")
-                } else {
-                  paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = 'ecdf', by = '", input$splitby, "', hist.bins = ", input$histbin, ")")
-                }
+                  paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = 'ecdf', by = '", input$splitby, "', hist.bins = ", 
+                         input$histbin, ", BMD_log_transfo = ", as.logical(input$logbmd_ecdf), ")")
               } else {
-                paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', by = '", input$splitby, "', hist.bins = ", input$histbin, ")")
+                paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', by = '", input$splitby, "', hist.bins = ", 
+                       input$histbin, ")")
               },
               paste0("plot(f, plot.type = 'dose_fitted', BMDoutput = r, BMDtype = '", input$BMDtype_plot2pdf, 
                      "', dose_log_transfo = ", input$logbmd_plot2pdf, ")")
@@ -392,7 +378,7 @@ server <- function(input, output, session) {
               "# This computation time can be reduced using parallel computing",
               "# (see ?bmdboot for corresponding code)",
               "(b <- bmdboot(r, niter = 1000, progressbar = TRUE))",
-              "plot(b)",
+              paste0("plot(b, BMD_log_transfo = ", as.logical(input$logbmd_ecdf), ")"),
               "",
               "# plot the fitted dose-response with BMD",
               paste0("plot(f, plot.type = 'dose_fitted', BMDoutput = b, BMDtype = '", input$BMDtype_plot2pdf, "', dose_log_transfo = ", input$logbmd_plot2pdf, ")"),

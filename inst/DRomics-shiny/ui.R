@@ -309,7 +309,7 @@ progress::-moz-progress-bar {
                                                 'Log dose-scale', inline = TRUE,
                                                 choices = c('yes' = 'TRUE',
                                                             'no' = 'FALSE'),
-                                                selected = "FALSE"),
+                                                selected = "TRUE"),
                                    hr(), 
                                    useShinyjs(),
                                    fixedRow(
@@ -395,7 +395,7 @@ progress::-moz-progress-bar {
                                                   'Log transformation', inline = TRUE,
                                                   choices = c('yes' = 'TRUE',
                                                               'no' = 'FALSE'),
-                                                  selected = "FALSE"),
+                                                  selected = "TRUE"),
                                      br()
                                    ),
                                    conditionalPanel(
@@ -404,12 +404,12 @@ progress::-moz-progress-bar {
                                                   'Log transformation', inline = TRUE,
                                                   choices = c('yes' = 'TRUE',
                                                               'no' = 'FALSE'),
-                                                  selected = "FALSE"),
+                                                  selected = "TRUE"),
                                      radioButtons('label_ecdfgradient',
                                                   'Labels', inline = TRUE,
                                                   choices = c('yes' = 'TRUE',
                                                               'no' = 'FALSE'),
-                                                  selected = "FALSE"),
+                                                  selected = "TRUE"),
                                      br()
                                    ),
                                    radioButtons('splitby', 
@@ -454,7 +454,7 @@ progress::-moz-progress-bar {
                                                 'Log-dose scale', inline = TRUE,
                                                 choices = c('yes' = 'TRUE',
                                                             'no' = 'FALSE'),
-                                                selected = "FALSE"),
+                                                selected = "TRUE"),
                                    hr(),
                                    fluidRow(
                                      column(12, align="center", 
