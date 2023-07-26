@@ -68,7 +68,7 @@ trendplot <- function(extendedres, group,
       {gg <- gg + facet_wrap(~ facetby, ncol = ncol4faceting)}
   }
   
-  round.quartiles.minmax <- unique(round(quantile(dnb$nb_of_items, probs = c(0, 0.25, 0.5, 0.75, 1))))
+  round.quartiles.minmax <- unique(round(quantile(dtab$nb_of_items, probs = c(0, 0.25, 0.5, 0.75, 1))))
   gg <- gg + scale_size_continuous(breaks = as.numeric(round.quartiles.minmax)) + 
     labs(size = "nb. of items")
   
