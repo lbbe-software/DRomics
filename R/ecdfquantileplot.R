@@ -31,7 +31,11 @@ ecdfquantileplot <- function(variable, by, quantile.prob = 0.5, title)
   dnb$group <- factor(dnb$group, levels = dnb$group)
   g <- ggplot(dnb, aes_(x = quote(group), y = quote(quantiles), size = quote(nb_of_items))) + 
     geom_point(stat = 'identity')  +  
-    coord_flip() + labs(title = title) +
-    scale_size_continuous(breaks = c(min(dnb$nb_of_items), median(dnb$nb_of_items), max(dnb$nb_of_items)))
+    coord_flip() + labs(title = title)
+  
+  round.quartiles.minmax <- unique(round(quantile(dnb$nb_of_items, probs = c(0, 0.25, 0.5, 0.75, 1))))
+  g <- g + scale_size_continuous(breaks = as.numeric(round.quartiles.minmax)) + 
+    labs(size = "nb. of items")
+  
   return(g)
 }
