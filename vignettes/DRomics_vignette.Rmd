@@ -479,7 +479,22 @@ continuous anchoring data, so as to ensure the unicity of the workflow independe
 See ?itemselect for more details and [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) 
 comparison of the three proposed methods on an example.
 
-<!-- Ajout d'un exemple avec linear et diag de Venn comparant les deux (package à suggérer) (ML) -->
+It is easy, using for example the package **VennDiagram**, to compare the selection of items obtained using 
+two different methods, as in the following example. 
+
+```{r, results = "hide"}
+require(VennDiagram)
+s_lin <- itemselect(o.microarray, select.method = "linear", FDR = 0.01)
+index_quad <- s_quad$selectindex
+index_lin <- s_lin$selectindex
+plot(c(0,0), c(1,1), type = "n", xaxt = "n", yaxt = "n", bty = "n", xlab = "", ylab = "")
+draw.pairwise.venn(area1 = length(index_quad), area2 = length(index_lin), 
+                   cross.area = length(which(index_quad %in% index_lin)), 
+                   category = c("quadratic trend test", "linear trend test"),
+                   cat.col=c("cyan3", "darkorange1"), col=c("black", "black"), 
+                   fill = c("cyan3", "darkorange1"), lty = "blank", cat.pos = c(1,11))
+
+```
 
 ## Step 3: fit of dose-response models, choice of the best fit for each curve {#step3}
 
@@ -534,9 +549,13 @@ saved in a pdf file using the plotfit2pdf() function (see ?drcfit).
 plot(f) 
 ```
 
-The fitted curves may be **represented using a log scale** for dose/concentration, 
-which will be more suited in case where the range of observed doses/concentrations is very wide,
-using argument `dose_log_transfo` (see ?drcfit for details and examples).
+The fitted curves are by default **represented using a log scale** for dose/concentration, 
+which is more suited in common cases where the range of observed doses/concentrations is very wide
+and/or where tested doses/concentrations are obtained by dilutions. 
+Use `dose_log_transfo = FALSE` to use the raw scale of doses (see ?drcfit for details and examples).
+It is why the observations at the control appear differently as the other observations, 
+as half circles on the y-axis, to remind that their true value is 
+minus infinity in a log scale.
 
 Another **specific plot function named targetplot() can be used to plot targeted items, whether they were or not selected** in step 2 and fitted in step 3. See an example below and details in ?targetplot
 
@@ -738,9 +757,17 @@ on our example. BMD values are coded `NA` when the BMR stands within the
 range of response values defined by the model but outside the range of tested doses,
 and `NaN` when the BMR stands outside 
 the range of response values defined by the model due to asymptotes.  
+Very low BMD values obtained by extrapolation between
+0 and the smallest non null tested dose, 
+that correspond to very sensitive items (that we do not want to exclude),
+are thresholded at minBMD, an argument by default fixed at the smallest non null 
+tested dose divided by 100, but that can be fixed by the user as what he
+considers to be a negligible dose.
+
 An extensive description of the outputs of the complete DRomics workflow is provided in the 
 [last section of the main workflow](#outputs). 
-You can also see ?bmdcalc for a complete description of the columns of the output data frame.
+You can also see ?bmdcalc for a complete description of its arguments and
+of the columns of its output data frame.
 
 ```{r}
 head(r$res)
@@ -780,8 +807,8 @@ and an example below).
 It is generally necessary to use the argument line.size to manually
 adjust the width of lines in that plot as the default value does not always give
 a satisfactory resut. It is also recommended (but not mandatory
-and it is not the default option for this argument) to scale the signal
-as below using the argument `scaling` if you want to focus on the 
+but it is the default option for the argument `scaling`) to scale the signal
+in order to focus on the 
 shape of the dose-reponse curves and not on the amplitude of the signal change.
 
 ```{r}
@@ -845,6 +872,27 @@ plot(f, BMDoutput = b)
 
 All the fitted curves may also be
 saved in the same way in a pdf file using the plotfit2pdf() function (see ?drcfit).
+
+### Plot of all the fitted curves in one figure with points at BMD-BMR values
+
+It is possible to use the curvesplot() function to plot all the fitted curves in one 
+figure and to add The use of the curvesplot() function is more extensively described in the 
+next parts and in the corresponding help page. By default in this plot the curves are scaled
+to focus on the shape of the dose-response and not on their amplitude (add `scaling = FALSE`
+to see the curves without scaling).
+In the following plot we also added vertical lines 
+corresponding to tested doses on the plot and add transparency to visualize the density of curves
+when shapes are similar (especially the case for linear shapes).
+
+```{r}
+tested.doses <- unique(f$omicdata$dose)
+curvesplot(r$res, addBMD = TRUE, xmax = max(tested.doses), colorby = "trend",
+           line.size = 0.8, line.alpha = 0.3, point.size = 2, point.alpha = 0.6) +
+  geom_vline(xintercept = tested.doses, linetype = 2) + theme_bw()
+
+```
+
+
 
 ### Description of the outputs of the complete DRomics workflow {#outputs}
 
@@ -1043,7 +1091,15 @@ sensitivityplot(extendedres, BMDtype = "zSD",
                 BMDsummary = "first.quartile")
 ```
 
-<!-- Ajout d'un exemple avec médiane et IQR (ML) -->
+It is possible to use medians of BMD values represent and order the groups
+in a sensitivity plot and optionally to add the interquartile range as a line on the plot, as below:
+
+```{r}
+sensitivityplot(extendedres, BMDtype = "zSD",
+                group = "path_class",
+                BMDsummary = "median.and.IQR")
+```
+
 
 You can customize the sensitivity plot and position the pathway class labels next 
 to the point instead of on the y-axis, using ggplot2 functions.
@@ -1068,16 +1124,17 @@ trendplot(extendedres, group = "path_class")
 #### Plot of dose-response curves per biological group {#curvesplot}
 
 The function curvesplot() can show the dose-response curves obtained for different groups
-(or one chosen group). As for the use of bmdplotwithgradient(), the **scaling of those curves can be used as soon as you want to focus on the shape of them, and not on the amplitude of the signal change**. To use this function you have to define the dose range on which you want the computation of the dose-response fitted curves, and **we strongly recommend you to choose a range corresponding to the range of tested/observed doses**
-in your dataset. Below is a code to plot the dose-response curves split by biological group (argument facetby) and colored by trend (argument colorby). (See ?curvesplot for more options).
+(or one chosen group). As for the use of bmdplotwithgradient(), the **scaling of those curves can be used is by default used to focus on the shape of them, and not on the amplitude of the signal change**. To use this function you have to define the dose range on which you want the computation of the dose-response fitted curves, and **we strongly recommend you to choose a range corresponding to the range of tested/observed doses**
+in your dataset. Below is a code to plot the dose-response curves split by biological group (argument facetby) and colored by trend (argument colorby). As below it is also possible
+to add a point at BMD-BMR values on each curve (See ?curvesplot for more options).
 
 ```{r}
 # Plot of all the scaled dose-reponse curves split by path class
-curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100, line.size = 1,
-           colorby = "trend", xmin = 0, xmax = 6.5) 
+curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100,
+           colorby = "trend", xmin = 0, xmax = 6.5, addBMD = TRUE) 
 ```
 
-It is also possible using this function to visualize the modeled respons of each item of
+It is also possible using this function to visualize the modeled response of each item of
 one biological group, as below:
 
 ```{r}
@@ -1347,12 +1404,12 @@ curvesplot(selectedres2, scaling = TRUE,
            xmin = 0, xmax = 6.5) + labs(col = "DR trend")
 ```
 
-The scaling of the curves only used 
+The scaling of the curves only used here
 in the second plot can be interesting to focus on the 
 shapes of those curves, skipping the amplitude of the changes from the control.
 This helps to evaluate the homogeneity of the shapes of the responses within each group.
 It may for example interesting to observe in this example, that some transcriptomics responses (contigs)
-are gathering the same shape (when we use the scaling option) just differing by their sign (increasing / decreasing, or U-shape/bell-shape), which does not clearly appear when
+are gathering the same shape (when we use the scaling option - it is done by default) just differing by their sign (increasing / decreasing, or U-shape/bell-shape), which does not clearly appear when
 dose-response curves are not scaled (as in the first plot).
 
 

@@ -5,26 +5,26 @@
 1. [ ] Add an example in the vignette where the need is obvious to work on log scale for bmdplot, sensitivity plot AND change the default for log scale in each plot (fit or BMD) AND add a warning (ML and A pour mise en place warning). Dans shiny appels à bmdplot(BMD_log_transfo = TRUE), bmdplotwithgradient(BMD_log_transfo = TRUE), sensitivityplot(BMD_log_transfo = TRUE), plot.drcfit(dose_log_transfo = TRUE), plotfit2pdf(dose_log_transfo = TRUE), targetplot(dose_log_transfo = TRUE), et nouvel argument BMD_log_transfo par défaut à TRUE à 
 gérer dans les appels à plot.bmdcalc() (et plot.bmdboot() mais pas dans shiny). 
 PAR CONTRE EN ATTENTE  car plus délicat à gérer - faudrait mettre une val par défaut à xmin : curvesplot(dose_log_transfo = TRUE)
-1. [ ] Mettre l'option scaling par défaut à TRUE dans le package (comme c'est déjà fait dans l'appli shiny) et l'indiquer dans la vignette (ML - still to include in the vignette)
+1. [X] Mettre l'option scaling par défaut à TRUE dans le package (comme c'est déjà fait dans l'appli shiny) et l'indiquer dans la vignette (ML - still to include in the vignette)
 1. [X] Mettre un message à l'ouverture du package (startupmessage) pour indiquer les options par défaut changées (ML - sent to Aurélie - A)
 1. [X] Retravailler les xlab et ylab notamment mettre scaled signal ou scaled y si scaling dans curvesplot et dans bmdplotwithgradient dans légende scaled_signal (ML)
 1. [X] Tenter d'ajouter en optionnel une transparence sur curvesplot(). Was already available. I just added more examples in ?curvesplot
-1. [ ] Ajouter dans vignette ou FAQ ex. d'utilisation de l'option "median.and.IQR" (ML)
-1. [ ] Faire un outil de type diag de Venn (ou montrer dans vignette pour ne pas dépendre du package utilisé) qui compare deux résultats de itemselect() (ML)
+1. [X] Ajouter dans vignette ou FAQ ex. d'utilisation de l'option "median.and.IQR" (ML)
+1. [X] Faire un outil de type diag de Venn (ou montrer dans vignette pour ne pas dépendre du package utilisé) qui compare deux résultats de itemselect() (ML)
 1. [ ] Find a way to give an example in the DRomicsInterpreter shiny app
 of this modification at the launch of the package ? (A)
 1. [ ] Ajouter un ou deux sous-niveaux dans la vignette à laquelle on accède depuis GitHub (A) IMPOSSIBLE à cause des configurations de pkgdown ! Restructurer la vignette pour que la navigation soit plus simple - en parallèle de la rédaction de la FAQ dans laquelle basculeront des morceaux de la vignette en faisant attention à maintenir les liens de l'article PCI
-1. [ ] Add an explanation of minBMD in the vignette, in ?bmdcalcl and in the step 4 of Shiny app. 1 (ML - already done in ?bmdcalc and in the shiny app.)
-1. [X] Gérer le souci des décimales dans le sensitivityplot (taille de points) : faire un meilleur choix des valeurs à afficher (sur ech log si effectifs très diff) (ML, A)
-1. [ ] Dans les curvesplot, en option, ajouter un point là où la BMD est atteinte (ML - still to add an example in the vignette)
-1. [ ] Ajouter des colonnes à la sortie de DRomics via bmdboot (defined.BMD.zSD, finite.CI.BMD.zSD, ...) (ML) Elis et Sophie y sont favorables
+1. [X] Add an explanation of minBMD in the vignette, in ?bmdcalcl and in the step 4 of Shiny app. 1 (ML)
+1. [X] Gérer le souci des décimales dans le sensitivityplot (taille de points) : faire un meilleur choix des valeurs à afficher (sur ech log si effectifs très diff) (ML)
+1. [X] Dans les curvesplot, en option, ajouter un point là où la BMD est atteinte (ML - still to add an example in the vignette)
+1. [ ] Ajouter des colonnes à la sortie de DRomics via bmdboot (defined.BMD.zSD, finite.CI.BMD.zSD, ...) (ML) Elis et Sophie y sont favorables mais je diffère car ça m'embête de les ajouter et de ne pas les prendre en compte dans selectgroups(), alors qu'en pratique il me paraît nécessaire de faire a minima une sélection sur BMDdefined. A REDISCUTER !!!!!!!!!!!!!!!!
 1. [ ] Ajouter la publi PCI partout quand elle sera sortie (ML et A)
 1. [X] Mettre un bouton d'aide i à côté du keep all experimental levels dans shiny (appli DRomicsInterpreter, step 2, helplabel2step2 dans global.R) (ML, A)
 1. [ ] Faire en sorte que l'on puisse appliquer plot(f, items = "unseul", BMDoutput = bootstrapfaitjusteaveccetitem) (ML)
-1. [ ] Visualisation optionnelle par lignes verticales des doses testées (mettre un ex. dans la vignette en code ?) (ML)
-1. [x] Donnez la possibilité d'ajouter le nom de pathways à côté des points sur les sensitivity pour un seul niv exp plutôt que sur l'axe des y (en alternative) - mettre un code exemple dans la vignette car trop lourd à gérer dans la fonction. (A)
+1. [X] Visualisation optionnelle par lignes verticales des doses testées (ajout ex. dans la vignette) (ML)
+1. [X] Donnez la possibilité d'ajouter le nom de pathways à côté des points sur les sensitivity pour un seul niv exp plutôt que sur l'axe des y (en alternative) - mettre un code exemple dans la vignette car trop lourd à gérer dans la fonction. (A)
 1. [ ] Add Danio rerio data in the package as another example for the functions for Dromics results interpretation (with or without enrichment and/or with outlier - elimination as in the paper (IRSN) ou un autre ex. (ML)
-1. [ ] Mettre sur le share un fichier de test sur des gros jeux de données, à tester sur une VM de l'IFB de temps en temps, avec fichiers stockés ailleurs, pour le moment sur SeaFile (ML)
+1. [X] Mettre sur le share un fichier de test sur des gros jeux de données, à tester sur une VM de l'IFB de temps en temps, avec fichiers stockés ailleurs, pour le moment sur SeaFile (ML)
 
 ## Shorter term 
 
