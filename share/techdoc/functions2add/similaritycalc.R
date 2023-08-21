@@ -120,7 +120,7 @@ similaritycalc <- function(extendedres, xmin = 0, xmax,
   
   return(output)
   
-  #   gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id))) +
+  #   gg <- ggplot(data = curves2plot, mapping = aes(x = .data$x, y = .data$y, group = .data$id)) +
   #     geom_line(size = line.size, alpha = line.alpha) 
   # 
   # if (!missing(facetby))

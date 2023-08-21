@@ -133,8 +133,8 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
       ntoti <- length(indi)
       BMD2plot$ECDF[indi] <- (rank(BMD2plot$x[indi], ties.method = "first") - 0.5) / ntoti
     }
-    g <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF), 
-                                                label = quote(id))) 
+    g <- ggplot(data = BMD2plot, mapping = aes(x = .data$x, y = .data$ECDF, 
+                                                label = .data$id)) 
     if (missing(facetby2)) 
       {g <- g + facet_wrap(~ facetby)} else 
       {g <- g + facet_grid(facetby2 ~ facetby)}
@@ -143,8 +143,8 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     if (missing(line.size)) {line.size <- 24 / nrow(BMD2plot) }
     
     BMD2plot$ECDF <- (rank(BMD2plot$x, ties.method = "first") - 0.5) / ntot
-    g <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF),
-                                                label = quote(id)))
+    g <- ggplot(data = BMD2plot, mapping = aes(x = .data$x, y = .data$ECDF,
+                                                label = .data$id))
   }
   
   # Calculation of theoretical signal to color the lines
@@ -218,8 +218,8 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
     }
   }
   gg <- g + geom_line(data = curves2plot, 
-                      mapping = aes_(x = quote(x), y = quote(ECDF), 
-                                     group = quote(id), color = quote(signal)),
+                      mapping = aes(x = .data$x, y = .data$ECDF, 
+                                     group = .data$id, color = .data$signal),
                       size = line.size) 
   if (!missing(facetby))
   {
@@ -262,7 +262,7 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   # Add of points (BMD values)
   if (!missing(shapeby)) 
   {
-    gg <- gg + geom_point(data = BMD2plot, mapping = aes_(shape = quote(shapeby)),
+    gg <- gg + geom_point(data = BMD2plot, mapping = aes(shape = .data$shapeby),
                           size = point.size)
   } else
   {

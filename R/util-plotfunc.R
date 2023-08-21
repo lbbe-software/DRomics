@@ -81,7 +81,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
     dataobs$id <- factor(dataobs$id, levels = lev)
     dataobsmean$id <- factor(dataobsmean$id, levels = lev)
     
-    g <- ggplot(dataobs, aes_(x = quote(dose), y = quote(signal))) + geom_point(shape = 1) +
+    g <- ggplot(dataobs, aes(x = .data$dose, y = .data$signal)) + geom_point(shape = 1) +
       facet_wrap(~ id, scales = "free_y", nrow = nr, ncol = nc, drop = FALSE) +
       geom_point(data = dataobsmean, shape = 19)
     
@@ -126,7 +126,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
     dataresiduals$id <- factor(dataresiduals$id, levels = lev)
     if (plot.type == "dose_residuals")
     {
-      g <- ggplot(dataresiduals, aes_(x = quote(dose), y = quote(residuals))) + 
+      g <- ggplot(dataresiduals, aes(x = .data$dose, y = .data$residuals)) + 
         geom_point(shape = 1) +
         facet_wrap(~ id, nrow = nr, ncol = nc, drop = FALSE) +
         geom_hline(yintercept = 0, linetype = "dashed", color = "red")
@@ -139,7 +139,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
     } else
     if (plot.type == "fitted_residuals")
     {
-      g <- ggplot(dataresiduals, aes_(x = quote(fitted_values), y = quote(residuals))) + 
+      g <- ggplot(dataresiduals, aes(x = .data$fitted_values, y = .data$residuals)) + 
         geom_point(shape = 1) +
         facet_wrap(~ id, scales = "free_x", nrow = nr, ncol = nc, drop = FALSE) +
         geom_hline(yintercept = 0, linetype = "dashed", color = "red")

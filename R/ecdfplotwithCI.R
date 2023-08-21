@@ -32,17 +32,17 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
       # not strictly equivalent with ecdf (i / n)
       # d$ECDF[indi] <- ecdf(d$variable[indi])(d$variable[indi])
     }
-    g <- ggplot(data = d, mapping = aes_(x = variable, y = quote(ECDF))) + facet_wrap(~ by) 
+    g <- ggplot(data = d, mapping = aes(x = variable, y = .data$ECDF)) + facet_wrap(~ by) 
     
     if (is.factor(CI.col))
     {
       g <- g + 
-        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper), color = quote(CI.col)),  
+        geom_errorbarh(aes(xmin = .data$lower, xmax = .data$upper, color = .data$CI.col),  
                        alpha = CI.alpha, height = 0)  
     } else
     {
       g <- g + 
-        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper)), color = CI.col, 
+        geom_errorbarh(aes(xmin = .data$lower, xmax = .data$upper), color = CI.col, 
                        alpha = CI.alpha, height = 0)  
     }
   } else
@@ -51,16 +51,16 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
     d$ECDF <- (rank(d$variable, ties.method = "first") - 0.5) / ntot
     # not strictly equivalent with ecdf (i / n)
     # d$variable <- ecdf(d$variable)(d$variable)
-    g <- ggplot(data = d, mapping = aes_(x = variable, y = quote(ECDF)))
+    g <- ggplot(data = d, mapping = aes(x = variable, y = .data$ECDF))
     if (is.factor(CI.col))
     {
       g <- g + 
-        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper), color = quote(CI.col)),  
+        geom_errorbarh(aes(xmin = .data$lower, xmax = .data$upper, color = .data$CI.col),  
                        alpha = CI.alpha, height = 0)  
     } else
     {
       g <- g + 
-        geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper)), color = CI.col, 
+        geom_errorbarh(aes(xmin = .data$lower, xmax = .data$upper), color = CI.col, 
                        alpha = CI.alpha, height = 0)  
     }
   }
@@ -68,7 +68,7 @@ ecdfplotwithCI <- function(variable, CI.lower, CI.upper, by, CI.col = "blue", CI
   {
     if (is.factor(point.type)) 
     {
-      g <- g + geom_point(aes_(shape = quote(point.type)),
+      g <- g + geom_point(aes(shape = .data$point.type),
                           size = point.size)
     } else
     {

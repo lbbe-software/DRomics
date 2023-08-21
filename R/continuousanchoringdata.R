@@ -146,7 +146,7 @@ plot.continuousanchoringdata <- function(x, ...)
   
   dataobs$endpoint <- factor(dataobs$endpoint)
   
-  g <- ggplot(dataobs, aes_(x = quote(dose), y = quote(measure))) + geom_point(shape = 1) +
+  g <- ggplot(dataobs, aes(x = .data$dose, y = .data$measure)) + geom_point(shape = 1) +
     facet_wrap(~ endpoint, scales = "free_y") 
   return(g)
 }

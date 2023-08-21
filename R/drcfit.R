@@ -967,21 +967,21 @@ plot.drcfit <- function(x, items,
     {
         subbmdres$id <- factor(subbmdres$id, levels = subd$id)
         g <- g + geom_vline(data = subbmdres,
-                            aes_(xintercept = quote(BMD)), 
+                            aes(xintercept = .data$BMD), 
                             linetype = 1, colour = "red") +
             # geom_ribbon(data = subbmdres,
-            #             aes_(ymin = quote(lowhline), 
-            #                  ymax = quote(uphline)), 
+            #             aes(ymin = .data$lowhline, 
+            #                  ymax = .data$uphline), 
             #             fill = "red", alpha = 0.1)
-            geom_hline(data = subbmdres, aes_(yintercept = quote(uphline)),
+            geom_hline(data = subbmdres, aes(yintercept = .data$uphline),
                        linetype = 3, colour = "red") +
-            geom_hline(data = subbmdres, aes_(yintercept = quote(lowhline)),
+            geom_hline(data = subbmdres, aes(yintercept = .data$lowhline),
                        linetype = 3,colour = "red")
         if (addCI)
         {
-            g <- g + geom_vline(data = subbmdres, aes_(xintercept = quote(BMDlower)), 
+            g <- g + geom_vline(data = subbmdres, aes(xintercept = .data$BMDlower), 
                                 linetype = 2,colour = "red") +
-                geom_vline(data = subbmdres, aes_(xintercept = quote(BMDupper)), 
+                geom_vline(data = subbmdres, aes(xintercept = .data$BMDupper), 
                            linetype = 2, colour = "red") 
         }
     }
@@ -1108,21 +1108,21 @@ plotfit2pdf <- function(x, items,
         if (addBMD)
         {
             g <- g + geom_vline(data = subbmdres[ind2plot, ],
-                                aes_(xintercept = quote(BMD)), 
+                                aes(xintercept = .data$BMD), 
                                 linetype = 1, colour = "red") +
                 # geom_ribbon(data = subbmdres[ind2plot, ],
-                #             aes_(ymin = quote(lowhline), 
-                #                  ymax = quote(uphline)), 
+                #             aes(ymin = .data$lowhline, 
+                #                  ymax = .data$uphline), 
                 #             fill = "red", alpha = 0.1)
-                geom_hline(data = subbmdres[ind2plot, ], aes_(yintercept = quote(uphline)),
+                geom_hline(data = subbmdres[ind2plot, ], aes(yintercept = .data$uphline),
                            linetype = 3, colour = "red") +
-                geom_hline(data = subbmdres[ind2plot, ], aes_(yintercept = quote(lowhline)),
+                geom_hline(data = subbmdres[ind2plot, ], aes(yintercept = .data$lowhline),
                            linetype = 3,colour = "red")
             if (addCI)
             {
-                g <- g + geom_vline(data = subbmdres[ind2plot, ], aes_(xintercept = quote(BMDlower)), 
+                g <- g + geom_vline(data = subbmdres[ind2plot, ], aes(xintercept = .data$BMDlower), 
                                     linetype = 2,colour = "red") +
-                    geom_vline(data = subbmdres[ind2plot, ], aes_(xintercept = quote(BMDupper)), 
+                    geom_vline(data = subbmdres[ind2plot, ], aes(xintercept = .data$BMDupper), 
                                linetype = 2, colour = "red") 
             }
         }
@@ -1130,5 +1130,3 @@ plotfit2pdf <- function(x, items,
     }
     grDevices::dev.off()
 }
-
-

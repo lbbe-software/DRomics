@@ -99,15 +99,15 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
       ntoti <- length(indi)
       BMD2plot$ECDF[indi] <- (rank(BMD2plot$x[indi], ties.method = "first") - 0.5) / ntoti
     }
-    gg <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF), 
-                                                label = quote(id))) 
+    gg <- ggplot(data = BMD2plot, mapping = aes(x = .data$x, y = .data$ECDF, 
+                                                label = .data$id)) 
     if (missing(facetby2)) gg <- gg + facet_wrap(~ facetby) else gg <- gg + facet_grid(facetby2 ~ facetby)
     
   } else
   {
     BMD2plot$ECDF <- (rank(BMD2plot$x, ties.method = "first") - 0.5) / ntot
-    gg <- ggplot(data = BMD2plot, mapping = aes_(x = quote(x), y = quote(ECDF),
-                                                label = quote(id)))
+    gg <- ggplot(data = BMD2plot, mapping = aes(x = .data$x, y = .data$ECDF,
+                                                label = .data$id))
   }
 
   if (!missing(facetby))
@@ -133,11 +133,11 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   {
     if (!missing(colorby))
     {
-      gg <- gg + geom_point(data = BMD2plot, mapping = aes_(shape = quote(shapeby),
-                 color = quote(colorby)), size = point.size) 
+      gg <- gg + geom_point(data = BMD2plot, mapping = aes(shape = .data$shapeby,
+                 color = .data$colorby), size = point.size) 
     } else
     {
-      gg <- gg + geom_point(data = BMD2plot, mapping = aes_(shape = quote(shapeby)),
+      gg <- gg + geom_point(data = BMD2plot, mapping = aes(shape = .data$shapeby),
                             size = point.size)
     }
   } else
@@ -145,7 +145,7 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     if (!missing(colorby))
     {
       gg <- gg + geom_point(data = BMD2plot, 
-                            mapping = aes_(color = quote(colorby)),size = point.size)
+                            mapping = aes(color = .data$colorby), size = point.size)
     } else
     {
       gg <- gg + geom_point(data = BMD2plot, size = point.size)
@@ -157,11 +157,11 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   {
     if (!missing(colorby))
     {
-      gg <- gg + geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper),
-                                     color = quote(colorby)), height = 0)
+      gg <- gg + geom_errorbarh(aes(xmin = .data$lower, xmax = .data$upper,
+                                     color = .data$colorby), height = 0)
     } else
     {
-      gg <- gg + geom_errorbarh(aes_(xmin = quote(lower), xmax = quote(upper)),  
+      gg <- gg + geom_errorbarh(aes(xmin = .data$lower, xmax = .data$upper),  
                                 height = 0)
     }                
   }

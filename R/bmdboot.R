@@ -582,15 +582,15 @@ plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
     }
     if (!define.xlim)
     {
-      g <- ggplot(data = d, mapping = aes_(x = quote(BMD), y = quote(ECDF))) + 
+      g <- ggplot(data = d, mapping = aes(x = .data$BMD, y = .data$ECDF)) + 
         facet_wrap(~ by) + 
-        geom_errorbarh(aes_(xmin = quote(BMD.lower), xmax = quote(BMD.upper)), col = CI.col, 
+        geom_errorbarh(aes(xmin = .data$BMD.lower, xmax = .data$BMD.upper), col = CI.col, 
                        alpha = 0.5, height = 0) + geom_point() 
     } else
     {
-      g <- ggplot(data = d, mapping = aes_(x = quote(BMD), y = quote(ECDF))) + 
+      g <- ggplot(data = d, mapping = aes(x = .data$BMD, y = .data$ECDF)) + 
         facet_wrap(~ by) + 
-        geom_errorbarh(aes_(xmin = quote(BMD.lower), xmax = quote(BMD.upper)), col = CI.col, 
+        geom_errorbarh(aes(xmin = .data$BMD.lower, xmax = .data$BMD.upper), col = CI.col, 
               alpha = 0.5, height = 0) + geom_point() + xlim(0, BMDlimmax)
       
     }
@@ -599,13 +599,13 @@ plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
     d$ECDF <- (rank(d$BMD, ties.method = "first") - 0.5) / nplotted
     if (!define.xlim)
     {
-      g <- ggplot(data = d, mapping = aes_(x = quote(BMD), y = quote(ECDF))) + 
-        geom_errorbarh(aes_(xmin = quote(BMD.lower), xmax = quote(BMD.upper)), col = CI.col, 
+      g <- ggplot(data = d, mapping = aes(x = .data$BMD, y = .data$ECDF)) + 
+        geom_errorbarh(aes(xmin = .data$BMD.lower, xmax = .data$BMD.upper), col = CI.col, 
                        alpha = 0.5,  height = 0) + geom_point() 
     } else
     {
-      g <- ggplot(data = d, mapping = aes_(x = quote(BMD), y = quote(ECDF))) + 
-        geom_errorbarh(aes_(xmin = quote(BMD.lower), xmax = quote(BMD.upper)), col = CI.col, 
+      g <- ggplot(data = d, mapping = aes(x = .data$BMD, y = .data$ECDF)) + 
+        geom_errorbarh(aes(xmin = .data$BMD.lower, xmax = .data$BMD.upper), col = CI.col, 
                        alpha = 0.5,  height = 0) + geom_point() + xlim(0, BMDlimmax)
     }
   }

@@ -8,6 +8,7 @@ importFrom("DESeq2", rlog, vst, varianceStabilizingTransformation, DESeq, result
 importFrom("SummarizedExperiment", assay)
 importFrom("utils", txtProgressBar, setTxtProgressBar, read.table)
 importFrom("grDevices", pdf, dev.off)
+importFrom("rlang", .data)
 
 ### Exports
 

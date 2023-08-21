@@ -89,13 +89,13 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   {
     if (missing(colorby))
     {
-      gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(firstquartile), 
-                             size = quote(nb_of_items)))
+      gg <- ggplot(dnb, aes(x = .data$groupby, y = .data$firstquartile, 
+                             size = .data$nb_of_items))
     } else
     {  
-      gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(firstquartile), 
-                             color = quote(level), alpha = I(0.8),
-                             size = quote(nb_of_items))) 
+      gg <- ggplot(dnb, aes(x = .data$groupby, y = .data$firstquartile, 
+                             color = .data$level, alpha = I(0.8),
+                             size = .data$nb_of_items))
     }
     
     gg <- gg + geom_point(stat = 'identity')  +  coord_flip() +
@@ -104,17 +104,17 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   } else {
     if (missing(colorby))
     {
-      gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(secondquartile), 
-                             size = quote(nb_of_items))) 
+      gg <- ggplot(dnb, aes(x = .data$groupby, y = .data$secondquartile, 
+                             size = .data$nb_of_items)) 
     } else {
       if (BMDsummary == "median") {
-        gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(secondquartile), 
-                               color = quote(level), 
-                               size = quote(nb_of_items)))
+        gg <- ggplot(dnb, aes(x = .data$groupby, y = .data$secondquartile, 
+                               color = .data$level, 
+                               size = .data$nb_of_items))
       } else {
-        gg <- ggplot(dnb, aes_(x = quote(groupby), y = quote(secondquartile), 
-                               color = quote(level), alpha = I(0.5),
-                               size = quote(nb_of_items)))
+        gg <- ggplot(dnb, aes(x = .data$groupby, y = .data$secondquartile, 
+                               color = .data$level, alpha = I(0.5),
+                               size = .data$nb_of_items))
       }
     }
     gg <- gg + geom_point(stat = 'identity') + coord_flip() 
@@ -123,8 +123,8 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     {
       gg <- gg + labs(x = "", y = "BMD medians") 
     } else {
-      gg <- gg + geom_errorbar(aes_(ymin = quote(firstquartile), 
-                                    ymax = quote(thirdquartile), linewidth = I(1)), 
+      gg <- gg + geom_errorbar(aes(ymin = .data$firstquartile, 
+                                    ymax = .data$thirdquartile, linewidth = I(1)), 
                                width = 0) +
         # line to remove lines on the size legend
         guides(size = guide_legend(override.aes = list(linetype = 0))) +

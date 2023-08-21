@@ -299,16 +299,16 @@ plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"),
   
   if (plottype == "hist") 
   {
-    g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) +
+    g <- ggplot(data = d, mapping = aes(x = .data$BMD)) +
         geom_histogram(bins = hist.bins) 
   } else
   if (plottype == "density") 
   {
-    g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) + geom_density(fill = I("grey"))
+    g <- ggplot(data = d, mapping = aes(x = .data$BMD)) + geom_density(fill = I("grey"))
   } else
   if (plottype == "ecdf") 
   {
-    g <- ggplot(data = d, mapping = aes_(x = quote(BMD))) +
+    g <- ggplot(data = d, mapping = aes(x = .data$BMD)) +
             stat_ecdf(geom = "step") + ylab("ECDF")
   }
   

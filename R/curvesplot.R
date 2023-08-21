@@ -141,14 +141,14 @@ curvesplot <- function(extendedres, xmin = 0, xmax,
   # no color no facet
   if (missing(colorby) & missing(facetby))
   {
-    gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id))) +
+    gg <- ggplot(data = curves2plot, mapping = aes(x = .data$x, y = .data$y, group = .data$id)) +
       geom_line(linewidth = line.size, alpha = line.alpha) 
   } else
     # facet only
     if (missing(colorby))
     { 
       curves2plot$facetby <- rep(extendedres[, facetby], each = npoints)
-      gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id))) +
+      gg <- ggplot(data = curves2plot, mapping = aes(x = .data$x, y = .data$y, group = .data$id)) +
         geom_line(linewidth = line.size, alpha = line.alpha) 
       # + 
       #   facet_wrap(~ facetby, scales = scales.arg) 
@@ -157,14 +157,14 @@ curvesplot <- function(extendedres, xmin = 0, xmax,
       if (missing(facetby))
       {
         curves2plot$colorby <- rep(extendedres[, colorby], each = npoints)
-        gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id), colour = quote(colorby))) +
+        gg <- ggplot(data = curves2plot, mapping = aes(x = .data$x, y = .data$y, group = .data$id, colour = .data$colorby)) +
           geom_line(linewidth = line.size, alpha = line.alpha)  
       } else
         # color and facet
       {
         curves2plot$facetby <- rep(extendedres[, facetby], each = npoints)
         curves2plot$colorby <- rep(extendedres[, colorby], each = npoints)
-        gg <- ggplot(data = curves2plot, mapping = aes_(x = quote(x), y = quote(y), group = quote(id), colour = quote(colorby))) +
+        gg <- ggplot(data = curves2plot, mapping = aes(x = .data$x, y = .data$y, group = .data$id, colour = .data$colorby)) +
           geom_line(linewidth = line.size, alpha = line.alpha)   
       }
   if (!missing(facetby))

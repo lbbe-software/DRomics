@@ -39,13 +39,13 @@ trendplot <- function(extendedres, group,
     dtab <- dtab[dtab$nb_of_items != 0, ]
     if (add.color)
     {
-      gg <- ggplot(dtab, aes_(x = quote(trend), y = quote(group), colour = quote(trend))) + 
-        geom_point(aes_(size = quote(nb_of_items)))
+      gg <- ggplot(dtab, aes(x = .data$trend, y = .data$group, colour = .data$trend)) + 
+        geom_point(aes(size = .data$nb_of_items))
       
     } else
     {
-      gg <- ggplot(dtab, aes_(x = quote(trend), y = quote(group))) +
-        geom_point(aes_(size = quote(nb_of_items)))
+      gg <- ggplot(dtab, aes(x = .data$trend, y = .data$group)) +
+        geom_point(aes(size = .data$nb_of_items))
     }
   } else {
     dtab <- as.data.frame(table(extendedres[, group], 
@@ -55,12 +55,12 @@ trendplot <- function(extendedres, group,
     dtab <- dtab[dtab$nb_of_items != 0, ]
     if (add.color)
     {
-      gg <- ggplot(dtab, aes_(x = quote(trend), y = quote(group), colour = quote(trend))) +
-        geom_point(aes_(size = quote(nb_of_items))) 
+      gg <- ggplot(dtab, aes(x = .data$trend, y = .data$group, colour = .data$trend)) +
+        geom_point(aes(size = .data$nb_of_items)) 
     } else
     {
-      gg <- ggplot(dtab, aes(x = quote(trend), y = quote(group))) +
-        geom_point(aes_(size = quote(nb_of_items)))
+      gg <- ggplot(dtab, aes(x = .data$trend, y = .data$group)) +
+        geom_point(aes(size = .data$nb_of_items))
     }
     
     if (missing(ncol4faceting)) 
