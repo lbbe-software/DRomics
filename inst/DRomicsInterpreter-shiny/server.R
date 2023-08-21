@@ -256,7 +256,12 @@ server <- function(input, output, session) {
   })
   
   
-  keepAllExplev <- eventReactive(input$buttonRunStep2, {input$keepAllExplev})
+  keepAllExplev <- eventReactive(input$buttonRunStep2, {
+      if(input$nbLevel == 1)
+          return(FALSE)
+      else
+          return(input$keepAllExplev)
+  })
   minNbItem <- eventReactive(input$buttonRunStep2, {input$minNbItem})
   BMDmax <- eventReactive(input$buttonRunStep2, {
     validate(

@@ -207,12 +207,15 @@ ui <- fluidPage(
                                  br(), 
                                  br(), 
                                  fluidRow(
-                                     column(6,
-                                            checkboxInput("keepAllExplev", label = HTML("<b>Keep all experimental levels</b>"), value = FALSE)
-                                     ),
-                                     column(1, style = "margin-top: 5px", 
-                                            shinyBS::bsButton("helplabel2step2", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
-                                            shinyBS::bsPopover("helplabel2step2", "", helplabel2step2, placement = "right", trigger = "hover", options = list(container = "body"))
+                                     conditionalPanel(
+                                         condition = "input.nbLevel > 1",
+                                         column(6,
+                                                checkboxInput("keepAllExplev", label = HTML("<b>Keep all experimental levels</b>"), value = FALSE)
+                                         ),
+                                         column(1, style = "margin-top: 5px", 
+                                                shinyBS::bsButton("helplabel2step2", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
+                                                shinyBS::bsPopover("helplabel2step2", "", helplabel2step2, placement = "right", trigger = "hover", options = list(container = "body"))
+                                         )
                                      )
                                  ),
                                  br(), 
