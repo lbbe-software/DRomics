@@ -1,6 +1,6 @@
 # DRomics: Dose Response for Omics <img src="man/figures/hexsticker.png" align="right" style="float:right; height:120px;"/>
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/DRomics)](http://cran.r-project.org/package=DRomics)
+[![CRAN_Release_Badge](http://www.r-pkg.org/badges/version-ago/DRomics)](http://cran.r-project.org/package=DRomics)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/DRomics)](https://cran.r-project.org/package=DRomics)
 [![R-CMD-check](https://github.com/aursiber/DRomics/workflows/R-CMD-check/badge.svg)](https://github.com/aursiber/DRomics/actions)
 
