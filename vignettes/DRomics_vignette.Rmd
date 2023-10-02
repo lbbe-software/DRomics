@@ -1418,6 +1418,8 @@ dose-response curves are not scaled (as in the first plot).
 
 + Burnham, KP, Anderson DR (2004). Multimodel inference: understanding AIC and BIC in model selection. Sociological methods & research, 33(2), 261-304.
 
++ Delignette-Muller ML, Siberchicot A, Larras F, Billoir E (2023). DRomics, a workflow to exploit dose-response omics data in ecotoxicology. Peer Community Journal. doi : 10.24072/pcjournal.325. https://peercommunityjournal.org/articles/10.24072/pcjournal.325/
+
 + EFSA Scientific Committee, Hardy A, Benford D, Halldorsson T, Jeger MJ, Knutsen KH, ...
 & Schlatter JR  (2017). Update: use of the benchmark dose approach in risk assessment.
 EFSA Journal, 15(1), e04658.[https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2017.4658](https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2017.4658)
@@ -1428,4 +1430,3 @@ EFSA Journal, 15(1), e04658.[https://efsa.onlinelibrary.wiley.com/doi/full/10.29
 You can also find this article at : [https://hal.archives-ouvertes.fr/hal-02309919](https://hal.archives-ouvertes.fr/hal-02309919)
 
 + Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020). A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus. Journal of Hazardous Materials. [https://doi.org/10.1016/j.jhazmat.2020.122727](https://doi.org/10.1016/j.jhazmat.2020.122727).
-

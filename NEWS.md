@@ -7,6 +7,7 @@ NEW FEATURES
 - Put the argument scaling by default at TRUE in curvesplot() and bmdplotwithgradient().
 - Add of xlab and ylab to plots from curvesplot() (signal or scaled signal for y-axis) and change the color lab in "scaled signal" in plots from bmdplotwithgradient() when the signal is scaled.
 - Add the possibility (new argument addBMD of curvesplot()) to add points at BMD-BMR values on curvesplots.
+- Add the Peer Community Journal citation.
 
 BUG FIXES
 

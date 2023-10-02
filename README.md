@@ -96,11 +96,16 @@ Issues can be reported on https://github.com/aursiber/DRomics/issues .
 
 ## Citation
 If you use Dromics, you should cite: <br />
+
+Delignette-Muller ML, Siberchicot A, Larras F, Billoir E (2023). 
+*DRomics, a workflow to exploit dose-response omics data in ecotoxicology*. 
+Peer Community Journal. 
+<a href="https://peercommunityjournal.org/articles/10.24072/pcjournal.325/" target="_blank">https://peercommunityjournal.org/articles/10.24072/pcjournal.325/</a>
+
 Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). 
 *DRomics : a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment*. 
 Environmental Science & Technology. 
 <a href="https://pubs.acs.org/doi/10.1021/acs.est.8b04752" target="_blank">https://pubs.acs.org/doi/10.1021/acs.est.8b04752</a>
-
 You can find this article at: <a href="https://hal.archives-ouvertes.fr/hal-02309919" target="_blank">https://hal.archives-ouvertes.fr/hal-02309919</a>
 
 You can also look at the following citation for a complete example of use: <br />

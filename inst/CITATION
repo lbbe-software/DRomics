@@ -2,6 +2,22 @@ citHeader("To cite DRomics in publications use:")
 
 bibentry(bibtype = "Article",
   title        = "DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment",
+  author       = c(person("Marie Laure Delignette-Muller"),
+                   person("Aurélie Siberchicot"),
+                   person("Floriane Larras"),
+                   person("Elise Billoir")
+                   ),
+  journal      = "Peer Community Journal,",
+  year        = "2023",
+  doi         = "10.24072/pcjournal.325",
+  url          = "https://peercommunityjournal.org/articles/10.24072/pcjournal.325/",
+
+  textVersion  =
+  paste("Delignette-Muller, Marie Laure; Siberchicot, Aurélie; Larras, Floriane; Billoir, Elise. DRomics, a workflow to exploit dose-response omics data in ecotoxicology. Peer Community Journal, Volume 3 (2023). doi : 10.24072/pcjournal.325. https://peercommunityjournal.org/articles/10.24072/pcjournal.325/")
+)
+
+bibentry(bibtype = "Article",
+  title        = "DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment",
   author       = c(person("Floriane Larras"),
                    person("Elise Billoir"),
                    person("Vincent Baillard"),
