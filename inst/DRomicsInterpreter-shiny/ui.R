@@ -118,7 +118,7 @@ ui <- fluidPage(
                                               "Environmental Science & Technology.",
                                               a("https://doi.org/10.1021/acs.est.8b04752", title = "https://doi.org/10.1021/acs.est.8b04752", href = "https://pubs.acs.org/doi/10.1021/acs.est.8b04752", TARGET = "_blank", style="color:#9c5c16;"), br(),
                                               "You can freely find this article at: ", 
-                                              a("https://hal.archives-ouvertes.fr/hal-02309919", title = "https://hal.archives-ouvertes.fr/hal-02309919", href = "https://hal.archives-ouvertes.fr/hal-02309919", TARGET = "_blank", style="color:#9c5c16;")),
+                                              a("https://hal.science/hal-02309919", title = "https://hal.science/hal-02309919", href = "https://hal.science/hal-02309919", TARGET = "_blank", style="color:#9c5c16;")),
                                             
                                             br(),
                                             p("You can also look at the following citation for a complete example of use:"),

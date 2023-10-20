@@ -106,7 +106,7 @@ Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Sch
 *DRomics : a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment*. 
 Environmental Science & Technology. 
 <a href="https://pubs.acs.org/doi/10.1021/acs.est.8b04752" target="_blank">https://pubs.acs.org/doi/10.1021/acs.est.8b04752</a>
-You can find this article at: <a href="https://hal.archives-ouvertes.fr/hal-02309919" target="_blank">https://hal.archives-ouvertes.fr/hal-02309919</a>
+You can find this article at: <a href="https://hal.science/hal-02309919" target="_blank">https://hal.science/hal-02309919</a>
 
 You can also look at the following citation for a complete example of use: <br />
 Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020). 

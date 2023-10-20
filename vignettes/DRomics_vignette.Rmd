@@ -461,7 +461,7 @@ The **false discovery rate (FDR) corresponds to the expected proportion of items
 on an FDR not only **to reduce the number of items to be further processed**, but also **to remove too noisy dose-response signals that may impair the quality of the results**.
 We recommend to set a value between 0.001 and 0.1 depending of the initial number of items. 
 When this number is very high (more than several tens of thousands),
-we recommend a FDR less than 0.05 (0.001 to 0.01) to increase the robustness of the results ([Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document)).
+we recommend a FDR less than 0.05 (0.001 to 0.01) to increase the robustness of the results ([Larras et al. 2018](https://hal.science/hal-02309919/document)).
 
 Concerning the method used for selection, **we recommend the default choice ("quadratic") for a typical omics dose-response design (many doses/concentrations with few replicates per condition)**. It enables the **selection of both monotonic and biphasic dose-response relationships**. If you want to focus on monotonic dose-response relationships, the "linear" method could be chosen. For a design with a small number of doses/concentrations and many replicates 
 (not optimal for dose-response modeling), the "ANOVA" method could be preferable.
@@ -476,7 +476,7 @@ and by classical **linear regression** using the lm() function for **continuous 
 The adjustment of p-values according to the specified FDR is performed in any case, even for 
 continuous anchoring data, so as to ensure the unicity of the workflow independently of the type of data.
 
-See ?itemselect for more details and [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) 
+See ?itemselect for more details and [Larras et al. 2018](https://hal.science/hal-02309919/document) 
 comparison of the three proposed methods on an example.
 
 It is easy, using for example the package **VennDiagram**, to compare the selection of items obtained using 
@@ -503,9 +503,9 @@ draw.pairwise.venn(area1 = length(index_quad), area2 = length(index_lin),
 For Step 3 the function drcfit() simply **takes as input in a first argument the output of itemselect()**.
 For each item selected in Step 2, the model that best fits the dose-response data is chosen among 
 a **family of five simple models built to describe a wide variety of monotonic and biphasic dose-response curves (DRC)** (and exclusively monotonic and biphasic curves : it is why more flexible models such as
-polynomial third and fourth order classical polynomial models were deliberately not considered). For a complete description of those models see the [last section of Step 3](#models) or [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document). 
+polynomial third and fourth order classical polynomial models were deliberately not considered). For a complete description of those models see the [last section of Step 3](#models) or [Larras et al. 2018](https://hal.science/hal-02309919/document). 
 
-The procedure used to **select the best fit** is based on an **information criterion** as described in [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) and in ?drcfit. 
+The procedure used to **select the best fit** is based on an **information criterion** as described in [Larras et al. 2018](https://hal.science/hal-02309919/document) and in ?drcfit. 
 The **classical** and **former default option** of the **AIC**
 (Akaike criterion -
 default information criterion used in DRomics versions
@@ -731,7 +731,7 @@ sapply(1:7, tracenormale)
 The **two types of benchmark doses (BMD-zSD and BMD-xfold) proposed by the [EFSA (2017)](https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j.efsa.2017.4658) are systematically calculated**
 for each fitted dose-response curve using the function **bmdcalc()** with the output
 of the drcfit() function as a first argument, 
-**but we strongly recommend the use of the first one (BMD-zSD)** for reasons explained in [Larras et al. 2018](https://hal.archives-ouvertes.fr/hal-02309919/document) 
+**but we strongly recommend the use of the first one (BMD-zSD)** for reasons explained in [Larras et al. 2018](https://hal.science/hal-02309919/document) 
 (see ?bmdcalc for details on this function).
 
 
@@ -1427,6 +1427,6 @@ EFSA Journal, 15(1), e04658.[https://efsa.onlinelibrary.wiley.com/doi/full/10.29
 + Hurvich, CM, Tsai, CL (1989). Regression and time series model selection in small samples. Biometrika, 76(2), 297-307.[https://www.stat.berkeley.edu/~binyu/summer08/Hurvich.AICc.pdf](https://www.stat.berkeley.edu/~binyu/summer08/Hurvich.AICc.pdf)
 
 + Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics : a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment. Environmental Science & Technology. [https://pubs.acs.org/doi/10.1021/acs.est.8b04752](https://pubs.acs.org/doi/10.1021/acs.est.8b04752).
-You can also find this article at : [https://hal.archives-ouvertes.fr/hal-02309919](https://hal.archives-ouvertes.fr/hal-02309919)
+You can also find this article at : [https://hal.science/hal-02309919](https://hal.science/hal-02309919)
 
 + Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020). A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus. Journal of Hazardous Materials. [https://doi.org/10.1016/j.jhazmat.2020.122727](https://doi.org/10.1016/j.jhazmat.2020.122727).
