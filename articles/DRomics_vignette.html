@@ -74,7 +74,7 @@
 Delignette-Muller, Aurélie Siberchicot, Elise Billoir, Floriane
 Larras</h4>
             
-            <h4 data-toc-skip class="date">2023-10-02</h4>
+            <h4 data-toc-skip class="date">2023-10-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/aursiber/DRomics/blob/HEAD/vignettes/DRomics_vignette.Rmd" class="external-link"><code>vignettes/DRomics_vignette.Rmd</code></a></small>
       <div class="d-none name"><code>DRomics_vignette.Rmd</code></div>
@@ -792,8 +792,8 @@ quality of the results</strong>. We recommend to set a value between
 0.001 and 0.1 depending of the initial number of items. When this number
 is very high (more than several tens of thousands), we recommend a FDR
 less than 0.05 (0.001 to 0.01) to increase the robustness of the results
-(<a href="https://hal.archives-ouvertes.fr/hal-02309919/document" class="external-link">Larras
-et al. 2018</a>).</p>
+(<a href="https://hal.science/hal-02309919/document" class="external-link">Larras et
+al. 2018</a>).</p>
 <p>Concerning the method used for selection, <strong>we recommend the
 default choice (“quadratic”) for a typical omics dose-response design
 (many doses/concentrations with few replicates per condition)</strong>.
@@ -818,8 +818,8 @@ using the lm() function for <strong>continuous anchoring data</strong>.
 The adjustment of p-values according to the specified FDR is performed
 in any case, even for continuous anchoring data, so as to ensure the
 unicity of the workflow independently of the type of data.</p>
-<p>See ?itemselect for more details and <a href="https://hal.archives-ouvertes.fr/hal-02309919/document" class="external-link">Larras et
-al. 2018</a> comparison of the three proposed methods on an example.</p>
+<p>See ?itemselect for more details and <a href="https://hal.science/hal-02309919/document" class="external-link">Larras et al. 2018</a>
+comparison of the three proposed methods on an example.</p>
 <p>It is easy, using for example the package
 <strong>VennDiagram</strong>, to compare the selection of items obtained
 using two different methods, as in the following example.</p>
@@ -855,18 +855,17 @@ wide variety of monotonic and biphasic dose-response curves
 why more flexible models such as polynomial third and fourth order
 classical polynomial models were deliberately not considered). For a
 complete description of those models see the <a href="#models">last
-section of Step 3</a> or <a href="https://hal.archives-ouvertes.fr/hal-02309919/document" class="external-link">Larras et
+section of Step 3</a> or <a href="https://hal.science/hal-02309919/document" class="external-link">Larras et
 al. 2018</a>.</p>
 <p>The procedure used to <strong>select the best fit</strong> is based
-on an <strong>information criterion</strong> as described in <a href="https://hal.archives-ouvertes.fr/hal-02309919/document" class="external-link">Larras et
-al. 2018</a> and in ?drcfit. The <strong>classical</strong> and
-<strong>former default option</strong> of the <strong>AIC</strong>
-(Akaike criterion - default information criterion used in DRomics
-versions &lt; 2.2-0) was <strong>replaced by the default use of the
-AICc</strong> (second-order Akaike criterion) in order to
-<strong>prevent the overfitting</strong> that may occur with
-dose-response designs with a small number of data points, as recommended
-and now classically done in regression (<a href="https://www.stat.berkeley.edu/~binyu/summer08/Hurvich.AICc.pdf" class="external-link">Hurvich
+on an <strong>information criterion</strong> as described in <a href="https://hal.science/hal-02309919/document" class="external-link">Larras et al. 2018</a>
+and in ?drcfit. The <strong>classical</strong> and <strong>former
+default option</strong> of the <strong>AIC</strong> (Akaike criterion -
+default information criterion used in DRomics versions &lt; 2.2-0) was
+<strong>replaced by the default use of the AICc</strong> (second-order
+Akaike criterion) in order to <strong>prevent the overfitting</strong>
+that may occur with dose-response designs with a small number of data
+points, as recommended and now classically done in regression (<a href="https://www.stat.berkeley.edu/~binyu/summer08/Hurvich.AICc.pdf" class="external-link">Hurvich
 and Tsai, 1989</a>; Burnham and Anderson DR, 2004).</p>
 <p>As the call to the drcfit() function may take time when the number of
 pre-selected items is large, by default a progressbar is provided. Some
@@ -1091,8 +1090,8 @@ proposed by the <a href="https://efsa.onlinelibrary.wiley.com/doi/full/10.2903/j
 dose-response curve using the function <strong>bmdcalc()</strong> with
 the output of the drcfit() function as a first argument, <strong>but we
 strongly recommend the use of the first one (BMD-zSD)</strong> for
-reasons explained in <a href="https://hal.archives-ouvertes.fr/hal-02309919/document" class="external-link">Larras et
-al. 2018</a> (see ?bmdcalc for details on this function).</p>
+reasons explained in <a href="https://hal.science/hal-02309919/document" class="external-link">Larras et al. 2018</a>
+(see ?bmdcalc for details on this function).</p>
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bmdcalc.html">bmdcalc</a></span><span class="op">(</span><span class="va">f</span>, z <span class="op">=</span> <span class="fl">1</span>, x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 60 BMD-xfold values and 0 BMD-zSD values could not be calculated (coded </span></span>
@@ -2145,7 +2144,7 @@ T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics :
 a turnkey tool to support the use of the dose-response framework for
 omics data in ecological risk assessment. Environmental Science &amp;
 Technology. <a href="https://pubs.acs.org/doi/10.1021/acs.est.8b04752" class="external-link">https://pubs.acs.org/doi/10.1021/acs.est.8b04752</a>.
-You can also find this article at : <a href="https://hal.archives-ouvertes.fr/hal-02309919" class="external-link">https://hal.archives-ouvertes.fr/hal-02309919</a></p></li>
+You can also find this article at : <a href="https://hal.science/hal-02309919" class="external-link">https://hal.science/hal-02309919</a></p></li>
 <li><p>Larras F, Billoir E, Scholz S, Tarkka M, Wubet T,
 Delignette-Muller ML, Schmitt-Jansen M (2020). A multi-omics
 concentration-response framework uncovers novel understanding of
