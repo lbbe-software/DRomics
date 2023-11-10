@@ -28,6 +28,13 @@ of this modification at the launch of the package ? Ajouter un encart en haut de
 1. [ ] Ajouter des arguments line.alpha et line.size et point.alpha à sensitivityplot()
 1. [ ] Ajouter des options "boxplot" dans BMDsummary de sensitivityplot()
 1. [ ] dans les applis shiny et la vignette enlever les fonds gris avec un +theme_bw() quand le theme n'est pas défini dans la fonction
+1. [ ] Ajouter une fonction selectitems permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde 
+que les items avec BMD et IC de la BMD définis, pour la BMD-zSD par défaut) - penser à faire de la prog défensive si les utilisateurs ne mettent pas le bootstrap, filtre possible sur autre chose.... (ML)
+1. [ ] Suite a explorations d'Ellis, envisager la sortie des curvesplot en format
+plotly, avec ajour d'un argument étiquette des points différent de l'id 
+de la courbe si possible (pour cas plusieurs courbes avec même gène id mais pas même id de base - transcript)
+. [ ] Donner la possibilité dans curvesplot de mettre un alpha sur le point comme 
+sur la courbe
 
 ## Shorter term 
 
