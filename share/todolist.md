@@ -25,16 +25,16 @@ of this modification at the launch of the package ? Ajouter un encart en haut de
 1. [X] Donnez la possibilité d'ajouter le nom de pathways à côté des points sur les sensitivity pour un seul niv exp plutôt que sur l'axe des y (en alternative) - mettre un code exemple dans la vignette car trop lourd à gérer dans la fonction. (A)
 1. [ ] Add Danio rerio data in the package as another example for the functions for Dromics results interpretation (with or without enrichment and/or with outlier - elimination as in the paper (IRSN) ou un autre ex. (ML)
 1. [X] Mettre sur le share un fichier de test sur des gros jeux de données, à tester sur une VM de l'IFB de temps en temps, avec fichiers stockés ailleurs, pour le moment sur SeaFile (ML)
-1. [ ] Ajouter des arguments line.alpha et line.size et point.alpha à sensitivityplot()
-1. [ ] Ajouter des options "boxplot" dans BMDsummary de sensitivityplot()
-1. [ ] dans les applis shiny et la vignette enlever les fonds gris avec un +theme_bw() quand le theme n'est pas défini dans la fonction
+1. [ ] Ajouter des arguments line.alpha et line.size et point.alpha à sensitivityplot(ML)
+1. [ ] Ajouter des options "boxplot" dans BMDsummary de sensitivityplot(A)
+1. [ ] dans les applis shiny et la vignette enlever les fonds gris avec un +theme_bw() quand le theme n'est pas défini dans la fonction (ML puis A)
 1. [ ] Ajouter une fonction selectitems permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde 
 que les items avec BMD et IC de la BMD définis, pour la BMD-zSD par défaut) - penser à faire de la prog défensive si les utilisateurs ne mettent pas le bootstrap, filtre possible sur autre chose.... (ML)
+1. [ ] revoir l'argument remove.infinite de plot.bmdboot, sa valeur par défaut et son fonctionnement, pour que ce soit harmonisé avec les valeurs par défaut 
+de selectitems (pb avec xfold, vérifier que ça marche bien) ou enlever cette fonctionnalité et considérer que c'est fait avec selectitems et quand ce n'est aps fait gérer graphiquement les infinis
 1. [ ] Suite a explorations d'Ellis, envisager la sortie des curvesplot en format
-plotly, avec ajour d'un argument étiquette des points différent de l'id 
+plotly, avec ajout d'un argument étiquette des points différent de l'id 
 de la courbe si possible (pour cas plusieurs courbes avec même gène id mais pas même id de base - transcript)
-. [ ] Donner la possibilité dans curvesplot de mettre un alpha sur le point comme 
-sur la courbe
 
 ## Shorter term 
 
