@@ -70,6 +70,7 @@ progress::-moz-progress-bar {
                                            " and on ",
                                            a("this web page", title = "this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#9c5c16;"), 
                                            ", where you can find also a vignette and a cheat sheet."),
+                                        p(helpText("If there seems to be a problem with the application, please send an explanatory e-mail at aurelie.siberchicot - at - univ-lyon1.fr.")),
                                         
                                         br(),
                                         p(strong("Citation")),
@@ -494,5 +495,8 @@ progress::-moz-progress-bar {
                                verbatimTextOutput('printRCodeFurther'), br(), br()
                         ))
              )
-  )
+  ), 
+
+hr(),
+helpText("If there seems to be a problem with the application, please send an explanatory e-mail at aurelie.siberchicot - at - univ-lyon1.fr.")
 )

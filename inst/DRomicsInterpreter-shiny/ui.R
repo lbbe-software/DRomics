@@ -104,6 +104,7 @@ ui <- fluidPage(
                                             p(" Reading the vignette first and using the cheat sheet (both are available on this ", 
                                               a("this page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#f28d0f;"), 
                                               ") are recommended. "),
+                                            p(helpText("If there seems to be a problem with the application, please send an explanatory e-mail at aurelie.siberchicot - at - univ-lyon1.fr.")),
                                             
                                             br(),
                                             p(strong("Citation and publications")),
@@ -440,5 +441,7 @@ ui <- fluidPage(
                             ))
                )
                
-    )
+    ),
+    hr(),
+    helpText("If there seems to be a problem with the application, please send an explanatory e-mail at aurelie.siberchicot - at - univ-lyon1.fr.")
 )
