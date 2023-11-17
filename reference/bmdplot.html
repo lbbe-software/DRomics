@@ -73,11 +73,12 @@ and/or labels of items.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>extendedres</dt>
-<dd><p>the dataframe of results provided by bmdcalc (<code>res</code>) 
+<dd><p>the dataframe of results provided by 
+<code><a href="bmdcalc.html">plot.bmdcalc</a></code> or <code><a href="bmdboot.html">plot.bmdboot</a></code> (<code>res</code>) 
  or a subset of this data frame (selected lines). This dataframe can be extended 
  with additional columns coming for example from the functional annotation of items, and some lines 
  can be replicated if their corresponding item has more than one annotation. 
- This extended dataframe
+ This dataframe
  must at least contain the column giving the BMD values (<code>BMD.zSD</code> or <code>BMD.xfold</code>
  depending of chosen BMDtype), identification of each curve (<code>id</code>),
  and if <code>add.CI</code> is TRUE,
