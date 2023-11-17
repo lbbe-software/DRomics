@@ -19,11 +19,12 @@ bmdplot(extendedres, BMDtype = c("zSD", "xfold"),
 }
 
 \arguments{
-\item{extendedres}{the dataframe of results provided by bmdcalc (\code{res}) 
+\item{extendedres}{the dataframe of results provided by 
+\code{\link{plot.bmdcalc}} or \code{\link{plot.bmdboot}} (\code{res}) 
  or a subset of this data frame (selected lines). This dataframe can be extended 
  with additional columns coming for example from the functional annotation of items, and some lines 
  can be replicated if their corresponding item has more than one annotation. 
- This extended dataframe
+ This dataframe
  must at least contain the column giving the BMD values (\code{BMD.zSD} or \code{BMD.xfold}
  depending of chosen BMDtype), identification of each curve (\code{id}),
  and if \code{add.CI} is TRUE,
