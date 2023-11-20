@@ -17,7 +17,6 @@ of this modification at the launch of the package ? Ajouter un encart en haut de
 1. [X] Add an explanation of minBMD in the vignette, in ?bmdcalcl and in the step 4 of Shiny app. 1 (ML)
 1. [X] Gérer le souci des décimales dans le sensitivityplot (taille de points) : faire un meilleur choix des valeurs à afficher (sur ech log si effectifs très diff) (ML)
 1. [X] Dans les curvesplot, en option, ajouter un point là où la BMD est atteinte (ML - still to add an example in the vignette)
-1. [ ] Ajouter des colonnes à la sortie de DRomics via bmdboot (defined.BMD.zSD, finite.CI.BMD.zSD, ...) (ML) Ellis et Sophie y sont favorables mais je diffère car ça m'embête de les ajouter et de ne pas les prendre en compte dans selectgroups(), alors qu'en pratique il me paraît nécessaire de faire a minima une sélection sur BMDdefined. A REDISCUTER !!!!!!!!!!!!!!!!
 1. [X] Ajouter la publi PCI partout quand elle sera sortie (ML et A)
 1. [X] Mettre un bouton d'aide i à côté du keep all experimental levels dans shiny (appli DRomicsInterpreter, step 2, helplabel2step2 dans global.R) (ML, A)
 1. [ ] Faire en sorte que l'on puisse appliquer plot(f, items = "unseul", BMDoutput = bootstrapfaitjusteaveccetitem) (ML)
@@ -28,7 +27,7 @@ of this modification at the launch of the package ? Ajouter un encart en haut de
 1. [ ] Ajouter des arguments line.alpha et line.size et point.alpha à sensitivityplot(ML)
 1. [ ] Ajouter des options "boxplot" dans BMDsummary de sensitivityplot(A)
 1. [ ] dans les applis shiny et la vignette enlever les fonds gris avec un +theme_bw() quand le theme n'est pas défini dans la fonction (ML puis A)
-1. [ ] Ajouter une fonction selectitems permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde 
+1. [X] Ajouter une fonction selectitems permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde 
 que les items avec BMD et IC de la BMD définis, pour la BMD-zSD par défaut) - penser à faire de la prog défensive si les utilisateurs ne mettent pas le bootstrap, filtre possible sur autre chose.... (ML)
 1. [ ] revoir l'argument remove.infinite de plot.bmdboot, sa valeur par défaut et son fonctionnement, pour que ce soit harmonisé avec les valeurs par défaut 
 de selectitems (pb avec xfold, vérifier que ça marche bien) ou enlever cette fonctionnalité et considérer que c'est fait avec selectitems et quand ce n'est aps fait gérer graphiquement les infinis
