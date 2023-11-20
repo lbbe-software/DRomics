@@ -12,7 +12,10 @@ bmdplot(extendedres, BMDtype = c("zSD", "xfold"),
                                   add.CI = FALSE, 
                                    facetby, facetby2, 
                                    shapeby,  colorby,
-                                   point.size = 1,
+                                   point.size = 1.5,
+                                   point.alpha = 0.8,
+                                   line.size = 0.5, 
+                                   line.alpha = 0.8,
                                    ncol4faceting, 
                                    add.label = FALSE, label.size = 2,
                                     BMD_log_transfo = TRUE)
@@ -50,6 +53,12 @@ bmdplot(extendedres, BMDtype = c("zSD", "xfold"),
   to color the BMD points (no difference if colorby if omitted).}
   
 \item{point.size}{Size of the BMD points.}
+
+\item{point.alpha}{Transparency of the points.}
+
+\item{line.size}{Width of the lines.}
+
+\item{line.alpha}{Transparency of the lines.}
 
 \item{ncol4faceting}{Number of columns for facetting (not used if \code{facetby2} 
   is also provided.}
@@ -114,49 +123,50 @@ str(annot)
 
 # Merging of both previous dataframes
 # in order to obtain an extenderes dataframe
-extendedres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
-head(extendedres)
+metabextendedres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
+head(metabextendedres)
 
 
 ### (1.a) BMDplot by pathway shaped by trend
-bmdplot(extendedres, BMDtype = "zSD",
+bmdplot(metabextendedres, BMDtype = "zSD",
                      facetby = "path_class", 
                        shapeby = "trend") 
 
 \donttest{
 
 ### (1.b) BMDplot by pathway with items labels
-bmdplot(extendedres, BMDtype = "zSD",
+bmdplot(metabextendedres, BMDtype = "zSD",
                      facetby = "path_class", 
                        add.label = TRUE,
-                       label.size = 1.5) 
+                       label.size = 2) 
 
 ### (1.c) BMDplot by pathway with confidence intervals
-bmdplot(extendedres, BMDtype = "zSD",
+bmdplot(metabextendedres, BMDtype = "zSD",
                      facetby = "path_class", 
                        add.CI = TRUE) 
 
 ### (1.d) BMDplot by pathway with confidence intervals 
 #         in BMD raw scale (not default log scale)
-bmdplot(extendedres, BMDtype = "zSD",
+bmdplot(metabextendedres, BMDtype = "zSD",
                      facetby = "path_class",
                      add.CI = TRUE,
                      BMD_log_transfo = FALSE) 
 
 ### (1.e) BMDplot by pathway with confidence intervals 
-#         colored by trend
-bmdplot(extendedres, BMDtype = "zSD",
+#         colored by trend and playing with graphical parameters
+bmdplot(metabextendedres, BMDtype = "zSD",
                      facetby = "path_class",
                      add.CI = TRUE,
-                     colorby = "trend") 
+                     colorby = "trend", 
+                     point.size = 2,
+                     point.alpha = 0.5,
+                     line.size = 0.8,
+                     line.alpha = 0.5) + theme_bw()
 
 
 # (2) 
 # An example with two molecular levels
 #
-### Rename metabolomic results
-metabextendedres <- extendedres
-
 # Import the dataframe with transcriptomic results 
 contigresfilename <- system.file("extdata", "triclosanSVcontigres.txt", package = "DRomics")
 contigres <- read.table(contigresfilename, header = TRUE, stringsAsFactors = TRUE)
@@ -182,7 +192,8 @@ str(extendedres)
 ### BMD plot per pathway with molecular level coding for color
 bmdplot(extendedres, BMDtype = "zSD",
                      facetby = "path_class",
-                     colorby = "molecular.level") 
+                     colorby = "molecular.level",
+                     point.alpha = 0.3) + theme_bw()
 
 ### BMD plot per pathway and per molecular level 
 # for a selection of pathways
@@ -193,7 +204,7 @@ bmdplot(extendedres[ischosen, ], BMDtype = "zSD",
                      facetby2 = "molecular.level",
                      colorby = "trend",
                      point.size = 2,
-                     add.CI = TRUE) 
+                     add.CI = TRUE) + theme_bw()
 
 
 }

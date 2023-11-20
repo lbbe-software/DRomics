@@ -5,8 +5,9 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
                                     add.CI = FALSE, 
                                     facetby, facetby2, 
                                     shapeby,  colorby,
-                                   point.size = 1,
-                                   ncol4faceting, 
+                                    point.size = 1.5, point.alpha = 0.8,
+                                    line.size = 0.5, line.alpha = 0.8,
+                                    ncol4faceting, 
                                    add.label = FALSE, label.size = 2,
                                     BMD_log_transfo = TRUE)
 {
@@ -134,21 +135,22 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     if (!missing(colorby))
     {
       gg <- gg + geom_point(data = BMD2plot, mapping = aes(shape = .data$shapeby,
-                 color = .data$colorby), size = point.size) 
+                 color = .data$colorby), size = point.size, alpha = point.alpha) 
     } else
     {
       gg <- gg + geom_point(data = BMD2plot, mapping = aes(shape = .data$shapeby),
-                            size = point.size)
+                            size = point.size, alpha = point.alpha)
     }
   } else
   {
     if (!missing(colorby))
     {
       gg <- gg + geom_point(data = BMD2plot, 
-                            mapping = aes(color = .data$colorby), size = point.size)
+                            mapping = aes(color = .data$colorby), 
+                            size = point.size, alpha = point.alpha)
     } else
     {
-      gg <- gg + geom_point(data = BMD2plot, size = point.size)
+      gg <- gg + geom_point(data = BMD2plot, size = point.size, alpha = point.alpha)
     }
   }
   
@@ -158,11 +160,16 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     if (!missing(colorby))
     {
       gg <- gg + geom_errorbarh(aes(xmin = .data$lower, xmax = .data$upper,
-                                     color = .data$colorby), height = 0)
+                                     color = .data$colorby), 
+                                height = 0, 
+                                linewidth = line.size,
+                                alpha = line.alpha)
     } else
     {
       gg <- gg + geom_errorbarh(aes(xmin = .data$lower, xmax = .data$upper),  
-                                height = 0)
+                                height = 0,
+                                linewidth = line.size,
+                                alpha = line.alpha)
     }                
   }
   

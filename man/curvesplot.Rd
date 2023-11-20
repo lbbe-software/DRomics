@@ -60,7 +60,7 @@ the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}).}
 
 \item{npoints}{Number of points computed on each curve to plot it.}
 
-\item{line.size}{Size of the lines for plotting curves.}
+\item{line.size}{Width of the lines for plotting curves.}
 
 \item{line.alpha}{Transparency of the lines for plotting curves.}
 

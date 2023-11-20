@@ -15,7 +15,8 @@ with points sized by the numbers of items per group.
 sensitivityplot(extendedres, BMDtype = c("zSD", "xfold"),
                 group, ECDF_plot = TRUE, colorby,
                 BMDsummary = c("first.quartile", "median" , "median.and.IQR"),
-                BMD_log_transfo = TRUE)
+                BMD_log_transfo = TRUE,
+                line.size = 0.5, line.alpha = 0.5, point.alpha = 0.5)
 }
 
 \arguments{
@@ -52,6 +53,13 @@ and \code{"median.and.IQR"} for the plot of medians with an interval correspondi
 to the inter-quartile range (IQR).}
 
 \item{BMD_log_transfo}{If TRUE, default choice, a log transformation of the BMD is used in the plot.}
+
+\item{line.size}{Width of the lines.}
+
+\item{line.alpha}{Transparency of the lines.}
+
+\item{point.alpha}{Transparency of the points.}
+
 }
 
 \details{
@@ -126,7 +134,13 @@ sensitivityplot(annotres, BMDtype = "zSD",
 sensitivityplot(annotres, BMDtype = "zSD",
                             group = "path_class",  
                             BMDsummary = "median.and.IQR") 
-                            
+
+### The same plot playing with graphical parameters 
+sensitivityplot(annotres, BMDtype = "zSD",
+                            group = "path_class",  
+                            BMDsummary = "median.and.IQR",
+                            line.size = 1.5, line.alpha = 0.4, point.alpha = 1) 
+                           
 
 # (2) 
 # An example with two molecular levels
@@ -164,13 +178,15 @@ extendedres$path_class <- factor(extendedres$path_class,
                 decreasing = TRUE))
 sensitivityplot(extendedres, BMDtype = "zSD",
                             group = "path_class", colorby = "molecular.level", 
-                            BMDsummary = "first.quartile")
+                            BMDsummary = "first.quartile") + theme_bw()
 
 ### Plot of medians and IQRs of BMD-zSD calculated by pathway
 ### and colored by molecular level
 sensitivityplot(extendedres, BMDtype = "zSD",
                             group = "path_class", colorby = "molecular.level", 
-                            BMDsummary = "median.and.IQR")
+                            BMDsummary = "median.and.IQR",
+                            line.size = 1.2, line.alpha = 0.4, 
+                            point.alpha = 0.8)  + theme_bw()
 
 }
 }

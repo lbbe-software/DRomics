@@ -10,6 +10,7 @@ NEW FEATURES
 - Add the Peer Community Journal citation.
 - Add of the function selectitems() proposing filters to retain
 only the items associated to the best estimated BMD values in DRomics workflow output.
+- Add of arguments line.size, line.alpha and point.alpha in sensitivityplot() and in bmdplot()
 
 BUG FIXES
 
