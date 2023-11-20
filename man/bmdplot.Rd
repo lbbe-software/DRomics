@@ -204,7 +204,7 @@ bmdplot(extendedres[ischosen, ], BMDtype = "zSD",
                      facetby2 = "molecular.level",
                      colorby = "trend",
                      point.size = 2,
-                     add.CI = TRUE) + theme_bw()
+                     add.CI = TRUE) 
 
 
 }

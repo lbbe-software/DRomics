@@ -178,7 +178,7 @@ extendedres$path_class <- factor(extendedres$path_class,
                 decreasing = TRUE))
 sensitivityplot(extendedres, BMDtype = "zSD",
                             group = "path_class", colorby = "molecular.level", 
-                            BMDsummary = "first.quartile") + theme_bw()
+                            BMDsummary = "first.quartile")
 
 ### Plot of medians and IQRs of BMD-zSD calculated by pathway
 ### and colored by molecular level
@@ -186,7 +186,7 @@ sensitivityplot(extendedres, BMDtype = "zSD",
                             group = "path_class", colorby = "molecular.level", 
                             BMDsummary = "median.and.IQR",
                             line.size = 1.2, line.alpha = 0.4, 
-                            point.alpha = 0.8)  + theme_bw()
+                            point.alpha = 0.8) 
 
 }
 }
