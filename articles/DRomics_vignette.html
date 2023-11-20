@@ -559,7 +559,7 @@ situ</em> data</a> for details on this point).</p>
 <span><span class="co">## Names of the endpoints:</span></span>
 <span><span class="co">## [1] "growth"         "photosynthesis"</span></span></code></pre>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">o.anchoring</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">o.anchoring</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-12-1.png"><!-- --></p>
 <p>For such data the plot() function simply provides a dose-response
 plot for each endpoint.</p>
@@ -737,7 +737,7 @@ both batches.</p>
 <span><span class="co">## the following method: rlog</span></span></code></pre>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># PCA plot to visualize the batch effect</span></span>
-<span><span class="fu"><a href="../reference/PCAdataplot.html">PCAdataplot</a></span><span class="op">(</span><span class="va">o</span>, batch <span class="op">=</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">batch</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/PCAdataplot.html">PCAdataplot</a></span><span class="op">(</span><span class="va">o</span>, batch <span class="op">=</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">batch</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-15-1.png"><!-- --></p>
 <p>The PCA plot shows an impact of the batch effect, that clearly
 appears on controls (red points) which were obtained on two different
@@ -757,7 +757,7 @@ batches.</p>
 <span><span class="co">## take a few minutes.</span></span></code></pre>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># PCA plot after batch effect correction</span></span>
-<span><span class="fu"><a href="../reference/PCAdataplot.html">PCAdataplot</a></span><span class="op">(</span><span class="va">o.BEC</span>, batch <span class="op">=</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">batch</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/PCAdataplot.html">PCAdataplot</a></span><span class="op">(</span><span class="va">o.BEC</span>, batch <span class="op">=</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">batch</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-17-1.png"><!-- --></p>
 <p>The PCA plot after BEC shows the impact of the correction on the
 batch effect that is no more visible on controls (red points).</p>
@@ -1165,7 +1165,7 @@ distribution of benchmark doses as an ECDF (Empirical Cumulative Density
 Function) plot for the chosen BMD (“zSD”” or “xfold”). See an example
 below.</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, plottype <span class="op">=</span> <span class="st">"ecdf"</span><span class="op">)</span> </span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, plottype <span class="op">=</span> <span class="st">"ecdf"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-29-1.png"><!-- --></p>
 <p>Different alternative plots are proposed (see ?bmdcalc for details)
 that can be obtained using the argument plottype to choose the type of
@@ -1602,7 +1602,7 @@ trend in this example (See ?bmdplot for more options).</p>
 <div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bmdplot.html">bmdplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, add.CI <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>                    facetby <span class="op">=</span> <span class="st">"path_class"</span>, </span>
-<span>                    colorby <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span> </span></code></pre></div>
+<span>                    colorby <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-39-1.png"><!-- --></p>
 <p>The function ecdfplotwithCI() can also be used as an alternative as
 below to provide the same plot differing by the coloring of intervals
@@ -1661,7 +1661,7 @@ calculated here by pathway class.</p>
 <div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/sensitivityplot.html">sensitivityplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span>
 <span>                group <span class="op">=</span> <span class="st">"path_class"</span>,</span>
-<span>                BMDsummary <span class="op">=</span> <span class="st">"first.quartile"</span><span class="op">)</span></span></code></pre></div>
+<span>                BMDsummary <span class="op">=</span> <span class="st">"first.quartile"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-43-1.png"><!-- --></p>
 <p>It is possible to use medians of BMD values represent and order the
 groups in a sensitivity plot and optionally to add the interquartile
@@ -1669,7 +1669,7 @@ range as a line on the plot, as below:</p>
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/sensitivityplot.html">sensitivityplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span>
 <span>                group <span class="op">=</span> <span class="st">"path_class"</span>,</span>
-<span>                BMDsummary <span class="op">=</span> <span class="st">"median.and.IQR"</span><span class="op">)</span></span></code></pre></div>
+<span>                BMDsummary <span class="op">=</span> <span class="st">"median.and.IQR"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-44-1.png"><!-- --></p>
 <p>You can customize the sensitivity plot and position the pathway class
 labels next to the point instead of on the y-axis, using ggplot2
@@ -1679,7 +1679,7 @@ functions.</p>
 <span>                         group <span class="op">=</span> <span class="st">"path_class"</span>,</span>
 <span>                         BMDsummary <span class="op">=</span> <span class="st">"first.quartile"</span><span class="op">)</span></span>
 <span><span class="va">psens</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>, axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"   "</span>, <span class="va">psens</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">groupby</span>, <span class="st">"   "</span><span class="op">)</span><span class="op">)</span>,  size <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="st">"inward"</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"   "</span>, <span class="va">psens</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">groupby</span>, <span class="st">"   "</span><span class="op">)</span><span class="op">)</span>,  size <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="st">"inward"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-45-1.png"><!-- --></p>
 </div>
 <div class="section level5" number="3.1.2.3">
@@ -1691,7 +1691,7 @@ biological group<a class="anchor" aria-label="anchor" href="#trendplot"></a>
 biological group</strong> using the trendplot() function (see ?trendplot
 for details).</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trendplot.html">trendplot</a></span><span class="op">(</span><span class="va">extendedres</span>, group <span class="op">=</span> <span class="st">"path_class"</span><span class="op">)</span> </span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trendplot.html">trendplot</a></span><span class="op">(</span><span class="va">extendedres</span>, group <span class="op">=</span> <span class="st">"path_class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-46-1.png"><!-- --></p>
 </div>
 <div class="section level5" number="3.1.2.4">
@@ -1714,8 +1714,8 @@ a point at BMD-BMR values on each curve (See ?curvesplot for more
 options).</p>
 <div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot of all the scaled dose-reponse curves split by path class</span></span>
-<span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">extendedres</span>, facetby <span class="op">=</span> <span class="st">"path_class"</span>, scaling <span class="op">=</span> <span class="cn">TRUE</span>, npoints <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>           colorby <span class="op">=</span> <span class="st">"trend"</span>, xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span>, addBMD <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></code></pre></div>
+<span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">extendedres</span>, facetby <span class="op">=</span> <span class="st">"path_class"</span>, scaling <span class="op">=</span> <span class="cn">TRUE</span>, npoints <span class="op">=</span> <span class="fl">100</span>, colorby <span class="op">=</span> <span class="st">"trend"</span>, xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span>, </span>
+<span>           addBMD <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-47-1.png"><!-- --></p>
 <p>It is also possible using this function to visualize the modeled
 response of each item of one biological group, as below:</p>
@@ -1724,7 +1724,7 @@ response of each item of one biological group, as below:</p>
 <span><span class="va">LMres</span> <span class="op">&lt;-</span> <span class="va">extendedres</span><span class="op">[</span><span class="va">extendedres</span><span class="op">$</span><span class="va">path_class</span> <span class="op">==</span> <span class="st">"Lipid metabolism"</span>, <span class="op">]</span></span>
 <span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">LMres</span>, facetby <span class="op">=</span> <span class="st">"id"</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>           colorby <span class="op">=</span> <span class="st">"trend"</span>,</span>
-<span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> </span></code></pre></div>
+<span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-48-1.png"><!-- --></p>
 </div>
 </div>
@@ -1931,7 +1931,7 @@ different colors for the different molecular levels.</p>
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">{</span></span>
 <span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">extendedres</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">BMD.zSD</span>, color <span class="op">=</span> <span class="va">explevel</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ecdf.html" class="external-link">stat_ecdf</a></span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"step"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"ECDF"</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_ecdf.html" class="external-link">stat_ecdf</a></span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"step"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"ECDF"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>   </span>
 <span><span class="op">}</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-53-1.png"><!-- --></p>
@@ -1965,13 +1965,14 @@ previous section presenting bmdplot()</a>).</p>
 <div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># BMD ECDF plot split by molecular level</span></span>
 <span><span class="fu"><a href="../reference/bmdplot.html">bmdplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, </span>
-<span>                    facetby <span class="op">=</span> <span class="st">"explevel"</span><span class="op">)</span> </span></code></pre></div>
+<span>                    facetby <span class="op">=</span> <span class="st">"explevel"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-54-1.png"><!-- --></p>
 <div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># BMD ECDF plot colored by molecular level and split by path class</span></span>
 <span><span class="fu"><a href="../reference/bmdplot.html">bmdplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, </span>
 <span>                    facetby <span class="op">=</span> <span class="st">"path_class"</span>, </span>
-<span>                    colorby <span class="op">=</span> <span class="st">"explevel"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"molecular level"</span><span class="op">)</span></span></code></pre></div>
+<span>                    colorby <span class="op">=</span> <span class="st">"explevel"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>              <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"molecular level"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-54-2.png"><!-- --></p>
 <!-- Below is a focus on few pathways with split on pathway and molecular level. -->
 <!-- ```{r} -->
@@ -1996,7 +1997,8 @@ biological group for all experimental levels.</p>
 <span>                levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">extendedres</span><span class="op">$</span><span class="va">path_class</span><span class="op">)</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Trend plot</span></span>
-<span><span class="fu"><a href="../reference/trendplot.html">trendplot</a></span><span class="op">(</span><span class="va">extendedres</span>, group <span class="op">=</span> <span class="st">"path_class"</span>, facetby <span class="op">=</span> <span class="st">"explevel"</span><span class="op">)</span> </span></code></pre></div>
+<span><span class="fu"><a href="../reference/trendplot.html">trendplot</a></span><span class="op">(</span><span class="va">extendedres</span>, group <span class="op">=</span> <span class="st">"path_class"</span>, facetby <span class="op">=</span> <span class="st">"explevel"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-55-1.png"><!-- --></p>
 </div>
 <div class="section level5" number="3.2.4.3">
@@ -2013,7 +2015,7 @@ are represented per KEGG pathway class for each molecular level. (See
 <div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/sensitivityplot.html">sensitivityplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span>
 <span>                group <span class="op">=</span> <span class="st">"path_class"</span>, colorby <span class="op">=</span> <span class="st">"explevel"</span>,</span>
-<span>                BMDsummary <span class="op">=</span> <span class="st">"first.quartile"</span><span class="op">)</span> </span></code></pre></div>
+<span>                BMDsummary <span class="op">=</span> <span class="st">"first.quartile"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-56-1.png"><!-- --></p>
 </div>
 <div class="section level5" number="3.2.4.4">
@@ -2052,7 +2054,7 @@ in the example below fixing the argument <code>keepallexplev</code> at
 <span><span class="co"># BMDplot on this selection</span></span>
 <span><span class="fu"><a href="../reference/bmdplot.html">bmdplot</a></span><span class="op">(</span><span class="va">selectedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, add.CI <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                    facetby <span class="op">=</span> <span class="st">"path_class"</span>, facetby2 <span class="op">=</span> <span class="st">"explevel"</span>,</span>
-<span>                    colorby <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span> </span></code></pre></div>
+<span>                    colorby <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-57-1.png"><!-- --></p>
 </div>
 <div class="section level5" number="3.2.4.5">
@@ -2098,9 +2100,8 @@ example, the plot is split by biological group using the argument
 <code class="sourceCode R"><span><span class="co"># Plot of the unscaled dose-response curves for the "lipid metabolism" path class</span></span>
 <span><span class="co"># using transparency to get an idea of density of curves with the shame shape</span></span>
 <span><span class="va">LMres</span> <span class="op">&lt;-</span> <span class="va">extendedres</span><span class="op">[</span><span class="va">extendedres</span><span class="op">$</span><span class="va">path_class</span> <span class="op">==</span> <span class="st">"Lipid metabolism"</span>, <span class="op">]</span></span>
-<span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">LMres</span>, facetby <span class="op">=</span> <span class="st">"explevel"</span>, free.y.scales <span class="op">=</span> <span class="cn">TRUE</span>, npoints <span class="op">=</span> <span class="fl">100</span>, </span>
-<span>           line.alpha <span class="op">=</span> <span class="fl">0.4</span>, line.size <span class="op">=</span> <span class="fl">1</span>, colorby <span class="op">=</span> <span class="st">"trend"</span>,</span>
-<span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"DR trend"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">LMres</span>, facetby <span class="op">=</span> <span class="st">"explevel"</span>, free.y.scales <span class="op">=</span> <span class="cn">TRUE</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.alpha <span class="op">=</span> <span class="fl">0.4</span>, line.size <span class="op">=</span> <span class="fl">1</span>, colorby <span class="op">=</span> <span class="st">"trend"</span>,</span>
+<span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"DR trend"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-59-1.png"><!-- --></p>
 <div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot of the scaled dose-response curves for previously chosen path classes</span></span>
@@ -2108,7 +2109,7 @@ example, the plot is split by biological group using the argument
 <span>           facetby <span class="op">=</span> <span class="st">"path_class"</span>, facetby2 <span class="op">=</span> <span class="st">"explevel"</span>,</span>
 <span>           npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>           colorby <span class="op">=</span> <span class="st">"trend"</span>,</span>
-<span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"DR trend"</span><span class="op">)</span></span></code></pre></div>
+<span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"DR trend"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-59-2.png"><!-- --></p>
 <p>The scaling of the curves only used here in the second plot can be
 interesting to focus on the shapes of those curves, skipping the
