@@ -318,7 +318,7 @@ on *in situ* data](#insitudata) for details on this point).
 
 ```{r, fig.width = 7, fig.height = 3}
 (o.anchoring <- continuousanchoringdata(anchoringfilename, backgrounddose = 0.1))
-plot(o.anchoring)
+plot(o.anchoring) + theme_bw()
 ```
 
 For such data the plot() function simply provides a dose-response plot for each endpoint.
@@ -420,7 +420,7 @@ data4DRomics <- formatdata4DRomics(signalmatrix = zebraf$counts,
 (o <- RNAseqdata(data4DRomics))
 
 # PCA plot to visualize the batch effect
-PCAdataplot(o, batch = zebraf$batch)
+PCAdataplot(o, batch = zebraf$batch) + theme_bw()
 ```
 
 The PCA plot shows an impact of the batch effect, that clearly appears
@@ -441,7 +441,7 @@ BECdata4DRomics <- formatdata4DRomics(signalmatrix = BECcounts,
 o.BEC <- RNAseqdata(BECdata4DRomics)
 
 # PCA plot after batch effect correction
-PCAdataplot(o.BEC, batch = zebraf$batch)
+PCAdataplot(o.BEC, batch = zebraf$batch) + theme_bw()
 ```
 
 The PCA plot after BEC shows the impact of the correction on the batch effect
@@ -781,7 +781,7 @@ The default plot of the output of the bmdcalc() function provides the distributi
 (Empirical Cumulative Density Function) plot for the chosen BMD ("zSD"" or "xfold"). See an example below.
 
 ```{r}
-plot(r, BMDtype = "zSD", plottype = "ecdf") 
+plot(r, BMDtype = "zSD", plottype = "ecdf") + theme_bw() 
 ```
 
 Different alternative plots are proposed (see ?bmdcalc for details)
@@ -1029,7 +1029,7 @@ Confidence intervals can be added on this plot and color coding for trend in thi
 ```{r}
 bmdplot(extendedres, BMDtype = "zSD", add.CI = TRUE, 
                     facetby = "path_class", 
-                    colorby = "trend") 
+                    colorby = "trend") + theme_bw()
 ```
 
 The function ecdfplotwithCI() can also be used as an alternative as below to provide the same plot
@@ -1088,7 +1088,7 @@ As an example, below is an ECDF plot of 25th quantiles of BMD-zSD calculated her
 ```{r}
 sensitivityplot(extendedres, BMDtype = "zSD",
                 group = "path_class",
-                BMDsummary = "first.quartile")
+                BMDsummary = "first.quartile") + theme_bw()
 ```
 
 It is possible to use medians of BMD values represent and order the groups
@@ -1097,7 +1097,7 @@ in a sensitivity plot and optionally to add the interquartile range as a line on
 ```{r}
 sensitivityplot(extendedres, BMDtype = "zSD",
                 group = "path_class",
-                BMDsummary = "median.and.IQR")
+                BMDsummary = "median.and.IQR") + theme_bw()
 ```
 
 
@@ -1109,7 +1109,7 @@ psens <- sensitivityplot(extendedres, BMDtype = "zSD",
                          group = "path_class",
                          BMDsummary = "first.quartile")
 psens + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
-    geom_text(aes(label = paste("   ", psens$data$groupby, "   ")),  size = 3, hjust = "inward")
+    geom_text(aes(label = paste("   ", psens$data$groupby, "   ")),  size = 3, hjust = "inward") + theme_bw()
 ```
 
 #### Trend plot per biological group {#trendplot}
@@ -1118,7 +1118,7 @@ It is possible to represent the **repartition of trends in each biological group
 using the trendplot() function (see ?trendplot for details).
 
 ```{r}
-trendplot(extendedres, group = "path_class") 
+trendplot(extendedres, group = "path_class") + theme_bw()
 ```
 
 #### Plot of dose-response curves per biological group {#curvesplot}
@@ -1130,8 +1130,8 @@ to add a point at BMD-BMR values on each curve (See ?curvesplot for more options
 
 ```{r}
 # Plot of all the scaled dose-reponse curves split by path class
-curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100,
-           colorby = "trend", xmin = 0, xmax = 6.5, addBMD = TRUE) 
+curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100, colorby = "trend", xmin = 0, xmax = 6.5, 
+           addBMD = TRUE) + theme_bw()
 ```
 
 It is also possible using this function to visualize the modeled response of each item of
@@ -1142,7 +1142,7 @@ one biological group, as below:
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
            colorby = "trend",
-           xmin = 0, xmax = 6.5) 
+           xmin = 0, xmax = 6.5) + theme_bw() 
 ```
 
 
@@ -1242,7 +1242,7 @@ Here the ggplot2 grammar is used to plot the ECDF of BMD_zSD using different col
 if (require(ggplot2))
 {
    ggplot(extendedres, aes(x = BMD.zSD, color = explevel)) +
-      stat_ecdf(geom = "step") + ylab("ECDF")
+      stat_ecdf(geom = "step") + ylab("ECDF") + theme_bw()
    
 }
 ```
@@ -1275,12 +1275,13 @@ as in [the previous section presenting bmdplot()](#bmdplot)).
 ```{r}
 # BMD ECDF plot split by molecular level
 bmdplot(extendedres, BMDtype = "zSD", 
-                    facetby = "explevel") 
+                    facetby = "explevel") + theme_bw()
 
 # BMD ECDF plot colored by molecular level and split by path class
 bmdplot(extendedres, BMDtype = "zSD", 
                     facetby = "path_class", 
-                    colorby = "explevel") + labs(col = "molecular level")
+                    colorby = "explevel") + 
+              labs(col = "molecular level") + theme_bw()
 ```
 
 <!-- Below is a focus on few pathways with split on pathway and molecular level. -->
@@ -1305,7 +1306,8 @@ extendedres$path_class <- factor(extendedres$path_class,
                 levels = sort(levels(extendedres$path_class), decreasing = TRUE))
 
 # Trend plot
-trendplot(extendedres, group = "path_class", facetby = "explevel") 
+trendplot(extendedres, group = "path_class", facetby = "explevel") +
+  theme_bw()
 ```
 
 #### Sensitivity plot per group and experimental level
@@ -1318,7 +1320,7 @@ of items in each group as in the example, where the 25th quartiles of BMD values
 ```{r}
 sensitivityplot(extendedres, BMDtype = "zSD",
                 group = "path_class", colorby = "explevel",
-                BMDsummary = "first.quartile") 
+                BMDsummary = "first.quartile") + theme_bw()
 ```
 
 
@@ -1352,7 +1354,7 @@ selectedres <- selectgroups(extendedres,
 # BMDplot on this selection
 bmdplot(selectedres, BMDtype = "zSD", add.CI = TRUE,
                     facetby = "path_class", facetby2 = "explevel",
-                    colorby = "trend") 
+                    colorby = "trend") + theme_bw()
 ```
 
 
@@ -1392,16 +1394,15 @@ experimental level using the argument `facetby2` . (See ?curvesplot for more opt
 # Plot of the unscaled dose-response curves for the "lipid metabolism" path class
 # using transparency to get an idea of density of curves with the shame shape
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
-curvesplot(LMres, facetby = "explevel", free.y.scales = TRUE, npoints = 100, 
-           line.alpha = 0.4, line.size = 1, colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "DR trend")
+curvesplot(LMres, facetby = "explevel", free.y.scales = TRUE, npoints = 100, line.alpha = 0.4, line.size = 1, colorby = "trend",
+           xmin = 0, xmax = 6.5) + labs(col = "DR trend") + theme_bw()
 
 # Plot of the scaled dose-response curves for previously chosen path classes
 curvesplot(selectedres2, scaling = TRUE,
            facetby = "path_class", facetby2 = "explevel",
            npoints = 100, line.size = 1,
            colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "DR trend")
+           xmin = 0, xmax = 6.5) + labs(col = "DR trend") + theme_bw()
 ```
 
 The scaling of the curves only used here
