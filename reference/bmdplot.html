@@ -64,7 +64,10 @@ and/or labels of items.</p>
 <span>                                  add.CI <span class="op">=</span> <span class="cn">FALSE</span>, </span>
 <span>                                   <span class="va">facetby</span>, <span class="va">facetby2</span>, </span>
 <span>                                   <span class="va">shapeby</span>,  <span class="va">colorby</span>,</span>
-<span>                                   point.size <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                                   point.size <span class="op">=</span> <span class="fl">1.5</span>,</span>
+<span>                                   point.alpha <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>                                   line.size <span class="op">=</span> <span class="fl">0.5</span>, </span>
+<span>                                   line.alpha <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>                                   <span class="va">ncol4faceting</span>, </span>
 <span>                                   add.label <span class="op">=</span> <span class="cn">FALSE</span>, label.size <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>                                    BMD_log_transfo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -118,6 +121,18 @@ and/or labels of items.</p>
   
 <dt>point.size</dt>
 <dd><p>Size of the BMD points.</p></dd>
+
+
+<dt>point.alpha</dt>
+<dd><p>Transparency of the points.</p></dd>
+
+
+<dt>line.size</dt>
+<dd><p>Width of the lines.</p></dd>
+
+
+<dt>line.alpha</dt>
+<dd><p>Transparency of the lines.</p></dd>
 
 
 <dt>ncol4faceting</dt>
@@ -224,8 +239,8 @@ allocated.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Merging of both previous dataframes</span></span></span>
 <span class="r-in"><span><span class="co"># in order to obtain an extenderes dataframe</span></span></span>
-<span class="r-in"><span><span class="va">extendedres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">res</span>, y <span class="op">=</span> <span class="va">annot</span>, by.x <span class="op">=</span> <span class="st">"id"</span>, by.y <span class="op">=</span> <span class="st">"metab.code"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">extendedres</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">metabextendedres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">res</span>, y <span class="op">=</span> <span class="va">annot</span>, by.x <span class="op">=</span> <span class="st">"id"</span>, by.y <span class="op">=</span> <span class="st">"metab.code"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">metabextendedres</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         id irow    adjpvalue       model nbpar           b  c        d</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 NAP47_51   46 7.158246e-04      linear     2 -0.05600559 NA 7.343571</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    NAP_2    2 6.232579e-05 exponential     3  0.45981242 NA 5.941896</span>
@@ -264,7 +279,7 @@ allocated.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### (1.a) BMDplot by pathway shaped by trend</span></span></span>
-<span class="r-in"><span><span class="fu">bmdplot</span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span></span>
+<span class="r-in"><span><span class="fu">bmdplot</span><span class="op">(</span><span class="va">metabextendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span></span>
 <span class="r-in"><span>                     facetby <span class="op">=</span> <span class="st">"path_class"</span>, </span></span>
 <span class="r-in"><span>                       shapeby <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span> </span></span>
 <span class="r-plt img"><img src="bmdplot-1.png" alt="" width="700" height="433"></span>
@@ -272,41 +287,42 @@ allocated.</p>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### (1.b) BMDplot by pathway with items labels</span></span></span>
-<span class="r-in"><span><span class="fu">bmdplot</span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span></span>
+<span class="r-in"><span><span class="fu">bmdplot</span><span class="op">(</span><span class="va">metabextendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span></span>
 <span class="r-in"><span>                     facetby <span class="op">=</span> <span class="st">"path_class"</span>, </span></span>
 <span class="r-in"><span>                       add.label <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>                       label.size <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> </span></span>
+<span class="r-in"><span>                       label.size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> </span></span>
 <span class="r-plt img"><img src="bmdplot-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### (1.c) BMDplot by pathway with confidence intervals</span></span></span>
-<span class="r-in"><span><span class="fu">bmdplot</span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span></span>
+<span class="r-in"><span><span class="fu">bmdplot</span><span class="op">(</span><span class="va">metabextendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span></span>
 <span class="r-in"><span>                     facetby <span class="op">=</span> <span class="st">"path_class"</span>, </span></span>
 <span class="r-in"><span>                       add.CI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></span>
 <span class="r-plt img"><img src="bmdplot-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### (1.d) BMDplot by pathway with confidence intervals </span></span></span>
 <span class="r-in"><span><span class="co">#         in BMD raw scale (not default log scale)</span></span></span>
-<span class="r-in"><span><span class="fu">bmdplot</span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span></span>
+<span class="r-in"><span><span class="fu">bmdplot</span><span class="op">(</span><span class="va">metabextendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span></span>
 <span class="r-in"><span>                     facetby <span class="op">=</span> <span class="st">"path_class"</span>,</span></span>
 <span class="r-in"><span>                     add.CI <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                     BMD_log_transfo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></span>
 <span class="r-plt img"><img src="bmdplot-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### (1.e) BMDplot by pathway with confidence intervals </span></span></span>
-<span class="r-in"><span><span class="co">#         colored by trend</span></span></span>
-<span class="r-in"><span><span class="fu">bmdplot</span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span></span>
+<span class="r-in"><span><span class="co">#         colored by trend and playing with graphical parameters</span></span></span>
+<span class="r-in"><span><span class="fu">bmdplot</span><span class="op">(</span><span class="va">metabextendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span></span>
 <span class="r-in"><span>                     facetby <span class="op">=</span> <span class="st">"path_class"</span>,</span></span>
 <span class="r-in"><span>                     add.CI <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>                     colorby <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span> </span></span>
-<span class="r-plt img"><img src="bmdplot-5.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span>                     colorby <span class="op">=</span> <span class="st">"trend"</span>, </span></span>
+<span class="r-in"><span>                     point.size <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>                     point.alpha <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
+<span class="r-in"><span>                     line.size <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
+<span class="r-in"><span>                     line.alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in theme_bw():</span> could not find function "theme_bw"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># (2) </span></span></span>
 <span class="r-in"><span><span class="co"># An example with two molecular levels</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">### Rename metabolomic results</span></span></span>
-<span class="r-in"><span><span class="va">metabextendedres</span> <span class="op">&lt;-</span> <span class="va">extendedres</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Import the dataframe with transcriptomic results </span></span></span>
 <span class="r-in"><span><span class="va">contigresfilename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"triclosanSVcontigres.txt"</span>, package <span class="op">=</span> <span class="st">"DRomics"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">contigres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">contigresfilename</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -422,8 +438,9 @@ allocated.</p>
 <span class="r-in"><span><span class="co">### BMD plot per pathway with molecular level coding for color</span></span></span>
 <span class="r-in"><span><span class="fu">bmdplot</span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>,</span></span>
 <span class="r-in"><span>                     facetby <span class="op">=</span> <span class="st">"path_class"</span>,</span></span>
-<span class="r-in"><span>                     colorby <span class="op">=</span> <span class="st">"molecular.level"</span><span class="op">)</span> </span></span>
-<span class="r-plt img"><img src="bmdplot-6.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span>                     colorby <span class="op">=</span> <span class="st">"molecular.level"</span>,</span></span>
+<span class="r-in"><span>                     point.alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in theme_bw():</span> could not find function "theme_bw"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### BMD plot per pathway and per molecular level </span></span></span>
 <span class="r-in"><span><span class="co"># for a selection of pathways</span></span></span>
@@ -435,7 +452,7 @@ allocated.</p>
 <span class="r-in"><span>                     colorby <span class="op">=</span> <span class="st">"trend"</span>,</span></span>
 <span class="r-in"><span>                     point.size <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>                     add.CI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></span>
-<span class="r-plt img"><img src="bmdplot-7.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="bmdplot-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
