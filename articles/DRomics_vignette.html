@@ -74,7 +74,7 @@
 Delignette-Muller, Aurélie Siberchicot, Elise Billoir, Floriane
 Larras</h4>
             
-            <h4 data-toc-skip class="date">2023-11-22</h4>
+            <h4 data-toc-skip class="date">2023-11-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/aursiber/DRomics/blob/HEAD/vignettes/DRomics_vignette.Rmd" class="external-link"><code>vignettes/DRomics_vignette.Rmd</code></a></small>
       <div class="d-none name"><code>DRomics_vignette.Rmd</code></div>
@@ -105,8 +105,11 @@ in R using DRomics functions, or using the <strong>shiny application
 named DRomics-shiny</strong>.</p>
 <p>In the available version, DRomics supports <strong>single-channel
 microarray data</strong> (in log2 scale), <strong>RNAseq data</strong>
-(in raw counts) and other <strong>continuous omics data</strong> such as
-metabolomics or proteomics (in log scale). In order to link responses
+(in raw counts) and other <strong>continuous omics data</strong> (in log
+scale), such as metabolomics data calculated from AUC values (area under
+the curve), or proteomics data when expressed as protein abundance from
+peak intensity values. Proteomics data expressed in spectral counts can
+be analyzed as RNAseq data using raw counts. In order to link responses
 across biological levels based on a common method, DRomics also handles
 <strong>continuous apical data</strong> as long as they meet the use
 conditions of <strong>least squares regression</strong> (homoscedastic
@@ -365,7 +368,8 @@ using the following functions:</p>
 <li>
 <strong>RNAseqdata()</strong> should be used to import
 <strong>RNAseq as counts of reads</strong> (for details look at the
-example with <a href="#RNAseqexample">RNAseq data</a>),</li>
+example with <a href="#RNAseqexample">RNAseq data</a>), but also to
+import proteomics data expressed in spectral counts,</li>
 <li>
 <strong>microarraydata()</strong> should be used to import
 <strong>single-channel microarray data in log2 scale</strong> (for
@@ -373,9 +377,10 @@ details look at the example with <a href="#microarrayexample">microarray
 data</a>),</li>
 <li>
 <strong>continuousomicdata()</strong> should be used to import
-<strong>other continuous omics data</strong> such as metabolomics,
-proteomics,…, <strong>in a scale that enables the use of a Gaussian
-error model</strong> (for details look at the example with <a href="#metabolomicexample">metabolomic omics data</a>).</li>
+<strong>other continuous omics data</strong> such as metabolomics data,
+or proteomics data (only when expressed in intensity),…, <strong>in a
+scale that enables the use of a Gaussian error model</strong> (for
+details look at the example with <a href="#metabolomicexample">metabolomic omics data</a>).</li>
 </ul>
 <p>It is also possible to import in DRomics <strong>continuous anchoring
 data</strong> measured at the apical level, especially for <strong>sake
@@ -1679,7 +1684,8 @@ functions.</p>
 <span>                         group <span class="op">=</span> <span class="st">"path_class"</span>,</span>
 <span>                         BMDsummary <span class="op">=</span> <span class="st">"first.quartile"</span><span class="op">)</span></span>
 <span><span class="va">psens</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>, axis.ticks.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"   "</span>, <span class="va">psens</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">groupby</span>, <span class="st">"   "</span><span class="op">)</span><span class="op">)</span>,  size <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="st">"inward"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"   "</span>, <span class="va">psens</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">groupby</span>, <span class="st">"   "</span><span class="op">)</span><span class="op">)</span>,  </span>
+<span>              size <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="st">"inward"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-45-1.png"><!-- --></p>
 </div>
 <div class="section level5" number="3.1.2.3">
@@ -1971,7 +1977,8 @@ previous section presenting bmdplot()</a>).</p>
 <code class="sourceCode R"><span><span class="co"># BMD ECDF plot colored by molecular level and split by path class</span></span>
 <span><span class="fu"><a href="../reference/bmdplot.html">bmdplot</a></span><span class="op">(</span><span class="va">extendedres</span>, BMDtype <span class="op">=</span> <span class="st">"zSD"</span>, </span>
 <span>                    facetby <span class="op">=</span> <span class="st">"path_class"</span>, </span>
-<span>                    colorby <span class="op">=</span> <span class="st">"explevel"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>                    colorby <span class="op">=</span> <span class="st">"explevel"</span>,</span>
+<span>                    point.alpha <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>              <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"molecular level"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-54-2.png"><!-- --></p>
 <!-- Below is a focus on few pathways with split on pathway and molecular level. -->
@@ -2100,14 +2107,15 @@ example, the plot is split by biological group using the argument
 <code class="sourceCode R"><span><span class="co"># Plot of the unscaled dose-response curves for the "lipid metabolism" path class</span></span>
 <span><span class="co"># using transparency to get an idea of density of curves with the shame shape</span></span>
 <span><span class="va">LMres</span> <span class="op">&lt;-</span> <span class="va">extendedres</span><span class="op">[</span><span class="va">extendedres</span><span class="op">$</span><span class="va">path_class</span> <span class="op">==</span> <span class="st">"Lipid metabolism"</span>, <span class="op">]</span></span>
-<span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">LMres</span>, facetby <span class="op">=</span> <span class="st">"explevel"</span>, free.y.scales <span class="op">=</span> <span class="cn">TRUE</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.alpha <span class="op">=</span> <span class="fl">0.4</span>, line.size <span class="op">=</span> <span class="fl">1</span>, colorby <span class="op">=</span> <span class="st">"trend"</span>,</span>
+<span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">LMres</span>, facetby <span class="op">=</span> <span class="st">"explevel"</span>, free.y.scales <span class="op">=</span> <span class="cn">TRUE</span>, npoints <span class="op">=</span> <span class="fl">100</span>, </span>
+<span>           addBMD <span class="op">=</span> <span class="cn">TRUE</span>, line.alpha <span class="op">=</span> <span class="fl">0.4</span>, line.size <span class="op">=</span> <span class="fl">1</span>, colorby <span class="op">=</span> <span class="st">"trend"</span>,</span>
 <span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"DR trend"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-59-1.png"><!-- --></p>
 <div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot of the scaled dose-response curves for previously chosen path classes</span></span>
 <span><span class="fu"><a href="../reference/curvesplot.html">curvesplot</a></span><span class="op">(</span><span class="va">selectedres2</span>, scaling <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>           facetby <span class="op">=</span> <span class="st">"path_class"</span>, facetby2 <span class="op">=</span> <span class="st">"explevel"</span>,</span>
-<span>           npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>           addBMD <span class="op">=</span> <span class="cn">TRUE</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">1</span>, line.alpha <span class="op">=</span> <span class="fl">0.4</span>,</span>
 <span>           colorby <span class="op">=</span> <span class="st">"trend"</span>,</span>
 <span>           xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">6.5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"DR trend"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-59-2.png"><!-- --></p>
