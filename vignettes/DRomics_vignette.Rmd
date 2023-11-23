@@ -448,6 +448,7 @@ The PCA plot after BEC shows the impact of the correction on the batch effect
 that is no more visible on controls (red points).
 
 
+
 ## Step 2: selection of significantly responding items {#step2}
 
 For the second step of the workflow, the function **itemselect()** must be used simply
@@ -819,6 +820,25 @@ bmdplotwithgradient(r$res, BMDtype = "zSD",
                     scaling = TRUE) 
 ```
 
+<!-- LA SUITE NE FONCTIONNE PAS !!!!!!!!!!!!!!!!!! -->
+<!-- The use of the package plotly to make such a plot interactive can be interesting -->
+<!-- for example to get the identifiant corresponding to each BMD,  -->
+<!-- or to choose what group to -->
+<!-- eliminate or to focus on (you can try on the interactive version of the previous figure below). -->
+
+
+<!-- ```{r} -->
+<!-- g <- bmdplotwithgradient(r$res, BMDtype = "zSD", -->
+<!--                     facetby = "trend",  -->
+<!--                     shapeby = "model", -->
+<!--                     line.size = 1.2, -->
+<!--                     scaling = TRUE)  -->
+<!-- if (require(plotly)) -->
+<!-- { -->
+<!--   ggplotly(g) -->
+<!-- } -->
+<!-- ``` -->
+
 
 ### Calculation of confidence intervals on the BMDs by bootstrap {#bootstrap}
 
@@ -884,14 +904,22 @@ In the following plot we also added vertical lines
 corresponding to tested doses on the plot and add transparency to visualize the density of curves
 when shapes are similar (especially the case for linear shapes).
 
+The use of the package plotly to make such a plot interactive can be interesting
+for example to get the identifiant of each curve or to choose what group of curves to
+eliminate or to focus on (you can try on the interactive version of the previous figure below).
+
+
 ```{r}
 tested.doses <- unique(f$omicdata$dose)
-curvesplot(r$res, addBMD = TRUE, xmax = max(tested.doses), colorby = "trend",
+ g <- curvesplot(r$res, addBMD = TRUE, xmax = max(tested.doses), colorby = "trend",
            line.size = 0.8, line.alpha = 0.3, point.size = 2, point.alpha = 0.6) +
   geom_vline(xintercept = tested.doses, linetype = 2) + theme_bw()
+ if (require(plotly))
+{
+  ggplotly(g)
+}
 
 ```
-
 
 
 ### Description of the outputs of the complete DRomics workflow {#outputs}
@@ -1240,12 +1268,8 @@ prop.table() to the table of frequencies `t.pathways`.
 Here the ggplot2 grammar is used to plot the ECDF of BMD_zSD using different colors for the different molecular levels.
 
 ```{r}
-if (require(ggplot2))
-{
-   ggplot(extendedres, aes(x = BMD.zSD, color = explevel)) +
+ggplot(extendedres, aes(x = BMD.zSD, color = explevel)) +
       stat_ecdf(geom = "step") + ylab("ECDF") + theme_bw()
-   
-}
 ```
 
 
