@@ -43,7 +43,7 @@ DRomics is a freely available tool for dose-response (or concentration-response)
 After a first step which consists in **importing**, **checking** and if needed **normalizing/transforming** the data ([step 1](#step1)), the aim of the proposed workflow is to **select monotonic and/or biphasic significantly responsive items** (e.g. probes, contigs, metabolites) ([step 2](#step2)), to **choose the best-fit model** among a predefined family of monotonic and biphasic models to describe the response of each selected item ([step 3](#step3)), and to **derive a benchmark dose** or concentration from each fitted curve ([step 4](#step4)). Those steps can be performed in R using DRomics functions, or using the **shiny application named DRomics-shiny**.
 
 In the available version, DRomics supports **single-channel microarray data** (in log2 scale), **RNAseq data** (in raw counts) and
-other **continuous omics data** such as metabolomics or proteomics (in log scale). In order to link responses across biological levels based on a common method, DRomics also handles **continuous apical data** as long as they meet the use conditions of **least squares regression** (homoscedastic Gaussian regression, see the [section on least squares](#leastsquares) for a reminder if needed).
+other **continuous omics data** (in log scale), such as metabolomics data calculated from AUC values (area under the curve), or proteomics data when expressed as protein abundance from peak intensity values. Proteomics data expressed in spectral counts can be analyzed as RNAseq data using raw counts. In order to link responses across biological levels based on a common method, DRomics also handles **continuous apical data** as long as they meet the use conditions of **least squares regression** (homoscedastic Gaussian regression, see the [section on least squares](#leastsquares) for a reminder if needed).
 
 As built in the environmental risk assessment context where omics data are more often collected on non-sequenced species or species communities, DRomics does not provide an annotation pipeline. 
 The **annotation of items selected by DRomics** may be complex in this context, and **must be done outside DRomics** using databases such as KEGG or Gene Ontology.
@@ -201,9 +201,9 @@ on the is condition).
 
 **Three types of omics data** may be imported in DRomics using the following functions:
 
-+ **RNAseqdata()** should be used to import **RNAseq as counts of reads** (for details look at the example with [RNAseq data](#RNAseqexample)),
++ **RNAseqdata()** should be used to import **RNAseq as counts of reads** (for details look at the example with [RNAseq data](#RNAseqexample)), but also to import proteomics data expressed in spectral counts,
 + **microarraydata()** should be used to import **single-channel microarray data in log2 scale** (for details look at the example with [microarray data](#microarrayexample)),
-+ **continuousomicdata()** should be used to import **other continuous omics data** such as metabolomics, proteomics,..., **in a scale that enables the use of a Gaussian error model** (for details look at the example with [metabolomic omics data](#metabolomicexample)).
++ **continuousomicdata()** should be used to import **other continuous omics data** such as metabolomics data, or proteomics data (only when expressed in intensity),..., **in a scale that enables the use of a Gaussian error model** (for details look at the example with [metabolomic omics data](#metabolomicexample)).
 
 It is also possible to import in DRomics **continuous anchoring data** measured at the apical level,
 especially for **sake of comparison of benchmark doses** (see [Step 4](#step4) for definition of BMD) estimated **at different levels of organization** but using **the same metrics**. 
@@ -1109,7 +1109,8 @@ psens <- sensitivityplot(extendedres, BMDtype = "zSD",
                          group = "path_class",
                          BMDsummary = "first.quartile")
 psens + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
-    geom_text(aes(label = paste("   ", psens$data$groupby, "   ")),  size = 3, hjust = "inward") + theme_bw()
+    geom_text(aes(label = paste("   ", psens$data$groupby, "   ")),  
+              size = 3, hjust = "inward") + theme_bw()
 ```
 
 #### Trend plot per biological group {#trendplot}
@@ -1280,7 +1281,8 @@ bmdplot(extendedres, BMDtype = "zSD",
 # BMD ECDF plot colored by molecular level and split by path class
 bmdplot(extendedres, BMDtype = "zSD", 
                     facetby = "path_class", 
-                    colorby = "explevel") + 
+                    colorby = "explevel",
+                    point.alpha = 0.4) + 
               labs(col = "molecular level") + theme_bw()
 ```
 
@@ -1394,13 +1396,14 @@ experimental level using the argument `facetby2` . (See ?curvesplot for more opt
 # Plot of the unscaled dose-response curves for the "lipid metabolism" path class
 # using transparency to get an idea of density of curves with the shame shape
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
-curvesplot(LMres, facetby = "explevel", free.y.scales = TRUE, npoints = 100, line.alpha = 0.4, line.size = 1, colorby = "trend",
+curvesplot(LMres, facetby = "explevel", free.y.scales = TRUE, npoints = 100, 
+           addBMD = TRUE, line.alpha = 0.4, line.size = 1, colorby = "trend",
            xmin = 0, xmax = 6.5) + labs(col = "DR trend") + theme_bw()
 
 # Plot of the scaled dose-response curves for previously chosen path classes
 curvesplot(selectedres2, scaling = TRUE,
            facetby = "path_class", facetby2 = "explevel",
-           npoints = 100, line.size = 1,
+           addBMD = TRUE, npoints = 100, line.size = 1, line.alpha = 0.4,
            colorby = "trend",
            xmin = 0, xmax = 6.5) + labs(col = "DR trend") + theme_bw()
 ```
