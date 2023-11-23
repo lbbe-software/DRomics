@@ -161,7 +161,7 @@ bmdplot(metabextendedres, BMDtype = "zSD",
                      point.size = 2,
                      point.alpha = 0.5,
                      line.size = 0.8,
-                     line.alpha = 0.5) + theme_bw()
+                     line.alpha = 0.5) 
 
 
 # (2) 
@@ -193,7 +193,7 @@ str(extendedres)
 bmdplot(extendedres, BMDtype = "zSD",
                      facetby = "path_class",
                      colorby = "molecular.level",
-                     point.alpha = 0.3) + theme_bw()
+                     point.alpha = 0.3) 
 
 ### BMD plot per pathway and per molecular level 
 # for a selection of pathways
