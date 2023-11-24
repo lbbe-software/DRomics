@@ -55,8 +55,10 @@ uniquement sur les points et pas sur l'axe des y (A)
 
 ## Shorter term
 
-1. [ ] Ajouter une option dans le curvesplot qui permettrait d'inverser les U et les dec (par ex.) pour voir 
+1. [ ] Ajouter une option dans le curvesplot qui permettrait d'inverser les U et les dec (par ex.) pour voir
 comment ils collent en symétrie resp. aux belle et inc (ML après discussion avec tous)
+1. [ ] ajouter dans le curvesplot un argument pour changer que le type de point soit
+guider par le pathway (intéressant en interactif - à discuter !) (ML)
 1. [ ] revoir l'argument remove.infinite de plot.bmdboot, sa valeur par défaut et son fonctionnement, pour que ce soit harmonisé avec les valeurs par défaut 
 de selectitems (pb avec xfold, vérifier que ça marche bien) ou enlever cette fonctionnalité et considérer que c'est fait avec selectitems et quand ce n'est pas fait gérer graphiquement les infinis
 1. [ ] Ajouter des options "boxplot" dans BMDsummary de sensitivityplot(A)
