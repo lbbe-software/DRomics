@@ -4,10 +4,10 @@ curvesplot <- function(extendedres, xmin = 0, xmax,
                        y0shift = TRUE, scaling = TRUE,
                        facetby, facetby2, free.y.scales = FALSE, 
                        ncol4faceting, colorby, removelegend = FALSE,  
-                        npoints = 500, line.size = 0.2, line.alpha = 1,
+                        npoints = 500, line.size = 0.5, line.alpha = 0.8,
                        dose_log_transfo = FALSE,
-                       addBMD = FALSE, BMDtype = c("zSD", "xfold"), 
-                       point.size = 1, point.alpha = 1)
+                       addBMD = TRUE, BMDtype = c("zSD", "xfold"), 
+                       point.size = 1, point.alpha = 0.8)
 {
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
   if (missing(extendedres) | !is.data.frame(extendedres))

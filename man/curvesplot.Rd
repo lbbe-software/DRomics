@@ -11,11 +11,10 @@ additional information (e.g. groups from functional annotation) used to color an
 curvesplot(extendedres, xmin = 0, xmax, y0shift = TRUE, scaling = TRUE,
                        facetby, facetby2, free.y.scales = FALSE, ncol4faceting,
                        colorby, removelegend = FALSE,  
-                        npoints = 500, line.size = 0.2, 
-                        line.alpha = 1, dose_log_transfo = FALSE,
-                       addBMD = FALSE, BMDtype = c("zSD", "xfold"), 
-                       point.size = 1, point.alpha = 1)}
-
+                        npoints = 500, line.size = 0.5, 
+                        line.alpha = 0.8, dose_log_transfo = FALSE,
+                       addBMD = TRUE, BMDtype = c("zSD", "xfold"), 
+                       point.size = 1, point.alpha = 0.8)}
 \arguments{
 \item{extendedres}{the dataframe of results provided by bmdcalc (res) or drcfit (fitres) 
  or a subset of this data frame (selected lines). This dataframe can be extended 
