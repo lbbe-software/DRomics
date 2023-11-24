@@ -111,7 +111,7 @@ f <- drcfit(s_quad, progressbar = TRUE)
 # (1.a) 
 # Default plot of all the curves 
 #
-curvesplot(f$fitres, xmax = max(f$omicdata$dose))
+curvesplot(f$fitres, xmax = max(f$omicdata$dose), addBMD = FALSE)
 
 \donttest{
 # the equivalent using the output of bmdcalc
@@ -144,27 +144,27 @@ curvesplot(r$res, xmax = max(f$omicdata$dose), facetby = "trend",
 # (1.b) 
 # Plot of all the curves without shifting y0 values to 0
 # and without scaling
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+curvesplot(f$fitres, xmax = max(f$omicdata$dose),  addBMD = FALSE,
   scaling = FALSE, y0shift = FALSE)
 
 # (1.c) 
 # Plot of all the curves colored by model, with one facet per trend
 #
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+curvesplot(f$fitres, xmax = max(f$omicdata$dose), addBMD = FALSE,
   facetby = "trend", colorby = "model")
 
 # changing the number of columns
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+curvesplot(f$fitres, xmax = max(f$omicdata$dose), addBMD = FALSE, 
   facetby = "trend", colorby = "model", ncol4faceting = 4)
 
 # playing with size and transparency of lines
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+curvesplot(f$fitres, xmax = max(f$omicdata$dose), addBMD = FALSE,
   facetby = "trend", colorby = "model", 
   line.size = 0.5, line.alpha = 0.8)
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+curvesplot(f$fitres, xmax = max(f$omicdata$dose),  addBMD = FALSE,
   facetby = "trend", colorby = "model", 
   line.size = 0.8, line.alpha = 0.2)
-curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+curvesplot(f$fitres, xmax = max(f$omicdata$dose),  addBMD = FALSE,
   facetby = "trend", line.size = 1, line.alpha = 0.2)
   
 # (2) an example on a microarray data set (a subsample of a greater data set)
