@@ -1159,7 +1159,8 @@ to add a point at BMD-BMR values on each curve (See ?curvesplot for more options
 
 ```{r}
 # Plot of all the scaled dose-reponse curves split by path class
-curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100, colorby = "trend", xmin = 0, xmax = 6.5, 
+curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100, 
+           colorby = "trend", xmin = 0, xmax = 6.5, 
            addBMD = TRUE) + theme_bw()
 ```
 
@@ -1169,7 +1170,8 @@ one biological group, as below:
 ```{r}
 # Plot of the unscaled dose-reponses for one chosen group, split by metabolite
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
-curvesplot(LMres, facetby = "id", npoints = 100, line.size = 1,
+curvesplot(LMres, facetby = "id", npoints = 100, 
+           point.size = 1.5, line.size = 1,
            colorby = "trend",
            xmin = 0, xmax = 6.5) + theme_bw() 
 ```
