@@ -9,7 +9,7 @@ NEW FEATURES
 - Add the possibility (new argument addBMD of curvesplot()) to add points at BMD-BMR values on curvesplots
 and put it by default at TRUE.
 - Add the Peer Community Journal citation.
-- Add of the function selectitems() proposing filters to retain
+- Add of the function bmdfilter() proposing filters to retain
 only the items associated to the best estimated BMD values in DRomics workflow output.
 - Add of arguments line.size, line.alpha and point.alpha in sensitivityplot() and in bmdplot()
 

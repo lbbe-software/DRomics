@@ -1,14 +1,14 @@
-\name{selectitems}
-\alias{selectitems}
-\title{Selection of items to be retained in DRomics workflow output}
+\name{bmdfilter}
+\alias{bmdfilter}
+\title{Filtering of items in DRomics workflow output}
 
 \description{
-Selection of items (e.g. transcripts, metabolites, ...)
-to be retained in DRomics workflow output for further biological annotation and interpretation.
+Filtering of items (e.g. transcripts, metabolites, ...)
+to be removed from DRomics workflow output before further biological annotation and interpretation.
 }
 
 \usage{
-selectitems(res, 
+bmdfilter(res, 
               BMDfilter = c("definedCI", "finiteCI", "definedBMD", "none"),
               BMDtype = c("zSD", "xfold"))
 }
@@ -106,19 +106,19 @@ set.seed(1234) # to get reproducible results with a so small number of iteration
 ### (1.a) Examples on BMD.xfold (with some undefined BMD.xfold values)
 
 # Plot of BMDs with no filtering
-subres <- selectitems(b$res, BMDfilter = "none")
+subres <- bmdfilter(b$res, BMDfilter = "none")
 bmdplot(subres, BMDtype = "xfold", point.size = 3, add.CI = TRUE)
 
 # Plot of items with defined BMD point estimate
-subres <- selectitems(b$res, BMDtype = "xfold", BMDfilter = "definedBMD")
+subres <- bmdfilter(b$res, BMDtype = "xfold", BMDfilter = "definedBMD")
 bmdplot(subres, BMDtype = "xfold", point.size = 3, add.CI = TRUE)
 
 # Plot of items with defined BMD point estimate and CI bounds
-subres <- selectitems(b$res, BMDtype = "xfold", BMDfilter = "definedCI")
+subres <- bmdfilter(b$res, BMDtype = "xfold", BMDfilter = "definedCI")
 bmdplot(subres, BMDtype = "xfold", point.size = 3, add.CI = TRUE)
 
 # Plot of items with finite BMD point estimate and CI bounds
-subres <- selectitems(b$res, BMDtype = "xfold", BMDfilter = "finiteCI") 
+subres <- bmdfilter(b$res, BMDtype = "xfold", BMDfilter = "finiteCI") 
 bmdplot(subres, BMDtype = "xfold", point.size = 3, add.CI = TRUE)
 
 \donttest{
@@ -126,19 +126,19 @@ bmdplot(subres, BMDtype = "xfold", point.size = 3, add.CI = TRUE)
 ### (1.b) Examples on BMD.zSD (with no undefined BMD.zSD values)
 
 # Plot of BMDs with no filtering
-subres <- selectitems(b$res, BMDfilter = "none")
+subres <- bmdfilter(b$res, BMDfilter = "none")
 bmdplot(subres, BMDtype = "zSD", point.size = 3, add.CI = TRUE)
 
 # Plot items with defined BMD point estimate (the same on this ex.)
-subres <- selectitems(b$res, BMDtype = "zSD", BMDfilter = "definedBMD")
+subres <- bmdfilter(b$res, BMDtype = "zSD", BMDfilter = "definedBMD")
 bmdplot(subres, BMDtype = "zSD", point.size = 3, add.CI = TRUE)
 
 # Plot of items with defined BMD point estimate and CI bounds
-subres <- selectitems(b$res, BMDtype = "zSD", BMDfilter = "definedCI")
+subres <- bmdfilter(b$res, BMDtype = "zSD", BMDfilter = "definedCI")
 bmdplot(subres, BMDtype = "zSD", point.size = 3, add.CI = TRUE)
 
 # Plot of items with finite BMD point estimate and CI bounds
-subres <- selectitems(b$res, BMDtype = "zSD", BMDfilter = "finiteCI") 
+subres <- bmdfilter(b$res, BMDtype = "zSD", BMDfilter = "finiteCI") 
 bmdplot(subres, BMDtype = "zSD", point.size = 3, add.CI = TRUE)
 }
 

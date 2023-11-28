@@ -1,11 +1,11 @@
-selectitems <- function(res,
+bmdfilter <- function(res,
                         BMDfilter = c("definedCI", "finiteCI", "definedBMD", "none"),
                         BMDtype = c("zSD", "xfold")
                         )
 {
   if (missing(res) | !is.data.frame(res))
-    stop("The first argument of selectitems must be a dataframe 
-    (see ?selectitems for details).")
+    stop("The first argument of bmdfilter must be a dataframe 
+    (see ?bmdfilter for details).")
   
   BMDfilter <- match.arg(BMDfilter, c("definedCI", "finiteCI", "definedBMD", "none"))
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
@@ -15,13 +15,13 @@ selectitems <- function(res,
   if ((BMDtype == "zSD") & (BMDfilter != "none"))
   {  
     if (any(!is.element(c("BMD.zSD"), cnames)))
-      stop("The first argument of selectitems must be a dataframe
+      stop("The first argument of bmdfilter must be a dataframe
       containing a column named BMD.zSD.")
     BMD <- res$BMD.zSD
     if ((BMDfilter ==  "definedCI") | (BMDfilter ==  "finiteCI"))
     {
       if (any(!is.element(c("BMD.zSD.upper", "BMD.zSD.lower"), cnames)) )
-      stop("To apply a filter on BMD.zSD confidence intervals, the first argument of selectitems 
+      stop("To apply a filter on BMD.zSD confidence intervals, the first argument of bmdfilter 
       must be a dataframe containing columns named BMD.zSD, BMD.zSD.lower, BMD.zSD.upper.")
       BMDupper <- res$BMD.zSD.upper
       BMDlower <- res$BMD.zSD.lower
@@ -30,13 +30,13 @@ selectitems <- function(res,
   if ((BMDtype == "xfold") & (BMDfilter != "none"))
   {
     if (any(!is.element(c("BMD.xfold"), cnames)))
-      stop("The first argument of selectitems must be a dataframe
+      stop("The first argument of bmdfilter must be a dataframe
       containing a column named BMD.xfold.")
     BMD <- res$BMD.xfold
     if ((BMDfilter ==  "definedCI") | (BMDfilter ==  "finiteCI"))
     {
       if (any(!is.element(c("BMD.xfold.upper","BMD.xfold.lower"), cnames)))
-        stop("To apply a filter on BMD.xfold confidence intervals, the first argument of selectitems 
+        stop("To apply a filter on BMD.xfold confidence intervals, the first argument of bmdfilter 
       must be a dataframe containing columns named BMD.xfold, BMD.xfold.lower, BMD.xfold.upper.")
       BMDupper <- res$BMD.xfold.upper
       BMDlower <- res$BMD.xfold.lower

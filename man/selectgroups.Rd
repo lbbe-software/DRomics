@@ -75,7 +75,7 @@ This function eliminates rows with NA values for the chosen BMD
 }
 
 \seealso{
-    See \code{\link{selectitems}}, \code{\link{bmdplot}}, \code{\link{bmdplotwithgradient}}, 
+    See \code{\link{bmdfilter}}, \code{\link{bmdplot}}, \code{\link{bmdplotwithgradient}}, 
     \code{\link{trendplot}} and \code{\link{sensitivityplot}}.
 }
 

@@ -29,7 +29,7 @@ quand le theme n'est pas défini dans la fonction.
 FAIT dans vignette à faire dans shiny (A)
 A FAIRE dans DRomics-shiny pour les fonctions plot.continuousanchoringdata(), PCAdataplot() et plot.bmdcalc()
 A FAIRE dans DRomicsInterpreter-shiny pour les fonctions sensitivityplot(), trendplot(), bmdplot() et curvesplot()
-1. [X] Ajouter une fonction selectitems permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde 
+1. [X] Ajouter une fonction bmdfilter permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde 
 que les items avec BMD et IC de la BMD définis, pour la BMD-zSD par défaut) - penser à faire de la prog défensive si les utilisateurs ne mettent pas le bootstrap, filtre possible sur autre chose.... (ML)
 1. [ ] Envisager la sortie de  figures en plotly, dans la vignette et dans l'appli shiny.
 FAIT dans vignette aussi juste sur un curvesplot(), avec un if require(plotly) et plotly ajouté en suggest (ML)
@@ -42,12 +42,12 @@ Dans intro ajouter juste avant la phrase sur les données apicales
 "Proteomics data can also be handled, as metabolomics data when expressed in intensity (continuous variable)
 or as RNAseq data when expressed in spectral counts".
 Dans step 1, A discuter encore : faut-il le rappeler vers les boutons correspondants ou plus tard quand on aura plus d'expe ?
-1. [ ] Dans DRomics-shiny ajouter une mention à selectitems dans R code to go further (A)
+1. [ ] Dans DRomics-shiny ajouter une mention à bmdfilter dans R code to go further (A)
 Après le dernier commentaire sur les fonctions d'exploration 
 "# Before the biological interpretation of results, one could retain
 only the items associated to the best estimated BMD values, 
-using the function selectitems (see ?selectitems for a description of the proposed options)
-subres <- selectitems(b$res, BMDtype = "zSD", BMDfilter = "definedCI")"
+using the function bmdfilter (see ?bmdfilter for a description of the proposed options)
+subres <- bmdfilter(b$res, BMDtype = "zSD", BMDfilter = "definedCI")"
 1. [ ] Regarder pourquoi la dernière figure de la partie 3.1.2.2 de la vignette (code fourni)
 ne permet plus d'afficher les labels des groupes
 uniquement sur les points et pas sur l'axe des y (A)
@@ -60,7 +60,7 @@ comment ils collent en symétrie resp. aux belle et inc (ML après discussion av
 1. [ ] ajouter dans le curvesplot un argument pour changer que le type de point soit
 guider par le pathway (intéressant en interactif - à discuter !) (ML)
 1. [ ] revoir l'argument remove.infinite de plot.bmdboot, sa valeur par défaut et son fonctionnement, pour que ce soit harmonisé avec les valeurs par défaut 
-de selectitems (pb avec xfold, vérifier que ça marche bien) ou enlever cette fonctionnalité et considérer que c'est fait avec selectitems et quand ce n'est pas fait gérer graphiquement les infinis
+de bmdfilter (pb avec xfold, vérifier que ça marche bien) ou enlever cette fonctionnalité et considérer que c'est fait avec bmdfilter et quand ce n'est pas fait gérer graphiquement les infinis
 1. [ ] Ajouter des options "boxplot" dans BMDsummary de sensitivityplot(A)
 1. [ ] Add Danio rerio data in the package as another example for the functions for Dromics results interpretation (with or without enrichment and/or with outlier - elimination as in the paper (IRSN) ou un autre ex. (ML)
 1. [ ] Ajouter un ou deux sous-niveaux dans la vignette à laquelle on accède depuis GitHub (A) IMPOSSIBLE à cause des configurations de pkgdown ! Restructurer la vignette pour que la navigation soit plus simple - en parallèle de la rédaction de la FAQ dans laquelle basculeront des morceaux de la vignette en faisant attention à maintenir les liens de l'article PCI

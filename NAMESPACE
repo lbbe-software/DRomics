@@ -63,7 +63,7 @@ export(trendplot)
 export(sensitivityplot)
 export(bmdplot)
 export(selectgroups)
-export(selectitems)
+export(bmdfilter)
 export(PCAdataplot)
 export(formatdata4DRomics)
 
