@@ -1107,22 +1107,25 @@ plotfit2pdf <- function(x, items,
                            nc = ncolperpage) + theme_classic()
         if (addBMD)
         {
-            g <- g + geom_vline(data = subbmdres[ind2plot, ],
+            data4BMDadd <- subbmdres[ind2plot, ]
+            # to keep the ordering of items by p-value and not by alphabetic order
+            data4BMDadd$id <- factor(data4BMDadd$id, levels = data4BMDadd$id)
+            g <- g + geom_vline(data = data4BMDadd,
                                 aes(xintercept = .data$BMD), 
                                 linetype = 1, colour = "red") +
                 # geom_ribbon(data = subbmdres[ind2plot, ],
                 #             aes(ymin = .data$lowhline, 
                 #                  ymax = .data$uphline), 
                 #             fill = "red", alpha = 0.1)
-                geom_hline(data = subbmdres[ind2plot, ], aes(yintercept = .data$uphline),
+                geom_hline(data = data4BMDadd, aes(yintercept = .data$uphline),
                            linetype = 3, colour = "red") +
-                geom_hline(data = subbmdres[ind2plot, ], aes(yintercept = .data$lowhline),
+                geom_hline(data = data4BMDadd, aes(yintercept = .data$lowhline),
                            linetype = 3,colour = "red")
             if (addCI)
             {
-                g <- g + geom_vline(data = subbmdres[ind2plot, ], aes(xintercept = .data$BMDlower), 
+                g <- g + geom_vline(data = data4BMDadd, aes(xintercept = .data$BMDlower), 
                                     linetype = 2,colour = "red") +
-                    geom_vline(data = subbmdres[ind2plot, ], aes(xintercept = .data$BMDupper), 
+                    geom_vline(data = data4BMDadd, aes(xintercept = .data$BMDupper), 
                                linetype = 2, colour = "red") 
             }
         }

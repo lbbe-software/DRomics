@@ -17,6 +17,8 @@ BUG FIXES
 
 - Fix a bug that appeared very occasionally in the bootstrap procedure (error in bmdboot() due to fail of the call to uniroot()).
 - Define the scale of nb of items in sensitivityplot() and trendplot() to get 4 integer values from min max and rounded 0.5 and 0.75 quartiles.
+- Fix a bug in plotfit2pdf : now the items appear in the same order (by p-value
+from the selection) even when BMD values are added to the plot of fitted curves.
 
 # DRomics 2.5-0 
 
