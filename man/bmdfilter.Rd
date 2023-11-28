@@ -1,10 +1,10 @@
 \name{bmdfilter}
 \alias{bmdfilter}
-\title{Filtering of items in DRomics workflow output}
+\title{Filtering BMDs according to estimation quality}
 
 \description{
-Filtering of items (e.g. transcripts, metabolites, ...)
-to be removed from DRomics workflow output before further biological annotation and interpretation.
+Filtering BMDs in DRomics workflow output according to estimation quality,
+to retain the best estimated BMDs for subsequent biological annotation and interpretation.
 }
 
 \usage{
