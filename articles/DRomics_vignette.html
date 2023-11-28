@@ -109,12 +109,13 @@ microarray data</strong> (in log2 scale), <strong>RNAseq data</strong>
 scale), such as metabolomics data calculated from AUC values (area under
 the curve), or proteomics data when expressed as protein abundance from
 peak intensity values. Proteomics data expressed in spectral counts
-could be analyzed as RNAseq data using raw counts after checking the
-validity of the assumptions made in the treatment of RNAseq data. In
-order to link responses across biological levels based on a common
-method, DRomics also handles <strong>continuous apical data</strong> as
-long as they meet the use conditions of <strong>least squares
-regression</strong> (homoscedastic Gaussian regression, see the <a href="#leastsquares">section on least squares</a> for a reminder if
+could be analyzed as RNAseq data using raw counts after carefully
+checking the validity of the assumptions made in processing the RNAseq
+data. In order to link responses across biological levels based on a
+common method, DRomics also handles <strong>continuous apical
+data</strong> as long as they meet the use conditions of <strong>least
+squares regression</strong> (homoscedastic Gaussian regression, see the
+<a href="#leastsquares">section on least squares</a> for a reminder if
 needed).</p>
 <p>As built in the environmental risk assessment context where omics
 data are more often collected on non-sequenced species or species
@@ -1287,18 +1288,22 @@ confidence interval bound are not plotted.</p>
 <span class="header-section-number">2.4.4</span> Filtering BMDs
 according to estimation quality<a class="anchor" aria-label="anchor" href="#bmdfilter"></a>
 </h4>
-<p>Using the bmdfilter() function, it is possibe to use one of the three
-filters proposed to retain only the items associated to the best
-estimated BMD values. By default are retained only the items for which
-the BMD and its confidence interval are defined (using
-<code>"CIdefined"</code>) (so excluding items for which the bootstrap
-procedure failed). One can be even more restrictive by retaining items
-only if the BMD confidence interval is within the range of
-tested/observed doses (using <code>"CIfinite"</code>), or less
-restrictive (using <code>"BMDdefined"</code>) requiring that the BMD
-point estimate only must be defined within the range of tested/observed
-doses (let us recall that in the <code><a href="../reference/bmdcalc.html">bmdcalc()</a></code> output, if it is
-not the case the BMD is coded <code>NA</code>).</p>
+<p>Using the bmdfilter() function, it is possible to use one of the
+three filters proposed to retain only the items associated to the best
+estimated BMD values.</p>
+<ul>
+<li>By default are retained only the items for which the BMD and its
+confidence interval are defined (using <code>"CIdefined"</code>) (so
+excluding items for which the bootstrap procedure failed).</li>
+<li>One can be even more restrictive by retaining items only if the BMD
+confidence interval is within the range of tested/observed doses (using
+<code>"CIfinite"</code>),</li>
+<li>or less restrictive (using <code>"BMDdefined"</code>) requiring that
+the BMD point estimate only must be defined within the range of
+tested/observed doses.</li>
+</ul>
+<p>Let us recall that in the <code><a href="../reference/bmdcalc.html">bmdcalc()</a></code> output, if it is not
+the case the BMD is coded <code>NA</code> or <code>NaN</code>.</p>
 <p>Below is an example of application of the different filters based on
 BMD-xfold values, chosen just to better illustrate the way filters work,
 as there far more bad BMD-xfold estimations than bad BMD-zSD
