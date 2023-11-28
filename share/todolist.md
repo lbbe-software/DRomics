@@ -32,26 +32,26 @@ A FAIRE dans DRomicsInterpreter-shiny pour les fonctions sensitivityplot(), tren
 1. [X] Ajouter une fonction bmdfilter permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde 
 que les items avec BMD et IC de la BMD définis, pour la BMD-zSD par défaut) - penser à faire de la prog défensive si les utilisateurs ne mettent pas le bootstrap, filtre possible sur autre chose.... (ML)
 1. [ ] Envisager la sortie de  figures en plotly, dans la vignette et dans l'appli shiny.
-FAIT dans vignette aussi juste sur un curvesplot(), avec un if require(plotly) et plotly ajouté en suggest (ML)
+Dans la vignette tant que ça ne fonctionne pas j'ai juste ajouté le code pour l'utilisateur (ML)
 A FAIRE dans appli shiny sur le curvesplot. Mais il se passe quoi quand on va la downloader. Elle sera
 dans quel état ???????????? (A)
 1. [ ] Dans DRomicsInterpreter-shiny cocher par défaut la case pour ajouter BMD et BMR values (A)
 1. [X] changer les valeurs par défaut des arguments de curvesplot, avec les BMD ajoutées, et une transparence des courbes (ML)
 1. [ ] Dans DRomics-shiny écrire explicitement comment prendre en compte les données proteomiques. (A) 
 Dans intro ajouter juste avant la phrase sur les données apicales 
-"Proteomics data can also be handled, as metabolomics data when expressed in intensity (continuous variable)
-or as RNAseq data when expressed in spectral counts".
-Dans step 1, A discuter encore : faut-il le rappeler vers les boutons correspondants ou plus tard quand on aura plus d'expe ?
-1. [ ] Dans DRomics-shiny ajouter une mention à bmdfilter dans R code to go further (A)
+"Proteomics data could also be handled, as metabolomics data when expressed in intensity (continuous variable)
+or as RNAseq when expressed in spectral counts, after carefully checking the validity of the assumptions made in processing the RNAseq data".
+1. [ ] Dans DRomics-shiny ajouter une mention à bmdfilter() dans R code to go further (A)
 Après le dernier commentaire sur les fonctions d'exploration 
 "# Before the biological interpretation of results, one could retain
 only the items associated to the best estimated BMD values, 
-using the function bmdfilter (see ?bmdfilter for a description of the proposed options)
+using the function bmdfilter (see ?bmdfilter for a description of the three proposed filters)
 subres <- bmdfilter(b$res, BMDtype = "zSD", BMDfilter = "definedCI")"
 1. [ ] Regarder pourquoi la dernière figure de la partie 3.1.2.2 de la vignette (code fourni)
 ne permet plus d'afficher les labels des groupes
 uniquement sur les points et pas sur l'axe des y (A)
-1. [ ] Refaire la cheat sheet avec les points sur le curvesplot
+1. [ ] Refaire la cheat sheet avec les points sur le curvesplot et plu sglobalement les derniers rendus des 
+différentes figures
 
 ## Shorter term
 

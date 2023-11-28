@@ -44,7 +44,7 @@ After a first step which consists in **importing**, **checking** and if needed *
 
 In the available version, DRomics supports **single-channel microarray data** (in log2 scale), **RNAseq data** (in raw counts) and
 other **continuous omics data** (in log scale), such as metabolomics data calculated from AUC values (area under the curve), or proteomics data when expressed as protein abundance from peak intensity values. Proteomics data expressed in spectral counts could be analyzed as RNAseq data using raw counts
-after checking the validity of the assumptions made in the treatment of RNAseq data. In order to link responses across biological levels based on a common method, DRomics also handles **continuous apical data** as long as they meet the use conditions of **least squares regression** (homoscedastic Gaussian regression, see the [section on least squares](#leastsquares) for a reminder if needed).
+after carefully checking the validity of the assumptions made in processing the RNAseq data. In order to link responses across biological levels based on a common method, DRomics also handles **continuous apical data** as long as they meet the use conditions of **least squares regression** (homoscedastic Gaussian regression, see the [section on least squares](#leastsquares) for a reminder if needed).
 
 As built in the environmental risk assessment context where omics data are more often collected on non-sequenced species or species communities, DRomics does not provide an annotation pipeline. 
 The **annotation of items selected by DRomics** may be complex in this context, and **must be done outside DRomics** using databases such as KEGG or Gene Ontology.
@@ -874,19 +874,22 @@ confidence interval bound are not plotted.
 
 ### Filtering BMDs according to estimation quality {#bmdfilter}
 
-Using the bmdfilter() function, it is possibe to use one of the 
+Using the bmdfilter() function, it is possible to use one of the 
 three filters proposed to retain
 only the items associated to the best estimated BMD values.
-By default are retained only the items for which the BMD and its
+
++ By default are retained only the items for which the BMD and its
 confidence interval are defined (using `"CIdefined"`) 
 (so excluding items for which the bootstrap procedure failed).
-One can be even more restrictive by 
++ One can be even more restrictive by 
 retaining items only if the BMD confidence interval is within the range of
-tested/observed doses (using `"CIfinite"`), or less restrictive 
+tested/observed doses (using `"CIfinite"`), 
++ or less restrictive 
 (using `"BMDdefined"`) requiring that the BMD
-point estimate only must be defined within the range of tested/observed doses 
-(let us recall that in the `bmdcalc()` output, 
-if it is not the case the BMD is coded `NA`).
+point estimate only must be defined within the range of tested/observed doses.
+
+Let us recall that in the `bmdcalc()` output, 
+if it is not the case the BMD is coded `NA` or `NaN`.
 
 Below is an example of application of the different filters based on BMD-xfold values, 
 chosen just to better illustrate the way filters work, as there far more bad BMD-xfold estimations
