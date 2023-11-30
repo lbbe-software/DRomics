@@ -418,7 +418,7 @@ ui <- fluidPage(
                             )
                         ),
                         fixedRow(
-                            plotOutput("curvesplot", width = "100%", height = "900px"),
+                            plotlyOutput("curvesplot", width = "100%", height = "900px"),
                             br(), br(),
                             div(align = "center", downloadButton("buttonDownloadCurvesplot", "Download Curves Plot", icon = icon("fas fa-download"))),
                         ),

@@ -787,7 +787,7 @@ server <- function(input, output, session) {
     
     
     ############ curves plot ############
-    output$curvesplot <- renderPlot({
+    output$curvesplot <- renderPlotly({
         
         myextendedresforCurvesplot <- extendedresforCurvesplot()
         myfacetbycolumnsCurvesplot <- fnvaluecheckbox(facetbycolumnsCurvesplot(), myextendedresforCurvesplot$mypathclasslabel)

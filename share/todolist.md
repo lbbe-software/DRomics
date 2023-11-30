@@ -32,9 +32,8 @@ A FAIRE dans DRomicsInterpreter-shiny pour les fonctions sensitivityplot(), tren
 1. [X] Ajouter une fonction bmdfilter permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde 
 que les items avec BMD et IC de la BMD définis, pour la BMD-zSD par défaut) - penser à faire de la prog défensive si les utilisateurs ne mettent pas le bootstrap, filtre possible sur autre chose.... (ML)
 1. [ ] Envisager la sortie de  figures en plotly, dans la vignette et dans l'appli shiny.
-Dans la vignette tant que ça ne fonctionne pas j'ai juste ajouté le code pour l'utilisateur (ML)
-A FAIRE dans appli shiny sur le curvesplot. Mais il se passe quoi quand on va la downloader. Elle sera
-dans quel état ???????????? (A)
+Dans la vignette tant que ça ne fonctionne pas j'ai juste ajouté le code pour l'utilisateur (ML).
+OK dans le curvesplot de l'appli shiny (plotly dans shiny + ggplot2 simple pour la figure téléchargée) (A).
 1. [X] Dans DRomicsInterpreter-shiny cocher par défaut la case pour ajouter BMD et BMR values (A)
 1. [X] changer les valeurs par défaut des arguments de curvesplot, avec les BMD ajoutées, et une transparence des courbes (ML)
 1. [X] Dans DRomics-shiny écrire explicitement comment prendre en compte les données proteomiques. (A) 
