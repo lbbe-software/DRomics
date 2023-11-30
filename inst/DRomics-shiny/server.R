@@ -307,7 +307,7 @@ server <- function(input, output, session) {
                                      ifelse(input$typeData == 'rnaseqdata', 
                                             paste0("RNAseqdata('", input$datafile_rnaseq$name, "', backgrounddose = ", input$bgdose_rnaseq, ", check = TRUE, transfo.method = '", input$transfoMethod_rnaseq, "', round.counts = TRUE)"), 
                                             ifelse(input$typeData == 'metabolomicdata', 
-                                                   paste0("metabolomicdata('", input$datafile_metabolomic$name, "', backgrounddose = ", input$bgdose_metabolomic, ", check = TRUE)"),
+                                                   paste0("continuousomicdata('", input$datafile_metabolomic$name, "', backgrounddose = ", input$bgdose_metabolomic, ", check = TRUE)"),
                                                    paste0("continuousanchoringdata('", input$datafile_anchoring$name, "', backgrounddose = ", input$bgdose_anchoring, ", check = TRUE)")
                                                    )))),
               "print(o)",
