@@ -50,7 +50,9 @@ progress::-moz-progress-bar {
                                              predefined family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive a benchmark dose or 
                                              concentration from each fitted curve (step 4).", br(), 
                                                         "In the available version, DRomics supports single-channel microarray data (in log2 scale), RNAseq data (in raw counts) or metabolomics data 
-                                             (in log scale). In order to link responses across biological levels based on a common method, DRomics also handles apical data as long as they are continuous and
+                                             (in log scale). Proteomics data could also be handled as metabolomics data when expressed in intensity (continuous variable) or as RNAseq when expressed
+                                             in spectral counts, after carefully checking the validity of the assumptions made in processing the RNAseq data. In order to link responses across biological 
+                                             levels based on a common method, DRomics also handles apical data as long as they are continuous and
                                              follow a normal distribution for each dose or concentration, with a common standard error.
                                              DRomics should not be used on other types of data.", br(), br(),
                                                         "Next, for interpretation of results in light of a biological annotation, you can use the ",

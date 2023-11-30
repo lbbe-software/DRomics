@@ -385,7 +385,12 @@ server <- function(input, output, session) {
               "",
               "# Other functions (bmdplot, bmdplotwithgradient, curvesplot, trendplot and sensitivityplot)",
               "# are available in the DRomics package to explore your results (see the vignette and the",
-              "# cheat sheet) and in a second shiny application called DRomicsInterpreter-shiny!"
+              "# cheat sheet) and in a second shiny application called DRomicsInterpreter-shiny!",
+              "",
+              "# Before the biological interpretation of results, one could retain only the items associated",
+              "# to the best estimated BMD values, using the function bmdfilter (see ?bmdfilter for a description",
+              "# of the three proposed filters)",
+              "# subres <- bmdfilter(b$res, BMDtype = 'zSD', BMDfilter = 'definedCI')"
     )
     
     output$buttonDownRCodeFurther <- downloadHandler(
