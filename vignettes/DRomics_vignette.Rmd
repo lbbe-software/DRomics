@@ -1187,9 +1187,12 @@ to the point instead of on the y-axis, using ggplot2 functions.
 psens <- sensitivityplot(extendedres, BMDtype = "zSD",
                          group = "path_class",
                          BMDsummary = "first.quartile")
-psens + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
-    geom_text(aes(label = paste("   ", psens$data$groupby, "   ")),  
-              size = 3, hjust = "inward") + theme_bw()
+
+psens + 
+  theme_bw() +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+  geom_text(aes(label = paste("   ", psens$data$groupby, "   ")), 
+            size = 3, hjust = "inward")
 ```
 
 #### Trend plot per biological group {#trendplot}
