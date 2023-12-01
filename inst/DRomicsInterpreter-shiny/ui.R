@@ -170,9 +170,17 @@ ui <- fluidPage(
                             column(2,
                                    textInput("maxDoseXScale", "Maximal dose/concentration for definition of x-scale of plots", width = "100%")
                             ), 
-                            column(3, style = "margin-top: 25px;padding:20px;", 
+                            column(2, style = "margin-top: 25px;padding:20px;", 
                                    shinyBS::bsButton("maxdosexscale_help", label = "", icon = icon("info"), size = "small"),
                                    shinyBS::bsPopover("maxdosexscale_help", "", texthelpmaxdosexscale, placement = "right", trigger = "hover", options = NULL)
+                            ),
+                            column(4, style = "border-style: solid; border-color: #9c5c16; padding:10px",
+                                       "Find here files for two examples (a file containing the DRomics results and another file containing biological annotations):",
+                                       h5("- an example about contigs: the ", a("Dromics output", href = "DRomicspkg/triclosanSVcontigres.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'triclosanSVcontigres.txt'), 
+                                       "and the ", a("annotation data", href = "DRomicspkg/triclosanSVcontigannot.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'triclosanSVcontigannot.txt')),                                       
+                                       
+                                       h5("- an example about metabolites: the ", a("DRomics output", href = "DRomicspkg/triclosanSVmetabres.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'triclosanSVmetabres.txt'),
+                                       "and the ", a("annotation data", href = "DRomicspkg/triclosanSVmetabannot.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'triclosanSVmetabannot.txt')),
                             )
                         ),
                         
