@@ -344,7 +344,8 @@ server <- function(input, output, session) {
                                                               colorby = "experimental_level",
                                                               ECDF_plot = FALSE,
                                                               BMDsummary = BMDsummarysensitivityPlot(), 
-                                                              BMD_log_transfo = BMDlogtransfoSensitivityplot())
+                                                              BMD_log_transfo = BMDlogtransfoSensitivityplot()) +
+                  ggplot2::theme_bw()
             } else {
                 myECDFplot <- if(orderingOnelev() == "BMDorder_onelev") {TRUE} else {FALSE}
                 mysensitivityplot <- DRomics::sensitivityplot(myextendedmergeddata, 
@@ -352,7 +353,8 @@ server <- function(input, output, session) {
                                                               group = mypathclasslabel,
                                                               ECDF_plot = myECDFplot,
                                                               BMDsummary = BMDsummarysensitivityPlot(), 
-                                                              BMD_log_transfo = BMDlogtransfoSensitivityplot())
+                                                              BMD_log_transfo = BMDlogtransfoSensitivityplot()) +
+                  ggplot2::theme_bw()
             }
             
             shinyjs::showElement('text2_step2', time = 0)
@@ -378,11 +380,13 @@ server <- function(input, output, session) {
                 mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
                                                   group = mypathclasslabel, 
                                                   facetby = "experimental_level", 
-                                                  add.color = TRUE)
+                                                  add.color = TRUE) +
+                  ggplot2::theme_bw()
             } else {
                 mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
                                                   group = mypathclasslabel, 
-                                                  add.color = TRUE)
+                                                  add.color = TRUE) +
+                  ggplot2::theme_bw()
             }
             shinyjs::showElement('text1_step2', time = 0)
             output$buttonDownloadTrendplot <- downloadHandler(
@@ -554,7 +558,8 @@ server <- function(input, output, session) {
                                                   colorby = "trend",
                                                   add.CI = addciBMDplot(),
                                                   add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
+                                                  BMD_log_transfo = BMDlogtransfoBMDplot()) +
+                      ggplot2::theme_bw()
                 } else {
                     mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
                                                   facetby = myfacetbycolumnsBMDplot,
@@ -562,7 +567,8 @@ server <- function(input, output, session) {
                                                   colorby = "trend",
                                                   add.CI = addciBMDplot(),
                                                   add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
+                                                  BMD_log_transfo = BMDlogtransfoBMDplot()) +
+                      ggplot2::theme_bw()
                 }
             } else {
                 if(input$nbLevel > 1) {
@@ -572,14 +578,17 @@ server <- function(input, output, session) {
                                                   shapeby = "trend",
                                                   add.CI = addciBMDplot(),
                                                   add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
+                                                  BMD_log_transfo = BMDlogtransfoBMDplot()) +
+                      ggplot2::theme_bw()
+                    
                 } else {
                     mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
                                                   facetby = myfacetbycolumnsBMDplot,
                                                   shapeby = "trend",
                                                   add.CI = addciBMDplot(),
                                                   add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
+                                                  BMD_log_transfo = BMDlogtransfoBMDplot()) +
+                      ggplot2::theme_bw()
                 }
             }
         } else {
@@ -609,14 +618,16 @@ server <- function(input, output, session) {
                                                   colorby = "trend",
                                                   add.CI = addciBMDplot(),
                                                   add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
+                                                  BMD_log_transfo = BMDlogtransfoBMDplot()) +
+                      ggplot2::theme_bw()
                 } else {
                     mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
                                                   facetby = myfacetbycolumnsBMDplot,
                                                   colorby = "trend",
                                                   add.CI = addciBMDplot(),
                                                   add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
+                                                  BMD_log_transfo = BMDlogtransfoBMDplot()) + 
+                      ggplot2::theme_bw()
                 }
             } else {
                 if(input$nbLevel > 1) {
@@ -625,13 +636,15 @@ server <- function(input, output, session) {
                                                   facetby2 = myfacetbyrowsBMDplot,
                                                   add.CI = addciBMDplot(),
                                                   add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
+                                                  BMD_log_transfo = BMDlogtransfoBMDplot()) +
+                      ggplot2::theme_bw()
                 } else {
                     mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
                                                   facetby = myfacetbycolumnsBMDplot,
                                                   add.CI = addciBMDplot(),
                                                   add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
+                                                  BMD_log_transfo = BMDlogtransfoBMDplot()) +
+                      ggplot2::theme_bw()
                 }
             }
         }
@@ -804,7 +817,8 @@ server <- function(input, output, session) {
                                                     facetby = myfacetbycolumnsCurvesplot,
                                                     facetby2 = myfacetbyrowsCurvesplot,
                                                     colorby = "trend") + 
-                    ggplot2::labs(col = "trend")
+                  ggplot2::labs(col = "trend") +
+                  ggplot2::theme_bw()
             } else {
                 mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
                                                     free.y.scales = TRUE, scaling = TRUE,
@@ -814,7 +828,8 @@ server <- function(input, output, session) {
                                                     addBMD = addBMDCurvesplot(),
                                                     facetby = myfacetbycolumnsCurvesplot,
                                                     colorby = "trend") + 
-                    ggplot2::labs(col = "trend")
+                  ggplot2::labs(col = "trend") +
+                  ggplot2::theme_bw()
             }
         } else {
             if(input$nbLevel > 1) {
@@ -825,7 +840,8 @@ server <- function(input, output, session) {
                                                     dose_log_transfo = doselogtransfoCurvesplot(),
                                                     addBMD = addBMDCurvesplot(),
                                                     facetby = myfacetbycolumnsCurvesplot,
-                                                    facetby2 = myfacetbyrowsCurvesplot)
+                                                    facetby2 = myfacetbyrowsCurvesplot) +
+                  ggplot2::theme_bw()
             } else {
                 mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
                                                     free.y.scales = TRUE, scaling = TRUE,
@@ -833,7 +849,8 @@ server <- function(input, output, session) {
                                                     xmax = maxDoseXScale(),
                                                     dose_log_transfo = doselogtransfoCurvesplot(),
                                                     addBMD = addBMDCurvesplot(),
-                                                    facetby = myfacetbycolumnsCurvesplot)
+                                                    facetby = myfacetbycolumnsCurvesplot) +
+                  ggplot2::theme_bw()
             }
         }
         output$buttonDownloadCurvesplot <- downloadHandler(

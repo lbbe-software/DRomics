@@ -53,8 +53,12 @@ server <- function(input, output, session) {
   
   output$plotOmicData <- renderPlot({
     ff <- filedata()
-    if(!"message"%in%names(ff))
-      plot(ff, range = 1e10)
+    if(!"message"%in%names(ff)) {
+      gg <- plot(ff, range = 1e10)
+      if(inTypeData() == 'continuousanchoringdata')
+        gg <- gg + ggplot2::theme_bw()
+    }
+    return(gg)
   })
 
   output$plotPCAData <- renderPlot({
@@ -62,7 +66,8 @@ server <- function(input, output, session) {
       ff <- filedata()
       PCAdataplot(ff, label = TRUE) +
         ggplot2::ggtitle("Principal Component Analysis plot of omic data") + 
-        ggplot2::theme(plot.title = element_text(face = "bold", hjust = 0.5))
+        ggplot2::theme(plot.title = ggplot2::element_text(face = "bold", hjust = 0.5)) +
+        ggplot2::theme_bw()
     }
   })
   
@@ -173,12 +178,14 @@ server <- function(input, output, session) {
         if(input$splitby == 'none') {
           bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
                               BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
-                              add.label = as.logical(input$label_ecdfgradient))
+                              add.label = as.logical(input$label_ecdfgradient)) +
+            ggplot2::theme_bw()
         } else {
           bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
                               facetby = input$splitby,
                               BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
-                              add.label = as.logical(input$label_ecdfgradient))
+                              add.label = as.logical(input$label_ecdfgradient)) +
+            ggplot2::theme_bw()
         }
         
         ##### ecdf #####
@@ -187,13 +194,15 @@ server <- function(input, output, session) {
                plottype = 'ecdf', 
                by = input$splitby, 
                hist.bins = input$histbin, 
-               BMD_log_transfo = as.logical(input$logbmd_ecdf))
+               BMD_log_transfo = as.logical(input$logbmd_ecdf)) +
+          ggplot2::theme_bw()
           
       } else {
         plot(mybmdcalc, BMDtype = input$BMDtype, 
              plottype = myplottype, 
              by = input$splitby, 
-             hist.bins = input$histbin)
+             hist.bins = input$histbin) +
+          ggplot2::theme_bw()
       }
     })
     
@@ -234,12 +243,12 @@ server <- function(input, output, session) {
             if(input$splitby == 'none') {
               bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
                                   BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
-                                  add.label = as.logical(input$label_ecdfgradient))
+                                  add.label = as.logical(input$label_ecdfgradient)) + ggplot2::theme_bw()
             } else {
               bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
                                   facetby = input$splitby,
                                   BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
-                                  add.label = as.logical(input$label_ecdfgradient))
+                                  add.label = as.logical(input$label_ecdfgradient)) + ggplot2::theme_bw()
             }
             
           } else if(myplottype == 'ecdf') {
@@ -247,13 +256,13 @@ server <- function(input, output, session) {
                    plottype = 'ecdf', 
                    by = input$splitby, 
                    hist.bins = input$histbin,
-                   BMD_log_transfo = as.logical(input$logbmd_ecdf))
+                   BMD_log_transfo = as.logical(input$logbmd_ecdf)) + ggplot2::theme_bw()
               
           } else {
             plot(mybmdcalc, BMDtype = input$BMDtype, 
                  plottype = myplottype, 
                  by = input$splitby, 
-                 hist.bins = input$histbin)
+                 hist.bins = input$histbin) + ggplot2::theme_bw()
             
           })
         dev.off()
@@ -311,7 +320,12 @@ server <- function(input, output, session) {
                                                    paste0("continuousanchoringdata('", input$datafile_anchoring$name, "', backgrounddose = ", input$bgdose_anchoring, ", check = TRUE)")
                                                    )))),
               "print(o)",
-              "plot(o)",
+              ifelse(input$typeData == 'continuousanchoringdata', "plot(o) + theme_bw()", "plot(o)"),
+              if(input$typeData != 'continuousanchoringdata') {
+                paste0("PCAdataplot(o, label = TRUE) +
+                  ggplot2::ggtitle('Principal Component Analysis plot of omic data') + 
+                  ggplot2::theme(plot.title = ggplot2::element_text(face = 'bold', hjust = 0.5)) +
+                  ggplot2::theme_bw()")},
               "",
               "# Step 2",
               paste0("s <- itemselect(o, select.method = '", inSelectMethod(), "', FDR = ", inFDR(), ")"),
@@ -328,18 +342,19 @@ server <- function(input, output, session) {
               if(input$plottype == 'ecdfcolorgradient') {
                 if(input$splitby == 'none') {
                   paste0("bmdplotwithgradient(r$res, BMDtype = '", input$BMDtype, 
-                         ", BMD_log_transfo = ", as.logical(input$logbmd_ecdfgradient), ", add.label = ", as.logical(input$label_ecdfgradient), ")")
+                         ", BMD_log_transfo = ", as.logical(input$logbmd_ecdfgradient), ", add.label = ", as.logical(input$label_ecdfgradient), 
+                         ") + ggplot2::theme_bw()")
                 } else {
                   paste0("bmdplotwithgradient(r$res, BMDtype = '", input$BMDtype, 
                          ", BMD_log_transfo = ", as.logical(input$logbmd_ecdfgradient), ", add.label = ", as.logical(input$label_ecdfgradient), 
-                         ", facetby = '", input$splitby, "')")
+                         ", facetby = '", input$splitby, "') + ggplot2::theme_bw()")
                 }
               } else if(input$plottype == 'ecdf') {
                   paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = 'ecdf', by = '", input$splitby, "', hist.bins = ", 
-                         input$histbin, ", BMD_log_transfo = ", as.logical(input$logbmd_ecdf), ")")
+                         input$histbin, ", BMD_log_transfo = ", as.logical(input$logbmd_ecdf), ") + ggplot2::theme_bw()")
               } else {
                 paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = '", input$plottype, "', by = '", input$splitby, "', hist.bins = ", 
-                       input$histbin, ")")
+                       input$histbin, ") + ggplot2::theme_bw()")
               },
               paste0("plot(f, plot.type = 'dose_fitted', BMDoutput = r, BMDtype = '", input$BMDtype_plot2pdf, 
                      "', dose_log_transfo = ", input$logbmd_plot2pdf, ")")

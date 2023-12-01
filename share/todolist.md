@@ -24,11 +24,11 @@ of this modification at the launch of the package ? Ajouter un encart en haut de
 1. [X] Mettre sur le share un fichier de test sur des gros jeux de données, à tester sur une VM de l'IFB de temps en temps, avec fichiers stockés ailleurs, pour le moment sur SeaFile (ML)
 1. [X] Ajouter des arguments line.alpha et line.size et point.alpha à sensitivityplot
 et bmdplot (ML)
-1. [ ] dans les applis shiny et la vignette enlever les fonds gris avec un +theme_bw() 
+1. [X] dans les applis shiny et la vignette enlever les fonds gris avec un +theme_bw() 
 quand le theme n'est pas défini dans la fonction. 
-FAIT dans vignette à faire dans shiny (A)
-A FAIRE dans DRomics-shiny pour les fonctions plot.continuousanchoringdata(), PCAdataplot() et plot.bmdcalc()
-A FAIRE dans DRomicsInterpreter-shiny pour les fonctions sensitivityplot(), trendplot(), bmdplot() et curvesplot()
+FAIT dans vignette.
+FAIT dans DRomics-shiny pour les fonctions plot.continuousanchoringdata(), PCAdataplot() et plot.bmdcalc().
+FAIT dans DRomicsInterpreter-shiny pour les fonctions sensitivityplot(), trendplot(), bmdplot() et curvesplot().
 1. [X] Ajouter une fonction bmdfilter permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde 
 que les items avec BMD et IC de la BMD définis, pour la BMD-zSD par défaut) - penser à faire de la prog défensive si les utilisateurs ne mettent pas le bootstrap, filtre possible sur autre chose.... (ML)
 1. [ ] Envisager la sortie de  figures en plotly, dans la vignette et dans l'appli shiny.
