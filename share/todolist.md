@@ -17,7 +17,7 @@ gérer dans les appels à plot.bmdcalc() (et plot.bmdboot() mais pas dans shiny)
 1. [X] Dans les curvesplot, en option, ajouter un point là où la BMD est atteinte (ML - still to add an example in the vignette)
 1. [X] Ajouter la publi PCI partout quand elle sera sortie (ML et A)
 1. [X] Mettre un bouton d'aide i à côté du keep all experimental levels dans shiny (appli DRomicsInterpreter, step 2, helplabel2step2 dans global.R) (ML, A)
-1. [ ] Find a way to give an example in the DRomicsInterpreter shiny app
+1. [X] Find a way to give an example in the DRomicsInterpreter shiny app
 of this modification at the launch of the package ? Ajouter un encart en haut de la page step 1, avec le lien vers les 4 fichiers qu'on utilise en formation (qui sont dans le package) et une petite explication (A et ML)
 1. [X] Visualisation optionnelle par lignes verticales des doses testées (ajout ex. dans la vignette) (ML)
 1. [X] Donnez la possibilité d'ajouter le nom de pathways à côté des points sur les sensitivity pour un seul niv exp plutôt que sur l'axe des y (en alternative) - mettre un code exemple dans la vignette car trop lourd à gérer dans la fonction. (A)
@@ -46,11 +46,12 @@ Après le dernier commentaire sur les fonctions d'exploration
 only the items associated to the best estimated BMD values, 
 using the function bmdfilter (see ?bmdfilter for a description of the three proposed filters)
 subres <- bmdfilter(b$res, BMDtype = "zSD", BMDfilter = "definedCI")"
-1. [ ] Regarder pourquoi la dernière figure de la partie 3.1.2.2 de la vignette (code fourni)
+1. [X] Regarder pourquoi la dernière figure de la partie 3.1.2.2 de la vignette (code fourni)
 ne permet plus d'afficher les labels des groupes
 uniquement sur les points et pas sur l'axe des y (A)
 1. [ ] Refaire la cheat sheet avec les points sur le curvesplot et plu sglobalement les derniers rendus des 
 différentes figures
+1. [ ] Améliorer le texte qui accompagne les fichiers de données exemples dans DRomicsInterpreter-shiny
 
 ## Shorter term
 
