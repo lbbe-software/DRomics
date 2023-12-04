@@ -24,8 +24,7 @@ of this modification at the launch of the package ? Ajouter un encart en haut de
 1. [X] Mettre sur le share un fichier de test sur des gros jeux de données, à tester sur une VM de l'IFB de temps en temps, avec fichiers stockés ailleurs, pour le moment sur SeaFile (ML)
 1. [X] Ajouter des arguments line.alpha et line.size et point.alpha à sensitivityplot
 et bmdplot (ML)
-1. [X] dans les applis shiny et la vignette enlever les fonds gris avec un +theme_bw() 
-quand le theme n'est pas défini dans la fonction. 
+1. [X] dans les applis shiny et la vignette enlever les fonds gris avec un +theme_bw() quand le theme n'est pas défini dans la fonction. 
 FAIT dans vignette.
 FAIT dans DRomics-shiny pour les fonctions plot.continuousanchoringdata(), PCAdataplot() et plot.bmdcalc().
 FAIT dans DRomicsInterpreter-shiny pour les fonctions sensitivityplot(), trendplot(), bmdplot() et curvesplot().
@@ -46,12 +45,13 @@ Après le dernier commentaire sur les fonctions d'exploration
 only the items associated to the best estimated BMD values, 
 using the function bmdfilter (see ?bmdfilter for a description of the three proposed filters)
 subres <- bmdfilter(b$res, BMDtype = "zSD", BMDfilter = "definedCI")"
-1. [X] Regarder pourquoi la dernière figure de la partie 3.1.2.2 de la vignette (code fourni)
+1. [X] Regarder pourquoi la dernière figure de la partie 3.1.2.2 de la vignette (code fourni) - c'était à cause du + theme_bw() qu'il fallait mettre avant et non après de theme(...), sinon ça écrasait toutes les modifs du theme
 ne permet plus d'afficher les labels des groupes
 uniquement sur les points et pas sur l'axe des y (A)
 1. [ ] Refaire la cheat sheet avec les points sur le curvesplot et plu sglobalement les derniers rendus des 
 différentes figures
 1. [ ] Améliorer le texte qui accompagne les fichiers de données exemples dans DRomicsInterpreter-shiny
+1. [ ] Améliorer les formats de sorties des figures shiny en les regardant sur un portable. Le format par défaut carré ne convinet pas toujours (A et ML)
 
 ## Shorter term
 
