@@ -6,6 +6,7 @@ library(DRomics, quietly = TRUE)
 library(sortable, quietly = TRUE)
 library(ggplot2, quietly = TRUE)
 library(plotly, quietly = TRUE)
+addResourcePath('DRomicspkg', system.file("extdata", package="DRomics"))
 options(shiny.maxRequestSize=30*1024^2)
 
 texthelpnblevel <- "The maximal number of experimental levels is 10. The experimental levels can be for example different molecular levels (transcriptomics, metabolomis, ...), different experimental time points or different biological models (different species, different experimental settings), ..."
