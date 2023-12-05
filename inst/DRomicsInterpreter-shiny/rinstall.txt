@@ -15,4 +15,5 @@ if(!requireNamespace("shinyjs", quietly = TRUE)) install.packages("shinyjs", dep
 if(!requireNamespace("shinyBS", quietly = TRUE)) install.packages("shinyBS", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 if(!requireNamespace("shinyWidgets", quietly = TRUE)) install.packages("shinyWidgets", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 if(!requireNamespace("sortable", quietly = TRUE)) install.packages("sortable", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+if(!requireNamespace("plotly", quietly = TRUE)) install.packages("plotly", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 remotes::install_github("aursiber/DRomics") # always install 'DRomics' to always have the last version from github
