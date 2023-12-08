@@ -2,12 +2,12 @@ update.packages(repos = "http://cran.univ-lyon1.fr", ask = FALSE, checkBuild = T
 BiocManager::install(ask = FALSE, update = TRUE)
 if(!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 if(!requireNamespace("DESeq2", quietly = TRUE)) {
-    if(!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
-    BiocManager::install("DESeq2", ask = FALSE)
+  if(!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+  BiocManager::install("DESeq2", ask = FALSE)
 }
 if(!requireNamespace("limma", quietly = TRUE)) {
-    if(!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
-    BiocManager::install("limma", ask = FALSE)
+  if(!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+  BiocManager::install("limma", ask = FALSE)
 }
 if(!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 remotes::install_github("rstudio/shiny")
