@@ -52,6 +52,9 @@ uniquement sur les points et pas sur l'axe des y (A)
 différentes figures
 1. [ ] Améliorer le texte qui accompagne les fichiers de données exemples dans DRomicsInterpreter-shiny
 1. [ ] Améliorer les formats de sorties des figures shiny en les regardant sur un portable. Le format par défaut carré ne convinet pas toujours (A et ML)
+1. [ ] Vérifier qu'on a bien indiquer partout là où on doit entrer des données
+que le séparateur de décimales devait être un point (ML).
+1. [ ] Vérifier le pb du download depuis chrome / machine biosphere au step 4  de l'appli shiny 1
 
 ## Shorter term
 
@@ -64,6 +67,7 @@ guider par le pathway (intéressant en interactif - à discuter !) (ML)
 1. [ ] revoir l'argument remove.infinite de plot.bmdboot, sa valeur par défaut et son fonctionnement, pour que ce soit harmonisé avec les valeurs par défaut 
 de bmdfilter (pb avec xfold, vérifier que ça marche bien) ou enlever cette fonctionnalité et considérer que c'est fait avec bmdfilter et quand ce n'est pas fait gérer graphiquement les infinis
 1. [ ] Ajouter des options "boxplot" dans BMDsummary de sensitivityplot(A)
+1. [ ] Essayer d'optimiser de façon automatique l'écart entre l'axe et les premiers points des doses non nulles pour que les graphes soient plus clairs (A ? pas sûre que ce soit possible)
 1. [ ] Add Danio rerio data in the package as another example for the functions for Dromics results interpretation (with or without enrichment and/or with outlier - elimination as in the paper (IRSN) ou un autre ex. (ML)
 1. [ ] Ajouter un ou deux sous-niveaux dans la vignette à laquelle on accède depuis GitHub (A) IMPOSSIBLE à cause des configurations de pkgdown ! Restructurer la vignette pour que la navigation soit plus simple - en parallèle de la rédaction de la FAQ dans laquelle basculeront des morceaux de la vignette en faisant attention à maintenir les liens de l'article PCI
 1. [ ] Add an example in the vignette where the need is obvious to work on log scale for bmdplot, sensitivity plot ...
