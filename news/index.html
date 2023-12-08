@@ -61,10 +61,12 @@
 <li>Add the Peer Community Journal citation.</li>
 <li>Add of the function bmdfilter() proposing filters to retain only the items associated to the best estimated BMD values in DRomics workflow output.</li>
 <li>Add of arguments line.size, line.alpha and point.alpha in sensitivityplot() and in bmdplot()</li>
+<li>Add a free y scale for plots of residuals, to make them readable even for anchoring data with endpoints of very different orders of magnitude.</li>
 </ul><p>BUG FIXES</p>
 <ul><li>Fix a bug that appeared very occasionally in the bootstrap procedure (error in bmdboot() due to fail of the call to uniroot()).</li>
 <li>Define the scale of nb of items in sensitivityplot() and trendplot() to get 4 integer values from min max and rounded 0.5 and 0.75 quartiles.</li>
 <li>Fix a bug in plotfit2pdf : now the items appear in the same order (by p-value from the selection) even when BMD values are added to the plot of fitted curves.</li>
+<li>Fix a bug in drcfit that could occur for anchoring data sets with many NA values.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.5-0" id="dromics-25-0">DRomics 2.5-0<a class="anchor" aria-label="anchor" href="#dromics-25-0"></a></h2><p class="text-muted">CRAN release: 2023-01-24</p>
