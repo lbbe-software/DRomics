@@ -128,7 +128,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
     {
       g <- ggplot(dataresiduals, aes(x = .data$dose, y = .data$residuals)) + 
         geom_point(shape = 1) +
-        facet_wrap(~ id, nrow = nr, ncol = nc, drop = FALSE) +
+        facet_wrap(~ id, scales = "free_y", nrow = nr, ncol = nc, drop = FALSE) +
         geom_hline(yintercept = 0, linetype = "dashed", color = "red")
       if (dose_log_transfo)
       {
@@ -141,7 +141,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
     {
       g <- ggplot(dataresiduals, aes(x = .data$fitted_values, y = .data$residuals)) + 
         geom_point(shape = 1) +
-        facet_wrap(~ id, scales = "free_x", nrow = nr, ncol = nc, drop = FALSE) +
+        facet_wrap(~ id, scales = "free", nrow = nr, ncol = nc, drop = FALSE) +
         geom_hline(yintercept = 0, linetype = "dashed", color = "red")
       
     }

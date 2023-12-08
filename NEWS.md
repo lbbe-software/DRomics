@@ -12,6 +12,8 @@ and put it by default at TRUE.
 - Add of the function bmdfilter() proposing filters to retain
 only the items associated to the best estimated BMD values in DRomics workflow output.
 - Add of arguments line.size, line.alpha and point.alpha in sensitivityplot() and in bmdplot()
+- Add a free y scale for plots of residuals, to make them readable
+even for anchoring data with endpoints of very different orders of magnitude.
 
 BUG FIXES
 

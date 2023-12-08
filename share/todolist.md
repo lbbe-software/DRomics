@@ -48,13 +48,15 @@ subres <- bmdfilter(b$res, BMDtype = "zSD", BMDfilter = "definedCI")"
 1. [X] Regarder pourquoi la dernière figure de la partie 3.1.2.2 de la vignette (code fourni) - c'était à cause du + theme_bw() qu'il fallait mettre avant et non après de theme(...), sinon ça écrasait toutes les modifs du theme
 ne permet plus d'afficher les labels des groupes
 uniquement sur les points et pas sur l'axe des y (A)
-1. [ ] Refaire la cheat sheet avec les points sur le curvesplot et plu sglobalement les derniers rendus des 
+1. [ ] Refaire la cheat sheet avec les points sur le curvesplot et plus globalement les derniers rendus des 
 différentes figures
 1. [ ] Améliorer le texte qui accompagne les fichiers de données exemples dans DRomicsInterpreter-shiny
 1. [ ] Améliorer les formats de sorties des figures shiny en les regardant sur un portable. Le format par défaut carré ne convinet pas toujours (A et ML)
 
 ## Shorter term
 
+1. [ ] Inclure des tests avec le jeu de données d'Emilie pour NA entre autres
+1. [ ] Gérer les labels pour les IC sans valeur ponctuelle (cf. ex. Emilie)
 1. [ ] Ajouter une option dans le curvesplot qui permettrait d'inverser les U et les dec (par ex.) pour voir
 comment ils collent en symétrie resp. aux belle et inc (ML après discussion avec tous)
 1. [ ] ajouter dans le curvesplot un argument pour changer que le type de point soit
