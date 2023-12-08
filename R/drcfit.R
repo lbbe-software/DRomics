@@ -92,8 +92,8 @@ drcfit <- function(itemselect,
         
         signal <- data[selectindex[i], ]
         signalm <- as.vector(data.mean[selectindex[i],]) # means per dose
-        signalmin <- min(signal)
-        signalmax <- max(signal)
+        signalmin <- min(signal, na.rm = TRUE)
+        signalmax <- max(signal,na.rm = TRUE)
         
         # preparation of data for modelling with nls 
         dset <- data.frame(signal = signal, dose = dose, doseranks = doseranks)
@@ -101,6 +101,12 @@ drcfit <- function(itemselect,
         if (containsNA)
             if (any(!stats::complete.cases(dset)))
             {
+                if (any(!stats::complete.cases(signalm)))
+                {
+                  doseu <- doseu[!is.na(signalm)]
+                  signalm <- signalm[!is.na(signalm)]
+                }
+              
                 # removing lines with NA values for the signal
                 dset <- dset[stats::complete.cases(dset$signal), ]
                 npts <- nrow(dset)

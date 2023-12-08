@@ -19,6 +19,7 @@ BUG FIXES
 - Define the scale of nb of items in sensitivityplot() and trendplot() to get 4 integer values from min max and rounded 0.5 and 0.75 quartiles.
 - Fix a bug in plotfit2pdf : now the items appear in the same order (by p-value
 from the selection) even when BMD values are added to the plot of fitted curves.
+- Fix a bug in drcfit that could occur for anchoring data sets with many NA values.
 
 # DRomics 2.5-0 
 
