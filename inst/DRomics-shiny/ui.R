@@ -232,11 +232,11 @@ progress::-moz-progress-bar {
                           width = 9,
                           verbatimTextOutput('printOmicData'),
                           br(),
-                          withSpinner(plotOutput("plotOmicData", width = "100%", height = "900px"), type = 4, color = '#9c5c16'),
+                          withSpinner(plotOutput("plotOmicData", width = "100%"), type = 4, color = '#9c5c16'),
                           br(),
                           conditionalPanel(
                             condition = "input.typeData != 'continuousanchoringdata'",
-                            withSpinner(plotOutput("plotPCAData", width = "100%", height = "900px"), type = 4, color = '#9c5c16')
+                            withSpinner(plotOutput("plotPCAData", width = "100%"), type = 4, color = '#9c5c16')
                           ),
                           br()
                         )
@@ -443,7 +443,7 @@ progress::-moz-progress-bar {
                                  ),
                                  mainPanel(
                                    width = 9,
-                                   plotOutput("plotBmdcalc", width = "100%", height = "900px")
+                                   plotOutput("plotBmdcalc", width = "100%")
                                  )
                                ),
                                
