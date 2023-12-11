@@ -74,7 +74,7 @@
 Delignette-Muller, Aurélie Siberchicot, Elise Billoir, Floriane
 Larras</h4>
             
-            <h4 data-toc-skip class="date">2023-12-08</h4>
+            <h4 data-toc-skip class="date">2023-12-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/aursiber/DRomics/blob/HEAD/vignettes/DRomics_vignette.Rmd" class="external-link"><code>vignettes/DRomics_vignette.Rmd</code></a></small>
       <div class="d-none name"><code>DRomics_vignette.Rmd</code></div>
@@ -200,8 +200,10 @@ etc.). An <strong>additional first column</strong> must give the
 transcript, metabolite, …, or name of the endpoint for anchoring data),
 and the other columns give the responses of the item for each sample.
 This file will be imported within DRomics using an internal call to the
-function read.table() with its default field separator (sep
-argument).</p>
+function read.table() with its default field separator (sep argument)
+and its default decimal separator (dec argument at “.”). So remember, if
+necessary, to <strong>transform another decimal separator (e.g. “,”) in
+“.” before importing your data</strong>.</p>
 <p>Different examples of .txt files formatted for the DRomics workflow
 are available in the package, such as the one named “RNAseq_sample.txt”.
 You can have a look of how the data are coded in this file using the
