@@ -50,7 +50,8 @@ doses or concentrations in a numeric format for the corresponding replicate
 (for example, if there are triplicates for each treatment, 
 the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). 
 This file is imported within the function using the function
-\code{\link{read.table}} with its default field separator (sep argument).
+\code{\link{read.table}} with its default field separator (sep argument)and 
+its default decimal separator (dec argument at ".").
 Alternatively an R object of class \code{data.frame} can be directly given in input, 
 corresponding to the output
 of \code{read.table(file, header = FALSE)} on a file described as above. The two

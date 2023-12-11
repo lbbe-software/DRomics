@@ -100,7 +100,9 @@ that is provided on the last page of each of the two shiny applications.
 Whatever the type of data imported in DRomics (e.g. RNAseq, microarray, metabolomic data),
 data can be imported from a .txt file (e.g. "mydata.txt") organized with **one row per item** (e.g. transcript, probe, metabolite) and **one column per sample**. In **an additional first row**, after a name for the item identifier (e.g. "id"), we must have the **tested doses or concentrations in a numeric format** for the corresponding sample
 (for example, if there are triplicates for each treatment, the first line could be "item", 0, 0, 0, 0.1, 0.1, 0.1, etc.). An **additional first column** must give the **identifier of each item** (identifier of the probe, transcript, metabolite, ..., or name of the endpoint for anchoring data), 
-and the other columns give the responses of the item for each sample.  This file will be imported within DRomics using an internal call to the function read.table() with its default field separator (sep argument). 
+and the other columns give the responses of the item for each sample.  This file will be imported within DRomics using an internal call to the function read.table() with its default field separator (sep argument)
+and its default decimal separator (dec argument at "."). So remember, if necessary, to 
+**transform another decimal separator (e.g. ",") in "." before importing your data**.
 
 Different examples of .txt files formatted for the DRomics workflow
 are available in the package, such as the one named 

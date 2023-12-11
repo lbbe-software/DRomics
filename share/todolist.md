@@ -5,7 +5,6 @@
 1. [X] Retravailler les test_that (ML)
 1. [X] Change the default for log scale in each plot (fit or BMD) AND add a warning (ML and A pour mise en place warning). Dans shiny appels à bmdplot(BMD_log_transfo = TRUE), bmdplotwithgradient(BMD_log_transfo = TRUE), sensitivityplot(BMD_log_transfo = TRUE), plot.drcfit(dose_log_transfo = TRUE), plotfit2pdf(dose_log_transfo = TRUE), targetplot(dose_log_transfo = TRUE), et nouvel argument BMD_log_transfo par défaut à TRUE à 
 gérer dans les appels à plot.bmdcalc() (et plot.bmdboot() mais pas dans shiny). 
-1. [ ] PAR CONTRE EN ATTENTE  car plus délicat à gérer - faudrait mettre une val par défaut à xmin : pour pouvoir mettre l'échelle en log par défaut aussi pour curvesplot(dose_log_transfo = TRUE)
 1. [X] Mettre l'option scaling par défaut à TRUE dans le package (comme c'est déjà fait dans l'appli shiny) et l'indiquer dans la vignette (ML - still to include in the vignette)
 1. [X] Mettre un message à l'ouverture du package (startupmessage) pour indiquer les options par défaut changées (ML - sent to Aurélie - A)
 1. [X] Retravailler les xlab et ylab notamment mettre scaled signal ou scaled y si scaling dans curvesplot et dans bmdplotwithgradient dans légende scaled_signal (ML)
@@ -30,7 +29,6 @@ FAIT dans DRomics-shiny pour les fonctions plot.continuousanchoringdata(), PCAda
 FAIT dans DRomicsInterpreter-shiny pour les fonctions sensitivityplot(), trendplot(), bmdplot() et curvesplot().
 1. [X] Ajouter une fonction bmdfilter permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde 
 que les items avec BMD et IC de la BMD définis, pour la BMD-zSD par défaut) - penser à faire de la prog défensive si les utilisateurs ne mettent pas le bootstrap, filtre possible sur autre chose.... (ML)
-1. [ ] Envisager la sortie de  figures en plotly, dans la vignette et dans l'appli shiny.
 Dans la vignette tant que ça ne fonctionne pas j'ai juste ajouté le code pour l'utilisateur (ML).
 OK dans le curvesplot de l'appli shiny (plotly dans shiny + ggplot2 simple pour la figure téléchargée) (A).
 1. [X] Dans DRomicsInterpreter-shiny cocher par défaut la case pour ajouter BMD et BMR values (A)
@@ -48,16 +46,18 @@ subres <- bmdfilter(b$res, BMDtype = "zSD", BMDfilter = "definedCI")"
 1. [X] Regarder pourquoi la dernière figure de la partie 3.1.2.2 de la vignette (code fourni) - c'était à cause du + theme_bw() qu'il fallait mettre avant et non après de theme(...), sinon ça écrasait toutes les modifs du theme
 ne permet plus d'afficher les labels des groupes
 uniquement sur les points et pas sur l'axe des y (A)
-1. [ ] Refaire la cheat sheet avec les points sur le curvesplot et plus globalement les derniers rendus des 
-différentes figures
-1. [ ] Améliorer le texte qui accompagne les fichiers de données exemples dans DRomicsInterpreter-shiny
-1. [ ] Améliorer les formats de sorties des figures shiny en les regardant sur un portable. Le format par défaut carré ne convinet pas toujours (A et ML)
-1. [ ] Vérifier qu'on a bien indiquer partout là où on doit entrer des données
-que le séparateur de décimales devait être un point (ML).
+1. [X] Améliorer le texte qui accompagne les fichiers de données exemples dans DRomicsInterpreter-shiny
+1. [ ] Améliorer les formats de sorties des figures shiny en les regardant sur un portable. Le format par défaut carré ne convient pas toujours (A) Shiny1 step 1 (hauteur = largeur /2), step4 pour le 1er plot (hauteur = largeur /2 et sortie pdf en format paysage), Shiny 2, toujours mettre les figures l'une sous l'autre (hauteur = largeur / 2 ou un peu moins) et trendplot, sensivityplot, bmdplot,  bmdplotwithgradient et curves downloadé en format paysage. 
+1. [ ] Vérifier qu'on a bien indiqué partout là où on doit entrer des données
+que le séparateur de décimales devait être un point (ML ajout dans vignette et.Rd FAIT, A ajouter dans l'appli shiny 1).
 1. [ ] Vérifier le pb du download depuis chrome / machine biosphere au step 4  de l'appli shiny 1
 
 ## Shorter term
 
+1. [ ] Pour pouvoir faire facielment le curvesplot en log mettre une val par défaut à xmin (ML)
+1. [ ] Envisager la sortie de  figures en plotly, dans la vignette et dans l'appli shiny.
+1. [ ] Refaire la cheat sheet avec les points sur le curvesplot et plus globalement les derniers rendus des 
+différentes figures
 1. [ ] Inclure des tests avec le jeu de données d'Emilie pour NA entre autres
 1. [ ] Gérer les labels pour les IC sans valeur ponctuelle (cf. ex. Emilie)
 1. [ ] Ajouter une option dans le curvesplot qui permettrait d'inverser les U et les dec (par ex.) pour voir
