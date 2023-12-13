@@ -381,56 +381,59 @@ ui <- fluidPage(
                         br(), HTML("<font face=verdana size=5 color=#9c5c16><b>Curves plot</b></font>"), br(), br(), br(),
                         
                         wellPanel(
-                            fixedRow(
-                                column(12,
-                                       checkboxGroupInput("annotcheckboxCurvesplot", label = "Choose at least on annotation"),
-                                       actionButton("selectallCurvesplot", "Select All"),
-                                       actionButton("unselectallCurvesplot", "Unselect All")
-                                ))),
+                          fixedRow(
+                            column(12,
+                                   checkboxGroupInput("annotcheckboxCurvesplot", label = "Choose at least on annotation"),
+                                   actionButton("selectallCurvesplot", "Select All"),
+                                   actionButton("unselectallCurvesplot", "Unselect All")
+                            ))),
                         wellPanel(
-                            fixedRow(
-                                column(3, 
-                                       splitLayout(cellWidths = c("60%", "40%"),
-                                                   checkboxInput("doselogtransfoCurvesplot", label = HTML("<b>Dose log transformation</b>"), value = FALSE),
-                                                   shinyBS::bsButton("helplabel1step4", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
-                                                   shinyBS::bsPopover("helplabel1step4", "", helplabel1step4, placement = "right", trigger = "hover", options = list(container = "body"))
-                                       ),
-                                       numericInput("mindoseCurvesplot", label = "Minimal dose for the x range", value = 0, width = "60%")
-                                ),
-                                column(2,
-                                       radioButtons("facetbycolumnsCurvesplot", label = "Facet by (for columns)", 
-                                                    choices = list("Annotation" = "annotation",
-                                                                   "Experimental level" = "explevel")
-                                       )),
-                                conditionalPanel(condition = "input.nbLevel > 1",
-                                                 column(2,
-                                                        radioButtons("facetbyrowsCurvesplot", label = "Facet by (for rows)", 
-                                                                     choices = list("Annotation" = "annotation",
-                                                                                    "Experimental level" = "explevel")
-                                                        ))
-                                ),
-                                column(2,
-                                       fixedRow(
-                                           checkboxInput("colorbyCurvesplot", label = HTML("<b>Color by trend</b>"), value = TRUE),
-                                           checkboxInput("addBMDCurvesplot", label = HTML("<b>Add BMD-BMR values</b>"), value = TRUE)
-                                       )
-                                ),
-                                column(1,
-                                       br(),
-                                       div(align="right", actionButton("buttonRunStep4", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
-                                )
+                          fixedRow(
+                            column(3, 
+                                   splitLayout(cellWidths = c("60%", "40%"),
+                                               checkboxInput("doselogtransfoCurvesplot", label = HTML("<b>Dose log transformation</b>"), value = FALSE),
+                                               shinyBS::bsButton("helplabel1step4", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
+                                               shinyBS::bsPopover("helplabel1step4", "", helplabel1step4, placement = "right", trigger = "hover", options = list(container = "body"))
+                                   ),
+                                   numericInput("mindoseCurvesplot", label = "Minimal dose for the x range", value = 0, width = "60%")
+                            ),
+                            column(2,
+                                   radioButtons("facetbycolumnsCurvesplot", label = "Facet by (for columns)", 
+                                                choices = list("Annotation" = "annotation",
+                                                               "Experimental level" = "explevel")
+                                   )),
+                            conditionalPanel(condition = "input.nbLevel > 1",
+                                             column(2,
+                                                    radioButtons("facetbyrowsCurvesplot", label = "Facet by (for rows)", 
+                                                                 choices = list("Annotation" = "annotation",
+                                                                                "Experimental level" = "explevel")
+                                                    ))
+                            ),
+                            column(2,
+                                   fixedRow(
+                                     checkboxInput("colorbyCurvesplot", label = HTML("<b>Color by trend</b>"), value = TRUE),
+                                     checkboxInput("addBMDCurvesplot", label = HTML("<b>Add BMD-BMR values</b>"), value = TRUE)
+                                   )
+                            ),
+                            column(1,
+                                   br(),
+                                   div(align="right", actionButton("buttonRunStep4", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
                             )
+                          )
                         ),
                         
                         ### outputs
                         
                         br(), br(), 
-                        fixedRow(
-                            plotlyOutput("curvesplot", width = "100%", height = "900px"),
-                            br(), br(),
-                            div(align = "center", downloadButton("buttonDownloadCurvesplot", "Download Curves Plot", icon = icon("fas fa-download"))),
-                        ),
-                        br(), br(), br(), br()
+                        conditionalPanel(
+                          condition = "input.buttonRunStep4 != 0",
+                          fluidRow(
+                            column(2, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Curves plot"),
+                            column(2, downloadButton("buttonDownloadCurvesplot", "Download Curves Plot", icon = icon("fas fa-download")))),
+                          br(), plotly::plotlyOutput("curvesplot", width = "100%"),
+                          br(), br(), br(), br()
+                        )
+                        
                ),
                
                ####################################################################################
