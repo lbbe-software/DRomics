@@ -60,55 +60,52 @@ progress::-moz-progress-bar {
                                                         style="text-align:justify;")
                                         
                         )),
-                        fixedRow(column(10, offset = 1,
-                                        br(),
-                                        p(strong("Links and resources")),
-                                        p("The DRomics-shiny application runs on the ", 
-                                           a("shiny server of the LBBE", title = "shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#9c5c16;"), 
-                                           "with the develoment version of the DRomics package (available on ", 
-                                           a("Github", title = "Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#9c5c16;"),")."),
-                                        p("DRomics is also an R package, available on ", 
-                                           a("CRAN", title = "CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#9c5c16;"), 
-                                           " and on ",
-                                           a("this web page", title = "this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#9c5c16;"), 
-                                           ", where you can find also a vignette and a cheat sheet."),
-                                        p(helpText("If there seems to be a problem with the application, please send an explanatory e-mail at aurelie.siberchicot - at - univ-lyon1.fr.")),
-                                        
-                                        br(),
-                                        p(strong("Citation")),
-                                        p("If you use Dromics Shiny App, you should cite:"),
-                                        p(em("DRomics, a workflow to exploit dose-response omics data in ecotoxicology "), br(),
-                                          "Delignette-Muller ML, Siberchicot A, Larras F, Billoir E (2023).", 
-                                          "Peer Community Journal.",
-                                          a("https://peercommunityjournal.org/articles/10.24072/pcjournal.325/", title = "https://peercommunityjournal.org/articles/10.24072/pcjournal.325/", href = "https://peercommunityjournal.org/articles/10.24072/pcjournal.325/", TARGET = "_blank", style="color:#9c5c16;")),
-                                        p(em("DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment."), br(),
-                                          "Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018).", 
-                                          "Environmental Science & Technology.",
-                                          a("https://doi.org/10.1021/acs.est.8b04752", title = "https://doi.org/10.1021/acs.est.8b04752", href = "https://pubs.acs.org/doi/10.1021/acs.est.8b04752", TARGET = "_blank", style="color:#9c5c16;"), br(),
-                                          "You can freely find this article at: ", 
-                                          a("https://hal.science/hal-02309919", title = "https://hal.science/hal-02309919", href = "https://hal.science/hal-02309919", TARGET = "_blank", style="color:#9c5c16;")),
-                                        
-                                        br(),
-                                        p(strong("Contact")),
-                                        p("If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at ", strong("dromics@univ-lyon1.fr"), "."),
-                                        p("Issues can be reported on",
-                                          a("https://github.com/aursiber/DRomics/issues", title = "https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#9c5c16;"), ".")
-                                        
-                                        
-                        )),
+                        fixedRow(
+                          column(5, offset = 1,
+                                 br(),
+                                 p(strong("Links and resources")),
+                                 p("The DRomics-shiny application runs on the ", 
+                                   a("shiny server of the LBBE", title = "shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#9c5c16;"), 
+                                   "with the develoment version of the DRomics package (available on ", 
+                                   a("Github", title = "Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#9c5c16;"),
+                                   "). DRomics is also an R package, available on ", 
+                                   a("CRAN", title = "CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#9c5c16;"), 
+                                   " and on ",
+                                   a("this web page", title = "this web page", href = "https://lbbe.univ-lyon1.fr/fr/dromics", TARGET="_blank", style="color:#9c5c16;"), 
+                                   ", where you can find also a vignette and a cheat sheet."),
+                                 p(helpText("If there seems to be a problem with the application, please send an explanatory e-mail at aurelie.siberchicot - at - univ-lyon1.fr.")),
+                                 
+                                 br(),
+                                 p(strong("Contact")),
+                                 p("If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at ", 
+                                   strong("dromics@univ-lyon1.fr"), ". Issues can be reported on",
+                                   a("https://github.com/aursiber/DRomics/issues", title = "https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#9c5c16;"), ".")
+                          ),
+                          
+                          column(5,
+                                 br(),
+                                 p(strong("Citations")),
+                                 p("If you use Dromics Shiny App, you should cite:"),
+                                 p(em("DRomics, a workflow to exploit dose-response omics data in ecotoxicology."), 
+                                   "Delignette-Muller ML, Siberchicot A, Larras F, Billoir E (2023). Peer Community Journal.",
+                                   a("https://peercommunityjournal.org/articles/10.24072/pcjournal.325/", title = "https://peercommunityjournal.org/articles/10.24072/pcjournal.325/", href = "https://peercommunityjournal.org/articles/10.24072/pcjournal.325/", TARGET = "_blank", style="color:#9c5c16;")),
+                                 p(em("DRomics: a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment."), 
+                                   "Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). Environmental Science & Technology.",
+                                   a("https://doi.org/10.1021/acs.est.8b04752", title = "https://doi.org/10.1021/acs.est.8b04752", href = "https://pubs.acs.org/doi/10.1021/acs.est.8b04752", TARGET = "_blank", style="color:#9c5c16;"), 
+                                   " (freely available at ", 
+                                   a("https://hal.science/hal-02309919", title = "https://hal.science/hal-02309919", href = "https://hal.science/hal-02309919", TARGET = "_blank", style="color:#9c5c16;"), ").")
+                          )),
+                        
                         hr(style='width: 80%;'),
                         br(),
-                        fixedRow(column(10, offset = 2,
-                                        fillRow(flex = NA,
-                                          a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", title = "LBBE", width = 220), title = "LBBE", href="https://lbbe.univ-lyon1.fr/", TARGET="_blank"),
-                                          a(img(src = "logoVetAgroSup.jpg", title = "VetAgroSup", height = 100, width = 120), title = "VetAgroSup", href = "http://www.vetagro-sup.fr/", TARGET="_blank"),
-                                          a(img(src = "logoLyon1.png", title = "Université Claude Bernard Lyon 1", height = 80, width = 380), title = "Université Claude Bernard Lyon 1", href = "https://www.univ-lyon1.fr/", TARGET="_blank"),
-                                          a(img(src = "logoLiec.png", title = "LIEC", height = 70, width = 100), title = "LIEC", href = "http://liec.univ-lorraine.fr/", TARGET="_blank"),
-                                          a(img(src = "LogoUniversiteLorraine.png", title = "Université de Lorraine", height = 80, width = 180), title = "Université de Lorraine", href = "http://www.univ-lorraine.fr/", TARGET="_blank"),
-                                          a(img(src = "LogoHelmholtz.jpg", title = "Helmholts", height = 80, width = 180), title = "Helmholts", href = "https://www.ufz.de/index.php?en=33573", TARGET="_blank"),
-                                          img(src = "flag_yellow_high.jpg", title = "European Union", height = 70, width = 110),
-                                          style="text-align: center;"
-                                        )
+                        fixedRow(column(10, offset = 1, align = "center", 
+                                        div(style="display: inline-block; width: 25%;", a(img(src = "https://lbbe.univ-lyon1.fr/sites/default/files/icons/logo_1.svg", title = "LBBE", height = 70), title = "LBBE", href="https://lbbe.univ-lyon1.fr/", TARGET="_blank")),
+                                        div(style="display: inline-block; width: 8%;", a(img(src = "logoVetAgroSup.jpg", title = "VetAgroSup", height = 100), title = "VetAgroSup", href = "http://www.vetagro-sup.fr/", TARGET="_blank")),
+                                        div(style="display: inline-block; width: 25%;", a(img(src = "logoLyon1.png", title = "Université Claude Bernard Lyon 1", height = 80), title = "Université Claude Bernard Lyon 1", href = "https://www.univ-lyon1.fr/", TARGET="_blank")),
+                                        div(style="display: inline-block; width: 8%;", a(img(src = "logoLiec.png", title = "LIEC", height = 70), title = "LIEC", href = "http://liec.univ-lorraine.fr/", TARGET="_blank")),
+                                        div(style="display: inline-block; width: 10%;", a(img(src = "LogoUniversiteLorraine.png", title = "Université de Lorraine", height = 80), title = "Université de Lorraine", href = "http://www.univ-lorraine.fr/", TARGET="_blank")),
+                                        div(style="display: inline-block; width: 10%;", a(img(src = "LogoHelmholtz.jpg", title = "Helmholts", height = 80), title = "Helmholts", href = "https://www.ufz.de/index.php?en=33573", TARGET="_blank")),
+                                        div(style="display: inline-block; width: 10%;", img(src = "flag_yellow_high.jpg", title = "European Union", height = 70))
                                         
                         ))
                         
