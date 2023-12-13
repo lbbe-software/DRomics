@@ -155,60 +155,61 @@ server <- function(input, output, session) {
   
   numZbmdcalc <- eventReactive(input$buttonRunStep4, {as.numeric(input$zbmdcalc)})
   numXbmdcalc <- eventReactive(input$buttonRunStep4, {as.numeric(input$xbmdcalc)})
+  myplottype <- eventReactive(input$buttonRunStep4, {input$plottype})
   
   output$printBmdcalc <- renderPrint({
     
+    # calculate bmdcalc
     input$buttonDrcfit
     mydrcfit <- rundrcfit()
     mybmdcalc <- bmdcalc(mydrcfit, z = numZbmdcalc(), x = numXbmdcalc())
-    print(mybmdcalc)
-    cat("\n")
-    cat("\n")
-    
     mybmdcalcdigits <- head(mybmdcalc$res, 10)
     idx <- as.numeric(which(sapply(mybmdcalcdigits, function(X) is.numeric(X))))
     mybmdcalcdigits[, idx] <- signif(mybmdcalcdigits[, idx], digits = 4)
-    print(mybmdcalcdigits)
     
-    myplottype <- input$plottype
-    output$plotBmdcalc <- renderPlot({
-      
-      ##### ecdfcolorgradient #####
-      if(myplottype == 'ecdfcolorgradient') {
+    # build the plot
+    data <- reactiveValues()
+    data$plot1_step4 <- 
+      if(myplottype() == 'ecdfcolorgradient') {
         if(input$splitby == 'none') {
           bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
                               BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
-                              add.label = as.logical(input$label_ecdfgradient)) +
-            ggplot2::theme_bw()
+                              add.label = as.logical(input$label_ecdfgradient))
         } else {
           bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
                               facetby = input$splitby,
                               BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
-                              add.label = as.logical(input$label_ecdfgradient)) +
-            ggplot2::theme_bw()
+                              add.label = as.logical(input$label_ecdfgradient))
         }
         
         ##### ecdf #####
-      } else if (myplottype == 'ecdf') {
-          plot(mybmdcalc, BMDtype = input$BMDtype, 
-               plottype = 'ecdf', 
-               by = input$splitby, 
-               hist.bins = input$histbin, 
-               BMD_log_transfo = as.logical(input$logbmd_ecdf)) +
-          ggplot2::theme_bw()
-          
+      } else if(myplottype() == 'ecdf') {
+        plot(mybmdcalc, BMDtype = input$BMDtype, 
+             plottype = 'ecdf', 
+             by = input$splitby, 
+             hist.bins = input$histbin, 
+             BMD_log_transfo = as.logical(input$logbmd_ecdf))
+        
       } else {
         plot(mybmdcalc, BMDtype = input$BMDtype, 
-             plottype = myplottype, 
+             plottype = myplottype(), 
              by = input$splitby, 
-             hist.bins = input$histbin) +
-          ggplot2::theme_bw()
-      }
-    })
+             hist.bins = input$histbin)
+      }  + 
+      ggplot2::theme_bw()
     
-    # activate the button
+    # activate buttons
     shinyjs::enable("buttonResBmdcalc")
+    shinyjs::enable("buttonPlotBmdcalc")
+    shinyjs::enable("buttonDownloadDrcfitplotBMD")
     
+    # print the result in the interface
+    print(mybmdcalc)
+    cat("\n")
+    cat("\n")
+    print(mybmdcalcdigits)
+    
+    # to download the results file
     output$buttonResBmdcalc <- downloadHandler(
       filename = function(){
         paste0("data-", Sys.Date(), ".txt")
@@ -218,65 +219,30 @@ server <- function(input, output, session) {
       }
     )
     
-    # activate the button
-    shinyjs::enable("buttonPlotBmdcalc")
+    # to print the first plot (panel 4) in the interface
+    output$plotBmdcalc <- renderPlot({
+      data$plot1_step4
+    })
     
-    ## Output: plots downloading
+    ## to download the first plot (panel 4)
     output$buttonPlotBmdcalc <- downloadHandler(
       filename = function(){
         paste0("data-", Sys.Date(), ".", input$fileformat_bmdcalc)
       },
       content = function(file) {
-        
-        switch(input$fileformat_bmdcalc,
-               "pdf" = pdf(file),
-               "png" = png(file),
-               "jpeg" = jpeg(file),
-               "tiff" = tiff(file, compression = "lzw"),
-               "svg" = svg(file))
-        
-        
-        myplottype <- input$plottype
-        print(
-          
-          if(myplottype == 'ecdfcolorgradient') {
-            if(input$splitby == 'none') {
-              bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
-                                  BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
-                                  add.label = as.logical(input$label_ecdfgradient)) + ggplot2::theme_bw()
-            } else {
-              bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
-                                  facetby = input$splitby,
-                                  BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
-                                  add.label = as.logical(input$label_ecdfgradient)) + ggplot2::theme_bw()
-            }
-            
-          } else if(myplottype == 'ecdf') {
-              plot(mybmdcalc, BMDtype = input$BMDtype, 
-                   plottype = 'ecdf', 
-                   by = input$splitby, 
-                   hist.bins = input$histbin,
-                   BMD_log_transfo = as.logical(input$logbmd_ecdf)) + ggplot2::theme_bw()
-              
-          } else {
-            plot(mybmdcalc, BMDtype = input$BMDtype, 
-                 plottype = myplottype, 
-                 by = input$splitby, 
-                 hist.bins = input$histbin) + ggplot2::theme_bw()
-            
-          })
-        dev.off()
+        ggsave(file, plot=data$plot1_step4, device = input$fileformat_bmdcalc,
+               height = 8.5, width = 11)
       }
     )
     
-    
+    # to print the second plot (panel 4) in the interface
     output$plotDrcfitBMD <- renderPlot({
       plot(mydrcfit, plot.type = "dose_fitted",
            BMDoutput = mybmdcalc, BMDtype = input$BMDtype_plot2pdf,
            dose_log_transfo = as.logical(input$logbmd_plot2pdf))
     })
     
-    shinyjs::enable("buttonDownloadDrcfitplotBMD")
+    # to download the second plot (panel 4)
     output$buttonDownloadDrcfitplotBMD <- downloadHandler(
       filename = function(){
         "drcfitplot.pdf"

@@ -5,6 +5,7 @@ library(shinyjs, quietly = TRUE)
 library(shinyBS, quietly = TRUE)
 library(shinycssloaders, quietly = TRUE)
 library(tools, quietly = TRUE)
+library(svglite, quietly = TRUE)
 addResourcePath('DRomicspkg', system.file("extdata", package="DRomics"))
 options(shiny.maxRequestSize=30*1024^2)
 

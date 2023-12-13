@@ -15,4 +15,5 @@ if(!requireNamespace("shinyjs", quietly = TRUE)) install.packages("shinyjs", dep
 if(!requireNamespace("shinyBS", quietly = TRUE)) install.packages("shinyBS", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 if(!requireNamespace("shinycssloaders", quietly = TRUE)) install.packages("shinycssloaders", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 if(!requireNamespace("tools", quietly = TRUE)) install.packages("tools", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
+if(!requireNamespace("svglite", quietly = TRUE)) install.packages("svglite", dependencies = TRUE, repos = "http://cran.univ-lyon1.fr")
 remotes::install_github("aursiber/DRomics") # always install 'DRomics' to always have the last version from github
