@@ -357,7 +357,6 @@ server <- function(input, output, session) {
                   ggplot2::theme_bw()
             }
             
-            shinyjs::showElement('text2_step2', time = 0)
             output$buttonDownloadSensitivityplot <- downloadHandler(
                 filename = function(){
                     "sensitivityplot.pdf"
@@ -642,7 +641,6 @@ server <- function(input, output, session) {
             }
         }
         
-        shinyjs::showElement('text1_step3', time = 0)
         output$buttonDownloadBMDplot <- downloadHandler(
             filename = function(){
                 "bmdplot.pdf"
@@ -658,7 +656,6 @@ server <- function(input, output, session) {
         ############ BMD plot with gradient ############
         output$bmdplotwithgradient <- renderPlot({
             
-            shinyjs::showElement('text2_step3', time = 0)
             output$buttonDownloadBMDplotwithgradient <- downloadHandler(
                 filename = function(){
                     "bmdplotwithgradient.pdf"

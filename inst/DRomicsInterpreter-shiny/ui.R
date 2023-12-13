@@ -216,97 +216,94 @@ ui <- fluidPage(
                         br(), HTML("<font face=verdana size=5 color=#9c5c16><b>Trend and sensitivity plots</b></font>"), br(), br(), br(),
                         
                         wellPanel(
-                            fixedRow(
-                                column(3, style='border-right:1px solid #9c5c16;',
-                                       HTML("<font face=verdana size=3 color=#9c5c16><b>Selection of annotation groups to plot &nbsp;</b></font>"), 
-                                       shinyBS::bsButton("helplabel1step2", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
-                                       shinyBS::bsPopover("helplabel1step2", "", helplabel1step2, placement = "right", trigger = "hover", options = list(container = "body")),
-                                       br(), 
-                                       br(), 
-                                       fluidRow(
-                                           conditionalPanel(
-                                               condition = "input.nbLevel > 1",
-                                               column(6,
-                                                      checkboxInput("keepAllExplev", label = HTML("<b>Keep all experimental levels</b>"), value = FALSE)
-                                               ),
-                                               column(1, style = "margin-top: 5px", 
-                                                      shinyBS::bsButton("helplabel2step2", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
-                                                      shinyBS::bsPopover("helplabel2step2", "", helplabel2step2, placement = "right", trigger = "hover", options = list(container = "body"))
-                                               )
-                                           )
+                          fixedRow(
+                            column(3, style='border-right:1px solid #9c5c16;',
+                                   HTML("<font face=verdana size=3 color=#9c5c16><b>Selection of annotation groups to plot &nbsp;</b></font>"), 
+                                   shinyBS::bsButton("helplabel1step2", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
+                                   shinyBS::bsPopover("helplabel1step2", "", helplabel1step2, placement = "right", trigger = "hover", options = list(container = "body")),
+                                   br(), 
+                                   br(), 
+                                   fluidRow(
+                                     conditionalPanel(
+                                       condition = "input.nbLevel > 1",
+                                       column(6,
+                                              checkboxInput("keepAllExplev", label = HTML("<b>Keep all experimental levels</b>"), value = FALSE)
                                        ),
-                                       br(), 
-                                       sliderInput("minNbItem", "Minimum for the number of items",
-                                                   width = "90%", 
-                                                   min = 1, max = 10, step = 1, ticks = TRUE, 
-                                                   value = 3),
-                                       numericInput("BMDmax", label = "Maximum for the BMD summary value", value = 0, min = 0, step = 0.1, width = "70%")
-                                ),
-                                column(1, 
-                                       checkboxInput("BMDlogtransfoSensitivityplot", label = HTML("<b>Log transformation of the BMD</b>"), value = TRUE),
-                                ),
-                                column(1, 
-                                       radioButtons("BMDtype", label = "BMD type", 
-                                                    choices = list("zSD" = "zSD", 
-                                                                   "xfold" = "xfold")
+                                       column(1, style = "margin-top: 5px", 
+                                              shinyBS::bsButton("helplabel2step2", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
+                                              shinyBS::bsPopover("helplabel2step2", "", helplabel2step2, placement = "right", trigger = "hover", options = list(container = "body"))
                                        )
-                                ),
-                                column(1,
-                                       radioButtons("BMDsummarysensitivityPlot", label = "BMD summary", 
-                                                    choices = list("First quartile" = "first.quartile", 
-                                                                   "Median" = "median", 
-                                                                   "Median and IQR" = "median.and.IQR")
-                                       )),
-                                column(2, 
-                                       # if several experimental level
-                                       conditionalPanel(condition = "input.nbLevel > 1",
-                                                        radioButtons("ordering_moreonelev", label = "Ordering of the annotations",
-                                                                     choices = list("alphabetic order" = "alphaorder_moreonelev",
-                                                                                    "ordered by total number of items in all the experimental levels" = "numbitemorder_moreonelev",
-                                                                                    "specific order" = "specificorder_moreonelev"))
-                                       ),
-                                       # if only one experimental level
-                                       conditionalPanel(condition = "input.nbLevel == 1",
-                                                        radioButtons("ordering_onelev", label = "Ordering of the annotations",
-                                                                     choices = list("alphabetic order" = "alphaorder_onelev",
-                                                                                    "ordered by number of items" = "numbitemorder_onelev",
-                                                                                    "ordered by BMD summary value" = "BMDorder_onelev",
-                                                                                    "specific order" = "specificorder_onelev"))
-                                       ),
-                                ), 
-                                column(3,
-                                       conditionalPanel(condition = "input.ordering_moreonelev == 'specificorder_moreonelev' | input.ordering_onelev == 'specificorder_onelev'",
-                                                        uiOutput("specificorder", style="font-size:85%;")
-                                       )
-                                ),
-                                column(1,
-                                       br(),
-                                       div(align="right", actionButton("buttonRunStep2", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
-                                )
-                            )),
+                                     )
+                                   ),
+                                   br(), 
+                                   sliderInput("minNbItem", "Minimum for the number of items",
+                                               width = "90%", 
+                                               min = 1, max = 10, step = 1, ticks = TRUE, 
+                                               value = 3),
+                                   numericInput("BMDmax", label = "Maximum for the BMD summary value", value = 0, min = 0, step = 0.1, width = "70%")
+                            ),
+                            column(1, 
+                                   checkboxInput("BMDlogtransfoSensitivityplot", label = HTML("<b>Log transformation of the BMD</b>"), value = TRUE),
+                            ),
+                            column(1, 
+                                   radioButtons("BMDtype", label = "BMD type", 
+                                                choices = list("zSD" = "zSD", 
+                                                               "xfold" = "xfold")
+                                   )
+                            ),
+                            column(1,
+                                   radioButtons("BMDsummarysensitivityPlot", label = "BMD summary", 
+                                                choices = list("First quartile" = "first.quartile", 
+                                                               "Median" = "median", 
+                                                               "Median and IQR" = "median.and.IQR")
+                                   )),
+                            column(2, 
+                                   # if several experimental level
+                                   conditionalPanel(condition = "input.nbLevel > 1",
+                                                    radioButtons("ordering_moreonelev", label = "Ordering of the annotations",
+                                                                 choices = list("alphabetic order" = "alphaorder_moreonelev",
+                                                                                "ordered by total number of items in all the experimental levels" = "numbitemorder_moreonelev",
+                                                                                "specific order" = "specificorder_moreonelev"))
+                                   ),
+                                   # if only one experimental level
+                                   conditionalPanel(condition = "input.nbLevel == 1",
+                                                    radioButtons("ordering_onelev", label = "Ordering of the annotations",
+                                                                 choices = list("alphabetic order" = "alphaorder_onelev",
+                                                                                "ordered by number of items" = "numbitemorder_onelev",
+                                                                                "ordered by BMD summary value" = "BMDorder_onelev",
+                                                                                "specific order" = "specificorder_onelev"))
+                                   ),
+                            ), 
+                            column(3,
+                                   conditionalPanel(condition = "input.ordering_moreonelev == 'specificorder_moreonelev' | input.ordering_onelev == 'specificorder_onelev'",
+                                                    uiOutput("specificorder", style="font-size:85%;")
+                                   )
+                            ),
+                            column(1,
+                                   br(),
+                                   div(align="right", actionButton("buttonRunStep2", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
+                            )
+                          )),
+                        
+                        ### outputs
+                        
                         br(), br(),
                         conditionalPanel(
                           condition = "input.buttonRunStep2 != 0",
                           fluidRow(
-                            fluidRow(
-                              column(2, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Trend plot"),
-                              column(2, downloadButton("buttonDownloadTrendplot", "Download Trend Plot", icon = icon("fas fa-download")))),
-                            plotOutput("trendplot", width = "100%")
-                          ),
-                          br(), br(),
-                          fixedRow(
-                            fluidRow(
-                              column(2, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Sensitivity plot"),
-                              column(2, downloadButton("buttonDownloadSensitivityplot", "Download Sensitivity Plot", icon = icon("fas fa-download")))),
-                            plotOutput("sensitivityplot", width = "100%")
-                          ),
-                          br(), br(),
-                          fixedRow(
-                            fluidRow(
-                              column(5, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Structure of the data frame merged and combined"),
-                              column(2, downloadButton('downloadData', 'Download Data'))),
-                            verbatimTextOutput("filteredsorteddata")
-                          ),
+                            column(2, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Trend plot"),
+                            column(2, downloadButton("buttonDownloadTrendplot", "Download Trend Plot", icon = icon("fas fa-download")))),
+                          br(), plotOutput("trendplot", width = "100%"),
+                          br(), br(), br(), 
+                          fluidRow(
+                            column(2, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Sensitivity plot"),
+                            column(2, downloadButton("buttonDownloadSensitivityplot", "Download Sensitivity Plot", icon = icon("fas fa-download")))),
+                          br(), plotOutput("sensitivityplot", width = "100%"),
+                          br(), br(), br(), 
+                          fluidRow(
+                            column(5, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Structure of the data frame merged and combined"),
+                            column(2, downloadButton('downloadData', 'Download Data'))),
+                          br(), verbatimTextOutput("filteredsorteddata"),
                           br(), br(), br(), br()
                         )
                ),
@@ -319,61 +316,61 @@ ui <- fluidPage(
                         br(), HTML("<font face=verdana size=5 color=#9c5c16><b>BMD plots (with and without gradient)</b></font>"), br(), br(), br(),
                         
                         wellPanel(
-                            fixedRow(
-                                column(12,
-                                       checkboxGroupInput("annotcheckboxBMDplot", label = "Choose at least on annotation"),
-                                       actionButton("selectallBMDplot", "Select All"),
-                                       actionButton("unselectallBMDplot", "Unselect All")
-                                ))),
+                          fixedRow(
+                            column(12,
+                                   checkboxGroupInput("annotcheckboxBMDplot", label = "Choose at least on annotation"),
+                                   actionButton("selectallBMDplot", "Select All"),
+                                   actionButton("unselectallBMDplot", "Unselect All")
+                            ))),
                         wellPanel(
-                            fixedRow(
-                                column(2, 
-                                       checkboxInput("addciBMDplot", label = HTML("<b>Add CI</b> (only for the BMD plot without gradient)"), value = FALSE),
-                                       checkboxInput("BMDlogtransfoBMDplot", label = HTML("<b>Log transformation of the BMD</b>"), value = FALSE),
-                                       checkboxInput("addlabelBMDplot", label = HTML("<b>Add labels</b>"), value = FALSE)
-                                ),
-                                column(2,
-                                       radioButtons("facetbycolumnsBMDplot", label = "Facet by (for columns)", 
-                                                    choices = list("Annotation" = "annotation",
-                                                                   "Experimental level" = "explevel")
-                                       )),
-                                conditionalPanel(condition = "input.nbLevel > 1",
-                                                 column(2,
-                                                        radioButtons("facetbyrowsBMDplot", label = "Facet by (for rows)", 
-                                                                     choices = list("Annotation" = "annotation",
-                                                                                    "Experimental level" = "explevel")
-                                                        ))
-                                ),
-                                column(2,
-                                       fixedRow(
-                                           checkboxInput("shapebyBMDplot", label = HTML("<b>Shape by trend</b>"), value = FALSE),
-                                           checkboxInput("colorbyBMDplot", label = HTML("<b>Color by trend</b> (only for the BMD plot without gradient)"), value = FALSE)
-                                       )
-                                ),
-                                column(1,
-                                       br(),
-                                       div(align="right", actionButton("buttonRunStep3", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
-                                )
+                          fixedRow(
+                            column(2, 
+                                   checkboxInput("addciBMDplot", label = HTML("<b>Add CI</b> (only for the BMD plot without gradient)"), value = FALSE),
+                                   checkboxInput("BMDlogtransfoBMDplot", label = HTML("<b>Log transformation of the BMD</b>"), value = FALSE),
+                                   checkboxInput("addlabelBMDplot", label = HTML("<b>Add labels</b>"), value = FALSE)
+                            ),
+                            column(2,
+                                   radioButtons("facetbycolumnsBMDplot", label = "Facet by (for columns)", 
+                                                choices = list("Annotation" = "annotation",
+                                                               "Experimental level" = "explevel")
+                                   )),
+                            conditionalPanel(condition = "input.nbLevel > 1",
+                                             column(2,
+                                                    radioButtons("facetbyrowsBMDplot", label = "Facet by (for rows)", 
+                                                                 choices = list("Annotation" = "annotation",
+                                                                                "Experimental level" = "explevel")
+                                                    ))
+                            ),
+                            column(2,
+                                   fixedRow(
+                                     checkboxInput("shapebyBMDplot", label = HTML("<b>Shape by trend</b>"), value = FALSE),
+                                     checkboxInput("colorbyBMDplot", label = HTML("<b>Color by trend</b> (only for the BMD plot without gradient)"), value = FALSE)
+                                   )
+                            ),
+                            column(1,
+                                   br(),
+                                   div(align="right", actionButton("buttonRunStep3", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
                             )
+                          )
                         ),
-                        fixedRow(
-                            column(6,
-                                   shinyjs::hidden(div(id = 'text1_step3',
-                                                       style = 'color:#9c5c16; font-size:large;text-align: center;line-height: 150px;',
-                                                       "BMD plot")),
-                                   plotOutput("bmdplot", width = "100%", height = "900px"),
-                                   br(), br(),
-                                   div(align = "center", downloadButton("buttonDownloadBMDplot", "Download BMD Plot", icon = icon("fas fa-download")))),
-                            column(6,
-                                   shinyjs::hidden(div(id = 'text2_step3',
-                                                       style = 'color:#9c5c16; font-size:large;text-align: center;line-height: 150px;',
-                                                       "BMD plot with gradient")),
-                                   plotOutput("bmdplotwithgradient", width = "100%", height = "900px"),
-                                   br(), br(),
-                                   div(align = "center", downloadButton("buttonDownloadBMDplotwithgradient", "Download BMD Plot with gradient", icon = icon("fas fa-download")))
-                            )
-                        ),
-                        br(), br(), br(), br()
+                        
+                        ### outputs
+                        
+                        br(), br(), 
+                        conditionalPanel(
+                          condition = "input.buttonRunStep3 != 0",
+                          fluidRow(
+                            column(2, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "BMD plot"),
+                            column(2, downloadButton("buttonDownloadBMDplot", "Download BMD Plot", icon = icon("fas fa-download")))),
+                          br(), plotOutput("bmdplot", width = "100%"),
+                          br(), br(), br(), 
+                          fluidRow(
+                            column(2, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "BMD plot with gradient"),
+                            column(2, downloadButton("buttonDownloadBMDplotwithgradient", "Download Sensitivity Plot", icon = icon("fas fa-download")))),
+                          br(), plotOutput("bmdplotwithgradient", width = "100%"),
+                          br(), br(), br(), br()
+                        )
+                        
                ),
                
                ####################################################################################
@@ -424,6 +421,10 @@ ui <- fluidPage(
                                 )
                             )
                         ),
+                        
+                        ### outputs
+                        
+                        br(), br(), 
                         fixedRow(
                             plotlyOutput("curvesplot", width = "100%", height = "900px"),
                             br(), br(),
