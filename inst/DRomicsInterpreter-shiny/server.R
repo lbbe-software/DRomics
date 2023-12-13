@@ -375,46 +375,39 @@ server <- function(input, output, session) {
         
         ############ trend plot ############
         output$trendplot <- renderPlot({
-            myextendedmergeddata <- sortlevels4ggplot(myextendedmergeddata, mypathclasslabel)
-            if(input$nbLevel > 1) {
-                mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
-                                                  group = mypathclasslabel, 
-                                                  facetby = "experimental_level", 
-                                                  add.color = TRUE) +
-                  ggplot2::theme_bw()
-            } else {
-                mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
-                                                  group = mypathclasslabel, 
-                                                  add.color = TRUE) +
-                  ggplot2::theme_bw()
-            }
-            shinyjs::showElement('text1_step2', time = 0)
-            output$buttonDownloadTrendplot <- downloadHandler(
-                filename = function(){
-                    "trendplot.pdf"
-                },
-                content = function(file) {
-                    pdf(file)
-                    plot(mytrendplot)
-                    dev.off()
-                },
-                contentType = {"application/pdf"}
-            )
-            
-            return(mytrendplot)
+          myextendedmergeddata <- sortlevels4ggplot(myextendedmergeddata, mypathclasslabel)
+          if(input$nbLevel > 1) {
+            mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
+                                              group = mypathclasslabel, 
+                                              facetby = "experimental_level", 
+                                              add.color = TRUE) +
+              ggplot2::theme_bw()
+          } else {
+            mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
+                                              group = mypathclasslabel, 
+                                              add.color = TRUE) +
+              ggplot2::theme_bw()
+          }
+          output$buttonDownloadTrendplot <- downloadHandler(
+            filename = function(){
+              "trendplot.pdf"
+            },
+            content = function(file) {
+              pdf(file)
+              plot(mytrendplot)
+              dev.off()
+            },
+            contentType = {"application/pdf"}
+          )
+          
+          return(mytrendplot)
         })
         
         
         ############ structure of data ############
-        shinyjs::showElement('text3_step2', time = 0)
-        
         output$downloadData <- downloadHandler(
-            filename = function() {
-                "extendedmergeddata.txt"
-            },
-            content = function(file) {
-                write.table(myextendedmergeddata, file, row.names = FALSE, sep = "\t")
-            }
+            filename = function() {"extendedmergeddata.txt"},
+            content = function(file) {write.table(myextendedmergeddata, file, row.names = FALSE, sep = "\t")}
         )
         
         return(str(myextendedmergeddata))
@@ -648,10 +641,6 @@ server <- function(input, output, session) {
                 }
             }
         }
-        
-        
-        
-        
         
         shinyjs::showElement('text1_step3', time = 0)
         output$buttonDownloadBMDplot <- downloadHandler(

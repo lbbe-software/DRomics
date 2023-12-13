@@ -284,34 +284,31 @@ ui <- fluidPage(
                                        div(align="right", actionButton("buttonRunStep2", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
                                 )
                             )),
-                        fixedRow(
-                            column(6,
-                                   shinyjs::hidden(div(id = 'text1_step2',
-                                                       style = 'color:#9c5c16; font-size:large;text-align: center;line-height: 150px;',
-                                                       "Trend plot")),
-                                   plotOutput("trendplot", width = "100%", height = "900px"),
-                                   br(), br(),
-                                   div(align = "center", downloadButton("buttonDownloadTrendplot", "Download Trend Plot", icon = icon("fas fa-download")))),
-                            column(6,
-                                   fixedRow(
-                                       shinyjs::hidden(div(id = 'text2_step2',
-                                                           style = 'color:#9c5c16; font-size:large;text-align: center;line-height: 150px;',
-                                                           "Sensitivity plot")),
-                                       plotOutput("sensitivityplot", width = "100%", height = "900px"),
-                                       br(), br(),
-                                       div(align = "center", downloadButton("buttonDownloadSensitivityplot", "Download Sensitivity Plot", icon = icon("fas fa-download")))
-                                   )
-                            )
-                        ),
-                        br(), br(),                      
-                        fixedRow(
-                            shinyjs::hidden(div(id = 'text3_step2',
-                                                style = 'color:#9c5c16; font-size:large;line-height: 50px;',
-                                                "Structure of the data frame merged and combined")),
-                            verbatimTextOutput("filteredsorteddata"),
-                            downloadButton('downloadData', 'Download Data')
-                        ),
-                        br(), br(), br(), br()
+                        br(), br(),
+                        conditionalPanel(
+                          condition = "input.buttonRunStep2 != 0",
+                          fluidRow(
+                            fluidRow(
+                              column(2, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Trend plot"),
+                              column(2, downloadButton("buttonDownloadTrendplot", "Download Trend Plot", icon = icon("fas fa-download")))),
+                            plotOutput("trendplot", width = "100%")
+                          ),
+                          br(), br(),
+                          fixedRow(
+                            fluidRow(
+                              column(2, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Sensitivity plot"),
+                              column(2, downloadButton("buttonDownloadSensitivityplot", "Download Sensitivity Plot", icon = icon("fas fa-download")))),
+                            plotOutput("sensitivityplot", width = "100%")
+                          ),
+                          br(), br(),
+                          fixedRow(
+                            fluidRow(
+                              column(5, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Structure of the data frame merged and combined"),
+                              column(2, downloadButton('downloadData', 'Download Data'))),
+                            verbatimTextOutput("filteredsorteddata")
+                          ),
+                          br(), br(), br(), br()
+                        )
                ),
                
                ####################################################################################
