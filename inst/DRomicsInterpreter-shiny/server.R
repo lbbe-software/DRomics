@@ -358,15 +358,8 @@ server <- function(input, output, session) {
             mysensitivityplot <- mysensitivityplot + ggplot2::theme_bw() + theme(text = element_text(size = 18))
             
             output$buttonDownloadSensitivityplot <- downloadHandler(
-                filename = function(){
-                    "sensitivityplot.pdf"
-                },
-                content = function(file) {
-                    pdf(file)
-                    plot(mysensitivityplot)
-                    dev.off()
-                },
-                contentType = {"application/pdf"}
+                filename = function() {"sensitivityplot.pdf"},
+                content = function(file) {ggplot2::ggsave(file, plot = mysensitivityplot, device = "pdf", height = 8.5, width = 13)}
             )
             
             return(mysensitivityplot)
@@ -389,15 +382,8 @@ server <- function(input, output, session) {
           mytrendplot <- mytrendplot + ggplot2::theme_bw() + theme(text = element_text(size = 18))
           
           output$buttonDownloadTrendplot <- downloadHandler(
-            filename = function(){
-              "trendplot.pdf"
-            },
-            content = function(file) {
-              pdf(file)
-              plot(mytrendplot)
-              dev.off()
-            },
-            contentType = {"application/pdf"}
+            filename = function() {"trendplot.pdf"},
+            content = function(file) {ggplot2::ggsave(file, plot = mytrendplot, device = "pdf", height = 8.5, width = 13)}
           )
           
           return(mytrendplot)
@@ -638,30 +624,16 @@ server <- function(input, output, session) {
         mybmdplotwithgradient <- mybmdplotwithgradient + theme(text = element_text(size = 18))
         
         output$buttonDownloadBMDplot <- downloadHandler(
-            filename = function(){
-                "bmdplot.pdf"
-            },
-            content = function(file) {
-                pdf(file)
-                plot(mybmdplot)
-                dev.off()
-            },
-            contentType = {"application/pdf"}
+            filename = function() {"bmdplot.pdf"},
+            content = function(file) {ggplot2::ggsave(file, plot = mybmdplot, device = "pdf", height = 8.5, width = 13)}
         )
         
         ############ BMD plot with gradient ############
         output$bmdplotwithgradient <- renderPlot({
             
             output$buttonDownloadBMDplotwithgradient <- downloadHandler(
-                filename = function(){
-                    "bmdplotwithgradient.pdf"
-                },
-                content = function(file) {
-                    pdf(file)
-                    plot(mybmdplotwithgradient)
-                    dev.off()
-                },
-                contentType = {"application/pdf"}
+                filename = function() {"bmdplotwithgradient.pdf"},
+                content = function(file) {ggplot2::ggsave(file, plot = mybmdplotwithgradient, device = "pdf", height = 8.5, width = 13)}
             )
             
             return(mybmdplotwithgradient)
@@ -835,15 +807,8 @@ server <- function(input, output, session) {
         mycurvesplot <- mycurvesplot + ggplot2::theme_bw()
         
         output$buttonDownloadCurvesplot <- downloadHandler(
-            filename = function(){
-                "curvesplot.pdf"
-            },
-            content = function(file) {
-                pdf(file)
-                plot(mycurvesplot)
-                dev.off()
-            },
-            contentType = {"application/pdf"}
+            filename = function() {"curvesplot.pdf"},
+            content = function(file) {ggplot2::ggsave(file, plot = mycurvesplot, device = "pdf", height = 8.5, width = 13)}
         )
         
         return(mycurvesplot)
