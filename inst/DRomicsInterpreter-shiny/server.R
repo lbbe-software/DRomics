@@ -755,63 +755,37 @@ server <- function(input, output, session) {
     
     ############ curves plot ############
     output$curvesplot <- renderPlotly({
-        
-        myextendedresforCurvesplot <- extendedresforCurvesplot()
-        myfacetbycolumnsCurvesplot <- fnvaluecheckbox(facetbycolumnsCurvesplot(), myextendedresforCurvesplot$mypathclasslabel)
-        myfacetbyrowsCurvesplot <- fnvaluecheckbox(facetbyrowsCurvesplot(), myextendedresforCurvesplot$mypathclasslabel)
-        
-        if(isTRUE(colorbyCurvesplot())) {
-            if(input$nbLevel > 1) {
-                mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot, 
-                                                    free.y.scales = TRUE, scaling = TRUE,
-                                                    xmin = mindoseCurvesplot(),
-                                                    xmax = maxDoseXScale(),
-                                                    dose_log_transfo = doselogtransfoCurvesplot(),
-                                                    addBMD = addBMDCurvesplot(),
-                                                    facetby = myfacetbycolumnsCurvesplot,
-                                                    facetby2 = myfacetbyrowsCurvesplot,
-                                                    colorby = "trend") 
-            } else {
-                mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
-                                                    free.y.scales = TRUE, scaling = TRUE,
-                                                    xmin = mindoseCurvesplot(),
-                                                    xmax = maxDoseXScale(),
-                                                    dose_log_transfo = doselogtransfoCurvesplot(),
-                                                    addBMD = addBMDCurvesplot(),
-                                                    facetby = myfacetbycolumnsCurvesplot,
-                                                    colorby = "trend")
-            }
-          mycurvesplot <- mycurvesplot + ggplot2::labs(col = "trend")          
-          
-        } else {
-            if(input$nbLevel > 1) {
-                mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
-                                                    free.y.scales = TRUE, scaling = TRUE,
-                                                    xmin = mindoseCurvesplot(),
-                                                    xmax = maxDoseXScale(),
-                                                    dose_log_transfo = doselogtransfoCurvesplot(),
-                                                    addBMD = addBMDCurvesplot(),
-                                                    facetby = myfacetbycolumnsCurvesplot,
-                                                    facetby2 = myfacetbyrowsCurvesplot)
-            } else {
-                mycurvesplot <- DRomics::curvesplot(myextendedresforCurvesplot$myextendedresforCurvesplot,
-                                                    free.y.scales = TRUE, scaling = TRUE,
-                                                    xmin = mindoseCurvesplot(),
-                                                    xmax = maxDoseXScale(),
-                                                    dose_log_transfo = doselogtransfoCurvesplot(),
-                                                    addBMD = addBMDCurvesplot(),
-                                                    facetby = myfacetbycolumnsCurvesplot)
-            }
-        }
-        
-        mycurvesplot <- mycurvesplot + ggplot2::theme_bw()
-        
-        output$buttonDownloadCurvesplot <- downloadHandler(
-            filename = function() {"curvesplot.pdf"},
-            content = function(file) {ggplot2::ggsave(file, plot = mycurvesplot, device = "pdf", height = 8.5, width = 13)}
-        )
-        
-        return(mycurvesplot)
+      
+      myextendedresforCurvesplot <- extendedresforCurvesplot()
+      myfacetbycolumnsCurvesplot <- fnvaluecheckbox(facetbycolumnsCurvesplot(), myextendedresforCurvesplot$mypathclasslabel)
+      myfacetbyrowsCurvesplot <- fnvaluecheckbox(facetbyrowsCurvesplot(), myextendedresforCurvesplot$mypathclasslabel)
+      
+      use.args <- rep(TRUE, 10)
+      if(input$nbLevel == 1) {use.args[9] <- FALSE}               # use.args[9] = facetby2
+      if(!isTRUE(colorbyCurvesplot())) {use.args[10] <- FALSE}    # use.args[10] = colorby
+      
+      mycurvesplot <- do.call("curvesplot", list(
+        extendedres = myextendedresforCurvesplot$myextendedresforCurvesplot,
+        free.y.scales = TRUE,
+        scaling = TRUE,
+        xmin = mindoseCurvesplot(),
+        xmax = maxDoseXScale(),
+        dose_log_transfo = doselogtransfoCurvesplot(),
+        addBMD = addBMDCurvesplot(),
+        facetby = myfacetbycolumnsCurvesplot,
+        facetby2 = myfacetbyrowsCurvesplot,
+        colorby = "trend"
+      )[use.args])
+      
+      if(isTRUE(colorbyCurvesplot())) {mycurvesplot <- mycurvesplot + ggplot2::labs(col = "trend")}
+      mycurvesplot <- mycurvesplot + ggplot2::theme_bw()
+      
+      output$buttonDownloadCurvesplot <- downloadHandler(
+        filename = function() {"curvesplot.pdf"},
+        content = function(file) {ggplot2::ggsave(file, plot = mycurvesplot, device = "pdf", height = 8.5, width = 13)}
+      )
+      
+      return(mycurvesplot)
     })
     
     
