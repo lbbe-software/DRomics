@@ -168,8 +168,8 @@ server <- function(input, output, session) {
     mybmdcalcdigits[, idx] <- signif(mybmdcalcdigits[, idx], digits = 4)
     
     # build the plot
-    data <- reactiveValues()
-    data$plot1_step4 <- 
+    data_DR <- reactiveValues()
+    data_DR$plot1_step4 <- 
       if(myplottype() == 'ecdfcolorgradient') {
         if(input$splitby == 'none') {
           bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
@@ -221,7 +221,7 @@ server <- function(input, output, session) {
     
     # to print the first plot (panel 4) in the interface
     output$plotBmdcalc <- renderPlot({
-      data$plot1_step4
+      data_DR$plot1_step4
     })
     
     ## to download the first plot (panel 4)
@@ -230,8 +230,8 @@ server <- function(input, output, session) {
         paste0("data-", Sys.Date(), ".", input$fileformat_bmdcalc)
       },
       content = function(file) {
-        ggsave(file, plot=data$plot1_step4, device = input$fileformat_bmdcalc,
-               height = 8.5, width = 11)
+        ggplot2::ggsave(file, plot = data_DR$plot1_step4, device = input$fileformat_bmdcalc,
+                        height = 8.5, width = 11)
       }
     )
     
