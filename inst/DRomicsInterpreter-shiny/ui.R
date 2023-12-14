@@ -135,10 +135,6 @@ ui <- fluidPage(
                                      p(em("A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus."),
                                        "Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020). Journal of Hazardous Materials.",
                                        a("https://doi.org/10.1016/j.jhazmat.2020.122727", href = "https://doi.org/10.1016/j.jhazmat.2020.122727", TARGET = "_blank", style="color:#f28d0f;"))
-                                     
-                                     
-                                     
-                                     
                               )),
                             
                             hr(style='width: 80%;'),
@@ -148,10 +144,7 @@ ui <- fluidPage(
                                             div(style="display: inline-block; width: 15%;", a(img(src = "logoVetAgroSup.jpg", height = 100), href="http://www.vetagro-sup.fr/", TARGET="_blank")),
                                             div(style="display: inline-block; width: 30%;", a(img(src = "logoLyon1.png", height = 80), href="https://www.univ-lyon1.fr/", TARGET="_blank")),
                                             div(style="display: inline-block; width: 20%;", a(img(src = "LogoUniversiteLorraine.png", height = 80), href="http://www.univ-lorraine.fr/", TARGET="_blank"))
-                                                    
-                                            
                             ))
-                            
                         )
                ),
                
@@ -189,7 +182,7 @@ ui <- fluidPage(
                         br(),
                         uiOutput("inputstep1"),
                         fixedRow(
-                            div(align = "center", actionButton("buttonRunStep1", "Merge and Combine", icon = icon("object-group"), style='font-size:150%')), br(), br(),
+                            div(align = "center", actionButton("buttonRunStep1", "Merge and Combine", icon = icon("object-group"), style='font-size:150%; color:#111111; background-color:#f28d0f')), br(), br(),
                             conditionalPanel(
                                 condition = "input.nbLevel > 1",
                                 span(textOutput("txtcolumnidannot"), style = 'color:#9c5c16;font-size:large;'), br(), br()
@@ -278,12 +271,10 @@ ui <- fluidPage(
                                    conditionalPanel(condition = "input.ordering_moreonelev == 'specificorder_moreonelev' | input.ordering_onelev == 'specificorder_onelev'",
                                                     uiOutput("specificorder", style="font-size:85%;")
                                    )
-                            ),
-                            column(1,
-                                   br(),
-                                   div(align="right", actionButton("buttonRunStep2", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
                             )
                           )),
+                        
+                        div(align = "center", actionButton("buttonRunStep2", "Run", icon = icon("fas fa-gear"), style='font-size:200%; color:#111111; background-color:#f28d0f')), br(), br(),
                         
                         ### outputs
                         
@@ -346,13 +337,11 @@ ui <- fluidPage(
                                      checkboxInput("shapebyBMDplot", label = HTML("<b>Shape by trend</b>"), value = FALSE),
                                      checkboxInput("colorbyBMDplot", label = HTML("<b>Color by trend</b> (only for the BMD plot without gradient)"), value = FALSE)
                                    )
-                            ),
-                            column(1,
-                                   br(),
-                                   div(align="right", actionButton("buttonRunStep3", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
                             )
                           )
                         ),
+                        
+                        div(align = "center", actionButton("buttonRunStep3", "Run", icon = icon("fas fa-gear"), style='font-size:200%; color:#111111; background-color:#f28d0f')), 
                         
                         ### outputs
                         
@@ -414,13 +403,11 @@ ui <- fluidPage(
                                      checkboxInput("colorbyCurvesplot", label = HTML("<b>Color by trend</b>"), value = TRUE),
                                      checkboxInput("addBMDCurvesplot", label = HTML("<b>Add BMD-BMR values</b>"), value = TRUE)
                                    )
-                            ),
-                            column(1,
-                                   br(),
-                                   div(align="right", actionButton("buttonRunStep4", "Run", icon = icon("fas fa-gear"), style='font-size:200%'))
                             )
                           )
                         ),
+                        
+                        div(align = "center", actionButton("buttonRunStep4", "Run", icon = icon("fas fa-gear"), style='font-size:200%; color:#111111; background-color:#f28d0f')), 
                         
                         ### outputs
                         
