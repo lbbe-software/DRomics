@@ -333,27 +333,21 @@ server <- function(input, output, session) {
         sortextendedres <- sortextendedres()
         myextendedmergeddata <- sortextendedres$myextendedmergeddata
         mypathclasslabel <- sortextendedres$mypathclasslabel
+        myextendedmergeddata4ggplot <- sortlevels4ggplot(myextendedmergeddata, mypathclasslabel)
         
         ############ sensitivity plot ############
         output$sensitivityplot <- renderPlot({
-            myextendedmergeddata <- sortlevels4ggplot(myextendedmergeddata, mypathclasslabel)
-            if(input$nbLevel > 1) {
-                mysensitivityplot <- DRomics::sensitivityplot(myextendedmergeddata, 
-                                                              BMDtype = BMDtype(), 
-                                                              group = mypathclasslabel,
-                                                              colorby = "experimental_level",
-                                                              ECDF_plot = FALSE,
-                                                              BMDsummary = BMDsummarysensitivityPlot(), 
-                                                              BMD_log_transfo = BMDlogtransfoSensitivityplot())
-            } else {
-                myECDFplot <- if(orderingOnelev() == "BMDorder_onelev") {TRUE} else {FALSE}
-                mysensitivityplot <- DRomics::sensitivityplot(myextendedmergeddata, 
-                                                              BMDtype = BMDtype(), 
-                                                              group = mypathclasslabel,
-                                                              ECDF_plot = myECDFplot,
-                                                              BMDsummary = BMDsummarysensitivityPlot(), 
-                                                              BMD_log_transfo = BMDlogtransfoSensitivityplot())
-            }
+            use.args <- rep(TRUE, 7)                                    # 7 arguments used in the sensitivityplot function
+            if(input$nbLevel == 1) {use.args[4] <- FALSE}               # use.args[4] = colorby
+            mysensitivityplot <- do.call("sensitivityplot", list(
+              extendedres = myextendedmergeddata4ggplot, 
+              BMDtype = BMDtype(), 
+              group = mypathclasslabel,
+              colorby = "experimental_level",
+              ECDF_plot = if(input$nbLevel == 1) {if(orderingOnelev() == "BMDorder_onelev") {TRUE} else {FALSE}} else {FALSE},
+              BMDsummary = BMDsummarysensitivityPlot(), 
+              BMD_log_transfo = BMDlogtransfoSensitivityplot()
+            )[use.args])
             
             mysensitivityplot <- mysensitivityplot + ggplot2::theme_bw() + theme(text = element_text(size = 18))
             
@@ -367,17 +361,14 @@ server <- function(input, output, session) {
         
         ############ trend plot ############
         output$trendplot <- renderPlot({
-          myextendedmergeddata <- sortlevels4ggplot(myextendedmergeddata, mypathclasslabel)
-          if(input$nbLevel > 1) {
-            mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
-                                              group = mypathclasslabel, 
-                                              facetby = "experimental_level", 
-                                              add.color = TRUE)
-          } else {
-            mytrendplot <- DRomics::trendplot(myextendedmergeddata, 
-                                              group = mypathclasslabel, 
-                                              add.color = TRUE)
-          }
+          use.args <- rep(TRUE, 4)                                    # 4 arguments used in the trendplot function
+          if(input$nbLevel == 1) {use.args[3] <- FALSE}               # use.args[3] = facetby
+          mytrendplot <- do.call("trendplot", list(
+            extendedres = myextendedmergeddata4ggplot, 
+            group = mypathclasslabel,
+            facetby = "experimental_level", 
+            add.color = TRUE
+          )[use.args])
           
           mytrendplot <- mytrendplot + ggplot2::theme_bw() + theme(text = element_text(size = 18))
           
@@ -760,7 +751,7 @@ server <- function(input, output, session) {
       myfacetbycolumnsCurvesplot <- fnvaluecheckbox(facetbycolumnsCurvesplot(), myextendedresforCurvesplot$mypathclasslabel)
       myfacetbyrowsCurvesplot <- fnvaluecheckbox(facetbyrowsCurvesplot(), myextendedresforCurvesplot$mypathclasslabel)
       
-      use.args <- rep(TRUE, 10)
+      use.args <- rep(TRUE, 10)                                   # 10 arguments used in the curvesplot function
       if(input$nbLevel == 1) {use.args[9] <- FALSE}               # use.args[9] = facetby2
       if(!isTRUE(colorbyCurvesplot())) {use.args[10] <- FALSE}    # use.args[10] = colorby
       
