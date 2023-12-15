@@ -479,9 +479,7 @@ server <- function(input, output, session) {
     })
     
     extendedresforBMD <- eventReactive(input$buttonRunStep3, {
-        validate(
-            need(input$annotcheckboxBMDplot, "Please choose at least one annotation")
-        )
+        validate(need(input$annotcheckboxBMDplot, "Please choose at least one annotation"))
         sortextendedres <- sortextendedres()
         myextendedmergeddata <- sortextendedres$myextendedmergeddata
         mypathclasslabel <- sortextendedres$mypathclasslabel
@@ -490,138 +488,54 @@ server <- function(input, output, session) {
                     "mypathclasslabel" = mypathclasslabel))
     })
     
-    ############ BMD plot ############
+
     output$bmdplot <- renderPlot({
         
         myextendedresforBMD <- extendedresforBMD()
         myfacetbycolumnsBMDplot <- fnvaluecheckbox(facetbycolumnsBMDplot(), myextendedresforBMD$mypathclasslabel)
         myfacetbyrowsBMDplot <- fnvaluecheckbox(facetbyrowsBMDplot(), myextendedresforBMD$mypathclasslabel)
         
-        if(isTRUE(shapebyBMDplot())) {
-            if(input$nbLevel > 1) {
-                mybmdplotwithgradient <- DRomics::bmdplotwithgradient(myextendedresforBMD$myextendedresforBMD,
-                                                                      xmin = xmin_bmdplotwotgradient(),
-                                                                      xmax = maxDoseXScale(),
-                                                                      scaling = TRUE,
-                                                                      facetby = myfacetbycolumnsBMDplot,
-                                                                      facetby2 = myfacetbyrowsBMDplot,
-                                                                      shapeby = "trend",
-                                                                      add.label = addlabelBMDplot(),
-                                                                      BMD_log_transfo = BMDlogtransfoBMDplot())
-            } else {
-                mybmdplotwithgradient <- DRomics::bmdplotwithgradient(myextendedresforBMD$myextendedresforBMD,
-                                                                      xmin = xmin_bmdplotwotgradient(),
-                                                                      xmax = maxDoseXScale(),
-                                                                      scaling = TRUE,
-                                                                      facetby = myfacetbycolumnsBMDplot,
-                                                                      shapeby = "trend",
-                                                                      add.label = addlabelBMDplot(),
-                                                                      BMD_log_transfo = BMDlogtransfoBMDplot())
-            }
-            
-            if(isTRUE(colorbyBMDplot())) {
-                if(input$nbLevel > 1) {
-                    mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
-                                                  facetby = myfacetbycolumnsBMDplot,
-                                                  facetby2 = myfacetbyrowsBMDplot,
-                                                  shapeby = "trend",
-                                                  colorby = "trend",
-                                                  add.CI = addciBMDplot(),
-                                                  add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
-                } else {
-                    mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
-                                                  facetby = myfacetbycolumnsBMDplot,
-                                                  shapeby = "trend",
-                                                  colorby = "trend",
-                                                  add.CI = addciBMDplot(),
-                                                  add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
-                }
-            } else {
-                if(input$nbLevel > 1) {
-                    mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
-                                                  facetby = myfacetbycolumnsBMDplot,
-                                                  facetby2 = myfacetbyrowsBMDplot,
-                                                  shapeby = "trend",
-                                                  add.CI = addciBMDplot(),
-                                                  add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
-                    
-                } else {
-                    mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
-                                                  facetby = myfacetbycolumnsBMDplot,
-                                                  shapeby = "trend",
-                                                  add.CI = addciBMDplot(),
-                                                  add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
-                }
-            }
-        } else {
-            if(input$nbLevel > 1) {
-                mybmdplotwithgradient <- DRomics::bmdplotwithgradient(myextendedresforBMD$myextendedresforBMD,
-                                                                      xmin = xmin_bmdplotwotgradient(),
-                                                                      xmax = maxDoseXScale(),
-                                                                      scaling = TRUE,
-                                                                      facetby = myfacetbycolumnsBMDplot,
-                                                                      facetby2 = myfacetbyrowsBMDplot,
-                                                                      add.label = addlabelBMDplot(),
-                                                                      BMD_log_transfo = BMDlogtransfoBMDplot())
-            } else {
-                mybmdplotwithgradient <- DRomics::bmdplotwithgradient(myextendedresforBMD$myextendedresforBMD,
-                                                                      xmin = xmin_bmdplotwotgradient(),
-                                                                      xmax = maxDoseXScale(),
-                                                                      scaling = TRUE,
-                                                                      facetby = myfacetbycolumnsBMDplot,
-                                                                      add.label = addlabelBMDplot(),
-                                                                      BMD_log_transfo = BMDlogtransfoBMDplot())
-            }
-            if(isTRUE(colorbyBMDplot())) {
-                if(input$nbLevel > 1) {
-                    mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
-                                                  facetby = myfacetbycolumnsBMDplot,
-                                                  facetby2 = myfacetbyrowsBMDplot,
-                                                  colorby = "trend",
-                                                  add.CI = addciBMDplot(),
-                                                  add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
-                } else {
-                    mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
-                                                  facetby = myfacetbycolumnsBMDplot,
-                                                  colorby = "trend",
-                                                  add.CI = addciBMDplot(),
-                                                  add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
-                }
-            } else {
-                if(input$nbLevel > 1) {
-                    mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
-                                                  facetby = myfacetbycolumnsBMDplot,
-                                                  facetby2 = myfacetbyrowsBMDplot,
-                                                  add.CI = addciBMDplot(),
-                                                  add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
-                } else {
-                    mybmdplot <- DRomics::bmdplot(myextendedresforBMD$myextendedresforBMD,
-                                                  facetby = myfacetbycolumnsBMDplot,
-                                                  add.CI = addciBMDplot(),
-                                                  add.label = addlabelBMDplot(),
-                                                  BMD_log_transfo = BMDlogtransfoBMDplot())
-                }
-            }
-        }
+        ############ bmdplot plot ############
+        use.args <- rep(TRUE, 7)                                    # 7 arguments used in the bmdplot function
+        if(input$nbLevel == 1) {use.args[3] <- FALSE}               # use.args[3] = facetby2
+        if(!isTRUE(shapebyBMDplot())) {use.args[4] <- FALSE}        # use.args[4] = shapeby
+        if(!isTRUE(colorbyBMDplot())) {use.args[5] <- FALSE}        # use.args[5] = colorby
+        
+        mybmdplot <- do.call("bmdplot", list(
+          extendedres = myextendedresforBMD$myextendedresforBMD,
+          facetby = myfacetbycolumnsBMDplot,
+          facetby2 = myfacetbyrowsBMDplot,
+          shapeby = "trend",
+          colorby = "trend",
+          add.label = addlabelBMDplot(),
+          BMD_log_transfo = BMDlogtransfoBMDplot()
+        )[use.args])
         
         mybmdplot <- mybmdplot + ggplot2::theme_bw() + theme(text = element_text(size = 18))
-        mybmdplotwithgradient <- mybmdplotwithgradient + theme(text = element_text(size = 18))
-        
         output$buttonDownloadBMDplot <- downloadHandler(
-            filename = function() {"bmdplot.pdf"},
-            content = function(file) {ggplot2::ggsave(file, plot = mybmdplot, device = "pdf", height = 8.5, width = 13)}
+          filename = function() {"bmdplot.pdf"},
+          content = function(file) {ggplot2::ggsave(file, plot = mybmdplot, device = "pdf", height = 8.5, width = 13)}
         )
         
-        ############ BMD plot with gradient ############
+        ############ bmdplotwithgradient plot ############
+        use.args <- rep(TRUE, 9)                                    # 9 arguments used in the bmdplotwithgradient function
+        if(input$nbLevel == 1) {use.args[6] <- FALSE}               # use.args[6] = facetby2
+        if(!isTRUE(shapebyBMDplot())) {use.args[7] <- FALSE}        # use.args[7] = shapeby
+        
+        mybmdplotwithgradient <- do.call("bmdplotwithgradient", list(
+          extendedres = myextendedresforBMD$myextendedresforBMD,
+          xmin = xmin_bmdplotwotgradient(),
+          xmax = maxDoseXScale(),
+          scaling = TRUE,
+          facetby = myfacetbycolumnsBMDplot,
+          facetby2 = myfacetbyrowsBMDplot,
+          shapeby = "trend",
+          add.label = addlabelBMDplot(),
+          BMD_log_transfo = BMDlogtransfoBMDplot()
+        )[use.args])
+        
+        mybmdplotwithgradient <- mybmdplotwithgradient + theme(text = element_text(size = 18))
         output$bmdplotwithgradient <- renderPlot({
-            
             output$buttonDownloadBMDplotwithgradient <- downloadHandler(
                 filename = function() {"bmdplotwithgradient.pdf"},
                 content = function(file) {ggplot2::ggsave(file, plot = mybmdplotwithgradient, device = "pdf", height = 8.5, width = 13)}
