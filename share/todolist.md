@@ -48,8 +48,8 @@ ne permet plus d'afficher les labels des groupes
 uniquement sur les points et pas sur l'axe des y (A)
 1. [X] Améliorer le texte qui accompagne les fichiers de données exemples dans DRomicsInterpreter-shiny
 1. [ ] Améliorer les formats de sorties des figures shiny en les regardant sur un portable. Le format par défaut carré ne convient pas toujours (A) Shiny1 step 1 (hauteur = largeur /2), step4 pour le 1er plot (hauteur = largeur /2 et sortie pdf en format paysage), Shiny 2, toujours mettre les figures l'une sous l'autre (hauteur = largeur / 2 ou un peu moins) et trendplot, sensivityplot, bmdplot,  bmdplotwithgradient et curves downloadé en format paysage. 
-1. [ ] Vérifier qu'on a bien indiqué partout là où on doit entrer des données
-que le séparateur de décimales devait être un point (ML ajout dans vignette et.Rd FAIT, A ajouter dans l'appli shiny 1).
+1. [X] Vérifier qu'on a bien indiqué partout là où on doit entrer des données
+que le séparateur de décimales devait être un point (ML ajout dans vignette et.Rd, A ajouter dans l'appli shiny 1).
 1. [ ] Vérifier le pb du download depuis chrome / machine biosphere au step 4  de l'appli shiny 1
 
 ## Shorter term
