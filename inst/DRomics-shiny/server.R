@@ -155,7 +155,6 @@ server <- function(input, output, session) {
   
   numZbmdcalc <- eventReactive(input$buttonRunStep4, {as.numeric(input$zbmdcalc)})
   numXbmdcalc <- eventReactive(input$buttonRunStep4, {as.numeric(input$xbmdcalc)})
-  myplottype <- eventReactive(input$buttonRunStep4, {input$plottype})
   
   output$printBmdcalc <- renderPrint({
     
@@ -168,35 +167,34 @@ server <- function(input, output, session) {
     mybmdcalcdigits[, idx] <- signif(mybmdcalcdigits[, idx], digits = 4)
     
     # build the plot
-    data_DR <- reactiveValues()
-    data_DR$plot1_step4 <- 
-      if(myplottype() == 'ecdfcolorgradient') {
-        if(input$splitby == 'none') {
-          bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
-                              BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
-                              add.label = as.logical(input$label_ecdfgradient))
-        } else {
-          bmdplotwithgradient(mybmdcalc$res, BMDtype = input$BMDtype, 
-                              facetby = input$splitby,
-                              BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
-                              add.label = as.logical(input$label_ecdfgradient))
-        }
+    myplottype <- input$plottype
+    if(myplottype == 'ecdfcolorgradient') {
+      use.args <- rep(TRUE, 5)                                    # 5 arguments used in the bmdplotwithgradient function
+      if(input$splitby == 'none') {use.args[3] <- FALSE}          # use.args[3] = facetby
+      
+      plot1_step4 <- do.call("bmdplotwithgradient", list(
+        extendedres = mybmdcalc$res, 
+        BMDtype = input$BMDtype, 
+        facetby = input$splitby,
+        BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
+        add.label = as.logical(input$label_ecdfgradient)))
         
         ##### ecdf #####
-      } else if(myplottype() == 'ecdf') {
-        plot(mybmdcalc, BMDtype = input$BMDtype, 
+      } else if(myplottype == 'ecdf') {
+        plot1_step4 <- plot(mybmdcalc, BMDtype = input$BMDtype, 
              plottype = 'ecdf', 
              by = input$splitby, 
              hist.bins = input$histbin, 
              BMD_log_transfo = as.logical(input$logbmd_ecdf))
         
       } else {
-        plot(mybmdcalc, BMDtype = input$BMDtype, 
-             plottype = myplottype(), 
+        plot1_step4 <- plot(mybmdcalc, BMDtype = input$BMDtype, 
+             plottype = myplottype, 
              by = input$splitby, 
              hist.bins = input$histbin)
-      }  + 
-      ggplot2::theme_bw()
+      }  
+    
+    plot1_step4 <- plot1_step4 + ggplot2::theme_bw()
     
     # activate buttons
     shinyjs::enable("buttonResBmdcalc")
@@ -221,7 +219,7 @@ server <- function(input, output, session) {
     
     # to print the first plot (panel 4) in the interface
     output$plotBmdcalc <- renderPlot({
-      data_DR$plot1_step4
+      plot1_step4
     })
     
     ## to download the first plot (panel 4)
@@ -230,7 +228,7 @@ server <- function(input, output, session) {
         paste0("data-", Sys.Date(), ".", input$fileformat_bmdcalc)
       },
       content = function(file) {
-        ggplot2::ggsave(file, plot = data_DR$plot1_step4, device = input$fileformat_bmdcalc,
+        ggplot2::ggsave(file, plot = plot1_step4, device = input$fileformat_bmdcalc,
                         height = 8.5, width = 11)
       }
     )
