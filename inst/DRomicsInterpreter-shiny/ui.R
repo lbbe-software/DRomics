@@ -315,7 +315,7 @@ ui <- fluidPage(
                             ))),
                         wellPanel(
                           fixedRow(
-                            column(2, 
+                            column(3, 
                                    checkboxInput("addciBMDplot", label = HTML("<b>Add CI</b> (only for the BMD plot without gradient)"), value = FALSE),
                                    checkboxInput("BMDlogtransfoBMDplot", label = HTML("<b>Log transformation of the BMD</b>"), value = FALSE),
                                    checkboxInput("addlabelBMDplot", label = HTML("<b>Add labels</b>"), value = FALSE)
@@ -332,7 +332,7 @@ ui <- fluidPage(
                                                                                 "Experimental level" = "explevel")
                                                     ))
                             ),
-                            column(2,
+                            column(3,
                                    fixedRow(
                                      checkboxInput("shapebyBMDplot", label = HTML("<b>Shape by trend</b>"), value = FALSE),
                                      checkboxInput("colorbyBMDplot", label = HTML("<b>Color by trend</b> (only for the BMD plot without gradient)"), value = FALSE)
@@ -378,7 +378,7 @@ ui <- fluidPage(
                             ))),
                         wellPanel(
                           fixedRow(
-                            column(3, 
+                            column(4, 
                                    splitLayout(cellWidths = c("60%", "40%"),
                                                checkboxInput("doselogtransfoCurvesplot", label = HTML("<b>Dose log transformation</b>"), value = FALSE),
                                                shinyBS::bsButton("helplabel1step4", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
