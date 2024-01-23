@@ -306,12 +306,12 @@ server <- function(input, output, session) {
               if(input$plottype == 'ecdfcolorgradient') {
                 if(input$splitby == 'none') {
                   paste0("bmdplotwithgradient(r$res, BMDtype = '", input$BMDtype, 
-                         ", BMD_log_transfo = ", as.logical(input$logbmd_ecdfgradient), ", add.label = ", as.logical(input$label_ecdfgradient), 
-                         ") + ggplot2::theme_bw()")
+                         "', BMD_log_transfo = ", as.logical(input$logbmd_ecdfgradient), ", add.label = ", as.logical(input$label_ecdfgradient), 
+                         ")")
                 } else {
                   paste0("bmdplotwithgradient(r$res, BMDtype = '", input$BMDtype, 
-                         ", BMD_log_transfo = ", as.logical(input$logbmd_ecdfgradient), ", add.label = ", as.logical(input$label_ecdfgradient), 
-                         ", facetby = '", input$splitby, "') + ggplot2::theme_bw()")
+                         "', BMD_log_transfo = ", as.logical(input$logbmd_ecdfgradient), ", add.label = ", as.logical(input$label_ecdfgradient), 
+                         ", facetby = '", input$splitby, "')")
                 }
               } else if(input$plottype == 'ecdf') {
                   paste0("plot(r, BMDtype = '", input$BMDtype, "', plottype = 'ecdf', by = '", input$splitby, "', hist.bins = ", 
