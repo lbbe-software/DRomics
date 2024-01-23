@@ -177,7 +177,8 @@ server <- function(input, output, session) {
         BMDtype = input$BMDtype, 
         facetby = input$splitby,
         BMD_log_transfo = as.logical(input$logbmd_ecdfgradient),
-        add.label = as.logical(input$label_ecdfgradient)))
+        add.label = as.logical(input$label_ecdfgradient)
+        )[use.args])
         
         ##### ecdf #####
       } else if(myplottype == 'ecdf') {
