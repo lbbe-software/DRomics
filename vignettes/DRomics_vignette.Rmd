@@ -154,11 +154,13 @@ using a RNAseq dataset of the package coded as an R object named zebraf.
 # Load and look at the data as initially coded
 data(zebraf)
 str(zebraf)
+(samples <- colnames(zebraf$counts))
 
 # Formatting of data for use in DRomics
 # 
 data4DRomics <- formatdata4DRomics(signalmatrix = zebraf$counts, 
-                           dose = zebraf$dose)
+                           dose = zebraf$dose, 
+                           samplenames = samples)
 # Look at the dataset coded as an R object
 nrow(data4DRomics)
 head(data4DRomics)
@@ -422,6 +424,9 @@ data4DRomics <- formatdata4DRomics(signalmatrix = zebraf$counts,
 # Importation of data just to use DRomics functions
 # As only raw data will be given to ComBat_seq after
 (o <- RNAseqdata(data4DRomics))
+
+# PCA plot with the sample labels
+PCAdataplot(o, label = TRUE) + theme_bw()
 
 # PCA plot to visualize the batch effect
 PCAdataplot(o, batch = zebraf$batch) + theme_bw()
