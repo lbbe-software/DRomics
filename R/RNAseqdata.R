@@ -164,14 +164,21 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
   tdata <- t(data)
   calcmean <- function(i)
   {
-  #   tapply(data[i,], fdose, mean)
     tapply(tdata[, i], fdose, mean)
   }
   s <- sapply(1:(nrowd - 1), calcmean)
   data.mean <- as.matrix(t(s))
+
+  calcsd <- function(i)
+  {
+    tapply(tdata[, i], fdose, sd)
+  }
+  s <- sapply(1:(nrowd - 1), calcsd)
+  data.sd <- as.matrix(t(s))
   
   reslist <- list(data = data, dose = dose, item = item, 
                   design = design, data.mean = data.mean, 
+                  data.sd = data.sd,
                   transfo.method = transfo.method, raw.counts = raw.counts,
                   containsNA = FALSE)  
   
@@ -202,7 +209,7 @@ print.RNAseqdata <- function(x, ...)
                      and tranformed using the following method: ", x$transfo.method)), fill = TRUE)
 }
 
-plot.RNAseqdata <- function(x, range4boxplot = 1e6, ...) 
+plot.RNAseqdata <- function(x, range4boxplot = 0, ...) 
 {
   if (!inherits(x, "RNAseqdata"))
     stop("Use only with 'RNAseqdata' objects.")

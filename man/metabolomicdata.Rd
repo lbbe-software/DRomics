@@ -37,7 +37,7 @@ continuousomicdata(file, backgrounddose, check = TRUE)
 metabolomicdata(file, backgrounddose, check = TRUE)
 
 \method{print}{continuousomicdata}(x, \dots)
-\method{plot}{continuousomicdata}(x, range4boxplot = 1e6, \dots)
+\method{plot}{continuousomicdata}(x, range4boxplot = 0, \dots)
 }
 
 \arguments{
@@ -65,7 +65,7 @@ alternatives are illustrated below in examples.}
 
 \item{x}{An object of class \code{"continuousomicdata"}.}
 
-\item{range4boxplot}{An argument passed to boxplot(), fixed by default at 1e6 
+\item{range4boxplot}{An argument passed to boxplot(), fixed by default at 0 
   to prevent the producing of very large plot files due to many outliers. 
   Can be put at 1.5 to obtain more classical boxplots.}
 
@@ -94,7 +94,7 @@ BMD calculation)
 
 \value{ 
    \code{continuousomicdata()} returns an object of class "continuousomicdata", 
-   a list with 5 components:
+   a list with 7 components:
     \item{data}{ the numeric matrix of responses of each item in each replicate
   (one line per item, one column per replicate)  }
 
@@ -110,6 +110,10 @@ BMD calculation)
     \item{data.mean}{ the numeric matrix of mean responses of each item per dose (mean 
     of the corresponding replicates) (one line per item, one column per unique value 
     of the dose}
+    
+    \item{data.sd}{ the numeric matrix of standard deviations of the response of each 
+   item per dose (sd of the corresponding replicates, NA if no replicate) 
+   (one line per item, one column per unique value of the dose)}
 
     \item{containsNA}{ TRUE if the data set contains NA values}
 

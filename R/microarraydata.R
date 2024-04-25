@@ -94,8 +94,16 @@ microarraydata <- function(file, backgrounddose, check = TRUE,
   s <- sapply(1:(nrowd - 1), calcmean)
   data.mean <- as.matrix(t(s))
   
+  calcsd <- function(i)
+  {
+    tapply(tdata[, i], fdose, sd)
+  }
+  s <- sapply(1:(nrowd - 1), calcsd)
+  data.sd <- as.matrix(t(s))
+  
   reslist <- list(data = data, dose = dose, item = item, 
-                  design = design, data.mean = data.mean, 
+                  design = design, data.mean = data.mean,
+                  data.sd = data.sd,
                   norm.method = norm.method, data.beforenorm = data.beforenorm,
                   containsNA = FALSE)  
   
@@ -126,7 +134,7 @@ print.microarraydata <- function(x, ...)
     cat("Data were normalized between arrays using the following method:", x$norm.method, "\n")
 }
 
-plot.microarraydata <- function(x, range4boxplot = 1e6, ...) 
+plot.microarraydata <- function(x, range4boxplot = 0, ...) 
 {
   if (!inherits(x, "microarraydata"))
     stop("Use only with 'microarraydata' objects.")

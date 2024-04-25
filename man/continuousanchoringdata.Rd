@@ -62,7 +62,7 @@ the number of replicates for each dose, the number of endpoints.
 }
 
 \value{ 
-   \code{continuousanchoringdata} returns an object of class "continuousanchoringdata", a list with 5 components:
+   \code{continuousanchoringdata} returns an object of class "continuousanchoringdata", a list with 7 components:
     \item{data}{ the numeric matrix of responses of each item in each replicate
   (one line per item, one column per replicate)  }
 
@@ -79,6 +79,10 @@ the number of replicates for each dose, the number of endpoints.
     of the corresponding replicates) (one line per item, one column per unique value 
     of the dose}
     
+    \item{data.sd}{ the numeric matrix of standard deviations of the response of each 
+    item per dose (sd of the corresponding replicates, NA if no replicate) 
+    (one line per item, one column per unique value of the dose)}
+
     \item{containsNA}{ TRUE if the data set contains NA values}
 
   The print of a \code{continuousanchoringdata} object gives the tested doses (or concentrations) 

@@ -128,8 +128,17 @@ continuousomicdata <- function(file, backgrounddose, check = TRUE)
   s <- sapply(1:(nrowd - 1), calcmean)
   data.mean <- as.matrix(t(s))
   
+  calcsd <- function(i)
+  {
+    tapply(tdata[, i], fdose, sd)
+  }
+  s <- sapply(1:(nrowd - 1), calcsd)
+  data.sd <- as.matrix(t(s))
+  
+  
   reslist <- list(data = data, dose = dose, item = item, 
                   design = design, data.mean = data.mean,
+                  data.sd = data.sd,
                   containsNA = containsNA)  
   
   return(structure(reslist, class = "continuousomicdata"))
@@ -168,7 +177,7 @@ print.continuousomicdata <- function(x, ...)
   }
 }
 
-plot.continuousomicdata <- function(x, range4boxplot = 1e6, ...) 
+plot.continuousomicdata <- function(x, range4boxplot = 0, ...) 
 {
   if (!inherits(x, "continuousomicdata"))
     stop("Use only with 'continuousomicdata' objects.")
