@@ -1,6 +1,15 @@
 # DRomics (development version)
 
 NEW FEATURES
+- add of a component in the output of RNAseqdata, continuousomicdata(),  continuousanchoringdata(), microarraydata() and (data.sd, which gives, for each item, the sd of the response per condition - NA if no replicate for a condition).
+
+BUG FIXES
+- add the sample names in column names of the output of formatdata4DRomics.
+- change the default value of range4boxplot (in plot.RNAseqdata(), plot.continuousomicdata(), plot.microarraydata()) to 0 instead of 1e6 so that whiskers always go to the extrems.
+
+# DRomics 2.5-2
+
+NEW FEATURES
 
 - Put the argument dose_log_transfo by default at TRUE in functions plot.drcfit(), plotfit2pdf(), targetplot() and BMD_log_transfo at TRUE in functions bmdplot(), bmdplotwithgradient() and sensitivityplot().
 - Add of the argument BMD_log_transfo by default at TRUE in functions plot.bmdcalc() and plot.bmdboot().

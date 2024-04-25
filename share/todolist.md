@@ -51,6 +51,8 @@ uniquement sur les points et pas sur l'axe des y (A)
 1. [X] Vérifier qu'on a bien indiqué partout là où on doit entrer des données
 que le séparateur de décimales devait être un point (ML ajout dans vignette et.Rd, A ajouter dans l'appli shiny 1).
 1. [ ] Vérifier le pb du download depuis chrome / machine biosphere au step 4  de l'appli shiny 1
+1.[ ] Voir si on peut ajouter les "sample names" dans le graphe des boxplot par échantillon
+1.[ ] ajouter une fonction simple qui fait une procédure d'enrichissement.
 
 ## Shorter term
 
