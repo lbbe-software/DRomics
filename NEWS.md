@@ -2,6 +2,7 @@
 
 NEW FEATURES
 - add of a component in the output of RNAseqdata, continuousomicdata(),  continuousanchoringdata(), microarraydata() and (data.sd, which gives, for each item, the sd of the response per condition - NA if no replicate for a condition).
+- add a new argument in drcfit(), named deltaAICminfromnullmodel, in order to relax requirements on the information criterion to keep the best fitted model (see ? drcfit()).
 
 BUG FIXES
 - add the sample names in column names of the output of formatdata4DRomics.

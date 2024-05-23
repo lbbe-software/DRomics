@@ -1,6 +1,7 @@
 ### fit different models to each dose-response curve and choose the best fit 
 drcfit <- function(itemselect,  
                    information.criterion = c("AICc", "BIC", "AIC"),
+                   deltaAICminfromnullmodel = 2,
                    postfitfilter = TRUE,
                    preventsfitsoutofrange = TRUE,
                    enablesfequal0inGP = TRUE,
@@ -431,7 +432,7 @@ drcfit <- function(itemselect,
         # being the null model : nb. 6
         indmodeli <- which.min(AICvec)
         AICmin <- AICvec[indmodeli]
-        if (AICmin > AICconsti - 2) # we keep the null model
+        if (AICmin > AICconsti - deltaAICminfromnullmodel) # we keep the null model
         {
             fit <- constmodel
             indmodeli <- 6 # constant model

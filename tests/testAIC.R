@@ -12,9 +12,12 @@ if (visualize)
   (fAIC <- drcfit(s_quad, information.criterion = "AIC", progressbar = TRUE))
   (fAICc <- drcfit(s_quad, information.criterion = "AICc", progressbar = TRUE))
   (fBIC <- drcfit(s_quad, information.criterion = "BIC", progressbar = TRUE))
+  (fAICcrelaxed <- drcfit(s_quad, information.criterion = "AICc", deltaAICminfromnullmodel = 0, progressbar = TRUE))
+  
   
   table(fAIC$fitres$model)
   table(fAICc$fitres$model)
+  table(fAICcrelaxed$fitres$model)
   table(fBIC$fitres$model)
   
   head(fAIC$information.criterion.val)
@@ -82,10 +85,13 @@ if (visualize)
   (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.01))
   (fAIC <- drcfit(s_quad, information.criterion = "AIC", progressbar = TRUE))
   (fAICc <- drcfit(s_quad, information.criterion = "AICc", progressbar = TRUE))
+  (fAICcrelaxed <- drcfit(s_quad, information.criterion = "AICc", 
+                          deltaAICminfromnullmodel = 0, progressbar = TRUE))
   (fBIC <- drcfit(s_quad, information.criterion = "BIC", progressbar = TRUE))
   
   table(fAIC$fitres$model)
   table(fAICc$fitres$model)
+  table(fAICcrelaxed$fitres$model)
   table(fBIC$fitres$model)
   
   table(fAIC$fitres$nbpar)

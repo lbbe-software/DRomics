@@ -53,6 +53,7 @@ que le séparateur de décimales devait être un point (ML ajout dans vignette e
 1. [ ] Vérifier le pb du download depuis chrome / machine biosphere au step 4  de l'appli shiny 1
 1.[ ] Voir si on peut ajouter les "sample names" dans le graphe des boxplot par échantillon
 1.[ ] ajouter une fonction simple qui fait une procédure d'enrichissement.
+1.[ ] comment deltaAICminfromnullmodel in the vignette / FAQ et give an example in .Rd and add defensive prog on its given value in input
 
 ## Shorter term
 

@@ -11,7 +11,8 @@ Fits dose reponse models to responsive items.
 
 \usage{
 drcfit(itemselect, 
-  information.criterion = c("AICc", "BIC", "AIC"), 
+  information.criterion = c("AICc", "BIC", "AIC"),
+  deltaAICminfromnullmodel = 2,
   postfitfilter = TRUE, preventsfitsoutofrange = TRUE, 
   enablesfequal0inGP = TRUE, enablesfequal0inLGP = TRUE,
   progressbar = TRUE, parallel = c("no", "snow", "multicore"), ncpus)
@@ -34,6 +35,12 @@ plotfit2pdf(x, items,
 \item{information.criterion}{The information criterion used to select the best fit model, \code{"AICc"} as recommended and default
   choice (the corrected version of the AIC that is recommended
   for small samples (see Burnham and Anderson 2004), \code{"BIC"} or \code{"AIC"}.}
+
+\item{deltaAICminfromnullmodel}{The minimal difference on the chosen information
+criterion (AICc, AIC or BIC) between the null model and the best fit model,
+requested to accept the fit with the bestfit model.
+It is by default fixed at 2 to keep only models which fit the data 
+clearly better than the null model, but it can be fixed at 0 to be less stringent.}
 
 \item{postfitfilter}{If \code{TRUE} fits with significant trends on residuals 
   (showing a global significant quadratic trend of the residuals
