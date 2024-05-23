@@ -58,7 +58,8 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">drcfit</span><span class="op">(</span><span class="va">itemselect</span>, </span>
-<span>  information.criterion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AICc"</span>, <span class="st">"BIC"</span>, <span class="st">"AIC"</span><span class="op">)</span>, </span>
+<span>  information.criterion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AICc"</span>, <span class="st">"BIC"</span>, <span class="st">"AIC"</span><span class="op">)</span>,</span>
+<span>  deltaAICminfromnullmodel <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  postfitfilter <span class="op">=</span> <span class="cn">TRUE</span>, preventsfitsoutofrange <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>  enablesfequal0inGP <span class="op">=</span> <span class="cn">TRUE</span>, enablesfequal0inLGP <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  progressbar <span class="op">=</span> <span class="cn">TRUE</span>, parallel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"snow"</span>, <span class="st">"multicore"</span><span class="op">)</span>, <span class="va">ncpus</span><span class="op">)</span></span>
@@ -87,6 +88,14 @@
 <dd><p>The information criterion used to select the best fit model, <code>"AICc"</code> as recommended and default
   choice (the corrected version of the AIC that is recommended
   for small samples (see Burnham and Anderson 2004), <code>"BIC"</code> or <code>"AIC"</code>.</p></dd>
+
+
+<dt>deltaAICminfromnullmodel</dt>
+<dd><p>The minimal difference on the chosen information
+criterion (AICc, AIC or BIC) between the null model and the best fit model,
+requested to accept the fit with the bestfit model.
+It is by default fixed at 2 to keep only models which fit the data 
+clearly better than the null model, but it can be fixed at 0 to be less stringent.</p></dd>
 
 
 <dt>postfitfilter</dt>
@@ -427,7 +436,7 @@ Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to sup
 <span class="r-in"><span><span class="co"># save all plots to pdf using plotfit2pdf()</span></span></span>
 <span class="r-in"><span><span class="fu">plotfit2pdf</span><span class="op">(</span><span class="va">f</span>, path2figs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Figures are stored in /tmp/RtmpwEmNWT.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Figures are stored in /tmp/RtmpRWCGXJ.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BB00;">log-10</span> transformation introduced infinite values.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BB00;">log-10</span> transformation introduced infinite values.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BB00;">log-10</span> transformation introduced infinite values.</span>
@@ -466,7 +475,7 @@ Schmitt-Jansen M and Delignette-Muller ML (2018). DRomics: a turnkey tool to sup
 <span class="r-in"><span><span class="fu">plotfit2pdf</span><span class="op">(</span><span class="va">f</span>, plot.type <span class="op">=</span> <span class="st">"fitted_residuals"</span>, </span></span>
 <span class="r-in"><span>  nrowperpage <span class="op">=</span> <span class="fl">9</span>, ncolperpage <span class="op">=</span> <span class="fl">6</span>, path2figs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Figures are stored in /tmp/RtmpwEmNWT.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Figures are stored in /tmp/RtmpRWCGXJ.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> agg_png </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       2 </span>
 <span class="r-in"><span></span></span>
