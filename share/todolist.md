@@ -57,10 +57,11 @@ que le séparateur de décimales devait être un point (ML ajout dans vignette e
 
 ## Shorter term
 
-1. [ ] Pour pouvoir faire facielment le curvesplot en log mettre une val par défaut à xmin (ML)
-1. [ ] Envisager la sortie de  figures en plotly, dans la vignette et dans l'appli shiny.
+1. [ ] Pour pouvoir faire facilement le curvesplot en log mettre une val par défaut à xmin (ML)
+1. [X] Envisager la sortie de  figures en plotly, dans la vignette et dans l'appli shiny.
 1. [ ] Refaire la cheat sheet avec les points sur le curvesplot et plus globalement les derniers rendus des 
 différentes figures
+1. [ ] Demander les données à Estelle Dubreil
 1. [ ] Inclure des tests avec le jeu de données d'Emilie pour NA entre autres
 1. [ ] Gérer les labels pour les IC sans valeur ponctuelle (cf. ex. Emilie)
 1. [ ] Ajouter une option dans le curvesplot qui permettrait d'inverser les U et les dec (par ex.) pour voir
@@ -69,7 +70,7 @@ comment ils collent en symétrie resp. aux belle et inc (ML après discussion av
 guider par le pathway (intéressant en interactif - à discuter !) (ML)
 1. [ ] revoir l'argument remove.infinite de plot.bmdboot, sa valeur par défaut et son fonctionnement, pour que ce soit harmonisé avec les valeurs par défaut 
 de bmdfilter (pb avec xfold, vérifier que ça marche bien) ou enlever cette fonctionnalité et considérer que c'est fait avec bmdfilter et quand ce n'est pas fait gérer graphiquement les infinis
-1. [ ] Ajouter des options "boxplot" dans BMDsummary de sensitivityplot(A)
+1. [ ] Ajouter des options "boxplot" dans BMDsummary de sensitivityplot (A)
 1. [ ] Essayer d'optimiser de façon automatique l'écart entre l'axe et les premiers points des doses non nulles pour que les graphes soient plus clairs (A ? pas sûre que ce soit possible)
 1. [ ] Add Danio rerio data in the package as another example for the functions for Dromics results interpretation (with or without enrichment and/or with outlier - elimination as in the paper (IRSN) ou un autre ex. (ML)
 1. [ ] Ajouter un ou deux sous-niveaux dans la vignette à laquelle on accède depuis GitHub (A) IMPOSSIBLE à cause des configurations de pkgdown ! Restructurer la vignette pour que la navigation soit plus simple - en parallèle de la rédaction de la FAQ dans laquelle basculeront des morceaux de la vignette en faisant attention à maintenir les liens de l'article PCI
