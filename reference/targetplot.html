@@ -132,6 +132,8 @@ and for which a best fit model was obtained.</p></dd>
 <span class="r-plt img"><img src="targetplot-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The same plot in x log scale choosing x limits for plot</span></span></span>
+<span class="r-in"><span><span class="co"># to enlarge the space between the control and the non null doses</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">targetplot</span><span class="op">(</span><span class="va">targetitems</span>, f <span class="op">=</span> <span class="va">f</span>, dose_log_transfo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> </span></span>
 <span class="r-in"><span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>

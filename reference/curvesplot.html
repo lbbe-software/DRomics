@@ -63,11 +63,11 @@ additional information (e.g. groups from functional annotation) used to color an
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">extendedres</span>, xmin <span class="op">=</span> <span class="fl">0</span>, <span class="va">xmax</span>, y0shift <span class="op">=</span> <span class="cn">TRUE</span>, scaling <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">extendedres</span>, <span class="va">xmin</span>, <span class="va">xmax</span>, y0shift <span class="op">=</span> <span class="cn">TRUE</span>, scaling <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                       <span class="va">facetby</span>, <span class="va">facetby2</span>, free.y.scales <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">ncol4faceting</span>,</span>
 <span>                       <span class="va">colorby</span>, removelegend <span class="op">=</span> <span class="cn">FALSE</span>,  </span>
 <span>                        npoints <span class="op">=</span> <span class="fl">500</span>, line.size <span class="op">=</span> <span class="fl">0.5</span>, </span>
-<span>                        line.alpha <span class="op">=</span> <span class="fl">0.8</span>, dose_log_transfo <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                        line.alpha <span class="op">=</span> <span class="fl">0.8</span>, dose_log_transfo <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                       addBMD <span class="op">=</span> <span class="cn">TRUE</span>, BMDtype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"zSD"</span>, <span class="st">"xfold"</span><span class="op">)</span>, </span>
 <span>                       point.size <span class="op">=</span> <span class="fl">1</span>, point.alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -75,23 +75,25 @@ additional information (e.g. groups from functional annotation) used to color an
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>extendedres</dt>
-<dd><p>the dataframe of results provided by bmdcalc (res) or drcfit (fitres) 
+<dd><p>the dataframe of results provided by bmdcalc (res)
  or a subset of this data frame (selected lines). This dataframe can be extended 
  with additional columns coming for example from the annotation of items, and some lines 
  can be replicated if their corresponding item has more than one annotation. 
  This extended dataframe
  must at least contain the column giving the identification of each curve (<code>id</code>),
  the column <code>model</code> naming the fitted model and the values of 
-the parameters (columns <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code>, <code>f</code>).</p></dd>
+the parameters (columns <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code>, <code>f</code>) and 
+a column coding for the chosen BMD, by default <code>BMD.zSD</code> or <code>BMD.xfold</code>
+<code>BMDtype</code> is to <code>"xfold"</code>.</p></dd>
 
 
 <dt>xmin</dt>
-<dd><p>Minimal dose/concentration for definition of the x range (by default 0).</p></dd>
+<dd><p>If not defined, a value just below the maximum BMD values is fixed if the x  dose scale is in log, or 0 otherwise.</p></dd>
 
 
 <dt>xmax</dt>
 <dd><p>Maximal dose/concentration for definition of the x range (can be defined 
- as <code>max(f$omicdata$dose)</code> with <code>f</code> the output of <code><a href="drcfit.html">drcfit()</a></code>).</p></dd>
+ as <code>max(f$omicdata$dose)</code> with <code>f</code> the output of <code><a href="drcfit.html">drcfit()</a></code>). If not defined, a value just above the maximum BMD values is taken.</p></dd>
 
 
 <dt>y0shift</dt>
@@ -210,29 +212,27 @@ are used to compute theoretical dose-response curves in the range
 <span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="drcfit.html">drcfit</a></span><span class="op">(</span><span class="va">s_quad</span>, progressbar <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The fitting may be long if the number of selected items is high.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |====                                                                  |   6%  |                                                                              |========                                                              |  12%  |                                                                              |============                                                          |  18%  |                                                                              |================                                                      |  24%  |                                                                              |=====================                                                 |  29%  |                                                                              |=========================                                             |  35%  |                                                                              |=============================                                         |  41%  |                                                                              |=================================                                     |  47%  |                                                                              |=====================================                                 |  53%  |                                                                              |=========================================                             |  59%  |                                                                              |=============================================                         |  65%  |                                                                              |=================================================                     |  71%  |                                                                              |======================================================                |  76%  |                                                                              |==========================================================            |  82%  |                                                                              |==============================================================        |  88%  |                                                                              |==================================================================    |  94%  |                                                                              |======================================================================| 100%</span>
+<span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="bmdcalc.html">bmdcalc</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># (1.a) </span></span></span>
-<span class="r-in"><span><span class="co"># Default plot of all the curves </span></span></span>
+<span class="r-in"><span><span class="co"># Default plot of all the curves with BMD values added as points on the curve</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, addBMD <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="curvesplot-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># the equivalent using the output of bmdcalc</span></span></span>
-<span class="r-in"><span><span class="co"># which enables the add of BMD values</span></span></span>
-<span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="bmdcalc.html">bmdcalc</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, addBMD <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="curvesplot-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use of line size, point size, transparency</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>  line.alpha <span class="op">=</span> <span class="fl">0.2</span>, line.size <span class="op">=</span> <span class="fl">1</span>,</span></span>
-<span class="r-in"><span>  addBMD <span class="op">=</span> <span class="cn">TRUE</span>, point.alpha <span class="op">=</span> <span class="fl">0.3</span>, point.size <span class="op">=</span> <span class="fl">1.8</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="curvesplot-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span>  line.alpha <span class="op">=</span> <span class="fl">0.2</span>, line.size <span class="op">=</span> <span class="fl">1</span>, point.alpha <span class="op">=</span> <span class="fl">0.3</span>, point.size <span class="op">=</span> <span class="fl">1.8</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="curvesplot-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># the same plot with dose in log scale (need xmin != 0 in input)</span></span></span>
+<span class="r-in"><span><span class="co"># the same plot with dose not in log scale</span></span></span>
+<span class="r-in"><span><span class="co"># fixing xmin and xmax</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, xmin <span class="op">=</span> <span class="fl">0.1</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  dose_log_transfo <span class="op">=</span> <span class="cn">TRUE</span>, addBMD <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  dose_log_transfo <span class="op">=</span> <span class="cn">FALSE</span>, addBMD <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="curvesplot-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># or not</span></span></span>
+<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, dose_log_transfo <span class="op">=</span> <span class="cn">FALSE</span>, addBMD <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="curvesplot-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># plot of curves colored by models</span></span></span>
@@ -255,32 +255,32 @@ are used to compute theoretical dose-response curves in the range
 <span class="r-in"><span><span class="co"># (1.b) </span></span></span>
 <span class="r-in"><span><span class="co"># Plot of all the curves without shifting y0 values to 0</span></span></span>
 <span class="r-in"><span><span class="co"># and without scaling</span></span></span>
-<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>,  addBMD <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>,  </span></span>
 <span class="r-in"><span>  scaling <span class="op">=</span> <span class="cn">FALSE</span>, y0shift <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="curvesplot-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># (1.c) </span></span></span>
 <span class="r-in"><span><span class="co"># Plot of all the curves colored by model, with one facet per trend</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, addBMD <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  facetby <span class="op">=</span> <span class="st">"trend"</span>, colorby <span class="op">=</span> <span class="st">"model"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="curvesplot-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># changing the number of columns</span></span></span>
-<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, addBMD <span class="op">=</span> <span class="cn">FALSE</span>, </span></span>
+<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  facetby <span class="op">=</span> <span class="st">"trend"</span>, colorby <span class="op">=</span> <span class="st">"model"</span>, ncol4faceting <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="curvesplot-11.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># playing with size and transparency of lines</span></span></span>
-<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, addBMD <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  facetby <span class="op">=</span> <span class="st">"trend"</span>, colorby <span class="op">=</span> <span class="st">"model"</span>, </span></span>
 <span class="r-in"><span>  line.size <span class="op">=</span> <span class="fl">0.5</span>, line.alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="curvesplot-12.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>,  addBMD <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>,  </span></span>
 <span class="r-in"><span>  facetby <span class="op">=</span> <span class="st">"trend"</span>, colorby <span class="op">=</span> <span class="st">"model"</span>, </span></span>
 <span class="r-in"><span>  line.size <span class="op">=</span> <span class="fl">0.8</span>, line.alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="curvesplot-13.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>,  addBMD <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>,  </span></span>
 <span class="r-in"><span>  facetby <span class="op">=</span> <span class="st">"trend"</span>, line.size <span class="op">=</span> <span class="fl">1</span>, line.alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="curvesplot-14.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span>  </span></span>
@@ -338,9 +338,9 @@ are used to compute theoretical dose-response curves in the range
 <span class="r-in"><span>  facetby <span class="op">=</span> <span class="st">"trend"</span>, facetby2 <span class="op">=</span> <span class="st">"model"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="curvesplot-15.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># same plot without scaling </span></span></span>
+<span class="r-in"><span><span class="co"># same plot without scaling and not in log dose scale</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">res</span>, xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">omicdata</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>  line.alpha <span class="op">=</span> <span class="fl">0.2</span>, line.size <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
+<span class="r-in"><span>  line.alpha <span class="op">=</span> <span class="fl">0.2</span>, line.size <span class="op">=</span> <span class="fl">0.8</span>, dose_log_transfo <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  addBMD <span class="op">=</span> <span class="cn">TRUE</span>, point.alpha <span class="op">=</span> <span class="fl">0.2</span>, point.size <span class="op">=</span> <span class="fl">1.5</span>,</span></span>
 <span class="r-in"><span>  scaling <span class="op">=</span> <span class="cn">FALSE</span>, facetby <span class="op">=</span> <span class="st">"trend"</span>, facetby2 <span class="op">=</span> <span class="st">"model"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="curvesplot-16.png" alt="" width="700" height="433"></span>
@@ -435,13 +435,18 @@ are used to compute theoretical dose-response curves in the range
 <span class="r-in"><span><span class="co"># Plot of the dose-response curves by pathway colored by trend</span></span></span>
 <span class="r-in"><span><span class="co"># with BMR-BMD points added on curves</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">extendedres</span>, facetby <span class="op">=</span> <span class="st">"path_class"</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
-<span class="r-in"><span>  colorby <span class="op">=</span> <span class="st">"trend"</span>, xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">8</span>, addBMD <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></span>
+<span class="r-in"><span>  colorby <span class="op">=</span> <span class="st">"trend"</span>, xmax <span class="op">=</span> <span class="fl">7</span>, addBMD <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></span>
 <span class="r-plt img"><img src="curvesplot-17.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Plot of the dose-response curves without scaling, by pathway colored by trend</span></span></span>
+<span class="r-in"><span><span class="co"># The same plot not in log scale</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">extendedres</span>, facetby <span class="op">=</span> <span class="st">"path_class"</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
-<span class="r-in"><span>  colorby <span class="op">=</span> <span class="st">"trend"</span>, scaling <span class="op">=</span> <span class="cn">FALSE</span>, xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> </span></span>
+<span class="r-in"><span>  dose_log_transfo <span class="op">=</span> <span class="cn">FALSE</span>, colorby <span class="op">=</span> <span class="st">"trend"</span>, xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> </span></span>
 <span class="r-plt img"><img src="curvesplot-18.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The same plot in log scale without scaling</span></span></span>
+<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">extendedres</span>, facetby <span class="op">=</span> <span class="st">"path_class"</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
+<span class="r-in"><span>  colorby <span class="op">=</span> <span class="st">"trend"</span>, scaling <span class="op">=</span> <span class="cn">FALSE</span>, xmax <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> </span></span>
+<span class="r-plt img"><img src="curvesplot-19.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot of the dose-response curves split by pathway and by trend</span></span></span>
 <span class="r-in"><span><span class="co"># for a selection pathway</span></span></span>
@@ -449,15 +454,15 @@ are used to compute theoretical dose-response curves in the range
 <span class="r-in"><span><span class="va">ischosen</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">is.element</a></span><span class="op">(</span><span class="va">extendedres</span><span class="op">$</span><span class="va">path_class</span>, <span class="va">chosen_path_class</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">extendedres</span><span class="op">[</span><span class="va">ischosen</span>, <span class="op">]</span>,</span></span>
 <span class="r-in"><span>  facetby <span class="op">=</span> <span class="st">"trend"</span>, facetby2 <span class="op">=</span> <span class="st">"path_class"</span>,</span></span>
-<span class="r-in"><span>  npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">0.5</span>, xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> </span></span>
-<span class="r-plt img"><img src="curvesplot-19.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span>  npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">0.5</span>, xmax <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> </span></span>
+<span class="r-plt img"><img src="curvesplot-20.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot of the dose-response curves for a specific pathway</span></span></span>
 <span class="r-in"><span><span class="co"># in this example the "lipid metabolism" pathclass</span></span></span>
 <span class="r-in"><span><span class="va">LMres</span> <span class="op">&lt;-</span> <span class="va">extendedres</span><span class="op">[</span><span class="va">extendedres</span><span class="op">$</span><span class="va">path_class</span> <span class="op">==</span> <span class="st">"Lipid metabolism"</span>, <span class="op">]</span></span></span>
-<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">LMres</span>, facetby <span class="op">=</span> <span class="st">"id"</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
-<span class="r-in"><span>  colorby <span class="op">=</span> <span class="st">"trend"</span>, xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> </span></span>
-<span class="r-plt img"><img src="curvesplot-20.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">curvesplot</span><span class="op">(</span><span class="va">LMres</span>, facetby <span class="op">=</span> <span class="st">"id"</span>, npoints <span class="op">=</span> <span class="fl">100</span>, line.size <span class="op">=</span> <span class="fl">0.8</span>, point.size <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  colorby <span class="op">=</span> <span class="st">"trend"</span>, xmax <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> </span></span>
+<span class="r-plt img"><img src="curvesplot-21.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
