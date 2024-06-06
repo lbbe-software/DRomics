@@ -59,6 +59,8 @@ targetplot(targetitems, f = f)
 targetplot(targetitems, f = f, dose_log_transfo = FALSE)
 
 # The same plot in x log scale choosing x limits for plot
+# to enlarge the space between the control and the non null doses
+#
 if (require(ggplot2))
 targetplot(targetitems, f = f, dose_log_transfo = TRUE) + 
         scale_x_log10(limits = c(0.1, 10))

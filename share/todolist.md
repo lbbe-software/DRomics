@@ -57,7 +57,7 @@ que le séparateur de décimales devait être un point (ML ajout dans vignette e
 
 ## Shorter term
 
-1. [ ] Pour pouvoir faire facilement le curvesplot en log mettre une val par défaut à xmin (ML)
+1. [x] Pour pouvoir faire facilement le curvesplot en log mettre une val par défaut à xmin (ML)
 1. [X] Envisager la sortie de  figures en plotly, dans la vignette et dans l'appli shiny.
 1. [ ] Refaire la cheat sheet avec les points sur le curvesplot et plus globalement les derniers rendus des 
 différentes figures

@@ -1,15 +1,16 @@
 # Plot of fitted curves using columns of on extended dataframe to optionnally code 
 # for color and or facet 
-curvesplot <- function(extendedres, xmin = 0, xmax, 
+curvesplot <- function(extendedres, xmin, xmax, 
                        y0shift = TRUE, scaling = TRUE,
                        facetby, facetby2, free.y.scales = FALSE, 
                        ncol4faceting, colorby, removelegend = FALSE,  
                         npoints = 500, line.size = 0.5, line.alpha = 0.8,
-                       dose_log_transfo = FALSE,
+                       dose_log_transfo = TRUE,
                        addBMD = TRUE, BMDtype = c("zSD", "xfold"), 
                        point.size = 1, point.alpha = 0.8)
 {
   BMDtype <- match.arg(BMDtype, c("zSD", "xfold"))
+    
   if (missing(extendedres) | !is.data.frame(extendedres))
     stop("The first argument of curvesplot must be a dataframe 
     (see ?curvesplot for details).")
@@ -21,28 +22,61 @@ curvesplot <- function(extendedres, xmin = 0, xmax,
   }
 
   cnames <- colnames(extendedres)
-  if (scaling)
+
+  if (BMDtype == "zSD" & !is.element(c("BMD.zSD"), cnames))
+  {
+    stop("The first argument of curvesplot must be a dataframe
+    containing at least columns named id, model, b, c, d, e, f, y0 and maxychange and BMD.zSD.")
+    
+  } else
+  { 
+    if (!is.element(c("BMD.xfold"), cnames))
+      stop("The first argument of curvesplot must be a dataframe
+    containing at least columns named id, model, b, c, d, e, f, y0 and maxychange and BMD.xfold.")
+  }
+
+    if (scaling)
   {
     if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "y0", "maxychange"), cnames)))
       stop("The first argument of curvesplot must be a dataframe
-    containing at least columns named id, model, b, c, d, e, f, y0 and maxychange.")
+    containing at least columns named id, model, b, c, d, e, f, y0 and maxychange and BMD.zSD or BMD.xfold.")
   } else
   {
     if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "y0"), cnames)))
       stop("The first argument of curvesplot must be a dataframe
-    containing at least columns named id, model, b, c, d, e, f and y0.")
+    containing at least columns named id, model, b, c, d, e, f and y0 and BMD.zSD or BMD.xfold.")
   }
   
-    if (missing(xmax)) 
-    stop("xmax must be given. You can fix it at max(f$omicdata$dose)} 
-    with f the output of drcfit().")
+    if (missing(xmax))
+    {
+      if (BMDtype == "zSD")
+      { 
+        xmax <- max(extendedres$BMD.zSD, na.rm = FALSE) * 1.1
+      } else
+      {
+        xmax <- max(extendedres$BMD.xfold, na.rm = FALSE) * 1.1
+      }
+    }
+    # stop("xmax must be given. You can fix it at max(f$omicdata$dose)} 
+    # with f the output of drcfit().")
+      
   if (dose_log_transfo)
   {
-    if (xmin == 0)
-      stop("When using a log scale for the dose, a strictly positive value must be given for xmin.")
-    x2plot <- 10^seq(log10(xmin), log10(xmax), length.out = npoints)
+    if (missing(xmin))
+    {
+      if (BMDtype == "zSD")
+      { 
+        xmin <- min(extendedres$BMD.zSD, na.rm = FALSE) * 0.9
+      } else
+      {
+        xmin <- min(extendedres$BMD.xfold, na.rm = FALSE) * 0.9
+      } 
+    } else if (xmin <= 0) stop("xmin cannot be fixed at 0 using a dose log scale")
+      
+     x2plot <- 10^seq(log10(xmin), log10(xmax), length.out = npoints)
   } else
   {
+    if (missing(xmin)) xmin <- 0
     x2plot <- seq(xmin, xmax, length.out = npoints)
   }
   

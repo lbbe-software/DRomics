@@ -563,13 +563,20 @@ and/or where tested doses/concentrations are obtained by dilutions.
 Use `dose_log_transfo = FALSE` to use the raw scale of doses (see ?drcfit for details and examples).
 It is why the observations at the control appear differently as the other observations, 
 as half circles on the y-axis, to remind that their true value is 
-minus infinity in a log scale.
+minus infinity in a log scale. It is possible to enlarge the default 
+arbitrary space between the y-axis
+(so the points at control) and the points at the first non null doses by fixing the limits of the x-axis as below :
+
+```{r}
+plot(f) + scale_x_log10(limits = c(0.2, 10))
+```
+
 
 Another **specific plot function named targetplot() can be used to plot targeted items, whether they were or not selected** in step 2 and fitted in step 3. See an example below and details in ?targetplot
 
 ```{r}
 targetitems <- c("88.1", "1", "3", "15")
-targetplot(targetitems, f = f)
+targetplot(targetitems, f = f) + scale_x_log10(limits = c(0.2, 10))
 ```
 
 ### Plot of residuals {#residuals}
@@ -947,7 +954,7 @@ It is possible to use the curvesplot() function to plot all the fitted curves in
 figure and to add The use of the curvesplot() function is more extensively described in the 
 next parts and in the corresponding help page. By default in this plot the curves are scaled
 to focus on the shape of the dose-response and not on their amplitude (add `scaling = FALSE`
-to see the curves without scaling).
+to see the curves without scaling) and a log dose scale is used.
 
 In the following plot we also added vertical lines 
 corresponding to tested doses on the plot and add transparency to visualize the density of curves
@@ -955,7 +962,7 @@ when shapes are similar (especially the case for linear shapes).
 
 ```{r}
 tested.doses <- unique(f$omicdata$dose)
-g <- curvesplot(r$res, addBMD = TRUE, xmax = max(tested.doses), colorby = "trend",
+g <- curvesplot(r$res, xmax = max(tested.doses), colorby = "trend",
            line.size = 0.8, line.alpha = 0.3, point.size = 2, point.alpha = 0.6) +
   geom_vline(xintercept = tested.doses, linetype = 2) + theme_bw()
 print(g)
@@ -1219,8 +1226,7 @@ to add a point at BMD-BMR values on each curve (See ?curvesplot for more options
 ```{r}
 # Plot of all the scaled dose-reponse curves split by path class
 curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100, 
-           colorby = "trend", xmin = 0, xmax = 6.5, 
-           addBMD = TRUE) + theme_bw()
+           colorby = "trend", xmax = 6.5) + theme_bw()
 ```
 
 It is also possible using this function to visualize the modeled response of each item of
@@ -1231,8 +1237,8 @@ one biological group, as below:
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "id", npoints = 100, 
            point.size = 1.5, line.size = 1,
-           colorby = "trend",
-           xmin = 0, xmax = 6.5) + theme_bw() 
+           colorby = "trend", scaling = FALSE,
+           xmax = 6.5) + theme_bw() 
 ```
 
 
@@ -1484,15 +1490,14 @@ experimental level using the argument `facetby2` . (See ?curvesplot for more opt
 # using transparency to get an idea of density of curves with the shame shape
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "explevel", free.y.scales = TRUE, npoints = 100, 
-           addBMD = TRUE, line.alpha = 0.4, line.size = 1, colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "DR trend") + theme_bw()
+           line.alpha = 0.4, line.size = 1, colorby = "trend",
+           xmax = 6.5) + labs(col = "DR trend") + theme_bw()
 
 # Plot of the scaled dose-response curves for previously chosen path classes
 curvesplot(selectedres2, scaling = TRUE,
            facetby = "path_class", facetby2 = "explevel",
-           addBMD = TRUE, npoints = 100, line.size = 1, line.alpha = 0.4,
-           colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "DR trend") + theme_bw()
+           npoints = 100, line.size = 1, line.alpha = 0.4,
+           colorby = "trend", xmax = 6.5) + labs(col = "DR trend") + theme_bw()
 ```
 
 The scaling of the curves only used here
