@@ -76,7 +76,7 @@
 Delignette-Muller, Aurélie Siberchicot, Elise Billoir, Floriane
 Larras</h4>
             
-            <h4 data-toc-skip class="date">2024-06-06</h4>
+            <h4 data-toc-skip class="date">2024-06-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/aursiber/DRomics/blob/HEAD/vignettes/DRomics_vignette.Rmd" class="external-link"><code>vignettes/DRomics_vignette.Rmd</code></a></small>
       <div class="d-none name"><code>DRomics_vignette.Rmd</code></div>
@@ -558,7 +558,13 @@ situ</em> data</a> for details on this point).</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">o.anchoring</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 <p>For such data the plot() function simply provides a dose-response
-plot for each endpoint.</p>
+plot for each endpoint. By default the dose is represented on a log
+scale, it is why responses for the control (null dose, so minus infinity
+in log scale) appear as half points on the Y-axis. It can be changed
+using the argument dose_log_transfo as below.</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">o.anchoring</span>, dose_log_transfo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
 </div>
 </div>
 <div class="section level5">
@@ -609,7 +615,7 @@ for an explanation of the author of <a href="https://bioconductor.org/packages/r
 and if you want to see an example of problems that may appear with
 outliers in that case, just force the <code>transfo.method</code> to
 <code>"rlog"</code> in the following example).</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">datafilename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"insitu_RNAseq_sample.txt"</span>, package<span class="op">=</span><span class="st">"DRomics"</span><span class="op">)</span></span>
 <span><span class="co"># Importation of data specifying that observed doses below the background dose</span></span>
 <span><span class="co"># fixed here to 2e-2 will be considered as null dose to have a control </span></span>
@@ -642,9 +648,9 @@ outliers in that case, just force the <code>transfo.method</code> to
 <span><span class="co">## [19] "N10021_c0_g1.1"     "N10021_c0_g1.2"    </span></span>
 <span><span class="co">## Data were normalized with respect to library size and tranformed using </span></span>
 <span><span class="co">## the following method: vst</span></span></code></pre>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">o.insitu</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 <p>The plot of the output shows the distribution of the signal on all
 the contigs, for each sample (here the box plots are stuck to each other
 due to the large number of samples), before and after the normalization
@@ -677,7 +683,7 @@ format as DRomics, it is necessary to use the DRomics function
 formatdata4DRomics() to interoperate between ComBat-seq in DRomics
 functions (see the <a href="#Robject">section on importation as an R
 object</a> for details on this function or ?formatdata4DRomics).</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load of data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">zebraf</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">zebraf</span><span class="op">)</span></span></code></pre></div>
@@ -688,7 +694,7 @@ object</a> for details on this function or ?formatdata4DRomics).</p>
 <span><span class="co">##   .. ..$ : chr [1:16] "I10_05mG_E5" "I10_05mG_E6" "I10_05mG_E7" "I10_C5" ...</span></span>
 <span><span class="co">##  $ dose  : num [1:16] 500 500 500 0 0 0 0 50000 50000 50000 ...</span></span>
 <span><span class="co">##  $ batch : Factor w/ 2 levels "I10","I17": 1 1 1 1 1 1 1 2 2 2 ...</span></span></code></pre>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Look at the design of this dataset</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">dose</span> <span class="op">+</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">batch</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##            zebraf$batch</span></span>
@@ -700,7 +706,7 @@ object</a> for details on this function or ?formatdata4DRomics).</p>
 <p>It appears in this design that the data were obtained using to
 batches, with only the controlled condition (null dose) appearing in
 both batches.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Formating of data using the formatdata4DRomics() function</span></span>
 <span><span class="va">data4DRomics</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/formatdata4DRomics.html">formatdata4DRomics</a></span><span class="op">(</span>signalmatrix <span class="op">=</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">counts</span>, </span>
 <span>                           dose <span class="op">=</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span></span>
@@ -726,34 +732,34 @@ both batches.</p>
 <span><span class="co">## [19] "ENSDARG00000112451" "ENSDARG00000070546"</span></span>
 <span><span class="co">## Data were normalized with respect to library size and tranformed using </span></span>
 <span><span class="co">## the following method: rlog</span></span></code></pre>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># PCA plot with the sample labels</span></span>
 <span><span class="fu"><a href="../reference/PCAdataplot.html">PCAdataplot</a></span><span class="op">(</span><span class="va">o</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># PCA plot to visualize the batch effect</span></span>
 <span><span class="fu"><a href="../reference/PCAdataplot.html">PCAdataplot</a></span><span class="op">(</span><span class="va">o</span>, batch <span class="op">=</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">batch</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-15-2.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-16-2.png" width="672"></p>
 <p>The PCA plot shows an impact of the batch effect, that clearly
 appears on controls (red points) which were obtained on two different
 batches.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Batch effect correction using ComBat_seq{sva}</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">sva</span><span class="op">)</span></span>
 <span><span class="va">BECcounts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sva/man/ComBat_seq.html" class="external-link">ComBat_seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">o</span><span class="op">$</span><span class="va">raw.counts</span><span class="op">)</span>, </span>
 <span>                        batch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">zebraf</span><span class="op">$</span><span class="va">batch</span><span class="op">)</span>, </span>
 <span>                        group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">o</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Formating of data after batch effect correction</span></span>
 <span><span class="va">BECdata4DRomics</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/formatdata4DRomics.html">formatdata4DRomics</a></span><span class="op">(</span>signalmatrix <span class="op">=</span> <span class="va">BECcounts</span>, </span>
 <span>                                   dose <span class="op">=</span> <span class="va">o</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span></span>
 <span><span class="va">o.BEC</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/RNAseqdata.html">RNAseqdata</a></span><span class="op">(</span><span class="va">BECdata4DRomics</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Just wait, the transformation using regularized logarithm (rlog) may </span></span>
 <span><span class="co">## take a few minutes.</span></span></code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># PCA plot after batch effect correction</span></span>
 <span><span class="fu"><a href="../reference/PCAdataplot.html">PCAdataplot</a></span><span class="op">(</span><span class="va">o.BEC</span>, batch <span class="op">=</span> <span class="va">zebraf</span><span class="op">$</span><span class="va">batch</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
 <p>The PCA plot after BEC shows the impact of the correction on the
 batch effect that is no more visible on controls (red points).</p>
 </div>
@@ -768,7 +774,7 @@ batch effect that is no more visible on controls (red points).</p>
 input in a first argument the output of the function used in <a href="#step1">step 1</a></strong> (output of RNAseqdata(),
 microarraydata(), continuousomicdata() or continuousanchoringdata()).
 Below is an example with microarray data.</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">s_quad</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/itemselect.html">itemselect</a></span><span class="op">(</span><span class="va">o.microarray</span>, select.method <span class="op">=</span> <span class="st">"quadratic"</span>, FDR <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Number of selected items using a quadratic trend test with an FDR of 0.01: 150</span></span>
 <span><span class="co">## Identifiers of the first 20 most responsive items:</span></span>
@@ -816,7 +822,7 @@ comparison of the three proposed methods on an example.</p>
 <p>It is easy, using for example the package
 <strong>VennDiagram</strong>, to compare the selection of items obtained
 using two different methods, as in the following example.</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">VennDiagram</span><span class="op">)</span></span>
 <span><span class="va">s_lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/itemselect.html">itemselect</a></span><span class="op">(</span><span class="va">o.microarray</span>, select.method <span class="op">=</span> <span class="st">"linear"</span>, FDR <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
 <span><span class="va">index_quad</span> <span class="op">&lt;-</span> <span class="va">s_quad</span><span class="op">$</span><span class="va">selectindex</span></span>
@@ -827,7 +833,7 @@ using two different methods, as in the following example.</p>
 <span>                   category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"quadratic trend test"</span>, <span class="st">"linear trend test"</span><span class="op">)</span>,</span>
 <span>                   cat.col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyan3"</span>, <span class="st">"darkorange1"</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"black"</span><span class="op">)</span>, </span>
 <span>                   fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyan3"</span>, <span class="st">"darkorange1"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="st">"blank"</span>, cat.pos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">11</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="step3">Step 3: fit of dose-response models, choice of the best fit for each
@@ -862,7 +868,7 @@ pre-selected items is large, by default a progressbar is provided. Some
 arguments of this function can be used to specify <strong>parallel
 computing to accelerate the computation</strong> (see ?drcfit for
 details).</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drcfit.html">drcfit</a></span><span class="op">(</span><span class="va">s_quad</span>, progressbar <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Results of the fitting using the AICc to select the best fit model</span></span>
 <span><span class="co">## 22 dose-response curves out of 150 previously selected were removed </span></span>
@@ -893,7 +899,7 @@ of Step 3) is often smaller that the number of items selected in Step 2,
 as for some of the selected items, all models may fail to converge or
 fail to significantly better describe the data than the constant
 model.</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">f</span><span class="op">$</span><span class="va">fitres</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      id irow adjpvalue        model nbpar       b    c     d    e    f SDres</span></span>
 <span><span class="co">## 1 383.2  725  2.08e-07 Gauss-probit     4  5.5836 8.58  8.58 1.70 3.62 0.157</span></span>
@@ -920,27 +926,27 @@ are represented in red, replicates are represented in open circles and
 means of replicates at each dose/concentration are represented by solid
 circles</strong>. All the fitted curves may be saved in a pdf file using
 the plotfit2pdf() function (see ?drcfit).</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 <p>The fitted curves are by default <strong>represented using a log
 scale</strong> for dose/concentration, which is more suited in common
 cases where the range of observed doses/concentrations is very wide
-and/or where tested doses/concentrations are obtained by dilutions. Use
-<code>dose_log_transfo = FALSE</code> to use the raw scale of doses (see
-?drcfit for details and examples). It is why the observations at the
-control appear differently as the other observations, as half circles on
-the y-axis, to remind that their true value is minus infinity in a log
-scale. It is possible to enlarge the default arbitrary space between the
-y-axis (so the points at control) and the points at the first non null
-doses by fixing the limits of the x-axis as below :</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-23-1.png" width="672"><img src="DRomics_vignette_files/figure-html/unnamed-chunk-23-2.png" width="672"></p>
+and/or where tested doses/concentrations are obtained by dilutions. It
+is why the observations at the control appear differently as the other
+observations, as half circles on the y-axis, to remind that their true
+value is minus infinity in a log scale. Use
+<code>dose_log_transfo = FALSE</code> to keep the raw scale of doses
+(see below).</p>
+<!-- ```{r} -->
+<!-- plot(f, dose_log_transfo = FALSE) -->
+<!-- ``` -->
 <p>Another <strong>specific plot function named targetplot() can be used
 to plot targeted items, whether they were or not selected</strong> in
 step 2 and fitted in step 3. See an example below and details in
-?targetplot</p>
+?targetplot. In this example, the default arbitrary space between the
+y-axis (so the points at control) and the points at the first non null
+doses was enlarged by fixing the limits of the x-axis as below :</p>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">targetitems</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"88.1"</span>, <span class="st">"1"</span>, <span class="st">"3"</span>, <span class="st">"15"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/targetplot.html">targetplot</a></span><span class="op">(</span><span class="va">targetitems</span>, f <span class="op">=</span> <span class="va">f</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
