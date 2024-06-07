@@ -326,6 +326,16 @@ plot(o.anchoring) + theme_bw()
 ```
 
 For such data the plot() function simply provides a dose-response plot for each endpoint.
+By default the dose is represented on a log scale, it is why responses for the control
+(null dose, so minus infinity in log scale)
+appear as half points on the Y-axis.
+It can be changed using the argument 
+dose_log_transfo as below.
+
+```{r, fig.width = 7, fig.height = 3}
+plot(o.anchoring, dose_log_transfo = FALSE) + theme_bw()
+```
+
 
 #### Handling of data collected through specific designs {#specificdesigns}
 
@@ -560,19 +570,20 @@ plot(f)
 The fitted curves are by default **represented using a log scale** for dose/concentration, 
 which is more suited in common cases where the range of observed doses/concentrations is very wide
 and/or where tested doses/concentrations are obtained by dilutions. 
-Use `dose_log_transfo = FALSE` to use the raw scale of doses (see ?drcfit for details and examples).
 It is why the observations at the control appear differently as the other observations, 
 as half circles on the y-axis, to remind that their true value is 
-minus infinity in a log scale. It is possible to enlarge the default 
+minus infinity in a log scale. 
+Use `dose_log_transfo = FALSE` to keep the raw scale of doses (see below).
+
+<!-- ```{r} -->
+<!-- plot(f, dose_log_transfo = FALSE) -->
+<!-- ``` -->
+
+Another **specific plot function named targetplot() can be used to plot targeted items, whether they were or not selected** in step 2 and fitted in step 3. See an example below and details in ?targetplot. In this example, the default 
 arbitrary space between the y-axis
-(so the points at control) and the points at the first non null doses by fixing the limits of the x-axis as below :
+(so the points at control) and the points at the first non null doses
+was enlarged by fixing the limits of the x-axis as below :
 
-```{r}
-plot(f) + scale_x_log10(limits = c(0.2, 10))
-```
-
-
-Another **specific plot function named targetplot() can be used to plot targeted items, whether they were or not selected** in step 2 and fitted in step 3. See an example below and details in ?targetplot
 
 ```{r}
 targetitems <- c("88.1", "1", "3", "15")

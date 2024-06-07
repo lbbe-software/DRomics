@@ -92,7 +92,7 @@ targetplot <- function(items, f, add.fit = TRUE, dose_log_transfo = TRUE)
       datatheo0$id <- factor(datatheo0$id, levels = items)
       g <- g + geom_line(data = datatheo, colour = "red") +
         geom_point(data = datatheo0, colour = "red") 
-      g <- g + scale_x_log10()
+      g <- g + scale_x_log10() + xlab("dose (in log scale)")
     } else
     {
       g <- g + geom_line(data = datatheo, colour = "red") 

@@ -7,6 +7,8 @@ NEW FEATURES
 as in other functions. Curvesplot now use minimum and maximum values of the chosen BMD to 
 fix the rage on which the theoretical curve is calculated (and plotted) ad so the chosen BMD is required
 in the input of the function.
+- add the argument dose_log_transfo in plot.continuousanchoringdata(), by default at TRUE.
+- In each plot where the x log is in scale, add it in the label of the x axis.
 
 BUG FIXES
 - add the sample names in column names of the output of formatdata4DRomics.

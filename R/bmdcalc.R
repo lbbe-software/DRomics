@@ -322,7 +322,7 @@ plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"),
   
   if (BMD_log_transfo)
   {
-    g <- g + scale_x_log10()
+    g <- g + scale_x_log10() + xlab("BMD (in log scale)")
   }
   
   return(g)

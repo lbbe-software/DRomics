@@ -92,7 +92,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
       datatheo0$id <- factor(datatheo0$id, levels = lev)
       g <- g + geom_line(data = datatheo, colour = "red") +
         geom_point(data = datatheo0, colour = "red") 
-      g <- g + scale_x_log10()
+      g <- g + scale_x_log10() + xlab("dose (in log scale)")
     } else
     {
       g <- g + geom_line(data = datatheo, colour = "red") 
@@ -132,7 +132,7 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
         geom_hline(yintercept = 0, linetype = "dashed", color = "red")
       if (dose_log_transfo)
       {
-        g <- g + scale_x_log10()
+        g <- g + scale_x_log10() + xlab("dose (in log scale)")
       }
       
       

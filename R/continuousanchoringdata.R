@@ -137,7 +137,7 @@ print.continuousanchoringdata <- function(x, ...)
   }
 }
 
-plot.continuousanchoringdata <- function(x, ...) 
+plot.continuousanchoringdata <- function(x, dose_log_transfo = TRUE, ...) 
 {
   if (!inherits(x, "continuousanchoringdata"))
     stop("Use only with 'continuousanchoringdata' objects.")
@@ -157,6 +157,11 @@ plot.continuousanchoringdata <- function(x, ...)
   
   g <- ggplot(dataobs, aes(x = .data$dose, y = .data$measure)) + geom_point(shape = 1) +
     facet_wrap(~ endpoint, scales = "free_y") 
+  if (dose_log_transfo) 
+  {
+    g <- g + scale_x_log10() + xlab("dose (in log scale)")
+  }
+    
   return(g)
 }
 

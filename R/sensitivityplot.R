@@ -99,20 +99,30 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
                              size = .data$nb_of_items))
     }
     
-    gg <- gg + geom_point(stat = 'identity', alpha = point.alpha)  +  coord_flip() +
-      labs(x = "", y = "BMD 25th quantiles") 
+    gg <- gg + geom_point(stat = 'identity', alpha = point.alpha)  +  coord_flip() 
+
+    if (BMD_log_transfo) 
+    {
+      gg <- gg + labs(x = "", y = "BMD 25th quantiles (in log scale)")
+    } else
+    {
+      gg <- gg + labs(x = "", y = "BMD 25th quantiles")
+    }
     
-  } else {
+  } else 
+  {
     if (missing(colorby))
     {
       gg <- ggplot(dnb, aes(x = .data$groupby, y = .data$secondquartile, 
                              size = .data$nb_of_items)) 
-    } else {
+    } else 
+    {
       if (BMDsummary == "median") {
         gg <- ggplot(dnb, aes(x = .data$groupby, y = .data$secondquartile, 
                                color = .data$level, 
                                size = .data$nb_of_items))
-      } else {
+      } else 
+      {
         gg <- ggplot(dnb, aes(x = .data$groupby, y = .data$secondquartile, 
                                color = .data$level, 
                                size = .data$nb_of_items))
@@ -122,20 +132,34 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     
     if (BMDsummary == "median")
     {
-      gg <- gg + labs(x = "", y = "BMD medians") 
-    } else {
+      if (BMD_log_transfo) 
+      {
+        gg <- gg + labs(x = "", y = "BMD medians (in log scale)")
+      } else
+      {
+        gg <- gg + labs(x = "", y = "BMD medians")
+      }
+    } else 
+    {
       gg <- gg + geom_errorbar(aes(ymin = .data$firstquartile, 
                                     ymax = .data$thirdquartile),
                                linewidth = line.size, 
                                alpha = line.alpha,
                                width = 0) +
         # line to remove lines on the size legend
-        guides(size = guide_legend(override.aes = list(linetype = 0))) +
-        labs(x = "", y = "BMD medians and IQRs")
+      guides(size = guide_legend(override.aes = list(linetype = 0))) 
+      if (BMD_log_transfo) 
+      {
+        gg <- gg + labs(x = "", y = "BMD medians and IQRs (in log scale)")
+      } else
+      {
+        gg <- gg + labs(x = "", y = "BMD medians and IQRs")
       }
-  }    
+    }
+  }
+  
   if (BMD_log_transfo)
-    gg <- gg + scale_y_log10()
+    gg <- gg + scale_y_log10() 
   
   if (!missing(colorby))
   {

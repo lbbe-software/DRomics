@@ -222,14 +222,19 @@ curvesplot <- function(extendedres, xmin, xmax,
   if (removelegend) gg <- gg + theme(legend.position = "none") 
   
   if (dose_log_transfo)
-    gg <- gg + scale_x_log10()
+  {
+    gg <- gg + scale_x_log10() + xlab("dose (in log scale)")
+  } else
+  {
+    gg <- gg + xlab("dose")
+  }
 
   if (scaling)
   {
-    gg <- gg + ylab("scaled signal") + xlab("dose")
+    gg <- gg + ylab("scaled signal") 
   } else
   {
-    gg <- gg + ylab("signal") + xlab("dose")
+    gg <- gg + ylab("signal")
   }
 
   if (!missing(colorby))

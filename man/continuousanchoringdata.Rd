@@ -23,7 +23,7 @@ and for dose-reponse modelling.
 continuousanchoringdata(file, backgrounddose, check = TRUE)
 
 \method{print}{continuousanchoringdata}(x, \dots)
-\method{plot}{continuousanchoringdata}(x, \dots)
+\method{plot}{continuousanchoringdata}(x, dose_log_transfo = TRUE, \dots)
 }
 
 \arguments{
@@ -48,6 +48,8 @@ alternatives are illustrated below in examples.}
 \item{check}{If TRUE the format of the input file is checked.}
 
 \item{x}{An object of class \code{"continuousanchoringdata"}.}
+
+\item{dose_log_transfo}{If TRUE a log transformation of the dose is used in the plot.}
 
 \item{\dots}{ further arguments passed to print or plot functions.}
 }

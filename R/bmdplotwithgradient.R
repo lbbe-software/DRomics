@@ -280,9 +280,8 @@ bmdplotwithgradient <- function(extendedres, BMDtype = c("zSD", "xfold"),
   }
   
   if (BMD_log_transfo)
-    gg <- gg + scale_x_log10()
-  
-  gg <- gg + xlab("BMD")
+    gg <- gg + scale_x_log10() + xlab("BMD (in log scale)") else
+    gg <- gg + xlab("BMD")
   
   if (scaling)
   {
