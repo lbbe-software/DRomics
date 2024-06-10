@@ -117,16 +117,14 @@ LMres <- extendedres[extendedres$path_class %in% chosen_path_class, ]
 curvesplot(LMres,  
            facetby = "molecular.level", scaling = TRUE, 
            npoints = 100, line.size = 0.5,
-           colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "DR trend")
+           colorby = "trend") + labs(col = "DR trend")
 
 jpeg("curvesplot4CS.jpg", quality = 100, width=14, height=8,
      units="cm", pointsize=12, res=300)
 curvesplot(LMres, 
            facetby = "molecular.level", scaling = TRUE, 
            npoints = 100, line.size = 0.5,
-           colorby = "trend",
-           xmin = 0, xmax = 6.5) + labs(col = "DR trend") + theme_bw()
+           colorby = "trend") + labs(col = "DR trend") + theme_bw()
 dev.off()
 
 
