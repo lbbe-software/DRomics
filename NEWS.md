@@ -9,6 +9,8 @@ fix the rage on which the theoretical curve is calculated (and plotted) ad so th
 in the input of the function.
 - add the argument dose_log_transfo in plot.continuousanchoringdata(), by default at TRUE.
 - In each plot where the x log is in scale, add it in the label of the x axis.
+- add in the output of drcfit named information.criterion.val the information criterion value of 
+the null model and change of the names of those components (replacement of AIC by InfoCrit in their names).
 
 BUG FIXES
 - add the sample names in column names of the output of formatdata4DRomics.

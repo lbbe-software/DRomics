@@ -543,7 +543,7 @@ drcfit <- function(itemselect,
         
         return(c(indmodeli, nbpari, b.i, c.i, d.i, e.i, f.i, SDres.i,
                  AIClini, AICExpoi, AICHilli, AICLGaussi, 
-                 AICGaussi,resimeantrendPi,resivartrendPi))
+                 AICGaussi,resimeantrendPi,resivartrendPi, AICconsti))
         
     } ##################################### END of fitoneitem
     
@@ -564,12 +564,9 @@ drcfit <- function(itemselect,
     if (progressbar) close(pb)
     
     dres <- as.data.frame(t(res))
-    # colnames(dres) <- c("model", "nbpar", "b", "c", "d", "e", "f", "SDres",
-    #                     "AIC.L", "AIC.E", "AIC.H", "AIC.lP", "AIC.lGP", "AIC.GP",
-    #                     "resimeantrendP", "resivartrendP")
     colnames(dres) <- c("model", "nbpar", "b", "c", "d", "e", "f", "SDres",
-                        "AIC.L", "AIC.E", "AIC.H", "AIC.lGP", "AIC.GP",
-                        "resimeantrendP", "resivartrendP")
+                        "InfoCrit.L", "InfoCrit.E", "InfoCrit.H", "InfoCrit.lGP", "InfoCrit.GP",
+                        "resimeantrendP", "resivartrendP", "InfoCrit.nullmodel")
     
     dres <- cbind(data.frame(id = row.names(data)[selectindex], 
                              irow = selectindex, 
@@ -832,10 +829,10 @@ drcfit <- function(itemselect,
     dc$model <- factor(dc$model, # to specify the order
                        levels = c("Hill", "linear", "exponential", "Gauss-probit", "log-Gauss-probit"))
     dc$typology <- factor(dc$typology)
-    dAIC <- dres[, c("AIC.L", "AIC.E", "AIC.H", "AIC.lGP", "AIC.GP")] 
+    dInfoCrit <- dres[, c("InfoCrit.L", "InfoCrit.E", "InfoCrit.H", "InfoCrit.lGP", "InfoCrit.GP", "InfoCrit.nullmodel")] 
     
     reslist <- list(fitres = dc, omicdata = itemselect$omicdata,  
-                    information.criterion = information.criterion, information.criterion.val = dAIC,
+                    information.criterion = information.criterion, information.criterion.val = dInfoCrit,
                     n.failure = n.failure, unfitres = dfail, 
                     residualtests = dresitests ) 
     
