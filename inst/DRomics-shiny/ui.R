@@ -207,7 +207,7 @@ progress::-moz-progress-bar {
                                       'Select an input file',
                                       accept = c('.csv', '.txt')),
                             h5("See ", a("here", href = "informations_datafile_input.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;"), " information about the format required"),
-                            h5("See ", a("here", href = "DRomicspkg/apical_anchoring.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'apical_anchoring.txt'), " an example file"),
+                            h5("See ", a("here", href = "DRomicspkg/apical_anchoring.txt", TARGET = "_blank", style="text-decoration:underline; color:#9c5c16;", download = 'apical_anchoring.txt'), " an example file (use a background dose equal to 0.1 with this example file)"),
                             br(), 
                             splitLayout(cellWidths = c("40%", "60%"),
                                         textInput('bgdose_anchoring', "Background dose", 0),
