@@ -1,4 +1,4 @@
-# DRomics (Development version)
+# DRomics (development version)
 
 NEW FEATURES
 
