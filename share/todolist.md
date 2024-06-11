@@ -3,8 +3,7 @@
 ## Top priority
 
 1. [X] Retravailler les test_that (ML)
-1. [X] Change the default for log scale in each plot (fit or BMD) AND add a warning (ML and A pour mise en place warning). Dans shiny appels à bmdplot(BMD_log_transfo = TRUE), bmdplotwithgradient(BMD_log_transfo = TRUE), sensitivityplot(BMD_log_transfo = TRUE), plot.drcfit(dose_log_transfo = TRUE), plotfit2pdf(dose_log_transfo = TRUE), targetplot(dose_log_transfo = TRUE), et nouvel argument BMD_log_transfo par défaut à TRUE à 
-gérer dans les appels à plot.bmdcalc() (et plot.bmdboot() mais pas dans shiny). 
+1. [X] Change the default for log scale in each plot (fit or BMD) AND add a warning (ML and A pour mise en place warning). Dans shiny appels à bmdplot(BMD_log_transfo = TRUE), bmdplotwithgradient(BMD_log_transfo = TRUE), sensitivityplot(BMD_log_transfo = TRUE), plot.drcfit(dose_log_transfo = TRUE), plotfit2pdf(dose_log_transfo = TRUE), targetplot(dose_log_transfo = TRUE), et nouvel argument BMD_log_transfo par défaut à TRUE à gérer dans les appels à plot.bmdcalc() (et plot.bmdboot() mais pas dans shiny). 
 1. [X] Mettre l'option scaling par défaut à TRUE dans le package (comme c'est déjà fait dans l'appli shiny) et l'indiquer dans la vignette (ML - still to include in the vignette)
 1. [X] Mettre un message à l'ouverture du package (startupmessage) pour indiquer les options par défaut changées (ML - sent to Aurélie - A)
 1. [X] Retravailler les xlab et ylab notamment mettre scaled signal ou scaled y si scaling dans curvesplot et dans bmdplotwithgradient dans légende scaled_signal (ML)
@@ -16,58 +15,36 @@ gérer dans les appels à plot.bmdcalc() (et plot.bmdboot() mais pas dans shiny)
 1. [X] Dans les curvesplot, en option, ajouter un point là où la BMD est atteinte (ML - still to add an example in the vignette)
 1. [X] Ajouter la publi PCI partout quand elle sera sortie (ML et A)
 1. [X] Mettre un bouton d'aide i à côté du keep all experimental levels dans shiny (appli DRomicsInterpreter, step 2, helplabel2step2 dans global.R) (ML, A)
-1. [X] Find a way to give an example in the DRomicsInterpreter shiny app
-of this modification at the launch of the package ? Ajouter un encart en haut de la page step 1, avec le lien vers les 4 fichiers qu'on utilise en formation (qui sont dans le package) et une petite explication (A et ML)
+1. [X] Find a way to give an example in the DRomicsInterpreter shiny app of this modification at the launch of the package ? Ajouter un encart en haut de la page step 1, avec le lien vers les 4 fichiers qu'on utilise en formation (qui sont dans le package) et une petite explication (A et ML)
 1. [X] Visualisation optionnelle par lignes verticales des doses testées (ajout ex. dans la vignette) (ML)
 1. [X] Donnez la possibilité d'ajouter le nom de pathways à côté des points sur les sensitivity pour un seul niv exp plutôt que sur l'axe des y (en alternative) - mettre un code exemple dans la vignette car trop lourd à gérer dans la fonction. (A)
 1. [X] Mettre sur le share un fichier de test sur des gros jeux de données, à tester sur une VM de l'IFB de temps en temps, avec fichiers stockés ailleurs, pour le moment sur SeaFile (ML)
-1. [X] Ajouter des arguments line.alpha et line.size et point.alpha à sensitivityplot
-et bmdplot (ML)
-1. [X] dans les applis shiny et la vignette enlever les fonds gris avec un +theme_bw() quand le theme n'est pas défini dans la fonction. 
-FAIT dans vignette.
-FAIT dans DRomics-shiny pour les fonctions plot.continuousanchoringdata(), PCAdataplot() et plot.bmdcalc().
-FAIT dans DRomicsInterpreter-shiny pour les fonctions sensitivityplot(), trendplot(), bmdplot() et curvesplot().
-1. [X] Ajouter une fonction bmdfilter permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde 
-que les items avec BMD et IC de la BMD définis, pour la BMD-zSD par défaut) - penser à faire de la prog défensive si les utilisateurs ne mettent pas le bootstrap, filtre possible sur autre chose.... (ML)
-Dans la vignette tant que ça ne fonctionne pas j'ai juste ajouté le code pour l'utilisateur (ML).
-OK dans le curvesplot de l'appli shiny (plotly dans shiny + ggplot2 simple pour la figure téléchargée) (A).
+1. [X] Ajouter des arguments line.alpha et line.size et point.alpha à sensitivityplot et bmdplot (ML)
+1. [X] dans les applis shiny et la vignette enlever les fonds gris avec un +theme_bw() quand le theme n'est pas défini dans la fonction. FAIT dans vignette. FAIT dans DRomics-shiny pour les fonctions plot.continuousanchoringdata(), PCAdataplot() et plot.bmdcalc(). FAIT dans DRomicsInterpreter-shiny pour les fonctions sensitivityplot(), trendplot(), bmdplot() et curvesplot().
+1. [X] Ajouter une fonction bmdfilter permettant de filtrer les sorties de DRomics notamment sur la base des résultats du bootstrap (par défaut on ne garde que les items avec BMD et IC de la BMD définis, pour la BMD-zSD par défaut) - penser à faire de la prog défensive si les utilisateurs ne mettent pas le bootstrap, filtre possible sur autre chose.... (ML). Dans la vignette tant que ça ne fonctionne pas j'ai juste ajouté le code pour l'utilisateur (ML). OK dans le curvesplot de l'appli shiny (plotly dans shiny + ggplot2 simple pour la figure téléchargée) (A).
 1. [X] Dans DRomicsInterpreter-shiny cocher par défaut la case pour ajouter BMD et BMR values (A)
 1. [X] changer les valeurs par défaut des arguments de curvesplot, avec les BMD ajoutées, et une transparence des courbes (ML)
-1. [X] Dans DRomics-shiny écrire explicitement comment prendre en compte les données proteomiques. (A) 
-Dans intro ajouter juste avant la phrase sur les données apicales 
-"Proteomics data could also be handled, as metabolomics data when expressed in intensity (continuous variable)
-or as RNAseq when expressed in spectral counts, after carefully checking the validity of the assumptions made in processing the RNAseq data".
-1. [X] Dans DRomics-shiny ajouter une mention à bmdfilter() dans R code to go further (A)
-Après le dernier commentaire sur les fonctions d'exploration 
-"# Before the biological interpretation of results, one could retain
-only the items associated to the best estimated BMD values, 
-using the function bmdfilter (see ?bmdfilter for a description of the three proposed filters)
-subres <- bmdfilter(b$res, BMDtype = "zSD", BMDfilter = "definedCI")"
-1. [X] Regarder pourquoi la dernière figure de la partie 3.1.2.2 de la vignette (code fourni) - c'était à cause du + theme_bw() qu'il fallait mettre avant et non après de theme(...), sinon ça écrasait toutes les modifs du theme
-ne permet plus d'afficher les labels des groupes
-uniquement sur les points et pas sur l'axe des y (A)
+1. [X] Dans DRomics-shiny écrire explicitement comment prendre en compte les données proteomiques. (A) Dans intro ajouter juste avant la phrase sur les données apicales "Proteomics data could also be handled, as metabolomics data when expressed in intensity (continuous variable) or as RNAseq when expressed in spectral counts, after carefully checking the validity of the assumptions made in processing the RNAseq data".
+1. [X] Dans DRomics-shiny ajouter une mention à bmdfilter() dans R code to go further (A) Après le dernier commentaire sur les fonctions d'exploration "# Before the biological interpretation of results, one could retain only the items associated to the best estimated BMD values, using the function bmdfilter (see ?bmdfilter for a description of the three proposed filters) subres <- bmdfilter(b$res, BMDtype = "zSD", BMDfilter = "definedCI")"
+1. [X] Regarder pourquoi la dernière figure de la partie 3.1.2.2 de la vignette (code fourni) - c'était à cause du + theme_bw() qu'il fallait mettre avant et non après de theme(...), sinon ça écrasait toutes les modifs du theme ne permet plus d'afficher les labels des groupes uniquement sur les points et pas sur l'axe des y (A)
 1. [X] Améliorer le texte qui accompagne les fichiers de données exemples dans DRomicsInterpreter-shiny
-1. [X] Améliorer les formats de sorties des figures shiny en les regardant sur un portable. Le format par défaut carré ne convient pas toujours (A) Shiny1 step 1 (hauteur = largeur /2), step4 pour le 1er plot (hauteur = largeur /2 et sortie pdf en format paysage), Shiny 2, toujours mettre les figures l'une sous l'autre (hauteur = largeur / 2 ou un peu moins) et trendplot, sensivityplot, bmdplot,  bmdplotwithgradient et curves downloadé en format paysage. 
-1. [X] Vérifier qu'on a bien indiqué partout là où on doit entrer des données
-que le séparateur de décimales devait être un point (ML ajout dans vignette et.Rd, A ajouter dans l'appli shiny 1).
+1. [X] Améliorer les formats de sorties des figures shiny en les regardant sur un portable. Le format par défaut carré ne convient pas toujours (A) Shiny1 step 1 (hauteur = largeur /2), step4 pour le 1er plot (hauteur = largeur /2 et sortie pdf en format paysage), Shiny 2, toujours mettre les figures l'une sous l'autre (hauteur = largeur / 2 ou un peu moins) et trendplot, sensivityplot, bmdplot, bmdplotwithgradient et curves downloadé en format paysage. 
+1. [X] Vérifier qu'on a bien indiqué partout là où on doit entrer des données que le séparateur de décimales devait être un point (ML ajout dans vignette et.Rd, A ajouter dans l'appli shiny 1).
 1. [ ] Vérifier le pb du download depuis chrome / machine biosphere au step 4  de l'appli shiny 1
-1.[ ] Voir si on peut ajouter les "sample names" dans le graphe des boxplot par échantillon
-1.[ ] ajouter une fonction simple qui fait une procédure d'enrichissement.
-1.[ ] comment deltaAICminfromnullmodel in the vignette / FAQ et give an example in .Rd and add defensive prog on its given value in input
+1. [ ] Voir si on peut ajouter les "sample names" dans le graphe des boxplot par échantillon
+1. [ ] ajouter une fonction simple qui fait une procédure d'enrichissement.
+1. [ ] comment deltaAICminfromnullmodel in the vignette / FAQ et give an example in .Rd and add defensive prog on its given value in input
 
 ## Shorter term
 
 1. [x] Pour pouvoir faire facilement le curvesplot en log mettre une val par défaut à xmin (ML)
 1. [X] Envisager la sortie de  figures en plotly, dans la vignette et dans l'appli shiny.
-1. [ ] Refaire la cheat sheet avec les points sur le curvesplot et plus globalement les derniers rendus des 
-différentes figures
+1. [X] Refaire la cheat sheet avec les points sur le curvesplot et plus globalement les derniers rendus des différentes figures
 1. [ ] Demander les données à Estelle Dubreil
 1. [ ] Inclure des tests avec le jeu de données d'Emilie pour NA entre autres
 1. [ ] Gérer les labels pour les IC sans valeur ponctuelle (cf. ex. Emilie)
-1. [ ] Ajouter une option dans le curvesplot qui permettrait d'inverser les U et les dec (par ex.) pour voir
-comment ils collent en symétrie resp. aux belle et inc (ML après discussion avec tous)
-1. [ ] ajouter dans le curvesplot un argument pour changer que le type de point soit
-guider par le pathway (intéressant en interactif - à discuter !) (ML)
+1. [ ] Ajouter une option dans le curvesplot qui permettrait d'inverser les U et les dec (par ex.) pour voir comment ils collent en symétrie resp. aux belle et inc (ML après discussion avec tous)
+1. [ ] ajouter dans le curvesplot un argument pour changer que le type de point soit guider par le pathway (intéressant en interactif - à discuter !) (ML)
 1. [ ] revoir l'argument remove.infinite de plot.bmdboot, sa valeur par défaut et son fonctionnement, pour que ce soit harmonisé avec les valeurs par défaut 
 de bmdfilter (pb avec xfold, vérifier que ça marche bien) ou enlever cette fonctionnalité et considérer que c'est fait avec bmdfilter et quand ce n'est pas fait gérer graphiquement les infinis
 1. [ ] Ajouter des options "boxplot" dans BMDsummary de sensitivityplot (A)
