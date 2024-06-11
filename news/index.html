@@ -52,9 +52,17 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="dromics-development-version">DRomics (development version)<a class="anchor" aria-label="anchor" href="#dromics-development-version"></a></h2>
-<p>NEW FEATURES - add of a component in the output of RNAseqdata, continuousomicdata(), continuousanchoringdata(), microarraydata() and (data.sd, which gives, for each item, the sd of the response per condition - NA if no replicate for a condition). - add a new argument in drcfit(), named deltaAICminfromnullmodel, in order to relax requirements on the information criterion to keep the best fitted model (see ? drcfit()). - Modification of curvesplot() to be able to put its argument dose_log_transfo by default at TRUE as in other functions. Curvesplot now use minimum and maximum values of the chosen BMD to fix the rage on which the theoretical curve is calculated (and plotted) ad so the chosen BMD is required in the input of the function. - add the argument dose_log_transfo in plot.continuousanchoringdata(), by default at TRUE. - In each plot where the x log is in scale, add it in the label of the x axis. - add in the output of drcfit named information.criterion.val the information criterion value of the null model and change of the names of those components (replacement of AIC by InfoCrit in their names).</p>
-<p>BUG FIXES - add the sample names in column names of the output of formatdata4DRomics. - change the default value of range4boxplot (in plot.RNAseqdata(), plot.continuousomicdata(), plot.microarraydata()) to 0 instead of 1e6 so that whiskers always go to the extrems.</p>
-</div>
+<p>NEW FEATURES</p>
+<ul><li>add of a component in the output of RNAseqdata, continuousomicdata(), continuousanchoringdata(), microarraydata() and (data.sd, which gives, for each item, the sd of the response per condition - NA if no replicate for a condition).</li>
+<li>add a new argument in drcfit(), named deltaAICminfromnullmodel, in order to relax requirements on the information criterion to keep the best fitted model (see ? drcfit()).</li>
+<li>Modification of curvesplot() to be able to put its argument dose_log_transfo by default at TRUE as in other functions. Curvesplot now use minimum and maximum values of the chosen BMD to fix the rage on which the theoretical curve is calculated (and plotted) ad so the chosen BMD is required in the input of the function.</li>
+<li>add the argument dose_log_transfo in plot.continuousanchoringdata(), by default at TRUE.</li>
+<li>In each plot where the x log is in scale, add it in the label of the x axis.</li>
+<li>add in the output of drcfit named information.criterion.val the information criterion value of the null model and change of the names of those components (replacement of AIC by InfoCrit in their names).</li>
+</ul><p>BUG FIXES</p>
+<ul><li>add the sample names in column names of the output of formatdata4DRomics.</li>
+<li>change the default value of range4boxplot (in plot.RNAseqdata(), plot.continuousomicdata(), plot.microarraydata()) to 0 instead of 1e6 so that whiskers always go to the extrems.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.5-2" id="dromics-25-2">DRomics 2.5-2<a class="anchor" aria-label="anchor" href="#dromics-25-2"></a></h2><p class="text-muted">CRAN release: 2024-01-31</p>
 <p>NEW FEATURES</p>
