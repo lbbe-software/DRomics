@@ -469,15 +469,6 @@ server <- function(input, output, session) {
     shapebyBMDplot <- eventReactive(input$buttonRunStep3, {input$shapebyBMDplot})
     colorbyBMDplot <- eventReactive(input$buttonRunStep3, {input$colorbyBMDplot})
     
-    # min doses by default according to the log transformation
-    xmin_bmdplotwotgradient <- eventReactive(input$BMDlogtransfoBMDplot, {
-        if(input$doselogtransfoCurvesplot) {
-            return(round(min(BMD) / 2, 2))
-        } else {
-            return(0)
-        }
-    })
-    
     extendedresforBMD <- eventReactive(input$buttonRunStep3, {
         validate(need(input$annotcheckboxBMDplot, "Please choose at least one annotation"))
         sortextendedres <- sortextendedres()
@@ -488,7 +479,6 @@ server <- function(input, output, session) {
                     "mypathclasslabel" = mypathclasslabel))
     })
     
-
     output$bmdplot <- renderPlot({
         
         myextendedresforBMD <- extendedresforBMD()
@@ -496,7 +486,7 @@ server <- function(input, output, session) {
         myfacetbyrowsBMDplot <- fnvaluecheckbox(facetbyrowsBMDplot(), myextendedresforBMD$mypathclasslabel)
         
         ############ bmdplot plot ############
-        use.args <- rep(TRUE, 7)                                    # 7 arguments used in the bmdplot function
+        use.args <- rep(TRUE, 8)                                    # 8 arguments used in the bmdplot function
         if(input$nbLevel == 1) {use.args[3] <- FALSE}               # use.args[3] = facetby2
         if(!isTRUE(shapebyBMDplot())) {use.args[4] <- FALSE}        # use.args[4] = shapeby
         if(!isTRUE(colorbyBMDplot())) {use.args[5] <- FALSE}        # use.args[5] = colorby
@@ -508,7 +498,8 @@ server <- function(input, output, session) {
           shapeby = "trend",
           colorby = "trend",
           add.label = addlabelBMDplot(),
-          BMD_log_transfo = BMDlogtransfoBMDplot()
+          BMD_log_transfo = BMDlogtransfoBMDplot(),
+          add.CI = addciBMDplot()
         )[use.args])
         
         mybmdplot <- mybmdplot + ggplot2::theme_bw() + theme(text = element_text(size = 18))
@@ -518,13 +509,12 @@ server <- function(input, output, session) {
         )
         
         ############ bmdplotwithgradient plot ############
-        use.args <- rep(TRUE, 9)                                    # 9 arguments used in the bmdplotwithgradient function
-        if(input$nbLevel == 1) {use.args[6] <- FALSE}               # use.args[6] = facetby2
-        if(!isTRUE(shapebyBMDplot())) {use.args[7] <- FALSE}        # use.args[7] = shapeby
+        use.args <- rep(TRUE, 8)                                    # 8 arguments used in the bmdplotwithgradient function
+        if(input$nbLevel == 1) {use.args[5] <- FALSE}               # use.args[5] = facetby2
+        if(!isTRUE(shapebyBMDplot())) {use.args[6] <- FALSE}        # use.args[6] = shapeby
         
         mybmdplotwithgradient <- do.call("bmdplotwithgradient", list(
           extendedres = myextendedresforBMD$myextendedresforBMD,
-          xmin = xmin_bmdplotwotgradient(),
           xmax = maxDoseXScale(),
           scaling = TRUE,
           facetby = myfacetbycolumnsBMDplot,
@@ -631,7 +621,7 @@ server <- function(input, output, session) {
         # Update the min and max doses by default according to the log transformation
         observeEvent(input$doselogtransfoCurvesplot, {
             if(input$doselogtransfoCurvesplot) {
-                updateNumericInput(session, "mindoseCurvesplot", value = round(min(BMD) / 2, 2))
+                updateNumericInput(session, "mindoseCurvesplot", value = round(min(BMD) * 0.9, 2))
             } else {
                 updateNumericInput(session, "mindoseCurvesplot", value = 0)
             }
