@@ -632,6 +632,7 @@ server <- function(input, output, session) {
     doselogtransfoCurvesplot <- eventReactive(input$buttonRunStep4, {input$doselogtransfoCurvesplot})
     colorbyCurvesplot <- eventReactive(input$buttonRunStep4, {input$colorbyCurvesplot})
     addBMDCurvesplot <- eventReactive(input$buttonRunStep4, {input$addBMDCurvesplot})
+    scalingCurvesplot <- eventReactive(input$buttonRunStep4, {input$scalingCurvesplot})
     facetbycolumnsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbycolumnsCurvesplot})
     facetbyrowsCurvesplot <- eventReactive(input$buttonRunStep4, {input$facetbyrowsCurvesplot})
     
@@ -662,7 +663,7 @@ server <- function(input, output, session) {
       mycurvesplot <- do.call("curvesplot", list(
         extendedres = myextendedresforCurvesplot$myextendedresforCurvesplot,
         free.y.scales = TRUE,
-        scaling = TRUE,
+        scaling = scalingCurvesplot(),
         xmin = mindoseCurvesplot(),
         xmax = maxDoseXScale(),
         dose_log_transfo = doselogtransfoCurvesplot(),
