@@ -4,6 +4,20 @@
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/DRomics)](https://cran.r-project.org/package=DRomics)
 [![R-CMD-check](https://github.com/lbbe-software/DRomics/workflows/R-CMD-check/badge.svg)](https://github.com/lbbe-software/DRomics/actions)
 
+---------------------------
+
+**Please note! Since June 2024, this repository has belonged to the *lbbe-software* organization.**
+To avoid confusion, we strongly recommend updating any existing local clones to point to the new 
+repository URL. You can do this by using `git remote` on the command line:
+
+`git remote set-url origin git@github.com:lbbe-software/DRomics.git`
+
+or 
+
+`git remote set-url origin https://github.com/lbbe-software/DRomics.git`
+
+---------------------------
+
 `DRomics` is a freely available tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates to use `DRomics`).
 
 After a first step which consists in importing, checking and if needed normalizing/transforming the data (step 1), the aim of the proposed workflow is to select monotonic and/or biphasic significantly responsive items (e.g. probes, contigs, metabolites) (step 2), to choose the best-fit model among a predefined family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive a benchmark dose or concentration from each fitted curve (step 4). Those steps can be performed in R using `DRomics` functions, or using the shiny application named `DRomics-shiny`.
