@@ -54,7 +54,7 @@
 
       <ul class="navbar-nav">
 <li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/aursiber/DRomics/" aria-label="github">
+  <a class="external-link nav-link" href="https://github.com/lbbe-software/DRomics/" aria-label="github">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -69,7 +69,13 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="dromics-dose-response-for-omics-">DRomics: Dose Response for Omics <img src="reference/figures/hexsticker.png" align="right" style="float:right; height:120px;"><a class="anchor" aria-label="anchor" href="#dromics-dose-response-for-omics-"></a>
 </h1></div>
-<p><a href="http://cran.r-project.org/package=DRomics" class="external-link"><img src="http://www.r-pkg.org/badges/version-ago/DRomics" alt="CRAN_Release_Badge"></a> <a href="https://cran.r-project.org/package=DRomics" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/DRomics" alt="CRAN Downloads"></a> <a href="https://github.com/aursiber/DRomics/actions" class="external-link"><img src="https://github.com/aursiber/DRomics/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
+<p><a href="http://cran.r-project.org/package=DRomics" class="external-link"><img src="http://www.r-pkg.org/badges/version-ago/DRomics" alt="CRAN_Release_Badge"></a> <a href="https://cran.r-project.org/package=DRomics" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/DRomics" alt="CRAN Downloads"></a> <a href="https://github.com/lbbe-software/DRomics/actions" class="external-link"><img src="https://github.com/lbbe-software/DRomics/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
+<hr>
+<p><strong>Please note! Since June 2024, this repository has belonged to the <em>lbbe-software</em> organization.</strong> To avoid confusion, we strongly recommend updating any existing local clones to point to the new repository URL. You can do this by using <code>git remote</code> on the command line:</p>
+<p><code>git remote set-url origin git@github.com:lbbe-software/DRomics.git</code></p>
+<p>or</p>
+<p><code>git remote set-url origin https://github.com/lbbe-software/DRomics.git</code></p>
+<hr>
 <p><code>DRomics</code> is a freely available tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates to use <code>DRomics</code>).</p>
 <p>After a first step which consists in importing, checking and if needed normalizing/transforming the data (step 1), the aim of the proposed workflow is to select monotonic and/or biphasic significantly responsive items (e.g. probes, contigs, metabolites) (step 2), to choose the best-fit model among a predefined family of monotonic and biphasic models to describe the response of each selected item (step 3), and to derive a benchmark dose or concentration from each fitted curve (step 4). Those steps can be performed in R using <code>DRomics</code> functions, or using the shiny application named <code>DRomics-shiny</code>.</p>
 <p>In the available version, <code>DRomics</code> supports single-channel microarray data (in log2 scale), RNAseq data (in raw counts) and other continuous omics data such as metabolomics or proteomics (in log scale). In order to link responses across biological levels based on a common method, <code>DRomics</code> also handles continuous apical data as long as they meet the use conditions of least squares regression (homoscedastic Gaussian regression).</p>
@@ -84,7 +90,7 @@
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"limma"</span>, <span class="st">"DESeq2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"limma"</span>, <span class="st">"DESeq2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The stable version of <code>DRomics</code> can be installed from CRAN using:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"DRomics"</span><span class="op">)</span></span></code></pre></div>
@@ -93,7 +99,7 @@
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span>   </span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"aursiber/DRomics"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"lbbe-software/DRomics"</span><span class="op">)</span></span></code></pre></div>
 <p>Finally load the package in your current R session with the following R command:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lbbe.univ-lyon1.fr/fr/dromics" class="external-link">DRomics</a></span><span class="op">)</span></span></code></pre></div>
@@ -107,7 +113,7 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"DRomics_vignette"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that, by default, the vignette is not installed when the package is installed through GitHub. The following command (rather long to execute because of the large size of the vignette) will allow you to access the vignette of the development version of the package you installed from GitHub:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"aursiber/DRomics"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"lbbe-software/DRomics"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>A <strong>cheat sheet</strong> that sum up the DRomics workflow is also available <a href="https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics.pdf" class="external-link">here</a>.</p>
 </div>
 <div class="section level2">
@@ -143,7 +149,7 @@
 <h2 id="authors--contacts">Authors &amp; Contacts<a class="anchor" aria-label="anchor" href="#authors--contacts"></a>
 </h2>
 <p>If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at <a href="mailto:dromics@univ-lyon1.fr" class="email">dromics@univ-lyon1.fr</a> .</p>
-<p>Issues can be reported on <a href="https://github.com/aursiber/DRomics/issues" class="external-link uri">https://github.com/aursiber/DRomics/issues</a> .</p>
+<p>Issues can be reported on <a href="https://github.com/lbbe-software/DRomics/issues" class="external-link uri">https://github.com/lbbe-software/DRomics/issues</a> .</p>
 <ul>
 <li>Elise Billoir: <a href="mailto:elise.billoir@univ-lorraine.fr" class="email">elise.billoir@univ-lorraine.fr</a>
 </li>
@@ -170,8 +176,8 @@
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://cloud.r-project.org/package=DRomics" class="external-link">View on CRAN</a></li>
-<li><a href="https://github.com/aursiber/DRomics/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/aursiber/DRomics/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/lbbe-software/DRomics/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/lbbe-software/DRomics/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 

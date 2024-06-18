@@ -34,7 +34,7 @@
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
       <ul class="navbar-nav"><li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/aursiber/DRomics/" aria-label="github">
+  <a class="external-link nav-link" href="https://github.com/lbbe-software/DRomics/" aria-label="github">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -47,21 +47,21 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/aursiber/DRomics/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/lbbe-software/DRomics/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="dromics-development-version">DRomics (development version)<a class="anchor" aria-label="anchor" href="#dromics-development-version"></a></h2>
 <p>NEW FEATURES</p>
-<ul><li>add of a component in the output of RNAseqdata, continuousomicdata(), continuousanchoringdata(), microarraydata() and (data.sd, which gives, for each item, the sd of the response per condition - NA if no replicate for a condition).</li>
-<li>add a new argument in drcfit(), named deltaAICminfromnullmodel, in order to relax requirements on the information criterion to keep the best fitted model (see ? drcfit()).</li>
+<ul><li>Add of a component in the output of RNAseqdata, continuousomicdata(), continuousanchoringdata(), microarraydata() and (data.sd, which gives, for each item, the sd of the response per condition - NA if no replicate for a condition).</li>
+<li>Add a new argument in drcfit(), named deltaAICminfromnullmodel, in order to relax requirements on the information criterion to keep the best fitted model (see ? drcfit()).</li>
 <li>Modification of curvesplot() to be able to put its argument dose_log_transfo by default at TRUE as in other functions. Curvesplot now use minimum and maximum values of the chosen BMD to fix the rage on which the theoretical curve is calculated (and plotted) ad so the chosen BMD is required in the input of the function.</li>
-<li>add the argument dose_log_transfo in plot.continuousanchoringdata(), by default at TRUE.</li>
+<li>Add the argument dose_log_transfo in plot.continuousanchoringdata(), by default at TRUE.</li>
 <li>In each plot where the x log is in scale, add it in the label of the x axis.</li>
-<li>add in the output of drcfit named information.criterion.val the information criterion value of the null model and change of the names of those components (replacement of AIC by InfoCrit in their names).</li>
+<li>Add in the output of drcfit named information.criterion.val the information criterion value of the null model and change of the names of those components (replacement of AIC by InfoCrit in their names).</li>
 </ul><p>BUG FIXES</p>
-<ul><li>add the sample names in column names of the output of formatdata4DRomics.</li>
-<li>change the default value of range4boxplot (in plot.RNAseqdata(), plot.continuousomicdata(), plot.microarraydata()) to 0 instead of 1e6 so that whiskers always go to the extrems.</li>
+<ul><li>Add the sample names in column names of the output of formatdata4DRomics.</li>
+<li>Change the default value of range4boxplot (in plot.RNAseqdata(), plot.continuousomicdata(), plot.microarraydata()) to 0 instead of 1e6 so that whiskers always go to the extrems.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.5-2" id="dromics-25-2">DRomics 2.5-2<a class="anchor" aria-label="anchor" href="#dromics-25-2"></a></h2><p class="text-muted">CRAN release: 2024-01-31</p>
