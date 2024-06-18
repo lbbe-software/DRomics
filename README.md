@@ -76,7 +76,8 @@ The following command (rather long to execute because of the large size of the v
 remotes::install_github("lbbe-software/DRomics", build_vignettes = TRUE)
 ```
 
-A **cheat sheet** that sum up the DRomics workflow is also available [here](https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics.pdf).
+A **cheat sheet** that sum up the DRomics workflow is also available.
+<a href="https://github.com/rstudio/cheatsheets/blob/master/DRomics.pdf"><img src="https://github.com/rstudio/cheatsheets/blob/main/pngs/DRomics.png"/></a>
 
 ## Two shiny apps 
 The two shiny apps (`DRomics-shiny` and `DRomicsInterpreter-shiny`) that work with DRomics are available :
