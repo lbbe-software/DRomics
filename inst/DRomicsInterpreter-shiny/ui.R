@@ -97,7 +97,7 @@ ui <- fluidPage(
                                      p("The DRomicsInterpreter-shiny application runs on the ",
                                        a("shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#f28d0f;"),
                                        "with the develoment version of the DRomics package (available on ",
-                                       a("Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#f28d0f;"),
+                                       a("Github", href = "https://github.com/lbbe-software/DRomics", TARGET="_blank", style="color:#f28d0f;"),
                                      "). DRomics is also an R package, available on ",
                                        a("CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#f28d0f;"), ".", 
                                        " You can find more information and help about the DRomicsInterpreter-shiny application and the DRomics package on ",
@@ -111,7 +111,7 @@ ui <- fluidPage(
                                      p(strong("Contact")),
                                      p("If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at ", strong("dromics@univ-lyon1.fr"), "."),
                                      p("Issues can be reported on",
-                                       a("https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#f28d0f;"), ".")
+                                       a("https://github.com/lbbe-software/DRomics/issues", href = "https://github.com/lbbe-software/DRomics/issues", TARGET = "_blank", style="color:#f28d0f;"), ".")
                               ),
                               
                               column(5, 

@@ -7,8 +7,8 @@ BiocManager::install(c("limma", "DESeq2"))
 
 if (!requireNamespace("remotes", quietly = TRUE))
   install.packages("remotes")
-remotes::install_github("aursiber/DRomics")
-# remotes::install_github("aursiber/DRomics", force = TRUE)
+remotes::install_github("lbbe-software/DRomics")
+# remotes::install_github("lbbe-software/DRomics", force = TRUE)
 
 # version on CRAN
 # install.packages("DRomics")

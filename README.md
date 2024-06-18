@@ -2,7 +2,7 @@
 
 [![CRAN_Release_Badge](http://www.r-pkg.org/badges/version-ago/DRomics)](http://cran.r-project.org/package=DRomics)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/DRomics)](https://cran.r-project.org/package=DRomics)
-[![R-CMD-check](https://github.com/aursiber/DRomics/workflows/R-CMD-check/badge.svg)](https://github.com/aursiber/DRomics/actions)
+[![R-CMD-check](https://github.com/lbbe-software/DRomics/workflows/R-CMD-check/badge.svg)](https://github.com/lbbe-software/DRomics/actions)
 
 `DRomics` is a freely available tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates to use `DRomics`).
 
@@ -37,7 +37,7 @@ The development version of `DRomics` can be installed from GitHub (`remotes` nee
 if (!requireNamespace("remotes", quietly = TRUE))
    install.packages("remotes")
    
-remotes::install_github("aursiber/DRomics")
+remotes::install_github("lbbe-software/DRomics")
 ``` 
 
 Finally load the package in your current R session with the following R command:
@@ -59,7 +59,7 @@ vignette("DRomics_vignette")
 Note that, by default, the vignette is not installed when the package is installed through GitHub.
 The following command (rather long to execute because of the large size of the vignette) will allow you to access the vignette of the development version of the package you installed from GitHub:
 ```r
-remotes::install_github("aursiber/DRomics", build_vignettes = TRUE)
+remotes::install_github("lbbe-software/DRomics", build_vignettes = TRUE)
 ```
 
 A **cheat sheet** that sum up the DRomics workflow is also available [here](https://lbbe.univ-lyon1.fr/sites/default/files/media/downloads/dromics.pdf).
@@ -85,7 +85,7 @@ These shiny apps are runing with the development version of DRomics.
 ## Authors & Contacts
 If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at dromics@univ-lyon1.fr .
 
-Issues can be reported on https://github.com/aursiber/DRomics/issues .
+Issues can be reported on https://github.com/lbbe-software/DRomics/issues .
 
 - Elise Billoir: elise.billoir@univ-lorraine.fr
 - Marie-Laure Delignette-Muller: marielaure.delignettemuller@vetagro-sup.fr

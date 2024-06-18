@@ -2,17 +2,17 @@
 
 NEW FEATURES
 
-- add of a component in the output of RNAseqdata, continuousomicdata(),  continuousanchoringdata(), microarraydata() and (data.sd, which gives, for each item, the sd of the response per condition - NA if no replicate for a condition).
-- add a new argument in drcfit(), named deltaAICminfromnullmodel, in order to relax requirements on the information criterion to keep the best fitted model (see ? drcfit()).
+- Add of a component in the output of RNAseqdata, continuousomicdata(),  continuousanchoringdata(), microarraydata() and (data.sd, which gives, for each item, the sd of the response per condition - NA if no replicate for a condition).
+- Add a new argument in drcfit(), named deltaAICminfromnullmodel, in order to relax requirements on the information criterion to keep the best fitted model (see ? drcfit()).
 - Modification of curvesplot() to be able to put its argument dose_log_transfo by default at TRUE as in other functions. Curvesplot now use minimum and maximum values of the chosen BMD to fix the rage on which the theoretical curve is calculated (and plotted) ad so the chosen BMD is required in the input of the function.
-- add the argument dose_log_transfo in plot.continuousanchoringdata(), by default at TRUE.
+- Add the argument dose_log_transfo in plot.continuousanchoringdata(), by default at TRUE.
 - In each plot where the x log is in scale, add it in the label of the x axis.
-- add in the output of drcfit named information.criterion.val the information criterion value of the null model and change of the names of those components (replacement of AIC by InfoCrit in their names).
+- Add in the output of drcfit named information.criterion.val the information criterion value of the null model and change of the names of those components (replacement of AIC by InfoCrit in their names).
 
 BUG FIXES
 
-- add the sample names in column names of the output of formatdata4DRomics.
-- change the default value of range4boxplot (in plot.RNAseqdata(), plot.continuousomicdata(), plot.microarraydata()) to 0 instead of 1e6 so that whiskers always go to the extrems.
+- Add the sample names in column names of the output of formatdata4DRomics.
+- Change the default value of range4boxplot (in plot.RNAseqdata(), plot.continuousomicdata(), plot.microarraydata()) to 0 instead of 1e6 so that whiskers always go to the extrems.
 
 # DRomics 2.5-2
 

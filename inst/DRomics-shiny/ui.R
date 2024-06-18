@@ -67,7 +67,7 @@ progress::-moz-progress-bar {
                                  p("The DRomics-shiny application runs on the ", 
                                    a("shiny server of the LBBE", title = "shiny server of the LBBE", href = "http://lbbe-shiny.univ-lyon1.fr/", TARGET="_blank", style="color:#9c5c16;"), 
                                    "with the develoment version of the DRomics package (available on ", 
-                                   a("Github", title = "Github", href = "https://github.com/aursiber/DRomics", TARGET="_blank", style="color:#9c5c16;"),
+                                   a("Github", title = "Github", href = "https://github.com/lbbe-software/DRomics", TARGET="_blank", style="color:#9c5c16;"),
                                    "). DRomics is also an R package, available on ", 
                                    a("CRAN", title = "CRAN", href = "https://cran.r-project.org/package=DRomics", TARGET="_blank", style="color:#9c5c16;"), 
                                    " and on ",
@@ -79,7 +79,7 @@ progress::-moz-progress-bar {
                                  p(strong("Contact")),
                                  p("If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at ", 
                                    strong("dromics@univ-lyon1.fr"), ". Issues can be reported on",
-                                   a("https://github.com/aursiber/DRomics/issues", title = "https://github.com/aursiber/DRomics/issues", href = "https://github.com/aursiber/DRomics/issues", TARGET = "_blank", style="color:#9c5c16;"), ".")
+                                   a("https://github.com/lbbe-software/DRomics/issues", title = "https://github.com/lbbe-software/DRomics/issues", href = "https://github.com/lbbe-software/DRomics/issues", TARGET = "_blank", style="color:#9c5c16;"), ".")
                           ),
                           
                           column(5,
