@@ -35,7 +35,7 @@ a column coding for the chosen BMD, by default \code{BMD.zSD} or \code{BMD.xfold
 \item{y0shift}{If \code{TRUE} (default choice) curves are all shifted to have the theoretical
  signal at the control at 0.}
 
-\item{scaling}{If \code{TRUE}, deafult choice, curves are all shifted to have the theoretical
+\item{scaling}{If \code{TRUE}, default choice, curves are all shifted to have the theoretical
  signal at the control at 0 \code{y0} and scaled by dividing by 
  the maximal absolute signal change (up or down) from the signal at the control
  \code{maxychange}.}
