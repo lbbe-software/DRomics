@@ -1,93 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/DRomics_vignette.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PCAdataplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/RNAseqdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Scenedesmus.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Zhou.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bmdboot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bmdcalc.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bmdfilter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bmdplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bmdplotwithgradient.html</loc>
-  </url>
-  <url>
-    <loc>/reference/continuousanchoringdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/curvesplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/drcfit.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ecdfplotwithCI.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ecdfquantileplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/formatdata4DRomics.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/itemselect.html</loc>
-  </url>
-  <url>
-    <loc>/reference/metabolomicdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/microarraydata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/selectgroups.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sensitivityplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/targetplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/trendplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/zebraf.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/DRomics_vignette.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/PCAdataplot.html</loc></url>
+<url><loc>/reference/RNAseqdata.html</loc></url>
+<url><loc>/reference/Scenedesmus.html</loc></url>
+<url><loc>/reference/Zhou.html</loc></url>
+<url><loc>/reference/bmdboot.html</loc></url>
+<url><loc>/reference/bmdcalc.html</loc></url>
+<url><loc>/reference/bmdfilter.html</loc></url>
+<url><loc>/reference/bmdplot.html</loc></url>
+<url><loc>/reference/bmdplotwithgradient.html</loc></url>
+<url><loc>/reference/continuousanchoringdata.html</loc></url>
+<url><loc>/reference/curvesplot.html</loc></url>
+<url><loc>/reference/drcfit.html</loc></url>
+<url><loc>/reference/ecdfplotwithCI.html</loc></url>
+<url><loc>/reference/ecdfquantileplot.html</loc></url>
+<url><loc>/reference/formatdata4DRomics.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/itemselect.html</loc></url>
+<url><loc>/reference/metabolomicdata.html</loc></url>
+<url><loc>/reference/microarraydata.html</loc></url>
+<url><loc>/reference/selectgroups.html</loc></url>
+<url><loc>/reference/sensitivityplot.html</loc></url>
+<url><loc>/reference/targetplot.html</loc></url>
+<url><loc>/reference/trendplot.html</loc></url>
+<url><loc>/reference/zebraf.html</loc></url>
 </urlset>
+

@@ -5,64 +5,48 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="DRomics">
 <title>Overview of the DRomics package • DRomics</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Overview of the DRomics package">
-<meta property="og:description" content="DRomics">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Overview of the DRomics package">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">DRomics</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.5-2</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/DRomics_vignette.html">Overview of the DRomics package</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/DRomics_vignette.html">Overview of the DRomics package</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/lbbe-software/DRomics/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/lbbe-software/DRomics/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -71,14 +55,15 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Overview of the DRomics package</h1>
+
+      <h1>Overview of the DRomics package</h1>
                         <h4 data-toc-skip class="author">Marie Laure
 Delignette-Muller, Aurélie Siberchicot, Elise Billoir, Floriane
 Larras</h4>
             
-            <h4 data-toc-skip class="date">2024-06-18</h4>
+            <h4 data-toc-skip class="date">2024-07-15</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/lbbe-software/DRomics/blob/HEAD/vignettes/DRomics_vignette.Rmd" class="external-link"><code>vignettes/DRomics_vignette.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lbbe-software/DRomics/blob/master/vignettes/DRomics_vignette.Rmd" class="external-link"><code>vignettes/DRomics_vignette.Rmd</code></a></small>
       <div class="d-none name"><code>DRomics_vignette.Rmd</code></div>
     </div>
 
@@ -972,61 +957,118 @@ be saved in a pdf file using the plotfit2pdf() function (see
 DRomics<a class="anchor" aria-label="anchor" href="#models"></a>
 </h4>
 <p>The best fit model is chosen among the five following models
-describing the observed signal <span class="math inline">\(y\)</span> as
-a function of <span class="math inline">\(x\)</span> the dose (or
-concentration):</p>
+describing the observed signal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+as a function of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+the dose (or concentration):</p>
 <ul>
-<li>the <strong>linear model</strong>: <span class="math display">\[y =
-d + b \times x\]</span> with <strong>2 parameters</strong>, <span class="math inline">\(b\)</span> the slope and <span class="math inline">\(d\)</span> the mean signal at control.</li>
-<li>the <strong>exponential model</strong>: <span class="math display">\[y = d + b \times
-\left(exp\left(\frac{x}{e}\right)-1\right)\]</span> with <strong>3
-parameters</strong>,<br><span class="math inline">\(b\)</span> a shape parameter, <span class="math inline">\(d\)</span> the mean signal at control, <span class="math inline">\(e\)</span> a shape parameter.
+<li>the <strong>linear model</strong>:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>d</mi><mo>+</mo><mi>b</mi><mo>×</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">y = d + b \times x</annotation></semantics></math>
+with <strong>2 parameters</strong>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+the slope and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+the mean signal at control.</li>
+<li>the <strong>exponential model</strong>:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>d</mi><mo>+</mo><mi>b</mi><mo>×</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>x</mi><mi>e</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">y = d + b \times \left(exp\left(\frac{x}{e}\right)-1\right)</annotation></semantics></math>
+with <strong>3 parameters</strong>,<br><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+a shape parameter,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+the mean signal at control,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math>
+a shape parameter.
 <ul>
-<li>When <span class="math inline">\(e&gt;0\)</span> the dose response
-curve - DRC - is increasing if <span class="math inline">\(b&gt;0\)</span> and decreasing if <span class="math inline">\(b&lt;0\)</span>, with no asymptote for high
-doses.</li>
-<li>When <span class="math inline">\(e&lt;0\)</span> the DRC is
-increasing if <span class="math inline">\(b&lt;0\)</span> and decreasing
-if <span class="math inline">\(b&gt;0\)</span>, with an asymptote at
-<span class="math inline">\(d-b\)</span> for high doses.</li>
+<li>When
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">e&gt;0</annotation></semantics></math>
+the dose response curve - DRC - is increasing if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b&gt;0</annotation></semantics></math>
+and decreasing if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b&lt;0</annotation></semantics></math>,
+with no asymptote for high doses.</li>
+<li>When
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">e&lt;0</annotation></semantics></math>
+the DRC is increasing if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b&lt;0</annotation></semantics></math>
+and decreasing if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b&gt;0</annotation></semantics></math>,
+with an asymptote at
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>−</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">d-b</annotation></semantics></math>
+for high doses.</li>
 </ul>
 </li>
-<li>the <strong>Hill model</strong>: <span class="math display">\[y = c
-+ \frac{d-c}{1+(\frac{x}{e})^b}\]</span> with <strong>4
-parameters</strong>,<br><span class="math inline">\(b\)</span> (<span class="math inline">\(&gt;0\)</span>) a shape parameter, <span class="math inline">\(c\)</span> the asymtotic signal for high doses,
-<span class="math inline">\(d\)</span> the mean signal at control, and
-<span class="math inline">\(e\)</span> (<span class="math inline">\(&gt;0\)</span>) the dose at the inflection point
-of the sigmoid.</li>
+<li>the <strong>Hill model</strong>:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>c</mi><mo>+</mo><mfrac><mrow><mi>d</mi><mo>−</mo><mi>c</mi></mrow><mrow><mn>1</mn><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>x</mi><mi>e</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>b</mi></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">y = c + \frac{d-c}{1+(\frac{x}{e})^b}</annotation></semantics></math>
+with <strong>4 parameters</strong>,<br><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&gt;0</annotation></semantics></math>)
+a shape parameter,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+the asymtotic signal for high doses,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+the mean signal at control, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&gt;0</annotation></semantics></math>)
+the dose at the inflection point of the sigmoid.</li>
 <li>the <strong>Gauss-probit model</strong> built as the sum of a Gauss
-and a probit part sharing the same parameters as defined below:<span class="math display">\[y = f \times exp\left(-0.5
-\left(\frac{x-e}{b}\right)^2\right) +d+(c-d) \times
-\Phi\left(\frac{x-e}{b}\right)\]</span> with <strong>5
-parameters</strong>,<br><span class="math inline">\(b\)</span> (<span class="math inline">\(&gt;0\)</span>) a shape parameter corresponding to
-the standard deviation of the Gauss part of the model, <span class="math inline">\(c\)</span> the asymtotic signal for high doses,
-<span class="math inline">\(d\)</span> the asymptotic signal on the left
-of the DRC (generally corresponding to a fictive negative dose), <span class="math inline">\(e\)</span> (<span class="math inline">\(&gt;0\)</span>) a shape parameter corresponding to
-the mean of the Gauss part of the model, and <span class="math inline">\(f\)</span> the amplitude and sign of the Gauss
-part of the model (the model is U-shaped if <span class="math inline">\(f&lt;0\)</span> and bell-shaped if <span class="math inline">\(f&lt;0\)</span>).<br><span class="math inline">\(\Phi\)</span> represents the cumulative
-distribution function (CDF) of the standard Gauss (also named normal or
-Gaussian) distribution.<br>
+and a probit part sharing the same parameters as defined
+below:<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>f</mi><mo>×</mo><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mn>0.5</mn><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>e</mi></mrow><mi>b</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>d</mi><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo>−</mo><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>×</mo><mi>Φ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>e</mi></mrow><mi>b</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">y = f \times exp\left(-0.5 \left(\frac{x-e}{b}\right)^2\right) +d+(c-d) \times \Phi\left(\frac{x-e}{b}\right)</annotation></semantics></math>
+with <strong>5 parameters</strong>,<br><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&gt;0</annotation></semantics></math>)
+a shape parameter corresponding to the standard deviation of the Gauss
+part of the model,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+the asymtotic signal for high doses,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+the asymptotic signal on the left of the DRC (generally corresponding to
+a fictive negative dose),
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&gt;0</annotation></semantics></math>)
+a shape parameter corresponding to the mean of the Gauss part of the
+model, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+the amplitude and sign of the Gauss part of the model (the model is
+U-shaped if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f&lt;0</annotation></semantics></math>
+and bell-shaped if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f&lt;0</annotation></semantics></math>).<br><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Φ</mi><annotation encoding="application/x-tex">\Phi</annotation></semantics></math>
+represents the cumulative distribution function (CDF) of the standard
+Gauss (also named normal or Gaussian) distribution.<br>
 This model encompasses <strong>two simplifed versions with 4
-parameters</strong>, one <strong>monotonic</strong> (for <span class="math inline">\(f=0\)</span>) and one with <strong>symmetrical
-asymptotes</strong> (for <span class="math inline">\(c=d\)</span>).</li>
+parameters</strong>, one <strong>monotonic</strong> (for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f=0</annotation></semantics></math>)
+and one with <strong>symmetrical asymptotes</strong> (for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">c=d</annotation></semantics></math>).</li>
 <li>the <strong>log-Gauss-probit model</strong>, a variant of the
-previous one with on the log scale of the dose: <span class="math display">\[y = f \times
-exp\left(-0.5\left(\frac{ln(x)-ln(e)}{b}\right)^2\right)
-+d+(c-d) \times \Phi\left(\frac{ln(x)-ln(e)}{b}\right)\]</span><br>
-with <strong>5 parameters</strong>,<br><span class="math inline">\(b\)</span> (<span class="math inline">\(&gt;0\)</span>) a shape parameter corresponding to
-the standard deviation of the Gauss part of the model, <span class="math inline">\(c\)</span> the asymtotic signal for high dose,
-<span class="math inline">\(d\)</span> the asymptotic signal on the left
-of the DRC, reached at the control (for <span class="math inline">\(ln(x) = ln(0) = -\infty\)</span>), <span class="math inline">\(ln(e)\)</span> (<span class="math inline">\(&gt;0\)</span>) a shape parameter corresponding to
-the mean of the Gauss part of the model, and <span class="math inline">\(f\)</span> the amplitude and sign of the Gauss
-part of the model (the model is U-shaped if <span class="math inline">\(f&lt;0\)</span> and bell-shaped if <span class="math inline">\(f&lt;0\)</span>).<br><span class="math inline">\(\Phi\)</span> represents the cumulative
-distribution function (CDF) of the standard Gauss distribution.<br>
+previous one with on the log scale of the dose:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>f</mi><mo>×</mo><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mn>0.5</mn><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>e</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mi>b</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>d</mi><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo>−</mo><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>×</mo><mi>Φ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>e</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mi>b</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">y = f \times exp\left(-0.5\left(\frac{ln(x)-ln(e)}{b}\right)^2\right)
++d+(c-d) \times \Phi\left(\frac{ln(x)-ln(e)}{b}\right)</annotation></semantics></math><br>
+with <strong>5 parameters</strong>,<br><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&gt;0</annotation></semantics></math>)
+a shape parameter corresponding to the standard deviation of the Gauss
+part of the model,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+the asymtotic signal for high dose,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+the asymptotic signal on the left of the DRC, reached at the control
+(for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo>−</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">ln(x) = ln(0) = -\infty</annotation></semantics></math>),
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>e</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">ln(e)</annotation></semantics></math>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&gt;0</annotation></semantics></math>)
+a shape parameter corresponding to the mean of the Gauss part of the
+model, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+the amplitude and sign of the Gauss part of the model (the model is
+U-shaped if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f&lt;0</annotation></semantics></math>
+and bell-shaped if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f&lt;0</annotation></semantics></math>).<br><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Φ</mi><annotation encoding="application/x-tex">\Phi</annotation></semantics></math>
+represents the cumulative distribution function (CDF) of the standard
+Gauss distribution.<br>
 As the previous one, this model encompasses <strong>two simplifed
 versions with 4 parameters</strong>, one <strong>monotonic</strong> (for
-<span class="math inline">\(f=0\)</span>) and one with
-<strong>symmetrical asymptotes</strong> (for <span class="math inline">\(c=d\)</span>).</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f=0</annotation></semantics></math>)
+and one with <strong>symmetrical asymptotes</strong> (for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">c=d</annotation></semantics></math>).</li>
 </ul>
 <p>This family of five models was built to be able to describe a wide
 range of monotonic and biphasic DRC. In the following plot were
@@ -1052,19 +1094,28 @@ which you should import your data is very important: a log (or
 pseudo-log) transformation may be necessary to meet the use conditions
 of the model for some types of data.<br>
 Let us recall the formulation of the Gaussian model defining the signal
-(after transformation if needed) <span class="math inline">\(y\)</span>
-as a function of the dose (or concentration) <span class="math inline">\(x\)</span>, <span class="math inline">\(f\)</span>
-being one of the five models previously described, and <span class="math inline">\(\theta\)</span> the vector of its parameters (of
-length 2 to 5).</p>
-<p><span class="math display">\[y = f(x, \theta) + \epsilon\]</span>
-with <span class="math display">\[\epsilon \sim N(0, \sigma)\]</span>
-<span class="math inline">\(N(0, \sigma)\)</span> representing the
-Gaussian (normal) distribution of mean <span class="math inline">\(0\)</span> and standard deviation (SD) <span class="math inline">\(\sigma\)</span>.</p>
-<p>In this model, the <strong>residual standard deviation <span class="math inline">\(\sigma\)</span> is assumed constant</strong>. It
-is the classical “homoscedasticity” hypothesis (see the following figure
-for an illustration). The examination of residuals (see the section on
-<a href="#residuals">plot of residuals</a>) is a good way to check that
-the error model is not strongly violated on your data.</p>
+(after transformation if needed)
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+as a function of the dose (or concentration)
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+being one of the five models previously described, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+the vector of its parameters (of length 2 to 5).</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">y = f(x, \theta) + \epsilon</annotation></semantics></math>
+with
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>σ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\epsilon \sim N(0, \sigma)</annotation></semantics></math><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>σ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">N(0, \sigma)</annotation></semantics></math>
+representing the Gaussian (normal) distribution of mean
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+and standard deviation (SD)
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>.</p>
+<p>In this model, the <strong>residual standard deviation
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>
+is assumed constant</strong>. It is the classical “homoscedasticity”
+hypothesis (see the following figure for an illustration). The
+examination of residuals (see the section on <a href="#residuals">plot
+of residuals</a>) is a good way to check that the error model is not
+strongly violated on your data.</p>
 <p><img src="DRomics_vignette_files/figure-html/unnamed-chunk-27-1.png" width="80%"></p>
 </div>
 </div>
@@ -1089,21 +1140,31 @@ reasons explained in <a href="https://hal.science/hal-02309919/document" class="
 <span><span class="co">## 60 BMD-xfold values and 0 BMD-zSD values could not be calculated (coded </span></span>
 <span><span class="co">## NA as the BMR stands within the range of response values defined by the </span></span>
 <span><span class="co">## model but outside the range of tested doses).</span></span></code></pre>
-<p>For the <strong>recommended BMD-zSD</strong>,the argument <span class="math inline">\(z\)</span>, by default at 1, is used to define the
-<strong>BMD-zSD</strong> as the dose at which the response is reaching
-the <strong>BMR (benchmark response)</strong> defined as <span class="math display">\[BMR = y_0 \pm z \times SD\]</span> with <span class="math inline">\(y_0\)</span> the level at the control given by the
-dose-response fitted model and <span class="math inline">\(SD\)</span>
+<p>For the <strong>recommended BMD-zSD</strong>,the argument
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>,
+by default at 1, is used to define the <strong>BMD-zSD</strong> as the
+dose at which the response is reaching the <strong>BMR (benchmark
+response)</strong> defined as
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>M</mi><mi>R</mi><mo>=</mo><msub><mi>y</mi><mn>0</mn></msub><mo>±</mo><mi>z</mi><mo>×</mo><mi>S</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">BMR = y_0 \pm z \times SD</annotation></semantics></math>
+with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>0</mn></msub><annotation encoding="application/x-tex">y_0</annotation></semantics></math>
+the level at the control given by the dose-response fitted model and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">SD</annotation></semantics></math>
 the residual standard deviation of the dose-response fitted model (also
-named <span class="math inline">\(\sigma\)</span> in the <a href="#leastsquares">previous mathematical definition of the Gaussian
-model</a>).</p>
-<p>For the less recommended BMD-xfold, the argument <span class="math inline">\(x\)</span>, by default at 10 (for 10%), is used to
-define the BMD-xfold as the dose at which the response is reaching the
-BMR defined as <span class="math inline">\(BMR = y_0 \pm \frac{x}{100}
-\times y_0\)</span>. So this second BMD version does not take into
-account the residual standard deviation, and is strongly dependent of
-the magnitude of <span class="math inline">\(y_0\)</span>, which may be
-a problem if the signal at the control is close to 0, which is not rare
-on omics data that are classically handled on log scale.</p>
+named
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>
+in the <a href="#leastsquares">previous mathematical definition of the
+Gaussian model</a>).</p>
+<p>For the less recommended BMD-xfold, the argument
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>,
+by default at 10 (for 10%), is used to define the BMD-xfold as the dose
+at which the response is reaching the BMR defined as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>M</mi><mi>R</mi><mo>=</mo><msub><mi>y</mi><mn>0</mn></msub><mo>±</mo><mfrac><mi>x</mi><mn>100</mn></mfrac><mo>×</mo><msub><mi>y</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">BMR = y_0 \pm \frac{x}{100} \times y_0</annotation></semantics></math>.
+So this second BMD version does not take into account the residual
+standard deviation, and is strongly dependent of the magnitude of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>0</mn></msub><annotation encoding="application/x-tex">y_0</annotation></semantics></math>,
+which may be a problem if the signal at the control is close to 0, which
+is not rare on omics data that are classically handled on log scale.</p>
 <p>In the following you can see the first lines of the output data frame
 of the function bmdcalc() on our example. BMD values are coded
 <code>NA</code> when the BMR stands within the range of response values
@@ -2183,7 +2244,7 @@ triclosan effects in the chlorophyte Scenedesmus vacuolatus. Journal of
 Hazardous Materials. <a href="https://doi.org/10.1016/j.jhazmat.2020.122727" class="external-link">https://doi.org/10.1016/j.jhazmat.2020.122727</a>.</p></li>
 </ul>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -2194,15 +2255,15 @@ Hazardous Materials. <a href="https://doi.org/10.1016/j.jhazmat.2020.122727" cla
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>
