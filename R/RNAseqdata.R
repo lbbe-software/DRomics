@@ -20,7 +20,7 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
         stop("The argument file must be a character string ending by .txt.")
     }
     d <- utils::read.table(file, header = FALSE)
-    colnames(d) <- c("item",paste("S", 1:(ncol(d)-1), sep = ""))
+    colnames(d) <- c("item", paste0("S", 1:(ncol(d)-1)))
     
   }
   nrowd <- nrow(d)
@@ -219,12 +219,12 @@ plot.RNAseqdata <- function(x, range4boxplot = 0, ...)
   ymax.rc <- max(x$raw.counts)
   graphics::par(mfrow = c(1,2), xaxt = "n")
   graphics::boxplot(x$raw.counts, xlab = "Samples", ylab = "Raw counts", 
-          main = paste("Raw data"), 
+          main = "Raw data", 
           ylim = c(ymin.rc, ymax.rc), range = range4boxplot, ...) 
   ymin.log <- min(x$data)
   ymax.log <- max(x$data)
   graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", 
-          main = paste("Normalized and transformed data"), 
+          main = "Normalized and transformed data", 
           ylim = c(ymin.log, ymax.log), range = range4boxplot, ...)   
   graphics::par(def.par)    
 }

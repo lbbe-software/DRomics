@@ -19,7 +19,7 @@ microarraydata <- function(file, backgrounddose, check = TRUE,
         stop("The argument file must be a character string ending by .txt.")
     }
     d <- utils::read.table(file, header = FALSE)
-    colnames(d) <- c("item",paste("S", 1:(ncol(d)-1), sep = ""))
+    colnames(d) <- c("item", paste0("S", 1:(ncol(d)-1)))
   }  
   nrowd <- nrow(d)
   ncold <- ncol(d)
@@ -146,16 +146,16 @@ plot.microarraydata <- function(x, range4boxplot = 0, ...)
     ymax <- max(x$data.beforenorm, x$data)
     graphics::par(mfrow = c(1,2), xaxt = "n")
     graphics::boxplot(x$data.beforenorm, xlab = "Samples", ylab = "Signal", range = range4boxplot,
-            main = paste("Microarray data before normalization"), ylim = c(ymin, ymax), ...) 
+            main = "Microarray data before normalization", ylim = c(ymin, ymax), ...) 
     graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", range = range4boxplot,
-            main = paste("Microarray data after", x$norm.method,"normalization"), 
+            main = paste("Microarray data after", x$norm.method, "normalization"), 
             ylim = c(ymin, ymax), ...) 
     
   } else
   {
     graphics::par(xaxt = "n")
     graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", range = range4boxplot, 
-            main = paste("Microarray data without normalization")) 
+            main = "Microarray data without normalization")
   }
   graphics::par(def.par)    
 }

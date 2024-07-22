@@ -24,7 +24,7 @@ continuousomicdata <- function(file, backgrounddose, check = TRUE)
         stop("The argument file must be a character string ending by .txt.")
     }
     d <- utils::read.table(file, header = FALSE)
-    colnames(d) <- c("item",paste("S", 1:(ncol(d)-1), sep = ""))
+    colnames(d) <- c("item", paste0("S", 1:(ncol(d)-1)))
   } 
   nrowd <- nrow(d)
   ncold <- ncol(d)
@@ -185,7 +185,8 @@ plot.continuousomicdata <- function(x, range4boxplot = 0, ...)
   def.par <- graphics::par(no.readonly = TRUE)
     graphics::par(xaxt = "n")
     graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", 
-            main = paste("Continuous omics data"), range = range4boxplot, ...) 
+            main = "Continuous omics data", 
+            range = range4boxplot, ...) 
   graphics::par(def.par)    
 }
 

@@ -17,7 +17,7 @@ ecdfquantileplot <- function(variable, by, quantile.prob = 0.5, title)
   quantilepc <- quantile.prob * 100
   if (missing(title))
   {
-    title <- paste("ECDF plot of ", quantilepc,"th quantiles")
+    title <- paste("ECDF plot of ", quantilepc, "th quantiles")
   }
   
   dnb <- as.data.frame(table(group))

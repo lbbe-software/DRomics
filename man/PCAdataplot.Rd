@@ -49,7 +49,7 @@ print(o)
 plot(o)
 PCAdataplot(o)
 PCAdataplot(o, label = TRUE)
-samplenames <- paste("sample", 1:ncol(o$data), sep = "")
+samplenames <- paste0("sample", 1:ncol(o$data))
 PCAdataplot(o, label = samplenames)
 
 
