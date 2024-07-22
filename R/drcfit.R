@@ -891,7 +891,7 @@ plot.drcfit <- function(x, items,
         if (is.character(items))
         {
             inditems <- match(items, x$fitres$id)
-            if (any(is.na(inditems)))
+            if (anyNA(inditems))
                 stop("At least one of the chosen items was not selected as responding. You should use targetplot() in that case.")
             subd <- x$fitres[inditems, ]
         }
@@ -1020,7 +1020,7 @@ plotfit2pdf <- function(x, items,
         if (is.character(items))
         {
             inditems <- match(items, x$fitres$id)
-            if (any(is.na(inditems)))
+            if (anyNA(inditems))
                 stop("At least one of the chosen items was not selected as responding. You should use targetplot() in that case.")
             subd <- x$fitres[inditems, ]
         }
