@@ -18,6 +18,6 @@ formatdata4DRomics <- function(signalmatrix, dose, samplenames)
   othercolumns <- as.data.frame(as.matrix(rbind(dose, signalmatrix)))
   data4DRomics <- cbind(column1, othercolumns)
   colnames(data4DRomics) <- c("", samplenames)
-  rownames(data4DRomics) <- 1:nrow(data4DRomics)
+  rownames(data4DRomics) <- seq_len(nrow(data4DRomics))
   return(data4DRomics)
 }
