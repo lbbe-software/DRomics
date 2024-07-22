@@ -25,7 +25,7 @@ microarraydata <- function(file, backgrounddose, check = TRUE,
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
 
-    if(any(!stats::complete.cases(data)))
+    if (!all(stats::complete.cases(data)))
     stop("microarraydata() should not be used with data including NA values.")
   
   if (check)

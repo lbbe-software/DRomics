@@ -30,7 +30,7 @@ continuousomicdata <- function(file, backgrounddose, check = TRUE)
   ncold <- ncol(d)
   data <- as.matrix(d[2:nrowd, 2:ncold]) 
   
-  if(any(!stats::complete.cases(data)))
+  if (!all(stats::complete.cases(data)))
   {
     containsNA <- TRUE
   } else containsNA <- FALSE

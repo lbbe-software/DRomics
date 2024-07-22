@@ -10,7 +10,7 @@ similaritycalc <- function(extendedres, xmin = 0, xmax,
     (see ?similaritycalc for details).")
 
   cnames <- colnames(extendedres)
-  if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f"), cnames)))
+  if (!all(is.element(c("id", "model", "b", "c", "d", "e", "f"), cnames)))
       stop("The first argument of similaritycalc must be a dataframe
     containing at least columns named id, model, b, c, d, e, f.")
 

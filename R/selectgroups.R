@@ -16,7 +16,7 @@ selectgroups <- function(extendedres, group, explev,
   
   if (BMDtype == "zSD")
   {  
-    if (any(!is.element(c("BMD.zSD"), cnames)))
+    if (!all(is.element(c("BMD.zSD"), cnames)))
       stop("The first argument of selectgroups must be a dataframe
       containing at least columns named id and BMD.zSD.")
 
@@ -25,7 +25,7 @@ selectgroups <- function(extendedres, group, explev,
     variable <- extendedreswithoutNA$BMD.zSD
   } else 
   {
-    if (any(!is.element(c("BMD.xfold"), cnames)))
+    if (!all(is.element(c("BMD.xfold"), cnames)))
       stop("The first argument of selectgroups must be a dataframe
       containing at least columns named id and BMD.xfold.")
 

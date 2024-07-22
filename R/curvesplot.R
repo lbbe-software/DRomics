@@ -37,12 +37,12 @@ curvesplot <- function(extendedres, xmin, xmax,
 
     if (scaling)
   {
-    if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "y0", "maxychange"), cnames)))
+    if (!all(is.element(c("id", "model", "b", "c", "d", "e", "f", "y0", "maxychange"), cnames)))
       stop("The first argument of curvesplot must be a dataframe
     containing at least columns named id, model, b, c, d, e, f, y0 and maxychange and BMD.zSD or BMD.xfold.")
   } else
   {
-    if (any(!is.element(c("id", "model", "b", "c", "d", "e", "f", "y0"), cnames)))
+    if (!all(is.element(c("id", "model", "b", "c", "d", "e", "f", "y0"), cnames)))
       stop("The first argument of curvesplot must be a dataframe
     containing at least columns named id, model, b, c, d, e, f and y0 and BMD.zSD or BMD.xfold.")
   }
@@ -246,7 +246,7 @@ curvesplot <- function(extendedres, xmin, xmax,
   {
     if (BMDtype == "zSD")
     {  
-      if (any(!is.element(c("BMD.zSD", "BMR.zSD"), cnames)))
+      if (!all(is.element(c("BMD.zSD", "BMR.zSD"), cnames)))
       {
         stop("To add BMD-zSD values on the curves, the first argument of curvesplot must be a dataframe
       containing the columns BMD.zSD and BMR.zSD.")
@@ -254,7 +254,7 @@ curvesplot <- function(extendedres, xmin, xmax,
       BMD2plot <- data.frame(x = extendedres$BMD.zSD, y = extendedres$BMR.zSD, id = extendedres$id)
     } else 
     {
-      if (any(!is.element(c("BMD.xfold", "BMR.xfold"), cnames)))
+      if (!all(is.element(c("BMD.xfold", "BMR.xfold"), cnames)))
       {
         stop("To add BMD-xfold values on the curves, the first argument of curvesplot must be a dataframe
       containing the columns BMD.xfold and BMR.xfold.")

@@ -14,13 +14,13 @@ bmdfilter <- function(res,
   # Definition of the filter to apply 
   if ((BMDtype == "zSD") & (BMDfilter != "none"))
   {  
-    if (any(!is.element(c("BMD.zSD"), cnames)))
+    if (!all(is.element(c("BMD.zSD"), cnames)))
       stop("The first argument of bmdfilter must be a dataframe
       containing a column named BMD.zSD.")
     BMD <- res$BMD.zSD
     if ((BMDfilter ==  "definedCI") | (BMDfilter ==  "finiteCI"))
     {
-      if (any(!is.element(c("BMD.zSD.upper", "BMD.zSD.lower"), cnames)) )
+      if (!all(is.element(c("BMD.zSD.upper", "BMD.zSD.lower"), cnames)) )
       stop("To apply a filter on BMD.zSD confidence intervals, the first argument of bmdfilter 
       must be a dataframe containing columns named BMD.zSD, BMD.zSD.lower, BMD.zSD.upper.")
       BMDupper <- res$BMD.zSD.upper
@@ -29,13 +29,13 @@ bmdfilter <- function(res,
   } else #so if (BMDtype == "xfold")
   if ((BMDtype == "xfold") & (BMDfilter != "none"))
   {
-    if (any(!is.element(c("BMD.xfold"), cnames)))
+    if (!all(is.element(c("BMD.xfold"), cnames)))
       stop("The first argument of bmdfilter must be a dataframe
       containing a column named BMD.xfold.")
     BMD <- res$BMD.xfold
     if ((BMDfilter ==  "definedCI") | (BMDfilter ==  "finiteCI"))
     {
-      if (any(!is.element(c("BMD.xfold.upper","BMD.xfold.lower"), cnames)))
+      if (!all(is.element(c("BMD.xfold.upper","BMD.xfold.lower"), cnames)))
         stop("To apply a filter on BMD.xfold confidence intervals, the first argument of bmdfilter 
       must be a dataframe containing columns named BMD.xfold, BMD.xfold.lower, BMD.xfold.upper.")
       BMDupper <- res$BMD.xfold.upper

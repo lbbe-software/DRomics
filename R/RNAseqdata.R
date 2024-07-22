@@ -29,7 +29,7 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
   nrowdata <- nrowd - 1
   ncoldata <- ncold - 1
   
-  if(any(!stats::complete.cases(data)))
+  if(!all(stats::complete.cases(data)))
     stop("RNAseqdata() should not be used with data including NA values.")
   
   if (round.counts)

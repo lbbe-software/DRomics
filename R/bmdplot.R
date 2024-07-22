@@ -21,7 +21,7 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
  
   if (BMDtype == "zSD")
   {  
-    if (any(!is.element(c("id", "BMD.zSD"), cnames)))
+    if (!all(is.element(c("id", "BMD.zSD"), cnames)))
       stop("The first argument of bmdplot must be a dataframe
       containing at least columns named id and BMD.zSD.")
     
@@ -36,7 +36,7 @@ bmdplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
     }
   } else 
   {
-    if (any(!is.element(c("id", "BMD.xfold"), cnames)))
+    if (!all(is.element(c("id", "BMD.xfold"), cnames)))
       stop("The first argument of bmdplot must be a dataframe
       containing at least columns named id and BMD.xfold.")
     if (add.CI)

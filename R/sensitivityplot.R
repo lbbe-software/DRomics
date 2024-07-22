@@ -20,13 +20,13 @@ sensitivityplot <- function(extendedres, BMDtype = c("zSD", "xfold"),
   
   if (BMDtype == "zSD")
   {  
-    if (any(!is.element(c("BMD.zSD"), cnames)))
+    if (!all(is.element(c("BMD.zSD"), cnames)))
       stop("The first argument of sensitivityplot must be a dataframe
       containing a column named BMD.zSD and other columns coding for group of items.")
     variable <- extendedres[, "BMD.zSD"]
   } else 
   {
-    if (any(!is.element(c("BMD.xfold"), cnames)))
+    if (!all(is.element(c("BMD.xfold"), cnames)))
       stop("The first argument of sensitivityplot must be a dataframe
       containing a column named BMD.xfold and other columns coding for groups of items.")
     variable <- extendedres[, "BMD.xfold"]

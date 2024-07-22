@@ -100,9 +100,9 @@ drcfit <- function(itemselect,
         dset <- data.frame(signal = signal, dose = dose, doseranks = doseranks)
         
         if (containsNA)
-            if (any(!stats::complete.cases(dset)))
+            if (!all(stats::complete.cases(dset)))
             {
-                if (any(!stats::complete.cases(signalm)))
+                if (!all(stats::complete.cases(signalm)))
                 {
                   doseu <- doseu[!is.na(signalm)]
                   signalm <- signalm[!is.na(signalm)]

@@ -18,7 +18,7 @@ trendplot <- function(extendedres, group,
            extendedres, the dataframe given in input.")
   
   
-  if (any(!is.element(c("trend"), cnames)))
+  if (!all(is.element(c("trend"), cnames)))
     stop("The first argument of trendplot must be a dataframe
     containing a column named trend and other columns coding for group of items.")
 

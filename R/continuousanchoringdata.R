@@ -68,7 +68,7 @@ continuousanchoringdata <- function(file, backgrounddose, check = TRUE)
       a dose-response design with at least six different tested doses."))
   
   # control of the design including on rows with NA values
-  if(any(!stats::complete.cases(data)))
+  if(!all(stats::complete.cases(data)))
   {
     containsNA <- TRUE
     nonNAdata <- !is.na(data)
