@@ -42,13 +42,13 @@ an ANOVA-type test (see details for further explaination).}
 The selection of responsive items is performed using the \code{limma} package
 for microarray and continuous omics data (such as metabolomics), the \code{DESeq2} package for
 RNAseq data and the \code{lm} function for continuous anchoring data. 
-Three methods are proposed (as described below). Within \code{limma} those methods are implemented using functions \code{\link{lmFit}},  
-\code{\link{eBayes}} and \code{\link{topTable}} with p-values ajusted for multiple 
+Three methods are proposed (as described below). Within \code{limma} those methods are implemented using functions \code{\link[limma]{lmFit}},  
+\code{\link[limma]{eBayes}} and \code{\link[limma]{topTable}} with p-values ajusted for multiple 
 testing using the Benjamini-Hochberg method (also called q-values), with the false discovery rate given in
 input (argument \code{FDR}). 
 Within \code{DESeq2} those methods
-are implemented using functions \code{\link{DESeqDataSetFromMatrix}},  
-\code{\link{DESeq}} and \code{\link{results}} with p-values ajusted for multiple 
+are implemented using functions \code{\link[DESeq2]{DESeqDataSetFromMatrix}},  
+\code{\link[DESeq2]{DESeq}} and \code{\link[DESeq2]{results}} with p-values ajusted for multiple 
 testing using the Benjamini-Hochberg method (also called q-values), with the false discovery rate given in
 input (argument \code{FDR}). 
 For continuous anchoring data, the \code{lm} and \code{anova} functions are used 
@@ -100,10 +100,10 @@ All items having a proportion of such tied minimal values above the input argume
 }
 
 \seealso{
-    See \code{\link{lmFit}}, \code{\link{eBayes}} and \code{\link{topTable}}
+    See \code{\link[limma]{lmFit}}, \code{\link[limma]{eBayes}} and \code{\link[limma]{topTable}}
     for details about the used functions of the \code{limma} package and 
-    \code{\link{DESeqDataSetFromMatrix}},
-    \code{\link{DESeq}} and \code{\link{results}}
+    \code{\link[DESeq2]{DESeqDataSetFromMatrix}},
+    \code{\link[DESeq2]{DESeq}} and \code{\link[DESeq2]{results}}
     for details about the used functions of the \code{DESeq2} package.
 }
 

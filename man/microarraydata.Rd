@@ -50,7 +50,7 @@ of \code{read.table(file, header = FALSE)} on a file described as above. }
 \item{check}{If TRUE the format of the input file is checked.}
 
 \item{norm.method}{If \code{"none"} no normalization is performed, else a 
-normalization is performed using the function normalizeBetweenArrays of the 
+normalization is performed using the function \code{normalizeBetweenArrays} of the 
 \code{limma} package using the specified method.}
 
 \item{x}{An object of class \code{"microarraydata"}.}
@@ -69,7 +69,7 @@ of data) and gives in the \code{print} information
 that should help the user to check that the coding of data is correct : the tested doses (or concentrations) 
 the number of replicates for each dose, the number of items, the identifiers 
 of the first 20 items. If the argument \code{norm.method} is not \code{"none"},
-data are normalized using the function \code{\link{normalizeBetweenArrays}} of the 
+data are normalized using the function \code{\link[limma]{normalizeBetweenArrays}} of the 
 \code{limma} package using the specified method : \code{"cyclicloess"} (default choice), 
 \code{"quantile"} or \code{"scale"}.
 }
@@ -112,7 +112,7 @@ data are normalized using the function \code{\link{normalizeBetweenArrays}} of t
 
 \seealso{
     See \code{\link{read.table}} the function used to import data, 
-    \code{\link{normalizeBetweenArrays}} for details about the normalization and 
+    \code{\link[limma]{normalizeBetweenArrays}} for details about the normalization and 
     \code{\link{RNAseqdata}}, \code{\link{continuousomicdata}} and
     \code{\link{continuousanchoringdata}} for other types of data.}
 

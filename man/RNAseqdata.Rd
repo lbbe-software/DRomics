@@ -52,8 +52,8 @@ using the
   \code{"vst"} for variance stabilizing transformation. If missing, default value
   defined at \code{"rlog"} for datasets with less than 30 samples and at \code{"vst"} if not}
 
-\item{transfo.blind}{Argument given to function \code{\link{rlog}} or \code{\link{vst}},
-  see \code{\link{rlog}} and \code{\link{vst}} for an explaination, by default
+\item{transfo.blind}{Argument given to function \code{\link[DESeq2]{rlog}} or \code{\link[DESeq2]{vst}},
+  see \code{\link[DESeq2]{rlog}} and \code{\link[DESeq2]{vst}} for an explaination, by default
   at \code{TRUE} as in the \code{DESeq2} package .}
 
 \item{round.counts}{Put it to TRUE if your counts come from Kallisto or Salmon
@@ -76,7 +76,7 @@ of data) and gives in the \code{print} information
 that should help the user to check that the coding of data is correct : the tested doses (or concentrations) 
 the number of replicates for each dose, the number of items, the identifiers 
 of the first 20 items. Data are normalized with respect to library size
-and tranformed using functions \code{\link{rlog}} or \code{\link{vst}} of the 
+and tranformed using functions \code{\link[DESeq2]{rlog}} or \code{\link[DESeq2]{vst}} of the 
 \code{DESeq2} package depending on the specified method : \code{"rlog"} 
 (recommended default choice) or 
 \code{"vst"}.
@@ -122,7 +122,7 @@ and tranformed using functions \code{\link{rlog}} or \code{\link{vst}} of the
 
 \seealso{
     See \code{\link{read.table}} the function used to import data,
-    \code{\link{rlog}} and \code{\link{vst}} for details about the 
+    \code{\link[DESeq2]{rlog}} and \code{\link[DESeq2]{vst}} for details about the 
     transformation methods and 
     \code{\link{microarraydata}}, \code{\link{continuousomicdata}} and
     \code{\link{continuousanchoringdata}} for other types of data.
