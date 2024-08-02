@@ -62,4 +62,3 @@ bmdfilter <- function(res,
         }  
   return(subres)
 }
-

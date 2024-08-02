@@ -216,6 +216,3 @@ print.itemselect <- function(x, nfirstitems = 20, ...)
     print(x$omicdata$item[x$selectindex])
   }
 }
-
-
-

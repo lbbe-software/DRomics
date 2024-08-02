@@ -164,5 +164,3 @@ plot.continuousanchoringdata <- function(x, dose_log_transfo = TRUE, ...)
     
   return(g)
 }
-
-

@@ -438,4 +438,3 @@ fLGauss4poutofrange <- function(fit, signalmin, signalmax)
   yextr.i <- fLGauss5p(xextr.i, b = b.i, c = c.i, d = d.i, e = e.i, f = f.i)
   outofrange <- (yextr.i > signalmax) | (yextr.i < signalmin)
 }
-

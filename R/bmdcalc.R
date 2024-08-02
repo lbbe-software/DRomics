@@ -327,4 +327,3 @@ plot.bmdcalc <- function(x, BMDtype = c("zSD", "xfold"),
   
   return(g)
 }
-

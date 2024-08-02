@@ -159,5 +159,3 @@ plot.microarraydata <- function(x, range4boxplot = 0, ...)
   }
   graphics::par(def.par)    
 }
-
-

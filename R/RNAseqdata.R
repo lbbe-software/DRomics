@@ -228,5 +228,3 @@ plot.RNAseqdata <- function(x, range4boxplot = 0, ...)
           ylim = c(ymin.log, ymax.log), range = range4boxplot, ...)   
   graphics::par(def.par)    
 }
-
-

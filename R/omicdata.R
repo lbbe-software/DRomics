@@ -10,5 +10,3 @@ omicdata <- function(file, backgrounddose, check = TRUE,
     depending of the type of data you handle. \n"))
   microarraydata(file = file, backgrounddose, check = check, norm.method = norm.method)
 }
-
-

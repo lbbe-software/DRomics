@@ -189,5 +189,3 @@ plot.continuousomicdata <- function(x, range4boxplot = 0, ...)
             range = range4boxplot, ...) 
   graphics::par(def.par)    
 }
-
-

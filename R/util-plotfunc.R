@@ -149,6 +149,3 @@ plotfitsubset <- function(subd, dose, data, data.mean, npts = 50,
   
   return(g)
 }
-
-
-

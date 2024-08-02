@@ -616,4 +616,3 @@ plot.bmdboot <- function(x, BMDtype = c("zSD", "xfold"), remove.infinite = TRUE,
   
   return(g)
 }
-
