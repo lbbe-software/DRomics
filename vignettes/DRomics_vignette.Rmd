@@ -110,7 +110,7 @@ following code.
 of type `"yourchosenname.txt"`.**
 
 
-```{r}
+```{r ch1}
 # Import the text file just to see what will be automatically imported
 datafilename <- system.file("extdata", "RNAseq_sample.txt", package = "DRomics")
 # datafilename <- "yourchosenname.txt" # for a local file
@@ -128,7 +128,7 @@ read.table(file, header = FALSE) on a file described in the [previous section](#
 
 You can see below an example of an RNAseq data set that is available in DRomics as an R object (named Zhou_kidney_pce) and which is an extended version (more rows) of the previous dataset coded in "RNAseq_sample.txt".
 
-```{r}
+```{r ch2}
 # Load and look at the dataset directly coded as an R object
 data(Zhou_kidney_pce)
 nrow(Zhou_kidney_pce)
@@ -148,7 +148,7 @@ can be added in a third optional argument (see ?formatdata4DRomics for details).
 Below is an example
 using a RNAseq dataset of the package coded as an R object named zebraf. 
 
-```{r}
+```{r ch3}
 # Load and look at the data as initially coded
 data(zebraf)
 str(zebraf)
@@ -238,13 +238,13 @@ but **"rlog" is recommended and chosen by default even if more computer intensiv
 Whatever the chosen method, 
 **data are automatically normalized with respect to library size and transformed in log2 scale**.
 
-```{r}
+```{r ch4}
 RNAseqfilename <- system.file("extdata", "RNAseq_sample.txt", package = "DRomics")
 # RNAseqfilename <- "yourchosenname.txt" # for a local file
 ```
 
 
-```{r}
+```{r ch5}
 (o.RNAseq <- RNAseqdata(RNAseqfilename, transfo.method = "vst"))
 plot(o.RNAseq, cex.main = 0.8, col = "green")
 ```
@@ -263,13 +263,13 @@ but **"cyclicloess" is recommended and chosen by default even if more computer i
 (see ?microarraydata for details).
 
 
-```{r}
+```{r ch6}
 microarrayfilename <- system.file("extdata", "transcripto_sample.txt", package = "DRomics")
 # microarrayfilename <- "yourchosenname.txt" # for a local file
 ```
 
 
-```{r}
+```{r ch7}
 (o.microarray <- microarraydata(microarrayfilename, norm.method = "quantile"))
 plot(o.microarray, cex.main = 0.8, col = "green")
 ```
@@ -284,13 +284,13 @@ results obtained with transcriptomics data generally handled in a log2 scale.
 
 For instance, a basic procedure for the pre-treatment of metabolomic data could follow the three steps described thereafter: i) removing of metabolites for which the proportion of missing data (non detected) across all the samples is too high (more than 20 to 50 percents according to your tolerance level); ii) retrieving of missing values data using half minimum method (i.e. half of the minimum value found for a metabolite across all samples); iii) log-transformation of values. If a scaling to the total intensity (normalization by sum of signals in each sample) or another normalization is necessary and pertinent, we recommend to do it before those three previously described steps.
 
-```{r}
+```{r ch8}
 metabolofilename <- system.file("extdata", "metabolo_sample.txt", package = "DRomics")
 # metabolofilename <- "yourchosenname.txt" # for a local file
 ```
 
 
-```{r}
+```{r ch9}
 (o.metabolo <- continuousomicdata(metabolofilename))
 plot(o.metabolo, col = "green")
 ```
@@ -310,7 +310,7 @@ Gaussian error model** as this strong hypothesis is required both for selection 
 No transformation is provided in the function continuousanchoringdata(). **If needed the pre-treatment of data must be done before importation of data**, so that they can be directly modelled using a **Gaussian error model**. This strong hypothesis is required both for selection of responsive endpoints and for dose-reponse modeling (see the [section on least squares](#leastsquares) for a reminder if needed). 
 
 
-```{r}
+```{r ch10}
 anchoringfilename <- system.file("extdata", "apical_anchoring.txt", package = "DRomics")
 # anchoringfilename <- "yourchosenname.txt" # for a local file
 ```
@@ -320,7 +320,7 @@ are considered as 0 in the DRomics workflow.
 Specifying this argument is necessary when there is no dose at 0 in the data (see [section
 on *in situ* data](#insitudata) for details on this point). 
 
-```{r, fig.width = 7, fig.height = 3}
+```{r ch11, fig.width = 7, fig.height = 3}
 (o.anchoring <- continuousanchoringdata(anchoringfilename, backgrounddose = 0.1))
 plot(o.anchoring) + theme_bw()
 ```
@@ -332,7 +332,7 @@ appear as half points on the Y-axis.
 It can be changed using the argument 
 dose_log_transfo as below.
 
-```{r, fig.width = 7, fig.height = 3}
+```{r ch12, fig.width = 7, fig.height = 3}
 plot(o.anchoring, dose_log_transfo = FALSE) + theme_bw()
 ```
 
@@ -375,7 +375,7 @@ and if you want to see an example of problems that may appear with outliers in t
 just force the `transfo.method` to 
 `"rlog"` in the following example).
 
-```{r}
+```{r ch13}
 datafilename <- system.file("extdata", "insitu_RNAseq_sample.txt", package="DRomics")
 # Importation of data specifying that observed doses below the background dose
 # fixed here to 2e-2 will be considered as null dose to have a control 
@@ -412,7 +412,7 @@ function formatdata4DRomics() to interoperate between ComBat-seq in DRomics func
 (see the [section on importation as an R object](#Robject) for details on this function 
 or ?formatdata4DRomics).
 
-```{r}
+```{r ch14}
 # Load of data
 data(zebraf)
 str(zebraf)
@@ -424,7 +424,7 @@ xtabs(~ zebraf$dose + zebraf$batch)
 It appears in this design that the data were obtained using to batches,
 with only the controlled condition (null dose) appearing in both batches. 
 
-```{r}
+```{r ch15}
 # Formating of data using the formatdata4DRomics() function
 data4DRomics <- formatdata4DRomics(signalmatrix = zebraf$counts, 
                            dose = zebraf$dose)
@@ -443,7 +443,7 @@ PCAdataplot(o, batch = zebraf$batch) + theme_bw()
 The PCA plot shows an impact of the batch effect, that clearly appears
 on controls (red points) which were obtained on two different batches.
 
-```{r, results = "hide", message = FALSE}
+```{r ch16, results = "hide", message = FALSE}
 # Batch effect correction using ComBat_seq{sva}
 require(sva)
 BECcounts <- ComBat_seq(as.matrix(o$raw.counts), 
@@ -451,7 +451,7 @@ BECcounts <- ComBat_seq(as.matrix(o$raw.counts),
                         group = as.factor(o$dose)) 
 ```
 
-```{r}
+```{r ch17}
 # Formating of data after batch effect correction
 BECdata4DRomics <- formatdata4DRomics(signalmatrix = BECcounts, 
                                    dose = o$dose)
@@ -471,7 +471,7 @@ that is no more visible on controls (red points).
 For the second step of the workflow, the function **itemselect()** must be used simply
 **taking as input in a first argument the output of the function used in [step 1](#step1)** (output of RNAseqdata(), microarraydata(), continuousomicdata() or continuousanchoringdata()). Below is an example with microarray data.
 
-```{r}
+```{r ch18}
 (s_quad <- itemselect(o.microarray, select.method = "quadratic", FDR = 0.01))
 ```
 
@@ -500,7 +500,7 @@ comparison of the three proposed methods on an example.
 It is easy, using for example the package **VennDiagram**, to compare the selection of items obtained using 
 two different methods, as in the following example. 
 
-```{r, results = "hide"}
+```{r ch19, results = "hide"}
 require(VennDiagram)
 s_lin <- itemselect(o.microarray, select.method = "linear", FDR = 0.01)
 index_quad <- s_quad$selectindex
@@ -537,7 +537,7 @@ As the call to the drcfit() function may take time when the number of pre-select
 by default a progressbar is provided.
 Some arguments of this function can be used to specify **parallel computing to accelerate the computation** (see ?drcfit for details). 
 
-```{r}
+```{r ch20}
 (f <- drcfit(s_quad, progressbar = FALSE))
 ```
 
@@ -553,7 +553,7 @@ often smaller that the number of items selected in Step 2, as for some of the se
 may fail to converge or fail to significantly better describe the data than the constant model.
 
 
-```{r}
+```{r ch21}
 head(f$fitres)
 ```
 
@@ -563,7 +563,7 @@ By default the plot() function used on the output of the drcfit() function
 provides the first 20 fitted curves (or the ones you specify using the argument items) with observed points. **Fitted curves are represented in red, replicates are represented in open circles and means of replicates at each dose/concentration are represented by solid circles**. All the fitted curves may be
 saved in a pdf file using the plotfit2pdf() function (see ?drcfit).
 
-```{r}
+```{r ch22}
 plot(f) 
 ```
 
@@ -585,7 +585,7 @@ arbitrary space between the y-axis
 was enlarged by fixing the limits of the x-axis as below :
 
 
-```{r}
+```{r ch23}
 targetitems <- c("88.1", "1", "3", "15")
 targetplot(targetitems, f = f) + scale_x_log10(limits = c(0.2, 10))
 ```
@@ -600,7 +600,7 @@ against fitted values of the modeled signal. The residual plots for
 all items may also be
 saved in a pdf file using the plotfit2pdf() function (see ?drcfit).
 
-```{r, fig.width = 7, fig.height = 5}
+```{r ch24, fig.width = 7, fig.height = 5}
 plot(f, plot.type = "dose_residuals")
 ```
 
@@ -646,7 +646,7 @@ This family of five models was built to be able to describe a wide range of mono
 DRC. In the following plot were represented typologies of curves that can be described using those models, depending of the definition of their parameters. In the following plot the curves are represented with the signal in y-axis and the raw dose in x-axis. **As the range of tested or observed doses is often large**, we decided to plot model fits 
 **by default using a log scale of doses**. The **shape of models will be transformed in this log x-scale**, and **especially the linear model will no more appear as a straight line as below**. 
 
-```{r, echo = FALSE, results = "hide", fig.height=8, fig.width = 8}
+```{r ch25, echo = FALSE, results = "hide", fig.height=8, fig.width = 8}
 par(mfrow = c(4,4), mar = c(0,0,0,0), xaxt = "n", yaxt = "n")
 x <- seq(0,10, length.out = 50)
 # linear
@@ -711,7 +711,7 @@ In this model, the **residual standard deviation $\sigma$ is assumed constant**.
 that the error model is not strongly violated on your data.
 
 
-```{r, echo = FALSE,  fig.height = 4, fig.width = 7, results = "hide", out.width="80%"}
+```{r ch26, echo = FALSE,  fig.height = 4, fig.width = 7, results = "hide", out.width="80%"}
 par(mar = c(0.1, 0.1, 0.1, 0.1))
 datafilename <- system.file("extdata", "apical_anchoring.txt", package = "DRomics")
 o_ls <- continuousanchoringdata(datafilename, check = TRUE, backgrounddose = 0.1)
@@ -761,7 +761,7 @@ of the drcfit() function as a first argument,
 (see ?bmdcalc for details on this function).
 
 
-```{r}
+```{r ch27}
 (r <- bmdcalc(f, z = 1, x = 10))
 ```
 
@@ -795,7 +795,7 @@ An extensive description of the outputs of the complete DRomics workflow is prov
 You can also see ?bmdcalc for a complete description of its arguments and
 of the columns of its output data frame.
 
-```{r}
+```{r ch28}
 head(r$res)
 ```
 
@@ -806,7 +806,7 @@ head(r$res)
 The default plot of the output of the bmdcalc() function provides the distribution of benchmark doses as an ECDF
 (Empirical Cumulative Density Function) plot for the chosen BMD ("zSD"" or "xfold"). See an example below.
 
-```{r}
+```{r ch29}
 plot(r, BMDtype = "zSD", plottype = "ecdf") + theme_bw() 
 ```
 
@@ -838,7 +838,7 @@ but it is the default option for the argument `scaling`) to scale the signal
 in order to focus on the 
 shape of the dose-reponse curves and not on the amplitude of the signal change.
 
-```{r}
+```{r ch30}
 bmdplotwithgradient(r$res, BMDtype = "zSD",
                     facetby = "trend", 
                     shapeby = "model",
@@ -875,7 +875,7 @@ accelerate the computation (see ?bmdboot for details).
 In the example below, a small number of iterations was used just 
 to make this vignette quick to compile, but **the default value of the argument niter (1000) should be considered as a minimal value to obtain stable results**.
 
-```{r}
+```{r ch31}
 (b <- bmdboot(r, niter = 50, progressbar = FALSE))
 ```
 
@@ -886,7 +886,7 @@ bootstrap iterations for which the model was successfully fitted to the data.
 An extensive description of the outputs of the complete DRomics workflow is provided in the 
 [last section of the main workflow](#outputs).
 
-```{r}
+```{r ch32}
 head(b$res)
 ```
 
@@ -918,7 +918,7 @@ Below is an example of application of the different filters based on BMD-xfold v
 chosen just to better illustrate the way filters work, as there far more bad BMD-xfold estimations
 than bad BMD-zSD estimations.
 
-```{r, fig.height = 3}
+```{r ch33, fig.height = 3}
 # Plot of BMDs with no filtering
 subres <- bmdfilter(b$res, BMDfilter = "none")
 bmdplot(subres, BMDtype = "xfold", point.size = 2, point.alpha = 0.4, 
@@ -950,7 +950,7 @@ in the argument BMDoutput of the plot() function of drcfit(), in order to add BM
 **Horizontal dotted lines corresponding to the two BMR potential values will be also added**. 
 See an example below.
 
-```{r}
+```{r ch34}
 # If you do not want to add the confidence intervals just replace b
 # the output of bmdboot() by r the output of bmdcalc()
 plot(f, BMDoutput = b) 
@@ -971,7 +971,7 @@ In the following plot we also added vertical lines
 corresponding to tested doses on the plot and add transparency to visualize the density of curves
 when shapes are similar (especially the case for linear shapes).
 
-```{r}
+```{r ch35}
 tested.doses <- unique(f$omicdata$dose)
 g <- curvesplot(r$res, xmax = max(tested.doses), colorby = "trend",
            line.size = 0.8, line.alpha = 0.3, point.size = 2, point.alpha = 0.6) +
@@ -985,7 +985,7 @@ eliminate or to focus on. You can try the following code to get
 an interactive version of the previous figure.
 
 
-```{r, eval = FALSE}
+```{r ch36, eval = FALSE}
 if (require(plotly))
 {
   ggplotly(g)
@@ -1002,7 +1002,7 @@ BMD filtering options)
 is a **data frame** reporting the **results of the fit and BMD computation on each selected item** sorted in the ascending order of the adjusted p-values 
 returned by the item selection step. 
 
-```{r}
+```{r ch37}
 str(b$res)
 ```
 
@@ -1080,7 +1080,7 @@ This step is not be necessary if previous steps were done directly in R, using t
 (see the [section describing this output data frame](#outputs)). 
 We did it in this example, in order to take a real example that took a long time to completely run, but from which results are stored in the package.
 
-```{r}
+```{r ch38}
 # code to import the file for this example stored in our package
 resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package = "DRomics")
 res <- read.table(resfilename, header = TRUE, stringsAsFactors = TRUE)
@@ -1096,7 +1096,7 @@ you should **previously reduce the dimension of your annotation file by selectin
 If each annotation stands in more than one word, you should surround each of them by quotes, or use tab as a column
 separator in your annotation file, and import it by adding `sep = "\t"` in the arguments of `read.table()`.
 
-```{r}
+```{r ch39}
 # code to import the file for this example in our package
 annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", package = "DRomics")
 # annotfilename <- "yourchosenname.txt" # for a local file
@@ -1111,7 +1111,7 @@ head(annot)
 Arguments by.x and by.y of the merge() function 
 indicate the column name in res and annot data frames respectively, that must be used for the merging.  
 
-```{r}
+```{r ch40}
 # Merging
 extendedres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
 
@@ -1128,7 +1128,7 @@ by group (here by KEGG pathway class).
 Confidence intervals can be added on this plot and color coding for trend in this example
 (See ?bmdplot for more options).
 
-```{r}
+```{r ch41}
 bmdplot(extendedres, BMDtype = "zSD", add.CI = TRUE, 
                     facetby = "path_class", 
                     colorby = "trend") + theme_bw()
@@ -1137,7 +1137,7 @@ bmdplot(extendedres, BMDtype = "zSD", add.CI = TRUE,
 The function ecdfplotwithCI() can also be used as an alternative as below to provide the same plot
 differing by the coloring of intervals only. (See ?ecdfplotwithCI for more options.)
 
-```{r, eval = FALSE}
+```{r ch42, eval = FALSE}
 ecdfplotwithCI(variable = extendedres$BMD.zSD, 
                CI.lower = extendedres$BMD.zSD.lower, 
                CI.upper = extendedres$BMD.zSD.upper, 
@@ -1147,7 +1147,7 @@ ecdfplotwithCI(variable = extendedres$BMD.zSD,
 
 Using the function bmdplotwithgradient() and its argument `facetby`, the BMD plot with color gradient can be split here by KEGG pathway class. (See ?bmdplotwithgradient for more options).
 
-```{r}
+```{r ch43}
 bmdplotwithgradient(extendedres, BMDtype = "zSD",
                     scaling = TRUE, 
                     facetby = "path_class", 
@@ -1162,7 +1162,7 @@ on the x-axis in order to use the same x-scale and signal-scale as in the global
 previous plot,
 as in the following example (see ?bmdplotwithgradient for details).
 
-```{r}
+```{r ch44}
 extendedres_lipid <- extendedres[extendedres$path_class == "Lipid metabolism",] 
 
 bmdplotwithgradient(extendedres_lipid, BMDtype = "zSD",
@@ -1187,7 +1187,7 @@ Moreover, this function will provide **information on the number of items** invo
 
 As an example, below is an ECDF plot of 25th quantiles of BMD-zSD calculated here by pathway class. 
 
-```{r}
+```{r ch45}
 sensitivityplot(extendedres, BMDtype = "zSD",
                 group = "path_class",
                 BMDsummary = "first.quartile") + theme_bw()
@@ -1196,7 +1196,7 @@ sensitivityplot(extendedres, BMDtype = "zSD",
 It is possible to use medians of BMD values represent and order the groups
 in a sensitivity plot and optionally to add the interquartile range as a line on the plot, as below:
 
-```{r}
+```{r ch46}
 sensitivityplot(extendedres, BMDtype = "zSD",
                 group = "path_class",
                 BMDsummary = "median.and.IQR") + theme_bw()
@@ -1206,7 +1206,7 @@ sensitivityplot(extendedres, BMDtype = "zSD",
 You can customize the sensitivity plot and position the pathway class labels next 
 to the point instead of on the y-axis, using ggplot2 functions.
 
-```{r}
+```{r ch47}
 psens <- sensitivityplot(extendedres, BMDtype = "zSD",
                          group = "path_class",
                          BMDsummary = "first.quartile")
@@ -1223,7 +1223,7 @@ psens +
 It is possible to represent the **repartition of trends in each biological group**
 using the trendplot() function (see ?trendplot for details).
 
-```{r}
+```{r ch48}
 trendplot(extendedres, group = "path_class") + theme_bw()
 ```
 
@@ -1234,7 +1234,7 @@ The function curvesplot() can show the dose-response curves obtained for differe
 in your dataset. Below is a code to plot the dose-response curves split by biological group (argument facetby) and colored by trend (argument colorby). As below it is also possible
 to add a point at BMD-BMR values on each curve (See ?curvesplot for more options).
 
-```{r}
+```{r ch49}
 # Plot of all the scaled dose-reponse curves split by path class
 curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100, 
            colorby = "trend", xmax = 6.5) + theme_bw()
@@ -1243,7 +1243,7 @@ curvesplot(extendedres, facetby = "path_class", scaling = TRUE, npoints = 100,
 It is also possible using this function to visualize the modeled response of each item of
 one biological group, as below:
 
-```{r}
+```{r ch50}
 # Plot of the unscaled dose-reponses for one chosen group, split by metabolite
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
 curvesplot(LMres, facetby = "id", npoints = 100, 
@@ -1275,7 +1275,7 @@ Report to the [introduction section](#introduction) to see how to launch the shi
 
 Following the same steps as described before [for one level](#augmentation), below is an example of R code to **import the DRomics results for microarray data**, and to **merge them with the data frame giving on biological annotation of selected items**.
 
-```{r}
+```{r ch51}
 # 1. Import the data frame with DRomics results to be used
 contigresfilename <- system.file("extdata", "triclosanSVcontigres.txt", package = "DRomics")
 contigres <- read.table(contigresfilename, header = TRUE, stringsAsFactors = TRUE)
@@ -1294,7 +1294,7 @@ head(contigextendedres)
 
 The [previouly created](#augmentation) metabolomics data frame (extended results with biological annotation) is renamed for the sake of homogeneity.
 
-```{r}
+```{r ch52}
 metabextendedres <- extendedres
 ```
 
@@ -1302,7 +1302,7 @@ metabextendedres <- extendedres
 The next step is the **bind of the augmented data frames** of results obtained at the different levels (here
 transcriptomics and metabolomics data frames) and the **add of a variable** (here named level) **coding for the level** (here a factor with two levels, metabolites and contigs).
 
-```{r}
+```{r ch53}
 extendedres <- rbind(metabextendedres, contigextendedres)
 extendedres$explevel <- factor(c(rep("metabolites", nrow(metabextendedres)),
                               rep("contigs", nrow(contigextendedres))))
@@ -1316,7 +1316,7 @@ Below are examples of illustrations that can be made using basic R functions
 to globally compare the results obtained at the different experimental levels, 
 for example to compute and plot frequencies of pathways by molecular levels as below.
 
-```{r}
+```{r ch54}
 (t.pathways <- table(extendedres$path_class, extendedres$explevel)) 
 original.par <- par()
 par(las = 2, mar = c(4,13,1,1))
@@ -1346,7 +1346,7 @@ prop.table() to the table of frequencies `t.pathways`.
 Here the ggplot2 grammar is used to plot the ECDF of BMD_zSD using different colors for the different molecular levels, after removing the redundant lines corresponding to items corresponding to more
 than one pathway.
 
-```{r}
+```{r ch55}
 unique.items <- unique(extendedres$id)
 ggplot(extendedres[match(unique.items, extendedres$id), ], aes(x = BMD.zSD, color = explevel)) +
       stat_ecdf(geom = "step") + ylab("ECDF") + theme_bw()
@@ -1377,7 +1377,7 @@ by group (here by KEGG pathway class) as below.
 (See ?bmdplot for more options, for example to add confidence intervals, ...,
 as in [the previous section presenting bmdplot()](#bmdplot)).
 
-```{r}
+```{r ch56}
 # BMD ECDF plot split by molecular level, after removing items redundancy
 bmdplot(extendedres[match(unique.items, extendedres$id), ], BMDtype = "zSD", 
                     facetby = "explevel", point.alpha = 0.4) + theme_bw()
@@ -1406,7 +1406,7 @@ Using the function trendplot() and its arguments `facetby` it is possible
 to show the repartition of trends of responses in each biological group 
 for all experimental levels.
 
-```{r}
+```{r ch57}
 # Preliminary optional alphabetic ordering of path_class groups
 extendedres$path_class <- factor(extendedres$path_class, 
                 levels = sort(levels(extendedres$path_class), decreasing = TRUE))
@@ -1423,7 +1423,7 @@ it is possible to show a summary of BMD values with size of points coding for th
 of items in each group as in the example, where the 25th quartiles of BMD values are represented per KEGG pathway class for each molecular level. (See ?sensitivityplot for more options).
 
 
-```{r}
+```{r ch58}
 sensitivityplot(extendedres, BMDtype = "zSD",
                 group = "path_class", colorby = "explevel",
                 BMDsummary = "first.quartile") + theme_bw()
@@ -1447,7 +1447,7 @@ as soon as the criteria are met for the group
 for at least one experimental level (as in the example below fixing the argument
 `keepallexplev` at `TRUE`).
 
-```{r}
+```{r ch59}
 selectedres <- selectgroups(extendedres, 
                          group = "path_class",
                          explev = "explevel",
@@ -1470,7 +1470,7 @@ Using the function bmdplotwithgradient() and its arguments `facetby` and `facetb
 the BMD plot with color gradient can be split here by group and experimental level,
 as on the example below on a manual selection of pathway classes present at both molecular levels.(See ?bmdplotwithgradient for more options).
 
-```{r}
+```{r ch60}
 # Manual selection of groups on which to focus
 chosen_path_class <- c("Nucleotide metabolism", 
                        "Membrane transport", 
@@ -1496,7 +1496,7 @@ and by
 experimental level using the argument `facetby2` . (See ?curvesplot for more options). 
 
 
-```{r}
+```{r ch61}
 # Plot of the unscaled dose-response curves for the "lipid metabolism" path class
 # using transparency to get an idea of density of curves with the shame shape
 LMres <- extendedres[extendedres$path_class == "Lipid metabolism", ]
