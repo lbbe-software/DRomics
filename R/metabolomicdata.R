@@ -1,20 +1,15 @@
 ### import, check metabolomic data
 ### or other continuous omic data
 
-metabolomicdata <- function(file, backgrounddose, check = TRUE)
-{
+metabolomicdata <- function(file, backgrounddose, check = TRUE) {
   continuousomicdata(file, backgrounddose, check = check)
 }
-  
-continuousomicdata <- function(file, backgrounddose, check = TRUE)
-{
-  if (is.data.frame(file))
-  {
+
+continuousomicdata <- function(file, backgrounddose, check = TRUE) {
+  if (is.data.frame(file)) {
     d <- file
-  } else
-  {
-    if (check)
-    {
+  } else {
+    if (check) {
       # check argument file
       if (!is.character(file))
         stop("The argument file must be a character string.")
@@ -24,22 +19,20 @@ continuousomicdata <- function(file, backgrounddose, check = TRUE)
         stop("The argument file must be a character string ending by .txt.")
     }
     d <- utils::read.table(file, header = FALSE)
-    colnames(d) <- c("item", paste0("S", 1:(ncol(d)-1)))
-  } 
+    colnames(d) <- c("item", paste0("S", 1:(ncol(d) - 1)))
+  }
   nrowd <- nrow(d)
   ncold <- ncol(d)
-  data <- as.matrix(d[2:nrowd, 2:ncold]) 
+  data <- as.matrix(d[2:nrowd, 2:ncold])
   
-  if (!all(stats::complete.cases(data)))
-  {
+  if (!all(stats::complete.cases(data))) {
     containsNA <- TRUE
-  } else containsNA <- FALSE
+  } else {
+    containsNA <- FALSE
+  }
   
-  
-  if (check)
-  {
-    if(containsNA)
-    {
+  if (check) {
+    if (containsNA) {
       warning(strwrap(prefix = "\n", initial = "\n",
                       "Your data contain NA values. 
       Make sure that those NA values correspond to missing
@@ -64,8 +57,8 @@ continuousomicdata <- function(file, backgrounddose, check = TRUE)
     if (!is.numeric(as.matrix(d[, 2:ncold])))
       stop("All the columns except the first one must be numeric with the numeric 
       dose in the firt line and the numeric response of each item in the other lines.")
-    warning(strwrap(prefix = "\n", initial = "\n", 
-      "We recommend you to check that your omic data were correctly pretreated
+    warning(strwrap(prefix = "\n", initial = "\n",
+                    "We recommend you to check that your omic data were correctly pretreated
       before importation. In particular data (e.g. metabolomic signal)
       should have been log-transformed, without replacing 0 values by NA values
       (consider using the half minimum method instead for example). \n"))
@@ -76,8 +69,7 @@ continuousomicdata <- function(file, backgrounddose, check = TRUE)
   row.names(data) <- item <- as.character(d[2:nrowd, 1])
   (nitems <- nrow(data))
   
-  if (!missing(backgrounddose))
-  {
+  if (!missing(backgrounddose)) {
     dose <- dose * (dose > backgrounddose)
   }
   
@@ -93,7 +85,7 @@ continuousomicdata <- function(file, backgrounddose, check = TRUE)
   design <- table(dose, dnn = "")
   nbdoses <- length(design)
   nbpts <- sum(design)
-  if ((nbdoses < 4)| (nbpts < 8))
+  if ((nbdoses < 4) || (nbpts < 8))
     stop("Dromics cannot be used with a dose-response design 
     with less than four tested doses/concentrations or less than eight data points
          per dose-response curve.")
@@ -101,15 +93,14 @@ continuousomicdata <- function(file, backgrounddose, check = TRUE)
     warning(strwrap(prefix = "\n", initial = "\n",
                     "To optimize the dose-response modelling, it is recommended to use
       a dose-response design with at least six different tested doses."))
-
+  
   # control of the design including on rows with NA values
-  if(containsNA)
-  {
+  if (containsNA) {
     nonNAdata <- !is.na(data)
     minnonNAnbpts <- min(rowSums(nonNAdata))
     if (minnonNAnbpts < 8)
       stop(strwrap(prefix = "\n", initial = "\n",
-      "Dromics cannot be used with a dose-response design 
+                   "Dromics cannot be used with a dose-response design 
     with less than eight data points
          per dose-response curve for each item. You should check your data
            to eliminate items with too many NA values or impute NA values if 
@@ -121,35 +112,31 @@ continuousomicdata <- function(file, backgrounddose, check = TRUE)
   fdose <- as.factor(dose)
   tdata <- t(data)
   meanwithnarm <- function(v) mean(v, na.rm = TRUE)
-  calcmean <- function(i)
-  {
+  calcmean <- function(i) {
     tapply(tdata[, i], fdose, meanwithnarm)
   }
   s <- sapply(1:(nrowd - 1), calcmean)
   data.mean <- as.matrix(t(s))
   
-  calcsd <- function(i)
-  {
+  calcsd <- function(i) {
     tapply(tdata[, i], fdose, sd)
   }
   s <- sapply(1:(nrowd - 1), calcsd)
   data.sd <- as.matrix(t(s))
   
-  
-  reslist <- list(data = data, dose = dose, item = item, 
+  reslist <- list(data = data, dose = dose, item = item,
                   design = design, data.mean = data.mean,
                   data.sd = data.sd,
-                  containsNA = containsNA)  
+                  containsNA = containsNA)
   
   return(structure(reslist, class = "continuousomicdata"))
 }
 
 
-print.continuousomicdata <- function(x, ...)
-{
+print.continuousomicdata <- function(x, ...) {
   if (!inherits(x, "continuousomicdata"))
     stop("Use only with 'continuousomicdata' objects.")
-
+  
   nitems <- length(x$item)
   nitemswithNA <- nitems - sum(stats::complete.cases(x$data))
   
@@ -157,35 +144,31 @@ print.continuousomicdata <- function(x, ...)
   cat("Tested doses and number of replicates for each dose:\n")
   print(x$design)
   cat("Number of items:", nitems, "\n")
-  if (nitemswithNA > 0) 
-  {
+  if (nitemswithNA > 0) {
     cat("Number of items with at least one missing data:", nitemswithNA, "\n")
     cat(strwrap("BE CAREFUL ! MISSING VALUES ARE CONSIDERED AS MISSING AT RANDOM ! IF THIS IS NOT THE CASE
         CONSIDER AN IMPUTATION METHOD FOR NON RANDOM MISSING DATA."), fill = TRUE)
     cat("\n")
   }
   
-  if (length(x$item) > 20)
-  {
+  if (length(x$item) > 20) {
     cat(strwrap("Identifiers of the first 20 items:"), fill = TRUE)
     cat("\n")
     print(x$item[1:20])
-  } else
-  {
+  } else {
     cat(strwrap("Identifiers of the items:"), fill = TRUE)
     print(x$item)
   }
 }
 
-plot.continuousomicdata <- function(x, range4boxplot = 0, ...) 
-{
+plot.continuousomicdata <- function(x, range4boxplot = 0, ...) {
   if (!inherits(x, "continuousomicdata"))
     stop("Use only with 'continuousomicdata' objects.")
-
+  
   def.par <- graphics::par(no.readonly = TRUE)
-    graphics::par(xaxt = "n")
-    graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", 
-            main = "Continuous omics data", 
-            range = range4boxplot, ...) 
-  graphics::par(def.par)    
+  graphics::par(xaxt = "n")
+  graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal",
+                    main = "Continuous omics data",
+                    range = range4boxplot, ...)
+  graphics::par(def.par)
 }

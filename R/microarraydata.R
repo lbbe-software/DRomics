@@ -1,15 +1,11 @@
 ### import, check and optionnally normalize single-channel microarray data
 
-microarraydata <- function(file, backgrounddose, check = TRUE, 
-                     norm.method = c("cyclicloess", "quantile", "scale", "none"))
-{
-  if (is.data.frame(file))
-  {
+microarraydata <- function(file, backgrounddose, check = TRUE,
+                           norm.method = c("cyclicloess", "quantile", "scale", "none")) {
+  if (is.data.frame(file)) {
     d <- file
-  } else
-  {
-    if (check)
-    {
+  } else {
+    if (check) {
       # check argument file
       if (!is.character(file))
         stop("The argument file must be a character string.")
@@ -19,20 +15,19 @@ microarraydata <- function(file, backgrounddose, check = TRUE,
         stop("The argument file must be a character string ending by .txt.")
     }
     d <- utils::read.table(file, header = FALSE)
-    colnames(d) <- c("item", paste0("S", 1:(ncol(d)-1)))
-  }  
+    colnames(d) <- c("item", paste0("S", 1:(ncol(d) - 1)))
+  }
   nrowd <- nrow(d)
   ncold <- ncol(d)
-  data <- as.matrix(d[2:nrowd, 2:ncold]) 
-
-    if (!all(stats::complete.cases(data)))
+  data <- as.matrix(d[2:nrowd, 2:ncold])
+  
+  if (!all(stats::complete.cases(data)))
     stop("microarraydata() should not be used with data including NA values.")
   
-  if (check)
-  {  
+  if (check) {
     if (any(data > 100))
-    warning(strwrap(prefix = "\n", initial = "\n",
-                    "Your data contain high values (> 100). 
+      warning(strwrap(prefix = "\n", initial = "\n",
+                      "Your data contain high values (> 100). 
       Make sure that your data (microarray signal) are in log-scale.\n"))
     if (nrowd < 100)
       warning(strwrap(prefix = "\n", initial = "\n",
@@ -41,25 +36,24 @@ microarraydata <- function(file, backgrounddose, check = TRUE,
       not be used with another type of data."))
     
     # check that doses and responses are numeric
-    if (!is.numeric(as.matrix(d[,2:ncold])))
+    if (!is.numeric(as.matrix(d[, 2:ncold])))
       stop("All the columns except the first one must be numeric with the numeric 
       dose in the firt line and the numeric response of each item in the other lines.")
   }
   
   # Normalization using limma
   norm.method <- match.arg(norm.method, c("cyclicloess", "quantile", "scale", "none"))
-  if(norm.method == "cyclicloess")
+  if (norm.method == "cyclicloess")
     cat("Just wait, the normalization using cyclicloess may take a few minutes.\n")
   data.beforenorm <- data
-  data <- normalizeBetweenArrays(data, method = norm.method)  
+  data <- normalizeBetweenArrays(data, method = norm.method)
   
   # definition of doses and item identifiers
   (dose <- as.vector(unlist(d[1, 2:ncold])))
   row.names(data) <- item <- as.character(d[2:nrowd, 1])
   (nitems <- nrow(data))
   
-  if (!missing(backgrounddose))
-  {
+  if (!missing(backgrounddose)) {
     dose <- dose * (dose > backgrounddose)
   }
   
@@ -75,44 +69,41 @@ microarraydata <- function(file, backgrounddose, check = TRUE,
   design <- table(dose, dnn = "")
   nbdoses <- length(design)
   nbpts <- sum(design)
-  if ((nbdoses < 4)| (nbpts < 8))
+  if ((nbdoses < 4) || (nbpts < 8))
     stop("Dromics cannot be used with a dose-response design 
     with less than four tested doses/concentrations or less than eight data points
          per dose-response curve.")
   if (nbdoses < 6)
     warning(strwrap(prefix = "\n", initial = "\n",
-      "To optimize the dose-response modelling, it is recommended to use
+                    "To optimize the dose-response modelling, it is recommended to use
       a dose-response design with at least six different tested doses."))
   
   fdose <- as.factor(dose)
   tdata <- t(data)
-  calcmean <- function(i)
-  {
-  #   tapply(data[i,], fdose, mean)
+  calcmean <- function(i) {
+    #   tapply(data[i,], fdose, mean)
     tapply(tdata[, i], fdose, mean)
   }
   s <- sapply(1:(nrowd - 1), calcmean)
   data.mean <- as.matrix(t(s))
   
-  calcsd <- function(i)
-  {
+  calcsd <- function(i) {
     tapply(tdata[, i], fdose, sd)
   }
   s <- sapply(1:(nrowd - 1), calcsd)
   data.sd <- as.matrix(t(s))
   
-  reslist <- list(data = data, dose = dose, item = item, 
+  reslist <- list(data = data, dose = dose, item = item,
                   design = design, data.mean = data.mean,
                   data.sd = data.sd,
                   norm.method = norm.method, data.beforenorm = data.beforenorm,
-                  containsNA = FALSE)  
+                  containsNA = FALSE)
   
   return(structure(reslist, class = "microarraydata"))
 }
 
 
-print.microarraydata <- function(x, ...)
-{
+print.microarraydata <- function(x, ...) {
   if (!inherits(x, "microarraydata"))
     stop("Use only with 'microarraydata' objects.")
   
@@ -121,12 +112,10 @@ print.microarraydata <- function(x, ...)
   print(x$design)
   cat("Number of items:", length(x$item), "\n")
   
-  if (length(x$item) > 20)
-  {
+  if (length(x$item) > 20) {
     cat("Identifiers of the first 20 items:\n")
     print(x$item[1:20])
-  } else
-  {
+  } else {
     cat("Identifiers of the items:\n")
     print(x$item)
   }
@@ -134,28 +123,25 @@ print.microarraydata <- function(x, ...)
     cat("Data were normalized between arrays using the following method:", x$norm.method, "\n")
 }
 
-plot.microarraydata <- function(x, range4boxplot = 0, ...) 
-{
+plot.microarraydata <- function(x, range4boxplot = 0, ...) {
   if (!inherits(x, "microarraydata"))
     stop("Use only with 'microarraydata' objects.")
-
+  
   def.par <- graphics::par(no.readonly = TRUE)
-  if (x$norm.method != "none")
-  {
+  if (x$norm.method != "none") {
     ymin <- min(x$data.beforenorm, x$data)
     ymax <- max(x$data.beforenorm, x$data)
-    graphics::par(mfrow = c(1,2), xaxt = "n")
+    graphics::par(mfrow = c(1, 2), xaxt = "n")
     graphics::boxplot(x$data.beforenorm, xlab = "Samples", ylab = "Signal", range = range4boxplot,
-            main = "Microarray data before normalization", ylim = c(ymin, ymax), ...) 
+                      main = "Microarray data before normalization", ylim = c(ymin, ymax), ...)
     graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", range = range4boxplot,
-            main = paste("Microarray data after", x$norm.method, "normalization"), 
-            ylim = c(ymin, ymax), ...) 
+                      main = paste("Microarray data after", x$norm.method, "normalization"),
+                      ylim = c(ymin, ymax), ...)
     
-  } else
-  {
+  } else {
     graphics::par(xaxt = "n")
-    graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", range = range4boxplot, 
-            main = "Microarray data without normalization")
+    graphics::boxplot(x$data, xlab = "Samples", ylab = "Signal", range = range4boxplot,
+                      main = "Microarray data without normalization")
   }
-  graphics::par(def.par)    
+  graphics::par(def.par)
 }

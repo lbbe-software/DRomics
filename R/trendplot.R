@@ -1,75 +1,75 @@
-# Plot of trend repartition per group of items, 
-# (e.g. from biological annotation), 
-# and optionally per molecular level 
+# Plot of trend repartition per group of items,
+# (e.g. from biological annotation),
+# and optionally per molecular level
 # (or per another additional grouping level )
 trendplot <- function(extendedres, group,
-                      facetby, ncol4faceting, add.color = TRUE)
-{
-  if (missing(extendedres) | !is.data.frame(extendedres))
+                      facetby, ncol4faceting, add.color = TRUE) {
+  
+  if (missing(extendedres) || !is.data.frame(extendedres)) {
     stop("The first argument of trendplot must be a dataframe 
     (see ?trendplot for details).")
+  }
   
   cnames <- colnames(extendedres)
   
-  if (!is.character(group)) 
+  if (!is.character(group)) {
     stop("group should be a character string for the name of the column defining groups.")
-  if (!is.element(group, cnames))
+  }
+  if (!is.element(group, cnames)) {
     stop("group should be a character string corresponding to the name of a column of
            extendedres, the dataframe given in input.")
+  }
   
-  
-  if (!all(is.element(c("trend"), cnames)))
+  if (!all(is.element(c("trend"), cnames))) {
     stop("The first argument of trendplot must be a dataframe
     containing a column named trend and other columns coding for group of items.")
-
-  if (!missing(facetby)) 
-  {
-    if (!is.character(facetby)) 
+  }
+  
+  if (!missing(facetby)) {
+    if (!is.character(facetby)) {
       stop("facetby should be a character string for the name of the column used for facetting.")
-    if (!is.element(facetby, cnames))
+    }
+    if (!is.element(facetby, cnames)) {
       stop("facetby should be a character string corresponding to the name of a column of
            extendedres, the dataframe given in input.")
+    }
   }
-      
-  if (missing(facetby))
-  {
-    dtab <- as.data.frame(table(extendedres[, group], 
-                                extendedres[, "trend"] ) )
-    colnames(dtab) <- c("group","trend", "nb_of_items")
+  
+  if (missing(facetby)) {
+    dtab <- as.data.frame(table(extendedres[, group],
+                                extendedres[, "trend"]))
+    colnames(dtab) <- c("group", "trend", "nb_of_items")
     dtab <- dtab[dtab$nb_of_items != 0, ]
-    if (add.color)
-    {
-      gg <- ggplot(dtab, aes(x = .data$trend, y = .data$group, colour = .data$trend)) + 
+    if (add.color) {
+      gg <- ggplot(dtab, aes(x = .data$trend, y = .data$group, colour = .data$trend)) +
         geom_point(aes(size = .data$nb_of_items))
-      
-    } else
-    {
+    } else {
       gg <- ggplot(dtab, aes(x = .data$trend, y = .data$group)) +
         geom_point(aes(size = .data$nb_of_items))
     }
   } else {
-    dtab <- as.data.frame(table(extendedres[, group], 
+    dtab <- as.data.frame(table(extendedres[, group],
                                 extendedres[, "trend"],
-                                extendedres[, facetby]) )
+                                extendedres[, facetby]))
     colnames(dtab) <- c("group", "trend", "facetby", "nb_of_items")
     dtab <- dtab[dtab$nb_of_items != 0, ]
-    if (add.color)
-    {
+    if (add.color) {
       gg <- ggplot(dtab, aes(x = .data$trend, y = .data$group, colour = .data$trend)) +
-        geom_point(aes(size = .data$nb_of_items)) 
-    } else
-    {
+        geom_point(aes(size = .data$nb_of_items))
+    } else {
       gg <- ggplot(dtab, aes(x = .data$trend, y = .data$group)) +
         geom_point(aes(size = .data$nb_of_items))
     }
     
-    if (missing(ncol4faceting)) 
-      {gg <- gg + facet_wrap(~ facetby)} else
-      {gg <- gg + facet_wrap(~ facetby, ncol = ncol4faceting)}
+    if (missing(ncol4faceting)) {
+      gg <- gg + facet_wrap(~ facetby)
+    } else {
+      gg <- gg + facet_wrap(~ facetby, ncol = ncol4faceting)
+    }
   }
   
   round.quartiles.minmax <- unique(round(quantile(dtab$nb_of_items, probs = c(0, 0.25, 0.5, 0.75, 1))))
-  gg <- gg + scale_size_continuous(breaks = as.numeric(round.quartiles.minmax)) + 
+  gg <- gg + scale_size_continuous(breaks = as.numeric(round.quartiles.minmax)) +
     labs(size = "nb. of items")
   
   return(gg)
