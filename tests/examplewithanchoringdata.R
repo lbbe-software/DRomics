@@ -36,19 +36,6 @@ if (visualize)
   
 }
 
-# various plot of fitted curves (without data)
-if (visualize)
-{
-  curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
-             facetby = "model", colorby = "model")
-  curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
-             facetby = "typology")
-  
-  # plot of selection of curves
-  curvesplot(f$fitres[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose), 
-             facetby = "id")
-  
-}
 
 
 # calculation of benchmark doses
@@ -61,6 +48,17 @@ if (visualize)
   # plot of BMD with gradient
   bmdplotwithgradient(r$res, xmax = max(f$omicdata$dose))
 }
+
+# various plot of fitted curves (without data)
+if (visualize)
+{
+  curvesplot(r$res, xmax = max(f$omicdata$dose), 
+             facetby = "model", colorby = "model")
+  curvesplot(r$res, xmax = max(f$omicdata$dose), 
+             facetby = "typology")
+  
+}
+
 
 # Calculation of confidence intervals on BMDs by Bootstrap
 if (doboot)

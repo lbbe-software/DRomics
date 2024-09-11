@@ -1,6 +1,6 @@
 library(DRomics)
-visualize <- FALSE # put to TRUE for a manual check of plots
-doboot <- FALSE
+visualize <- TRUE # put to TRUE for a manual check of plots
+doboot <- TRUE
 
 # importation and check of metabolomic data
 datafilename <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
@@ -65,26 +65,13 @@ if (visualize)
 
 
 
-if (visualize) 
-{
-  # various plot of fitted curves (without data)
-  curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
-             facetby = "model", colorby = "model")
-  
-  curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
-             facetby = "typology")
-  
-  # plot of selection of curves
-  curvesplot(f$fitres[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose), 
-             facetby = "id")
-  
-}
 
 # calculation of benchmark doses
 # options in shiny : z (numerical positive value), x (numerical positive value : percentage)
 (r <- bmdcalc(f, z = 1, x = 10))
 if (visualize)
 (r.2 <- bmdcalc(f, z = 2, x = 50))
+
 
 # plot of BMD
 # options in shiny : BMDtype (2 possibilities), plottype (3 possibilities), by (3 possibilities)
@@ -100,6 +87,22 @@ if (visualize)
   plot(r, plottype = "ecdf", by = "trend", hist.bins = 10) 
   
 }
+
+if (visualize) 
+{
+  # various plot of fitted curves (without data)
+  curvesplot(r$res, xmax = max(r$omicdata$dose), 
+             facetby = "model", colorby = "model")
+  
+  curvesplot(r$res, xmax = max(r$omicdata$dose), 
+             facetby = "typology")
+  
+  # plot of selection of curves
+  curvesplot(r$res[r$res$trend == "U", ], xmax = max(f$omicdata$dose), 
+             facetby = "id")
+  
+}
+
 
 if (doboot)
 {

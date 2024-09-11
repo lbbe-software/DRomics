@@ -42,7 +42,7 @@ if (visualize)
   # with a chosen number of first items
   plot(f, items = 12) 
   # with chosen items in a specified order
-  plot(f, items = c("301.2", "363.1", "383.1"))
+  plot(f, items = c("15", "27.1", "7.1"))
   # residual plots
   plot(f, items = 12, plot.type = "fitted_residuals") 
   plot(f, items = 12, plot.type = "dose_residuals") 
