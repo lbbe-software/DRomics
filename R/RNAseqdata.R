@@ -68,7 +68,9 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
   raw.counts <- data
   (dose <- as.vector(unlist(d[1, 2:ncold])))
   
+  
   if (!transfo.blind) {
+    fdose <- as.factor(dose)
     coldata <- data.frame(fdose = fdose)
     rownames(coldata) <- colnames(data)
     dds <- DESeqDataSetFromMatrix(
