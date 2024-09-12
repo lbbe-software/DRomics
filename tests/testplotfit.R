@@ -39,8 +39,8 @@ if (visualize)
   r <- bmdcalc(f, z = 1, x = 10)
   plot(f, plot.type = 'dose_fitted', BMDoutput = r, BMDtype = 'zSD', dose_log_transfo = TRUE) # good order
   plotfit2pdf(f) # good order - initial order by p-value of the selection
-  plotfit2pdf(f , BMDoutput = r, BMDtype = "zSD")  # alphabetic order WHY ???????????????
+  plotfit2pdf(f , BMDoutput = r, BMDtype = "zSD")  # alphabetic order WHY ??????????????? PB fixed - OK
   b <- bmdboot(r, niter = 10)
-  plotfit2pdf(f , BMDoutput = b, BMDtype = "zSD") # alphabetic order
+  plotfit2pdf(f , BMDoutput = b, BMDtype = "zSD") # alphabetic order WHY ??????????????? PB fixed - OK
 }
 

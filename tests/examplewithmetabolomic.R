@@ -1,6 +1,6 @@
 library(DRomics)
-visualize <- TRUE # put to TRUE for a manual check of plots
-doboot <- TRUE
+visualize <- FALSE # put to TRUE for a manual check of plots
+doboot <- FALSE
 
 # importation and check of metabolomic data
 datafilename <- system.file("extdata", "metabolo_sample.txt", package="DRomics")

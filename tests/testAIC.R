@@ -28,11 +28,11 @@ if (visualize)
   (npts <- length(o$dose))
   k <- 3 # mod lin
   # correction to get AICc
-  fAIC$information.criterion.val$AIC.L + 2*k*(k+1)/(npts -k -1)
-  fAICc$information.criterion.val$AIC.L
+  fAIC$information.criterion.val$InfoCrit.L + 2*k*(k+1)/(npts -k -1)
+  fAICc$information.criterion.val$InfoCrit.L
   # correction to get BIC
-  fAIC$information.criterion.val$AIC.L - 2*k + log(npts)*k
-  fBIC$information.criterion.val$AIC.L
+  fAIC$information.criterion.val$InfoCrit.L - 2*k + log(npts)*k
+  fBIC$information.criterion.val$InfoCrit.L
   
   plot(fAIC)
   plot(fAICc)
@@ -103,9 +103,9 @@ if (visualize)
   plot(fBIC, 81)
   
   # exploration of simplified biphasic models with f = 0
-  # f <- fAIC
+  f <- fAIC
   # f <- fBIC
-  f <- AICc
+ #  f <- AICc
   (id2explore <- f$fitres$id[f$fitres$model %in% c("Gauss-probit", "log-Gauss-probit") & 
                                f$fitres$f == 0])
   f$fitres[f$fitres$id %in%  id2explore, ]

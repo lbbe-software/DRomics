@@ -29,7 +29,7 @@ if (visualize)
   
   # Plot of the data corresponding to unsuccessful fits
   targetplot(f$unfitres$id[f$unfitres$cause == "constant.model"], f)
-  targetplot(f$unfitres$id[f$unfitres$cause == "trend.in.residuals"], f)
+  # targetplot(f$unfitres$id[f$unfitres$cause == "trend.in.residuals"], f)
 
   # Fit without postfit filtering
   (f2 <- drcfit(s_quad, postfitfilter = FALSE, progressbar = TRUE))
@@ -40,21 +40,21 @@ if (visualize)
   table(f2$unfitres$cause)
   
   # Plot of the data corresponding to unsuccessful fits in f
-  (itemseliminatedinf <- f$unfitres$id[f$unfitres$cause == "trend.in.residuals"])
+  (itemseliminatedinf <- f$unfitres$id[f$unfitres$cause == "constant.model"])
   
   targetplot(itemseliminatedinf, f2)
   
   f2$residualtests
-  (itemswithmeantrendinf2 <- 
-      f2$fitres$id[f2$residualtests$resimeantrendP < 0.05])
-  targetplot(itemswithmeantrendinf2[1:20], f2)
+  # (itemswithmeantrendinf2 <- 
+  #     f2$fitres$id[f2$residualtests$resimeantrendP < 0.05])
+  # targetplot(itemswithmeantrendinf2[1:20], f2)
   
   (itemswithvartrendinf2 <- 
       f2$fitres$id[f2$residualtests$resivartrendP < 0.05])
   targetplot(itemswithvartrendinf2[1:20], f2)
   
-  (itemsbothPB <- f2$fitres$id[f2$residualtests$resimeantrendP < 0.05 
-                              & f2$residualtests$resivartrendP < 0.05])
+  # (itemsbothPB <- f2$fitres$id[f2$residualtests$resimeantrendP < 0.05 
+  #                             & f2$residualtests$resivartrendP < 0.05])
   ### test on RNAseq data #################
   data(Zhou_kidney_pce)
   d <- Zhou_kidney_pce
@@ -103,7 +103,7 @@ if (visualize)
   length(which(f$residualtests$resivartrendP < 0.05))
   length(which(f$residualtests$resivartrendP < 0.05)) / length(f$residualtests$resivartrendP)
   # count the number of unsuccessful fits for each cause
-  table(f$unfitres$cause)
+  # table(f$unfitres$cause)
   
   which(f$residualtests$resivartrendP < 0.05)
   (itemswithvartrendinf <- 
