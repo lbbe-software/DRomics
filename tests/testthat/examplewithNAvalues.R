@@ -1,10 +1,7 @@
-# Test DRomics on datasets with NA values
-# possible especially for apical data
-library(DRomics)
-visualize <- FALSE # put to TRUE for a manual check of plots
-
-if (visualize)
-{
+context("examplewithNAvalues")
+test_that("Test DRomics on datasets with NA values, possible especially for apical data", {
+  skip_on_cran()
+  
   ########### Example on apical data ################
   ###################################################
   data(Scenedesmus_apical)
@@ -32,7 +29,7 @@ if (visualize)
   r$res
   (b <- bmdboot(r))
   b$res
- 
+  
   (f.AIC <- drcfit(s, information.criterion = "AIC"))
   (f.BIC <- drcfit(s, information.criterion = "BIC"))
   
@@ -72,10 +69,10 @@ if (visualize)
   plot(o1)
   (o2 <- continuousomicdata(Scenedesmus_metab2, check = FALSE))
   plot(o2)
-
+  
   (s1 <- itemselect(o1, select.method = "quadratic"))
   (s2 <- itemselect(o2, select.method = "quadratic"))
-
+  
   (f1 <- drcfit(s1))
   plot(f1, items = "NAP_24")
   (f2 <- drcfit(s2))
@@ -83,7 +80,7 @@ if (visualize)
   
   f1$fitres[1:3, ]
   f2$fitres[1:3, ]
-
+  
   (f2.AIC <- drcfit(s2, information.criterion = "AIC"))
   (f2.BIC <- drcfit(s2, information.criterion = "BIC"))
   
@@ -107,18 +104,18 @@ if (visualize)
   Scenedesmus_metab3[23, 21] <- NA
   (o3 <- continuousomicdata(Scenedesmus_metab3))
   plot(o3)
-
+  
   (s3 <- itemselect(o3, select.method = "quadratic"))
-
+  
   (f3 <- drcfit(s3))
   plot(f3, items = "NAP_24")
   plot(f1, items = "NAP_24")
   
   f3$fitres[1:5, ]
   f1$fitres[1:5, ]
-
+  
   (r3 <- bmdcalc(f3))
-
+  
   (b3 <- bmdboot(r3, niter = 100))
   b3$res[1:5, ]
   b1$res[1:5, ]
@@ -131,4 +128,4 @@ if (visualize)
   try(RNAseqdata(Zhou))
   
   try(microarraydata(Zhou))
- }
+})

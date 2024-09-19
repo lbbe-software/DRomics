@@ -1,9 +1,7 @@
-# Tests on residuals and corresponding postfit filter
-library(DRomics)
-visualize <- FALSE # put to TRUE for a manual check of plots
-
-if (visualize)
-{
+context("testresidualtests")
+test_that("testresidualtests", {
+  skip_on_cran()
+  
   IC <- "AICc"
   ### test on microarray data ######################
   datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
@@ -30,7 +28,7 @@ if (visualize)
   # Plot of the data corresponding to unsuccessful fits
   targetplot(f$unfitres$id[f$unfitres$cause == "constant.model"], f)
   # targetplot(f$unfitres$id[f$unfitres$cause == "trend.in.residuals"], f)
-
+  
   # Fit without postfit filtering
   (f2 <- drcfit(s_quad, postfitfilter = FALSE, progressbar = TRUE))
   nrow(f2$fitres)
@@ -107,27 +105,27 @@ if (visualize)
   
   which(f$residualtests$resivartrendP < 0.05)
   (itemswithvartrendinf <- 
-       f$fitres$id[f$residualtests$resivartrendP < 0.05])
-   targetplot(itemswithvartrendinf, f)
+      f$fitres$id[f$residualtests$resivartrendP < 0.05])
+  targetplot(itemswithvartrendinf, f)
   
-   ### test on metabolomic data not in log scale #################
-   data(Scenedesmus_metab)
-   metabnotinlog <- Scenedesmus_metab
-   metabnotinlog[-1, -1] <- 10^metabnotinlog[-1, -1] 
-   
-   (o <- continuousomicdata(metabnotinlog))
-   plot(o)
-   (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
-   (f <- drcfit(s_quad, progressbar = TRUE, information.criterion = IC))
-   plot(f, plot.type = "fitted_residuals")
-   nrow(f$fitres)
-   nrow(f$unfitres)
-   length(which(f$residualtests$resivartrendP < 0.05))
-   length(which(f$residualtests$resivartrendP < 0.05)) / length(f$residualtests$resivartrendP)
-   
-   which(f$residualtests$resivartrendP < 0.05)
-   (itemswithvartrendinf <- 
-       f$fitres$id[f$residualtests$resivartrendP < 0.05])
-   targetplot(itemswithvartrendinf, f)
-   
-}
+  ### test on metabolomic data not in log scale #################
+  data(Scenedesmus_metab)
+  metabnotinlog <- Scenedesmus_metab
+  metabnotinlog[-1, -1] <- 10^metabnotinlog[-1, -1] 
+  
+  (o <- continuousomicdata(metabnotinlog))
+  plot(o)
+  (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
+  (f <- drcfit(s_quad, progressbar = TRUE, information.criterion = IC))
+  plot(f, plot.type = "fitted_residuals")
+  nrow(f$fitres)
+  nrow(f$unfitres)
+  length(which(f$residualtests$resivartrendP < 0.05))
+  length(which(f$residualtests$resivartrendP < 0.05)) / length(f$residualtests$resivartrendP)
+  
+  which(f$residualtests$resivartrendP < 0.05)
+  (itemswithvartrendinf <- 
+      f$fitres$id[f$residualtests$resivartrendP < 0.05])
+  targetplot(itemswithvartrendinf, f)
+  
+})

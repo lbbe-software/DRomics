@@ -1,10 +1,10 @@
-library(DRomics)
-visualize <- FALSE # put to TRUE for a manual check of plots
-niterboot <- 25
-# niterboot <- 250
-
-if (visualize)
-{
+context("testbmdplotfit")
+test_that("testbmdplotfit", {
+  skip_on_cran()
+  
+  niterboot <- 25
+  # niterboot <- 250
+  
   datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", package="DRomics")
   # to test the multi-page of plotfit2pdf take the file below
   # datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
@@ -42,5 +42,6 @@ if (visualize)
   plotfit2pdf(f , BMDoutput = r, BMDtype = "zSD")  # alphabetic order WHY ??????????????? PB fixed - OK
   b <- bmdboot(r, niter = 10)
   plotfit2pdf(f , BMDoutput = b, BMDtype = "zSD") # alphabetic order WHY ??????????????? PB fixed - OK
-}
+  
+})
 
