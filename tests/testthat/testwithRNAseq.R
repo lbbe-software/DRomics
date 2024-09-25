@@ -1,5 +1,4 @@
-context("examplewithRNAseq")
-test_that("examplewithRNAseq", {
+test_that("Test DRomics on RNAseq data", {
   skip_on_cran()
   
   # importation and check of RNAseq data and normalization

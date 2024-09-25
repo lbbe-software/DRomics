@@ -1,4 +1,3 @@
-context("itemselect_count")
 test_that("itemselect works as expected on the number of selected probes",
   {
     skip_on_cran()

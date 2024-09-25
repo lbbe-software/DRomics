@@ -1,5 +1,4 @@
-context("testbmdplotwithgradient")
-test_that("testbmdplotwithgradient", {
+test_that("test the bmdplotwithgradient function", {
   skip_on_cran()
   
   # (1) Plot of BMD values with color dose-response gradient

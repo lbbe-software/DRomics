@@ -1,5 +1,4 @@
-context("sensitivityplot")
-test_that("sensitivityplot", {
+test_that("test sensitivityplot()", {
   skip_on_cran()
   
   # (1) An example from data published by Larras et al. 2020

@@ -1,4 +1,3 @@
-context("bmdcalc_BMD")
 test_that("bmdcalc works as expected on the BMD results",
   {
     skip_on_cran()

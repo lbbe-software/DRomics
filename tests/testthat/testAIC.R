@@ -1,5 +1,4 @@
-context("testAIC")
-test_that("Testof the impact of the three information criteria", {
+test_that("Test of the impact of the three information criteria", {
   skip_on_cran()
   
   ### test on microarray data ######################

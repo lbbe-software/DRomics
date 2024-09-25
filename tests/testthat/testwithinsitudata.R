@@ -1,5 +1,4 @@
-context("examplewithinsitudata")
-test_that("Test DRomics on datasets without replicates and without control data", {
+test_that("Test DRomics on in situ data", {
   skip_on_cran()
   
   niterboot <- 25

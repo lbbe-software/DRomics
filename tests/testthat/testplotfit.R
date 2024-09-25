@@ -1,5 +1,4 @@
-context("testbmdplotfit")
-test_that("testbmdplotfit", {
+test_that("test function to plot the fits and the BMD values on those fits", {
   skip_on_cran()
   
   niterboot <- 25

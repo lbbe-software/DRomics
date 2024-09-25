@@ -1,5 +1,4 @@
-context("testresidualtests")
-test_that("test scaling on curvesplot and bmdplotwithgradient", {
+test_that("test the impact of the scaling on curvesplot and bmdplotwithgradient", {
   skip_on_cran()
   
   # A toy example on a very small subsample of a microarray data set) 

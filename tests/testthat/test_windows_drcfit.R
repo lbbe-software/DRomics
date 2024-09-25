@@ -1,4 +1,3 @@
-context("drcfit_model")
 test_that("drcfit works as expected on the model results",
   {
     skip_on_cran()

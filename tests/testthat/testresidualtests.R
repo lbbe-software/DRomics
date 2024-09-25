@@ -1,5 +1,4 @@
-context("testresidualtests")
-test_that("testresidualtests", {
+test_that("test the comportment of tests on residuals", {
   skip_on_cran()
   
   IC <- "AICc"

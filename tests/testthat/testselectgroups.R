@@ -1,5 +1,4 @@
-context("select_groups")
-test_that("select_groups",{
+test_that("test the use of selectgroups() before a sensitivity plot",{
   skip_on_cran()
   
   # (1) An example from data published by Larras et al. 2020

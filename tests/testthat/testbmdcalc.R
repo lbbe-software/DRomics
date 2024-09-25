@@ -1,5 +1,4 @@
-context("testbmdcalc")
-test_that("testbmdcalc", {
+test_that("test the impact of ratio2switchinlog and minBMD", {
   skip_on_cran()
   
   # Impact of ratio2switchinlog and minBMD on a toy example  
@@ -31,7 +30,7 @@ test_that("testbmdcalc", {
   r$minBMD
   
   # bootstrap after forcing minBMD to a high value
-  # without anay interest, but just to test bmdboot
+  # without any interest, but just to test bmdboot
   (r <- bmdcalc(f, minBMD = 0.3))
   (b <- bmdboot(r, niter = 100)) # with a non reasonable value for niter 
   b$res

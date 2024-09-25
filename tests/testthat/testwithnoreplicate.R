@@ -1,4 +1,3 @@
-context("examplewithnoreplicate")
 test_that("Test DRomics on datasets without replicates and without control data", {
   skip_on_cran()
   

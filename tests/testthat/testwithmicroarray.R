@@ -1,5 +1,4 @@
-context("examplewithametabolomicdata")
-test_that("examplewithametabolomicdata", {
+test_that("Test DRomics on microarray data", {
   skip_on_cran()
   
   # importation and check of data and normalization if needed

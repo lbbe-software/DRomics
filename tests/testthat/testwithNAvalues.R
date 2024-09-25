@@ -1,4 +1,3 @@
-context("examplewithNAvalues")
 test_that("Test DRomics on datasets with NA values, possible especially for apical data", {
   skip_on_cran()
   

@@ -1,5 +1,4 @@
-context("examplewithanchoringdata")
-test_that("examplewithanchoringdata", {
+test_that("Test DRomics on anchoring data", {
   skip_on_cran()
   
   # importation and check of apical anchoring data
