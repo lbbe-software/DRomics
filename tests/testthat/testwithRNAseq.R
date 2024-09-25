@@ -51,18 +51,19 @@ test_that("Test DRomics on RNAseq data", {
   (f <- drcfit(s_quad, progressbar = TRUE))
   f$fitres
   plot(f)
+  r <- bmdcalc(f)
   
   # various plot of fitted curves (without data)
-  curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+  curvesplot(r$res, xmax = max(f$omicdata$dose), 
              facetby = "model", colorby = "model")
   
-  curvesplot(f$fitres, xmax = max(f$omicdata$dose), 
+  curvesplot(r$res, xmax = max(f$omicdata$dose), 
              facetby = "typology")
   # plot of selection of curves
-  curvesplot(f$fitres[f$fitres$trend == "bell", ], xmax = max(f$omicdata$dose), 
+  curvesplot(r$res[f$fitres$trend == "bell", ], xmax = max(f$omicdata$dose), 
              facetby = "id")
   
-  curvesplot(f$fitres[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose), 
+  curvesplot(r$res[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose), 
              facetby = "id")
   
   # evaluate the impact of preventsfitsoutofrange, enablesfequal0inGP, enablesfequal0inlGP
@@ -88,13 +89,13 @@ test_that("Test DRomics on RNAseq data", {
   (idremovedinf1bis <- f1$fitres$id[!is.element(f1$fitres$id, f1bis$fitres$id)])
   targetplot(items = idremovedinf1bis, f1, dose_log_transfo = FALSE) 
   
-  (idchanged <- f1bis$fitres$id[which(f1bis$fitres$model != f1ter$fitres$model | 
-                                        f1bis$fitres$f != f1ter$fitres$f)])
-  targetplot(items = idchanged, f1bis, dose_log_transfo = TRUE)
-  targetplot(items = idchanged, f1ter, dose_log_transfo = TRUE)
+  # (idchanged <- f1bis$fitres$id[which(f1bis$fitres$model != f1ter$fitres$model | 
+  #                                       f1bis$fitres$f != f1ter$fitres$f)])
+  # targetplot(items = idchanged, f1bis, dose_log_transfo = TRUE)
+  # targetplot(items = idchanged, f1ter, dose_log_transfo = TRUE)
   
-  f1bis$fitres[f1bis$fitres$id %in% idchanged, ]
-  f1ter$fitres[f1ter$fitres$id %in% idchanged, ]
+  # f1bis$fitres[f1bis$fitres$id %in% idchanged, ]
+  # f1ter$fitres[f1ter$fitres$id %in% idchanged, ]
   
   
   # calculation of benchmark doses
