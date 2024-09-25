@@ -54,16 +54,13 @@ test_that("Test DRomics on RNAseq data", {
   r <- bmdcalc(f)
   
   # various plot of fitted curves (without data)
-  curvesplot(r$res, xmax = max(f$omicdata$dose), 
+  curvesplot(r$res, xmax = max(r$omicdata$dose), 
              facetby = "model", colorby = "model")
   
-  curvesplot(r$res, xmax = max(f$omicdata$dose), 
+  curvesplot(r$res, xmax = max(r$omicdata$dose), 
              facetby = "typology")
   # plot of selection of curves
-  curvesplot(r$res[f$fitres$trend == "bell", ], xmax = max(f$omicdata$dose), 
-             facetby = "id")
-  
-  curvesplot(r$res[f$fitres$trend == "U", ], xmax = max(f$omicdata$dose), 
+  curvesplot(r$res[r$res$trend == "bell", ], xmax = max(r$omicdata$dose), 
              facetby = "id")
   
   # evaluate the impact of preventsfitsoutofrange, enablesfequal0inGP, enablesfequal0inlGP
