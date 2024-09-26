@@ -45,6 +45,11 @@ jobs:
         run: |
           sudo apt-get install libcurl4-openssl-dev
           
+      - name: Install libraries for macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install libpng
+          
       - name: Install bioconductor packages
         run: |
           install.packages("BiocManager")
