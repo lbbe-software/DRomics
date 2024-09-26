@@ -48,7 +48,7 @@ jobs:
       - name: Install libraries for macOS
         if: runner.os == 'macOS'
         run: |
-          brew install libpng
+          brew install pkg-config
           
       - name: Install bioconductor packages
         run: |
