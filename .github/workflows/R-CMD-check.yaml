@@ -63,4 +63,9 @@ jobs:
           args: 'c("--no-manual", "--as-cran", "--run-donttest")'
           error-on: '"error"'
           check-dir: '"check"'
-      
+          
+      - name: Upload check results
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
+          path: check
