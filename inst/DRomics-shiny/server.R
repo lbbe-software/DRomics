@@ -273,7 +273,7 @@ server <- function(input, output, session) {
       req(input$datafile_anchoring)
     }
     
-    text <- c("library(DRomics)",
+    text <- c("require('DRomics')",
               "",
               "# Step 1",
               paste0("o <- ", ifelse(input$typeData == 'microarraydata', 

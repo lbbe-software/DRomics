@@ -56,7 +56,7 @@ remotes::install_github("lbbe-software/DRomics")
 
 Finally load the package in your current R session with the following R command:
 ```r
-library(DRomics)
+require("DRomics")
 ```
 
 

@@ -695,7 +695,7 @@ server <- function(input, output, session) {
         req(input$annotationData1)
         
         ##### STEP 1 #####
-        text <- c("library(DRomics)",
+        text <- c("require('DRomics')",
                   "",
                   "# Step 1",
                   "extendedres <- list()",
