@@ -327,6 +327,9 @@ server <- function(input, output, session) {
         return(df)
     }
     
+    my <- reactiveValues(hplot = 400)
+    output$uitrendplot <- renderUI(plotOutput("trendplot", width = "100%", height = my$hplot))
+    output$uisensitivityplot <- renderUI(plotOutput("sensitivityplot", width = "100%", height = my$hplot))
     
     output$filteredsorteddata <- renderPrint({
         
@@ -334,6 +337,8 @@ server <- function(input, output, session) {
         myextendedmergeddata <- sortextendedres$myextendedmergeddata
         mypathclasslabel <- sortextendedres$mypathclasslabel
         myextendedmergeddata4ggplot <- sortlevels4ggplot(myextendedmergeddata, mypathclasslabel)
+        
+        my$hplot <- max(400, length(table(as.vector(myextendedmergeddata[, mypathclasslabel]))) * 11)
         
         ############ sensitivity plot ############
         output$sensitivityplot <- renderPlot({
@@ -353,7 +358,7 @@ server <- function(input, output, session) {
             
             output$buttonDownloadSensitivityplot <- downloadHandler(
                 filename = function() {"sensitivityplot.pdf"},
-                content = function(file) {ggplot2::ggsave(file, plot = mysensitivityplot, device = "pdf", height = 8.5, width = 13)}
+                content = function(file) {ggplot2::ggsave(file, plot = mysensitivityplot, device = "pdf", height = my$hplot / 100, width = 13)}
             )
             
             return(mysensitivityplot)
@@ -374,7 +379,7 @@ server <- function(input, output, session) {
           
           output$buttonDownloadTrendplot <- downloadHandler(
             filename = function() {"trendplot.pdf"},
-            content = function(file) {ggplot2::ggsave(file, plot = mytrendplot, device = "pdf", height = 8.5, width = 13)}
+            content = function(file) {ggplot2::ggsave(file, plot = mytrendplot, device = "pdf", height = my$hplot / 100, width = 13)}
           )
           
           return(mytrendplot)

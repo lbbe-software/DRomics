@@ -284,12 +284,12 @@ ui <- fluidPage(
                           fluidRow(
                             column(2, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Trend plot"),
                             column(2, downloadButton("buttonDownloadTrendplot", "Download Trend Plot", icon = icon("fas fa-download")))),
-                          br(), plotOutput("trendplot", width = "100%"),
+                          br(), uiOutput("uitrendplot"),
                           br(), br(), br(), 
                           fluidRow(
                             column(2, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Sensitivity plot"),
                             column(2, downloadButton("buttonDownloadSensitivityplot", "Download Sensitivity Plot", icon = icon("fas fa-download")))),
-                          br(), plotOutput("sensitivityplot", width = "100%"),
+                          br(), uiOutput("uisensitivityplot"),
                           br(), br(), br(), 
                           fluidRow(
                             column(5, offset = 1, style = 'color:#9c5c16; font-size:large;line-height: 40px;', "Structure of the data frame merged and combined"),
