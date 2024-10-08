@@ -26,10 +26,10 @@ curvesplot <- function(extendedres, xmin, xmax,
   
   if (BMDtype == "zSD" && !is.element(c("BMD.zSD"), cnames)) {
     stop("The first argument of curvesplot must be a dataframe
-    containing at least columns named id, model, b, c, d, e, f, y0 and maxychange and BMD.zSD.")
-  } else if (!is.element(c("BMD.xfold"), cnames)) {
+    containing at least columns named id, model, b, c, d, e, f, y0, maxychange and BMD.zSD.")
+  } else if (BMDtype == "xfold" && !is.element(c("BMD.xfold"), cnames)) {
     stop("The first argument of curvesplot must be a dataframe
-    containing at least columns named id, model, b, c, d, e, f, y0 and maxychange and BMD.xfold.")
+    containing at least columns named id, model, b, c, d, e, f, y0, maxychange and BMD.xfold.")
   }
   
   if (scaling) {
