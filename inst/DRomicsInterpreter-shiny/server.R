@@ -111,7 +111,7 @@ server <- function(input, output, session) {
         myexpr <- paste0("input$annotationData", idlev, "$datapath")
         sep <- if(input$sep_annotationData) "'\t'" else "''"
         validate(
-            need(try(annotationDF <- eval(parse(text = paste0("read.table(", myexpr, ", header = TRUE, stringsAsFactors = TRUE, sep = ", sep, ")")))), "Error reading the file")
+            need(try(annotationDF <- eval(parse(text = paste0("read.table(", myexpr, ", header = TRUE, stringsAsFactors = TRUE, sep = ", sep, ")")))), "Error reading the file containing annotation data.")
         )
         validate(
             need(length(colnames(annotationDF)) == 2, paste0("Your annotation data at level ", idlev," set must have exactly two columns.\nPlease update your imported data."))
