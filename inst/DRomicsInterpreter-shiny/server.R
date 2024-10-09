@@ -81,7 +81,18 @@ server <- function(input, output, session) {
         eval(parse(text=paste0("req(input$DRomicsData", idlev, ")")))
         eval(parse(text=paste0("validateFile(input$DRomicsData", idlev, ")")))
         myexpr <- paste0("input$DRomicsData", idlev, "$datapath")
-        return(eval(parse(text = paste0("read.table(", myexpr, ", header = TRUE, stringsAsFactors = TRUE)"))))
+        dromicsDF <- NULL
+        dromicsDF <- tryCatch({
+          eval(parse(text = paste0("read.table(", myexpr, ", header = TRUE, stringsAsFactors = TRUE)")))
+          },
+          error = function(err) {
+            NULL
+          })
+
+        if(is.null(dromicsDF))
+          return()
+        else
+          return(dromicsDF)
     }
     
     # update selectizeInput according with DRomicsData
@@ -143,7 +154,10 @@ server <- function(input, output, session) {
     mergeddata <- eventReactive(input$buttonRunStep1, {
         # input check
         validate(need(input$maxDoseXScale, "Please fill in the maximal dose/concentration for definition of x-scale of plots."))
-        for (i in 1:input$nbLevel) {annotationData(i)}
+        for (i in 1:input$nbLevel) {
+          annotationData(i)
+          validate(need(nrow(DRData(i)) != 0, "Error reading the file containing DRomics output."))
+        }
         myextendedmergeddata <- list()
         alllabels <- rep(NA, input$nbLevel)
         for (i in 1:input$nbLevel) {
