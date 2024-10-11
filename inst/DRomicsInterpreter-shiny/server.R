@@ -35,23 +35,27 @@ server <- function(input, output, session) {
             wellPanel(
                 fixedRow(
                     column(1),
-                    column(4, align = "center", HTML("<font face=verdana size=3 color=#9c5c16><b>(1) Data frame from the DRomics workflow</b></font>")),
+                    column(4, align = "center", 
+                           HTML("<font face=verdana size=3 color=#9c5c16><b>(1) Data frame from the DRomics workflow &nbsp;</b></font>"),
+                           shinyBS::bsButton("helplabel1step1", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
+                           shinyBS::bsPopover("helplabel1step1", "", helplabel1step1, placement = "top", trigger = "hover", options = list(container = "body"))
+                           ),
                     column(4, align = "center", 
                            HTML("<font face=verdana size=3 color=#9c5c16><b>(2) Annotation data frame &nbsp;</b></font>"),
-                           shinyBS::bsButton("helplabel1step1", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
-                           shinyBS::bsPopover("helplabel1step1", "", helplabel1step1, placement = "top", trigger = "hover", options = list(container = "body")),
+                           shinyBS::bsButton("helplabel2step1", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
+                           shinyBS::bsPopover("helplabel2step1", "", helplabel2step1, placement = "top", trigger = "hover", options = list(container = "body")),
                            
                            splitLayout(cellWidths = c(277, 100), style = "margin-left:50px;padding-top:20px;",
                                        checkboxInput("sep_annotationData", label = "Only tab accepted as a column separator.", value = FALSE),
-                                       shinyBS::bsButton("helplabel3step1", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
-                                       shinyBS::bsPopover("helplabel3step1", "", helplabel3step1, placement = "bottom", trigger = "hover", options = list(container = "body"))
+                                       shinyBS::bsButton("helplabel4step1", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
+                                       shinyBS::bsPopover("helplabel4step1", "", helplabel4step1, placement = "bottom", trigger = "hover", options = list(container = "body"))
                            )
                     ),
                     
                     column(3, align = "center", 
                            HTML("<font face=verdana size=3 color=#9c5c16><b>(3) Name of the experimental level &nbsp;</b></font>"),
-                           shinyBS::bsButton("helplabel2step1", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
-                           shinyBS::bsPopover("helplabel2step1", "", helplabel2step1, placement = "bottom", trigger = "hover", options = NULL)
+                           shinyBS::bsButton("helplabel3step1", label = "", icon = icon("info"), size = "small", style="color:#9c5c16"),
+                           shinyBS::bsPopover("helplabel3step1", "", helplabel3step1, placement = "bottom", trigger = "hover", options = NULL)
                     )
                 ),
                 ..., width = 2, status = "primary")
