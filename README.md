@@ -7,6 +7,7 @@
 ---------------------------
 
 Ici, une offre de stage de M2, au LBBE à Lyon / Here, an M2 internship offer at LBBE in Lyon:
+
 https://www.bioinfo-lyon.fr/app/download/13442526249/offre_stage_M2_bioinfo_Siberchicot_Delignette_v2.pdf?t=1732803324
 
 ---------------------------
