@@ -6,6 +6,11 @@
 
 ---------------------------
 
+Ici, une offre de stage de M2, au LBBE à Lyon / Here, an M2 internship offer at LBBE in Lyon:
+https://www.bioinfo-lyon.fr/app/download/13442526249/offre_stage_M2_bioinfo_Siberchicot_Delignette_v2.pdf?t=1732803324
+
+---------------------------
+
 **Please note! Since June 2024, this repository has belonged to the *lbbe-software* organization.**
 To avoid confusion, we strongly recommend updating any existing local clones to point to the new 
 repository URL. You can do this by using `git remote` on the command line:
