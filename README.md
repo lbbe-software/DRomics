@@ -41,10 +41,11 @@ All informations about DRomics can also be found at <a href="https://lbbe.univ-l
 The `limma` and `DESeq2` packages from Bioconductor must be installed for the use of `DRomics` (can take a long time):
 
 ```r
-if (!requireNamespace("BiocManager", quietly = TRUE))
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
    install.packages("BiocManager")
-else
+} else {
   BiocManager::install(ask = FALSE, update = TRUE)
+}
 
 BiocManager::install(c("limma", "DESeq2"))
 ```
