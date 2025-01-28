@@ -34,6 +34,8 @@
 1. [ ] Voir si on peut ajouter les "sample names" dans le graphe des boxplot par échantillon
 1. [ ] ajouter une fonction simple qui fait une procédure d'enrichissement.
 1. [ ] comment deltaAICminfromnullmodel in the vignette / FAQ et give an example in .Rd and add defensive prog on its given value in input
+1. [ ] ajouter la fonction meanplot ou un dérivé dans DRomics en travaillant celle qui a été mise dans le share (functions2add)
+1. [ ] retrouver et corriger le bug signalé par Elise sur l'échelle non log qui est labellisée en log
 
 ## Shorter term
 
