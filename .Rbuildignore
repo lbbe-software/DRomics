@@ -7,3 +7,4 @@ README.md
 share
 _pkgdown.yml
 .lintr
+^codemeta\.json$
