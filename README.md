@@ -3,7 +3,9 @@
 [![CRAN_Release_Badge](https://www.r-pkg.org/badges/version-ago/DRomics)](http://cran.r-project.org/package=DRomics)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/DRomics)](https://cran.r-project.org/package=DRomics)
 [![R-CMD-check](https://github.com/lbbe-software/DRomics/workflows/R-CMD-check/badge.svg)](https://github.com/lbbe-software/DRomics/actions)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/lbbe-software/DRomics/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/lbbe-software/DRomics)
 
 ---------------------------
 
@@ -15,17 +17,6 @@ internship offer in 2024-2025.**
 
 ---------------------------
 
-Please note! Since June 2024, this repository has belonged to the *lbbe-software* organization.
-To avoid confusion, we strongly recommend updating any existing local clones to point to the new 
-repository URL. You can do this by using `git remote` on the command line:
-
-`git remote set-url origin git@github.com:lbbe-software/DRomics.git`
-
-or 
-
-`git remote set-url origin https://github.com/lbbe-software/DRomics.git`
-
----------------------------
 
 `DRomics` is a freely available tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates to use `DRomics`).
 
