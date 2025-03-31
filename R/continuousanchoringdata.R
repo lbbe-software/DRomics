@@ -26,7 +26,7 @@ continuousanchoringdata <- function(file, backgrounddose, check = TRUE) {
     # check that doses and responses are numeric
     if (!is.numeric(as.matrix(d[, 2:ncold])))
       stop("All the columns except the first one must be numeric with the numeric 
-      dose in the firt line and the numeric response of each endpoint in the other lines.")
+      dose in the first line and the numeric response of each endpoint in the other lines.")
     warning(strwrap(prefix = "\n", initial = "\n",
                     "We recommend you to check that your anchoring data are continuous and
       defined in a scale that enable the use of a normal error model (needed at each step

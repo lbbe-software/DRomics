@@ -56,7 +56,7 @@ continuousomicdata <- function(file, backgrounddose, check = TRUE) {
     # check that doses and responses are numeric
     if (!is.numeric(as.matrix(d[, 2:ncold])))
       stop("All the columns except the first one must be numeric with the numeric 
-      dose in the firt line and the numeric response of each item in the other lines.")
+      dose in the first line and the numeric response of each item in the other lines.")
     warning(strwrap(prefix = "\n", initial = "\n",
                     "We recommend you to check that your omic data were correctly pretreated
       before importation. In particular data (e.g. metabolomic signal)

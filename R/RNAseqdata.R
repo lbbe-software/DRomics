@@ -48,7 +48,7 @@ RNAseqdata <- function(file, backgrounddose, check = TRUE,
     
     # check that doses and responses are numeric
     if (!is.numeric(as.matrix(d[, 2:ncold])))
-      stop("All the columns except the first one must be numeric with the numeric dose in the firt line 
+      stop("All the columns except the first one must be numeric with the numeric dose in the first line 
       and the read counts (integer values corresponding to raw counts) of each item in the other lines.")
   }
   
