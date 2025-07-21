@@ -36,7 +36,9 @@
 1. [ ] comment deltaAICminfromnullmodel in the vignette / FAQ et give an example in .Rd and add defensive prog on its given value in input
 1. [ ] ajouter la fonction meanplot ou un dérivé dans DRomics en travaillant celle qui a été mise dans le share (functions2add)
 1. [ ] retrouver et corriger le bug signalé par Elise sur l'échelle non log qui est labellisée en log
-1. [ ] étendre les possibilité de la fonction selectgroups en envisageant à la fois les cas où on a trop ou trop peu d'info (cf. données Japon Elise) 
+1. [ ] étendre les possibilité de la fonction selectgroups en envisageant à la fois les cas où on a trop ou trop peu d'info (cf. données Japon Elise)
+1. [ ] ajouter dans les tests le script avec données négatives et sans controle (voir réponse faite à Sarah Green juillet 2025)
+1. [ ] retravailler les données initiales et les contraintes sur paramètres pour les modèles Gauss-probit et log-Gauss-probit
 
 ## Shorter term
 
