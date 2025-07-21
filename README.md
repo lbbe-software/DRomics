@@ -7,16 +7,6 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/lbbe-software/DRomics/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/lbbe-software/DRomics)
 
----------------------------
-
-**At LBBE in Lyon, 
-one [M1](https://www.bioinfo-lyon.fr/app/download/13456811649/offre_stage_M1_bioinfo_Siberchicot_Delignette.pdf?t=1733321918)
-and 
-one [M2](https://www.bioinfo-lyon.fr/app/download/13442526249/offre_stage_M2_bioinfo_Siberchicot_Delignette_v2.pdf?t=1732803324) 
-internship offer in 2024-2025.**
-
----------------------------
-
 
 `DRomics` is a freely available tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates to use `DRomics`).
 
