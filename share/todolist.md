@@ -1,6 +1,6 @@
 # TODO list
 
-## Top priority
+## Top  priority
 
 1. [X] Retravailler les test_that (ML)
 1. [X] Change the default for log scale in each plot (fit or BMD) AND add a warning (ML and A pour mise en place warning). Dans shiny appels à bmdplot(BMD_log_transfo = TRUE), bmdplotwithgradient(BMD_log_transfo = TRUE), sensitivityplot(BMD_log_transfo = TRUE), plot.drcfit(dose_log_transfo = TRUE), plotfit2pdf(dose_log_transfo = TRUE), targetplot(dose_log_transfo = TRUE), et nouvel argument BMD_log_transfo par défaut à TRUE à gérer dans les appels à plot.bmdcalc() (et plot.bmdboot() mais pas dans shiny). 
