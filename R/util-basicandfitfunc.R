@@ -163,7 +163,7 @@ startvalGauss5pnls <- function(xm, ym, Ushape) {
   b <- max(xm) / 4
   # initial value of e (dose corresponding to the maximal (or minimal) signal)
   xextremum <- stats::median(xm[which(ym == yextremum)]) # just in case there is more than one dose at which ym == yextremum
-  e <- min(xextremum - (c - d) * b / (f * sqrt(2 * pi)), 1e-6)
+  e <- max(xextremum - (c - d) * b / (f * sqrt(2 * pi)), 1e-6)
   startval <- list(b = b, c = c, d = d, e = e, f = f)
 }
 

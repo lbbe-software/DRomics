@@ -2,6 +2,14 @@
 
 NEW FEATURES
 
+BUG FIXES
+
+- Fix a bug in the definition of starting values of the parameter e of the Gaussprobit model. This could help the fit in few cases.
+
+# DRomics 2.6-2
+
+NEW FEATURES
+
 - Add of a component in the output of RNAseqdata, continuousomicdata(),  continuousanchoringdata(), microarraydata() and (data.sd, which gives, for each item, the sd of the response per condition - NA if no replicate for a condition).
 - Add a new argument in drcfit(), named deltaAICminfromnullmodel, in order to relax requirements on the information criterion to keep the best fitted model (see ? drcfit()).
 - Modification of curvesplot() to be able to put its argument dose_log_transfo by default at TRUE as in other functions. Curvesplot now use minimum and maximum values of the chosen BMD to fix the rage on which the theoretical curve is calculated (and plotted) ad so the chosen BMD is required in the input of the function.

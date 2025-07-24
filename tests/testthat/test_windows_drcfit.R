@@ -17,7 +17,7 @@ test_that("drcfit works as expected on the model results",
     expect_equal(round(mean(f$fitres$c, na.rm = TRUE), 4), 5.3354)
     expect_equal(round(mean(f$fitres$d, na.rm = TRUE), 4), 9.2984)
     expect_equal(round(mean(f$fitres$e, na.rm = TRUE), 4), 1.608)
-    expect_equal(round(mean(f$fitres$f, na.rm = TRUE), 4), 2.5344)
+    expect_equal(round(mean(f$fitres$f, na.rm = TRUE), 4), 2.5343)
     #Select model with BIC
     f.BIC <- drcfit(s_quad, progressbar = TRUE, information.criterion = "BIC")
     tmodel.BIC <- table(f.BIC$fitres$model)
@@ -35,9 +35,9 @@ test_that("drcfit works as expected on the model results",
     expect_equal(as.numeric(tmodel.AICc["Gauss-probit"]), 23)
     expect_equal(as.numeric(tmodel.AICc["log-Gauss-probit"]), 3)
     expect_equal(round(mean(f.AICc$fitres$b, na.rm = TRUE), 4), 1.2561)
-    expect_equal(round(mean(f.AICc$fitres$c, na.rm = TRUE), 4), 4.5015)
+    expect_equal(round(mean(f.AICc$fitres$c, na.rm = TRUE), 4), 4.5016)
     expect_equal(round(mean(f.AICc$fitres$d, na.rm = TRUE), 4), 9.2571)
     expect_equal(round(mean(f.AICc$fitres$e, na.rm = TRUE), 4), 1.5162)
-    expect_equal(round(mean(f.AICc$fitres$f, na.rm = TRUE), 4), 2.8576)
+    expect_equal(round(mean(f.AICc$fitres$f, na.rm = TRUE), 4), 2.8575)
     
   })
