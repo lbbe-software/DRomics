@@ -39,6 +39,12 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="dromics-development-version">DRomics (development version)<a class="anchor" aria-label="anchor" href="#dromics-development-version"></a></h2>
 <p>NEW FEATURES</p>
+<p>BUG FIXES</p>
+<ul><li>Fix a bug in the definition of starting values of the parameter e of the Gaussprobit model. This could help the fit in few cases.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.6-2" id="dromics-26-2">DRomics 2.6-2<a class="anchor" aria-label="anchor" href="#dromics-26-2"></a></h2><p class="text-muted">CRAN release: 2024-10-16</p>
+<p>NEW FEATURES</p>
 <ul><li>Add of a component in the output of RNAseqdata, continuousomicdata(), continuousanchoringdata(), microarraydata() and (data.sd, which gives, for each item, the sd of the response per condition - NA if no replicate for a condition).</li>
 <li>Add a new argument in drcfit(), named deltaAICminfromnullmodel, in order to relax requirements on the information criterion to keep the best fitted model (see ? drcfit()).</li>
 <li>Modification of curvesplot() to be able to put its argument dose_log_transfo by default at TRUE as in other functions. Curvesplot now use minimum and maximum values of the chosen BMD to fix the rage on which the theoretical curve is calculated (and plotted) ad so the chosen BMD is required in the input of the function.</li>
