@@ -117,7 +117,7 @@ startvalHillnls2 <- function(x, y, xm, ym, increase) { # requires the definition
   xreg <- log(x[x != 0])
   reg <- stats::lm(yreg ~ xreg)
   b <- reg$coefficients[2]
-  e <- reg$coefficients[1] / (-b)
+  e <- exp(reg$coefficients[1] / (-b))
   startval <- list(b = b, c = c, d = d, e = e)
 }
 

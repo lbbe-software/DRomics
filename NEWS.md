@@ -1,10 +1,10 @@
 # DRomics (development version)
 
 NEW FEATURES
+- Correction of the definition of starting values of the parameter e of the Gaussprobit model and of the Hill model. This could help the fit of those models in few cases.
 
 BUG FIXES
 
-- Fix a bug in the definition of starting values of the parameter e of the Gaussprobit model. This could help the fit in few cases.
 
 # DRomics 2.6-2
 
