@@ -300,16 +300,19 @@ to finite values.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9                 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10                4</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="co"># plot of BMD.zSD after removing of BMDs with infinite upper bounds</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `height` was translated to `width`.</span>
 <span class="r-plt img"><img src="bmdboot-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># same plot in raw scale (without log transformation of BMD values)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span>, BMD_log_transfo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `height` was translated to `width`.</span>
 <span class="r-plt img"><img src="bmdboot-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># plot of BMD.zSD without removing of BMDs </span></span></span>
 <span class="r-in"><span><span class="co"># with infinite upper bounds</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span>, remove.infinite <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `height` was translated to `width`.</span>
 <span class="r-plt img"><img src="bmdboot-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
@@ -490,21 +493,25 @@ to finite values.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 4 BMD values for which lower and upper bounds were coded NA or with</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> lower or upper infinite bounds were removed before plotting.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `height` was translated to `width`.</span>
 <span class="r-plt img"><img src="bmdboot-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span>, by <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span> </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 4 BMD values for which lower and upper bounds were coded NA or with</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> lower or upper infinite bounds were removed before plotting.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `height` was translated to `width`.</span>
 <span class="r-plt img"><img src="bmdboot-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span>, by <span class="op">=</span> <span class="st">"model"</span><span class="op">)</span> </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 4 BMD values for which lower and upper bounds were coded NA or with</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> lower or upper infinite bounds were removed before plotting.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `height` was translated to `width`.</span>
 <span class="r-plt img"><img src="bmdboot-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">b</span>, by <span class="op">=</span> <span class="st">"typology"</span><span class="op">)</span> </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 4 BMD values for which lower and upper bounds were coded NA or with</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> lower or upper infinite bounds were removed before plotting.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `height` was translated to `width`.</span>
 <span class="r-plt img"><img src="bmdboot-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># a plot of BMD-xfold (by default BMD-zSD is plotted)</span></span></span>
@@ -512,6 +519,7 @@ to finite values.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 40 BMD values for which lower and upper bounds were coded NA or with</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> lower or upper infinite bounds were removed before plotting.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `height` was translated to `width`.</span>
 <span class="r-plt img"><img src="bmdboot-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
