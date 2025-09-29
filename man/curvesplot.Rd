@@ -27,7 +27,7 @@ the parameters (columns \code{b}, \code{c}, \code{d}, \code{e}, \code{f}) and
 a column coding for the chosen BMD, by default \code{BMD.zSD} or \code{BMD.xfold}
 \code{BMDtype} is to \code{"xfold"}.}
 
-\item{xmin}{If not defined, a value just below the maximum BMD values is fixed if the x  dose scale is in log, or 0 otherwise.}
+\item{xmin}{If not defined, a value just below the minimal BMD values is fixed if the x dose scale is in log, or 0 otherwise.}
 
 \item{xmax}{Maximal dose/concentration for definition of the x range (can be defined 
  as \code{max(f$omicdata$dose)} with \code{f} the output of \code{drcfit()}). If not defined, a value just above the maximum BMD values is taken.}
