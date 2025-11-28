@@ -1,0 +1,3842 @@
+# Selection of groups on which to focus
+
+Selection of groups (e.g. corresponding to different biological
+annotations) on which to focus, based on their sensitivity (BMD summary
+value) and their representativeness (number of items in each group).
+
+## Usage
+
+``` r
+selectgroups(extendedres, group, explev,
+   BMDmax, BMDtype = c("zSD", "xfold"), 
+   BMDsummary = c("first.quartile", "median" ),
+   nitemsmin = 3, keepallexplev = FALSE)
+```
+
+## Arguments
+
+- extendedres:
+
+  the dataframe of results provided by drcfit (fitres) or bmdcalc (res)
+  or a subset of this data frame (selected lines). This dataframe should
+  be extended with additional columns coming for the group (for example
+  from the biological annotation of items) and optionnally for another
+  experimental level (for example the molecular level), and some lines
+  can be replicated if their corresponding item has more than one
+  annotation.
+
+- group:
+
+  the name of the column of `extendedres` coding for the groups.
+
+- explev:
+
+  optional argument naming the column of `extendedres` coding for the
+  experimental level.
+
+- BMDmax:
+
+  maximum for the BMD summary value used to limit the groups to the most
+  sensitive (optional input : if missing there is no selection based on
+  the BMD).
+
+- BMDtype:
+
+  the type of BMD used for the selection on the BMD, `"zSD"` (default
+  choice) or `"xfold"`.
+
+- BMDsummary:
+
+  the type of summary used for the selection based on the BMD,
+  `"first.quartile"` (default choice of the first quartile of BMD values
+  per group) or `"median"` (for choice of median of BMD values per
+  group).
+
+- nitemsmin:
+
+  minimum for the number of items per group to limit the groups to the
+  most represented (can be put at 1 if you do not want to select on this
+  number: not recommended.
+
+- keepallexplev:
+
+  If TRUE (default value at FALSE), if a group is selected for at least
+  one experimental level, it will be kept in the selection at all the
+  experimental levels.
+
+## Details
+
+This function will provide a subset of the input `extendedres`
+corresponding to groups for which the number of items representing the
+group is greater than or equal to `nitemsmin` and if `BMDmax` is
+secified, for which the BMD summary value is less than or equal to
+`BMDmax`. When there is more than one experimental level (`explev`
+specified), the selection of groups is made separately at each
+experimental level: so a group may be selected at one experimental level
+and removed at another one. This function eliminates rows with NA values
+for the chosen BMD (of `BMDtype`) before performing the the selection.
+
+## Value
+
+a dataframe corresponding to a subset of extendedres given in input,
+that can be used for further exploration using for example
+[`bmdplot`](bmdplot.md),
+[`bmdplotwithgradient`](bmdplotwithgradient.md),
+[`trendplot`](trendplot.md) and [`sensitivityplot`](sensitivityplot.md).
+
+## See also
+
+See [`bmdfilter`](bmdfilter.md), [`bmdplot`](bmdplot.md),
+[`bmdplotwithgradient`](bmdplotwithgradient.md),
+[`trendplot`](trendplot.md) and [`sensitivityplot`](sensitivityplot.md).
+
+## Author
+
+Marie-Laure Delignette-Muller
+
+## Examples
+
+``` r
+# (1)
+
+# An example from the paper published by Larras et al. 2020
+# in Journal of Hazardous Materials
+# https://doi.org/10.1016/j.jhazmat.2020.122727
+
+# the dataframe with metabolomic results 
+resfilename <- system.file("extdata", "triclosanSVmetabres.txt", package="DRomics")
+res <- read.table(resfilename, header = TRUE, stringsAsFactors = TRUE)
+str(res)
+#> 'data.frame':    31 obs. of  27 variables:
+#>  $ id              : Factor w/ 31 levels "NAP47_51","NAP_2",..: 2 3 4 5 6 7 8 9 10 11 ...
+#>  $ irow            : int  2 21 28 34 38 47 49 51 53 67 ...
+#>  $ adjpvalue       : num  6.23e-05 1.11e-05 1.03e-05 1.89e-03 4.16e-03 ...
+#>  $ model           : Factor w/ 4 levels "Gauss-probit",..: 2 3 3 2 2 4 2 2 3 3 ...
+#>  $ nbpar           : int  3 2 2 3 3 5 3 3 2 2 ...
+#>  $ b               : num  0.4598 -0.0595 -0.0451 0.6011 0.6721 ...
+#>  $ c               : num  NA NA NA NA NA ...
+#>  $ d               : num  5.94 5.39 7.86 6.86 6.21 ...
+#>  $ e               : num  -1.648 NA NA -0.321 -0.323 ...
+#>  $ f               : num  NA NA NA NA NA ...
+#>  $ SDres           : num  0.126 0.0793 0.052 0.2338 0.2897 ...
+#>  $ typology        : Factor w/ 10 levels "E.dec.concave",..: 2 7 7 2 2 9 2 2 7 7 ...
+#>  $ trend           : Factor w/ 4 levels "U","bell","dec",..: 3 3 3 3 3 1 3 3 3 3 ...
+#>  $ y0              : num  5.94 5.39 7.86 6.86 6.21 ...
+#>  $ yrange          : num  0.456 0.461 0.35 0.601 0.672 ...
+#>  $ maxychange      : num  0.456 0.461 0.35 0.601 0.672 ...
+#>  $ xextrem         : num  NA NA NA NA NA ...
+#>  $ yextrem         : num  NA NA NA NA NA ...
+#>  $ BMD.zSD         : num  0.528 1.333 1.154 0.158 0.182 ...
+#>  $ BMR.zSD         : num  5.82 5.31 7.81 6.62 5.92 ...
+#>  $ BMD.xfold       : num  NA NA NA NA 0.832 ...
+#>  $ BMR.xfold       : num  5.35 4.85 7.07 6.17 5.59 ...
+#>  $ BMD.zSD.lower   : num  0.2001 0.8534 0.7519 0.0554 0.081 ...
+#>  $ BMD.zSD.upper   : num  1.11 1.746 1.465 0.68 0.794 ...
+#>  $ BMD.xfold.lower : num  Inf 7.611 Inf 0.561 0.329 ...
+#>  $ BMD.xfold.upper : num  Inf Inf Inf Inf Inf ...
+#>  $ nboot.successful: int  957 1000 1000 648 620 872 909 565 1000 1000 ...
+
+# the dataframe with annotation of each item identified in the previous file
+# each item may have more than one annotation (-> more than one line)
+annotfilename <- system.file("extdata", "triclosanSVmetabannot.txt", package="DRomics")
+annot <- read.table(annotfilename, header = TRUE, stringsAsFactors = TRUE)
+str(annot)
+#> 'data.frame':    84 obs. of  2 variables:
+#>  $ metab.code: Factor w/ 31 levels "NAP47_51","NAP_2",..: 2 3 4 4 4 4 5 6 7 8 ...
+#>  $ path_class: Factor w/ 9 levels "Amino acid metabolism",..: 5 3 3 2 6 8 5 5 5 5 ...
+
+# Merging of both previous dataframes
+# in order to obtain an extenderes dataframe
+extendedres <- merge(x = res, y = annot, by.x = "id", by.y = "metab.code")
+head(extendedres)
+#>         id irow    adjpvalue       model nbpar           b  c        d
+#> 1 NAP47_51   46 7.158246e-04      linear     2 -0.05600559 NA 7.343571
+#> 2    NAP_2    2 6.232579e-05 exponential     3  0.45981242 NA 5.941896
+#> 3   NAP_23   21 1.106958e-05      linear     2 -0.05946618 NA 5.387252
+#> 4   NAP_30   28 1.028343e-05      linear     2 -0.04507832 NA 7.859109
+#> 5   NAP_30   28 1.028343e-05      linear     2 -0.04507832 NA 7.859109
+#> 6   NAP_30   28 1.028343e-05      linear     2 -0.04507832 NA 7.859109
+#>           e  f      SDres     typology trend       y0    yrange maxychange
+#> 1        NA NA 0.12454183        L.dec   dec 7.343571 0.4346034  0.4346034
+#> 2 -1.647958 NA 0.12604568 E.dec.convex   dec 5.941896 0.4556672  0.4556672
+#> 3        NA NA 0.07929266        L.dec   dec 5.387252 0.4614576  0.4614576
+#> 4        NA NA 0.05203245        L.dec   dec 7.859109 0.3498078  0.3498078
+#> 5        NA NA 0.05203245        L.dec   dec 7.859109 0.3498078  0.3498078
+#> 6        NA NA 0.05203245        L.dec   dec 7.859109 0.3498078  0.3498078
+#>   xextrem yextrem   BMD.zSD  BMR.zSD BMD.xfold BMR.xfold BMD.zSD.lower
+#> 1      NA      NA 2.2237393 7.219029        NA  6.609214     0.9785095
+#> 2      NA      NA 0.5279668 5.815850        NA  5.347706     0.2000881
+#> 3      NA      NA 1.3334076 5.307960        NA  4.848527     0.8533711
+#> 4      NA      NA 1.1542677 7.807077        NA  7.073198     0.7518588
+#> 5      NA      NA 1.1542677 7.807077        NA  7.073198     0.7518588
+#> 6      NA      NA 1.1542677 7.807077        NA  7.073198     0.7518588
+#>   BMD.zSD.upper BMD.xfold.lower BMD.xfold.upper nboot.successful
+#> 1      4.068699             Inf             Inf             1000
+#> 2      1.109559             Inf             Inf              957
+#> 3      1.746010        7.610936             Inf             1000
+#> 4      1.464998             Inf             Inf             1000
+#> 5      1.464998             Inf             Inf             1000
+#> 6      1.464998             Inf             Inf             1000
+#>                                    path_class
+#> 1                            Lipid metabolism
+#> 2                            Lipid metabolism
+#> 3                     Carbohydrate metabolism
+#> 4                     Carbohydrate metabolism
+#> 5 Biosynthesis of other secondary metabolites
+#> 6                          Membrane transport
+
+
+# (1) Sensitivity by pathway
+# (1.a) before selection
+sensitivityplot(extendedres, BMDtype = "zSD",
+                group = "path_class", 
+                BMDsummary = "first.quartile")
+
+# (1.b) after selection on representativeness
+extendedres.b <- selectgroups(extendedres, 
+                         group = "path_class", 
+                         nitemsmin = 10)
+sensitivityplot(extendedres.b, BMDtype = "zSD",
+                group = "path_class", 
+                BMDsummary = "first.quartile")
+
+                
+# \donttest{
+# (1.c) after selection on sensitivity
+extendedres.c <- selectgroups(extendedres, 
+                         group = "path_class", 
+                         BMDmax = 1.25, 
+                         BMDtype = "zSD", 
+                         BMDsummary = "first.quartile",
+                         nitemsmin = 1)
+sensitivityplot(extendedres.c, BMDtype = "zSD",
+                group = "path_class", 
+                BMDsummary = "first.quartile")
+
+
+# (1.d) after selection on representativeness and sensitivity 
+extendedres.d <- selectgroups(extendedres, 
+                         group = "path_class", 
+                         BMDmax = 1.25, 
+                         BMDtype = "zSD", 
+                         BMDsummary = "first.quartile",
+                         nitemsmin = 10)
+sensitivityplot(extendedres.d, BMDtype = "zSD",
+                group = "path_class", 
+                BMDsummary = "first.quartile")
+
+
+# (2) 
+# An example with two molecular levels
+#
+### Rename metabolomic results
+metabextendedres <- extendedres
+
+# Import the dataframe with transcriptomic results 
+contigresfilename <- system.file("extdata", "triclosanSVcontigres.txt", package = "DRomics")
+contigres <- read.table(contigresfilename, header = TRUE, stringsAsFactors = TRUE)
+str(contigres)
+#> 'data.frame':    447 obs. of  27 variables:
+#>  $ id              : Factor w/ 447 levels "c00134","c00276",..: 1 2 3 4 5 6 7 8 9 10 ...
+#>  $ irow            : int  2802 39331 41217 52577 52590 53968 54508 57776 58705 60306 ...
+#>  $ adjpvalue       : num  2.76e-04 9.40e-07 2.89e-06 1.88e-03 1.83e-03 ...
+#>  $ model           : Factor w/ 4 levels "Gauss-probit",..: 3 2 2 2 2 2 3 2 1 3 ...
+#>  $ nbpar           : int  2 3 3 3 3 3 2 3 4 2 ...
+#>  $ b               : num  -0.21794 1.49944 1.40817 0.00181 1.48605 ...
+#>  $ c               : num  NA NA NA NA NA ...
+#>  $ d               : num  10.9 12.4 12.4 16.4 15.3 ...
+#>  $ e               : num  NA -2.2 -2.41 1.15 -2.31 ...
+#>  $ f               : num  NA NA NA NA NA ...
+#>  $ SDres           : num  0.417 0.287 0.281 0.145 0.523 ...
+#>  $ typology        : Factor w/ 10 levels "E.dec.concave",..: 7 2 2 4 2 2 7 1 5 8 ...
+#>  $ trend           : Factor w/ 4 levels "U","bell","dec",..: 3 3 3 4 3 3 3 3 1 4 ...
+#>  $ y0              : num  10.9 12.4 12.4 16.4 15.3 ...
+#>  $ yrange          : num  1.445 1.426 1.319 0.567 1.402 ...
+#>  $ maxychange      : num  1.445 1.426 1.319 0.567 1.402 ...
+#>  $ xextrem         : num  NA NA NA NA NA ...
+#>  $ yextrem         : num  NA NA NA NA NA ...
+#>  $ BMD.zSD         : num  1.913 0.467 0.536 5.073 1.004 ...
+#>  $ BMR.zSD         : num  10.4 12.1 12.1 16.6 14.8 ...
+#>  $ BMD.xfold       : num  4.98 3.88 5.13 NA NA ...
+#>  $ BMR.xfold       : num  9.77 11.19 11.17 18.05 13.8 ...
+#>  $ BMD.zSD.lower   : num  1.255 0.243 0.282 2.65 0.388 ...
+#>  $ BMD.zSD.upper   : num  2.759 0.825 0.925 5.573 2.355 ...
+#>  $ BMD.xfold.lower : num  3.94 2.32 2.79 Inf 3.06 ...
+#>  $ BMD.xfold.upper : num  Inf Inf Inf Inf Inf ...
+#>  $ nboot.successful: int  500 497 495 332 466 469 500 321 260 500 ...
+
+# Import the dataframe with functional annotation (or any other descriptor/category 
+# you want to use, here KEGG pathway classes) 
+contigannotfilename <- system.file("extdata", "triclosanSVcontigannot.txt", package = "DRomics")
+contigannot <- read.table(contigannotfilename, header = TRUE, stringsAsFactors = TRUE)
+str(contigannot)
+#> 'data.frame':    562 obs. of  2 variables:
+#>  $ contig    : Factor w/ 447 levels "c00134","c00276",..: 1 2 3 4 5 6 7 8 9 10 ...
+#>  $ path_class: Factor w/ 17 levels "Amino acid metabolism",..: 3 11 11 15 8 4 3 4 8 2 ...
+
+# Merging of both previous dataframes   
+contigextendedres <- merge(x = contigres, y = contigannot, by.x = "id", by.y = "contig")
+# to see the structure of this dataframe
+str(contigextendedres)
+#> 'data.frame':    562 obs. of  28 variables:
+#>  $ id              : Factor w/ 447 levels "c00134","c00276",..: 1 2 3 4 5 6 7 8 9 10 ...
+#>  $ irow            : int  2802 39331 41217 52577 52590 53968 54508 57776 58705 60306 ...
+#>  $ adjpvalue       : num  2.76e-04 9.40e-07 2.89e-06 1.88e-03 1.83e-03 ...
+#>  $ model           : Factor w/ 4 levels "Gauss-probit",..: 3 2 2 2 2 2 3 2 1 3 ...
+#>  $ nbpar           : int  2 3 3 3 3 3 2 3 4 2 ...
+#>  $ b               : num  -0.21794 1.49944 1.40817 0.00181 1.48605 ...
+#>  $ c               : num  NA NA NA NA NA ...
+#>  $ d               : num  10.9 12.4 12.4 16.4 15.3 ...
+#>  $ e               : num  NA -2.2 -2.41 1.15 -2.31 ...
+#>  $ f               : num  NA NA NA NA NA ...
+#>  $ SDres           : num  0.417 0.287 0.281 0.145 0.523 ...
+#>  $ typology        : Factor w/ 10 levels "E.dec.concave",..: 7 2 2 4 2 2 7 1 5 8 ...
+#>  $ trend           : Factor w/ 4 levels "U","bell","dec",..: 3 3 3 4 3 3 3 3 1 4 ...
+#>  $ y0              : num  10.9 12.4 12.4 16.4 15.3 ...
+#>  $ yrange          : num  1.445 1.426 1.319 0.567 1.402 ...
+#>  $ maxychange      : num  1.445 1.426 1.319 0.567 1.402 ...
+#>  $ xextrem         : num  NA NA NA NA NA ...
+#>  $ yextrem         : num  NA NA NA NA NA ...
+#>  $ BMD.zSD         : num  1.913 0.467 0.536 5.073 1.004 ...
+#>  $ BMR.zSD         : num  10.4 12.1 12.1 16.6 14.8 ...
+#>  $ BMD.xfold       : num  4.98 3.88 5.13 NA NA ...
+#>  $ BMR.xfold       : num  9.77 11.19 11.17 18.05 13.8 ...
+#>  $ BMD.zSD.lower   : num  1.255 0.243 0.282 2.65 0.388 ...
+#>  $ BMD.zSD.upper   : num  2.759 0.825 0.925 5.573 2.355 ...
+#>  $ BMD.xfold.lower : num  3.94 2.32 2.79 Inf 3.06 ...
+#>  $ BMD.xfold.upper : num  Inf Inf Inf Inf Inf ...
+#>  $ nboot.successful: int  500 497 495 332 466 469 500 321 260 500 ...
+#>  $ path_class      : Factor w/ 17 levels "Amino acid metabolism",..: 3 11 11 15 8 4 3 4 8 2 ...
+
+### Merge metabolomic and transcriptomic results
+extendedres <- rbind(metabextendedres, contigextendedres)
+extendedres$molecular.level <- factor(c(rep("metabolites", nrow(metabextendedres)),
+                              rep("contigs", nrow(contigextendedres))))
+str(extendedres)
+#> 'data.frame':    646 obs. of  29 variables:
+#>  $ id              : Factor w/ 478 levels "NAP47_51","NAP_2",..: 1 2 3 4 4 4 4 5 6 7 ...
+#>  $ irow            : int  46 2 21 28 28 28 28 34 38 47 ...
+#>  $ adjpvalue       : num  7.16e-04 6.23e-05 1.11e-05 1.03e-05 1.03e-05 ...
+#>  $ model           : Factor w/ 4 levels "Gauss-probit",..: 3 2 3 3 3 3 3 2 2 4 ...
+#>  $ nbpar           : int  2 3 2 2 2 2 2 3 3 5 ...
+#>  $ b               : num  -0.056 0.4598 -0.0595 -0.0451 -0.0451 ...
+#>  $ c               : num  NA NA NA NA NA ...
+#>  $ d               : num  7.34 5.94 5.39 7.86 7.86 ...
+#>  $ e               : num  NA -1.65 NA NA NA ...
+#>  $ f               : num  NA NA NA NA NA ...
+#>  $ SDres           : num  0.1245 0.126 0.0793 0.052 0.052 ...
+#>  $ typology        : Factor w/ 10 levels "E.dec.concave",..: 7 2 7 7 7 7 7 2 2 9 ...
+#>  $ trend           : Factor w/ 4 levels "U","bell","dec",..: 3 3 3 3 3 3 3 3 3 1 ...
+#>  $ y0              : num  7.34 5.94 5.39 7.86 7.86 ...
+#>  $ yrange          : num  0.435 0.456 0.461 0.35 0.35 ...
+#>  $ maxychange      : num  0.435 0.456 0.461 0.35 0.35 ...
+#>  $ xextrem         : num  NA NA NA NA NA ...
+#>  $ yextrem         : num  NA NA NA NA NA ...
+#>  $ BMD.zSD         : num  2.224 0.528 1.333 1.154 1.154 ...
+#>  $ BMR.zSD         : num  7.22 5.82 5.31 7.81 7.81 ...
+#>  $ BMD.xfold       : num  NA NA NA NA NA ...
+#>  $ BMR.xfold       : num  6.61 5.35 4.85 7.07 7.07 ...
+#>  $ BMD.zSD.lower   : num  0.979 0.2 0.853 0.752 0.752 ...
+#>  $ BMD.zSD.upper   : num  4.07 1.11 1.75 1.46 1.46 ...
+#>  $ BMD.xfold.lower : num  Inf Inf 7.61 Inf Inf ...
+#>  $ BMD.xfold.upper : num  Inf Inf Inf Inf Inf ...
+#>  $ nboot.successful: int  1000 957 1000 1000 1000 1000 1000 648 620 872 ...
+#>  $ path_class      : Factor w/ 18 levels "Amino acid metabolism",..: 5 5 3 3 2 6 8 5 5 5 ...
+#>  $ molecular.level : Factor w/ 2 levels "contigs","metabolites": 2 2 2 2 2 2 2 2 2 2 ...
+
+# optional inverse alphabetic ordering of groups for the plot
+extendedres$path_class <- factor(extendedres$path_class, 
+                levels = sort(levels(extendedres$path_class), decreasing = TRUE))
+### (2.1) sensitivity plot of both molecular levels before and after selection of 
+#   most sensitive groups
+sensitivityplot(extendedres, BMDtype = "zSD",
+                group = "path_class", colorby = "molecular.level",
+                BMDsummary = "first.quartile")
+
+extendedres.2 <- selectgroups(extendedres, 
+                         group = "path_class",
+                         explev = "molecular.level",
+                         BMDmax = 1, 
+                         BMDtype = "zSD", 
+                         BMDsummary = "first.quartile",
+                         nitemsmin = 1)
+sensitivityplot(extendedres.2, BMDtype = "zSD",
+                group = "path_class", , colorby = "molecular.level",
+                BMDsummary = "first.quartile")
+
+### (2.2) same selection but keeping all the experimental as soon
+# as the selection criterion is met for at least one experimental level
+extendedres.3 <- selectgroups(extendedres, 
+                         group = "path_class",
+                         explev = "molecular.level",
+                         BMDmax = 1, 
+                         BMDtype = "zSD", 
+                         BMDsummary = "first.quartile",
+                         nitemsmin = 1,
+                         keepallexplev = TRUE)
+extendedres.2
+#>           id  irow    adjpvalue            model nbpar             b         c
+#> 1   NAP47_51    46 7.158246e-04           linear     2 -0.0560055901        NA
+#> 2      NAP_2     2 6.232579e-05      exponential     3  0.4598124176        NA
+#> 5     NAP_30    28 1.028343e-05           linear     2 -0.0450783225        NA
+#> 6     NAP_30    28 1.028343e-05           linear     2 -0.0450783225        NA
+#> 7     NAP_30    28 1.028343e-05           linear     2 -0.0450783225        NA
+#> 8     NAP_38    34 1.885047e-03      exponential     3  0.6010677009        NA
+#> 9     NAP_42    38 4.160193e-03      exponential     3  0.6721022679        NA
+#> 10    NAP_52    47 3.920169e-02 log-Gauss-probit     5  0.4500858981  7.202003
+#> 11    NAP_54    49 3.767103e-04      exponential     3  0.4520654041        NA
+#> 12    NAP_56    51 1.489919e-03      exponential     3  0.4392508278        NA
+#> 13    NAP_58    53 2.834198e-02           linear     2 -0.0193812708        NA
+#> 14    NAP_73    67 3.767103e-04           linear     2 -0.0578784221        NA
+#> 16    NP_121   197 9.889460e-03           linear     2  0.0614947494        NA
+#> 17    NP_121   197 9.889460e-03           linear     2  0.0614947494        NA
+#> 18    NP_129   204 7.286216e-03      exponential     3  0.0077860286        NA
+#> 19    NP_129   204 7.286216e-03      exponential     3  0.0077860286        NA
+#> 20    NP_129   204 7.286216e-03      exponential     3  0.0077860286        NA
+#> 22    NP_140   214 8.550044e-03     Gauss-probit     4  0.6955280524  4.835774
+#> 23    NP_140   214 8.550044e-03     Gauss-probit     4  0.6955280524  4.835774
+#> 25    NP_147   221 1.061967e-03      exponential     3 -0.0319538831        NA
+#> 26     NP_33   113 5.599308e-02 log-Gauss-probit     4  0.6150169995  4.917345
+#> 27     NP_33   113 5.599308e-02 log-Gauss-probit     4  0.6150169995  4.917345
+#> 28     NP_33   113 5.599308e-02 log-Gauss-probit     4  0.6150169995  4.917345
+#> 29     NP_33   113 5.599308e-02 log-Gauss-probit     4  0.6150169995  4.917345
+#> 30     NP_33   113 5.599308e-02 log-Gauss-probit     4  0.6150169995  4.917345
+#> 31     NP_35   115 3.238559e-03     Gauss-probit     4  1.5075787740  5.975143
+#> 32     NP_35   115 3.238559e-03     Gauss-probit     4  1.5075787740  5.975143
+#> 33     NP_35   115 3.238559e-03     Gauss-probit     4  1.5075787740  5.975143
+#> 34     NP_35   115 3.238559e-03     Gauss-probit     4  1.5075787740  5.975143
+#> 35     NP_43   123 1.055895e-02      exponential     3 -0.3967359528        NA
+#> 36     NP_43   123 1.055895e-02      exponential     3 -0.3967359528        NA
+#> 37     NP_43   123 1.055895e-02      exponential     3 -0.3967359528        NA
+#> 39     NP_43   123 1.055895e-02      exponential     3 -0.3967359528        NA
+#> 40     NP_43   123 1.055895e-02      exponential     3 -0.3967359528        NA
+#> 41     NP_43   123 1.055895e-02      exponential     3 -0.3967359528        NA
+#> 42     NP_43   123 1.055895e-02      exponential     3 -0.3967359528        NA
+#> 43     NP_43   123 1.055895e-02      exponential     3 -0.3967359528        NA
+#> 44     NP_55   135 1.119380e-06     Gauss-probit     4  2.3252734893  4.469882
+#> 46     NP_56   136 5.289310e-03      exponential     3 -0.0043605275        NA
+#> 47     NP_56   136 5.289310e-03      exponential     3 -0.0043605275        NA
+#> 48     NP_59   139 1.293440e-02      exponential     3 -0.3667815344        NA
+#> 49     NP_59   139 1.293440e-02      exponential     3 -0.3667815344        NA
+#> 50     NP_59   139 1.293440e-02      exponential     3 -0.3667815344        NA
+#> 51     NP_59   139 1.293440e-02      exponential     3 -0.3667815344        NA
+#> 52     NP_60   140 6.939560e-03      exponential     3 -0.5150005401        NA
+#> 53     NP_60   140 6.939560e-03      exponential     3 -0.5150005401        NA
+#> 54     NP_60   140 6.939560e-03      exponential     3 -0.5150005401        NA
+#> 55     NP_60   140 6.939560e-03      exponential     3 -0.5150005401        NA
+#> 56     NP_60   140 6.939560e-03      exponential     3 -0.5150005401        NA
+#> 57     NP_60   140 6.939560e-03      exponential     3 -0.5150005401        NA
+#> 58     NP_68   147 3.449660e-04     Gauss-probit     4  2.4449502970  5.055577
+#> 59     NP_69   148 1.156302e-03           linear     2 -0.0507632397        NA
+#> 60     NP_69   148 1.156302e-03           linear     2 -0.0507632397        NA
+#> 61     NP_74   153 7.029527e-02 log-Gauss-probit     5  0.2715410382  4.847403
+#> 62     NP_74   153 7.029527e-02 log-Gauss-probit     5  0.2715410382  4.847403
+#> 63     NP_74   153 7.029527e-02 log-Gauss-probit     5  0.2715410382  4.847403
+#> 64     NP_74   153 7.029527e-02 log-Gauss-probit     5  0.2715410382  4.847403
+#> 65     NP_74   153 7.029527e-02 log-Gauss-probit     5  0.2715410382  4.847403
+#> 67     NP_90   168 3.072572e-02      exponential     3 -0.2686241513        NA
+#> 68     NP_90   168 3.072572e-02      exponential     3 -0.2686241513        NA
+#> 69     NP_90   168 3.072572e-02      exponential     3 -0.2686241513        NA
+#> 70     NP_90   168 3.072572e-02      exponential     3 -0.2686241513        NA
+#> 71     NP_92   170 2.278810e-03      exponential     3 -0.0045956887        NA
+#> 72     NP_92   170 2.278810e-03      exponential     3 -0.0045956887        NA
+#> 73     NP_92   170 2.278810e-03      exponential     3 -0.0045956887        NA
+#> 75     NP_94   172 1.798752e-05     Gauss-probit     4  3.0165756601  4.862842
+#> 76     NP_94   172 1.798752e-05     Gauss-probit     4  3.0165756601  4.862842
+#> 77     NP_94   172 1.798752e-05     Gauss-probit     4  3.0165756601  4.862842
+#> 79     NP_96   174 5.128859e-04     Gauss-probit     4  2.4099064659  5.216540
+#> 80     NP_96   174 5.128859e-04     Gauss-probit     4  2.4099064659  5.216540
+#> 81     NP_98   176 1.544866e-04     Gauss-probit     4  1.8803246284  5.908317
+#> 82     NP_98   176 1.544866e-04     Gauss-probit     4  1.8803246284  5.908317
+#> 83     NP_98   176 1.544866e-04     Gauss-probit     4  1.8803246284  5.908317
+#> 84     NP_98   176 1.544866e-04     Gauss-probit     4  1.8803246284  5.908317
+#> 86    c00276 39331 9.401685e-07      exponential     3  1.4994358863        NA
+#> 87    c00281 41217 2.894669e-06      exponential     3  1.4081722202        NA
+#> 103   c00973  8280 6.803372e-03      exponential     3 -0.7727846601        NA
+#> 116   c01318 18587 9.761656e-03      exponential     3 -0.0254133606        NA
+#> 121   c01442 22830 8.398538e-07      exponential     3 -0.4594973812        NA
+#> 123   c01449 23118 3.283441e-05     Gauss-probit     4  4.4613014130  3.681397
+#> 125   c01613 28185 5.354723e-03           linear     2  0.0799120939        NA
+#> 131   c01645 29447 4.923790e-08     Gauss-probit     4  2.7016585216  3.159101
+#> 134   c01924 38335 2.843216e-04     Gauss-probit     4  2.4465374667 11.894336
+#> 150   c02837 53881 7.971049e-04           linear     2  0.1575210301        NA
+#> 157   c02964 54187 3.684145e-04      exponential     3 -1.6864714649        NA
+#> 161   c03088 54664 3.084821e-03     Gauss-probit     4  2.1488658006 11.596818
+#> 169   c03232 55298 2.548714e-06           linear     2  0.2143540812        NA
+#> 172   c03284 55434 1.365366e-03           linear     2 -0.3672796068        NA
+#> 178   c03358 55610 1.361311e-03     Gauss-probit     4  2.7322361908 10.205586
+#> 180   c03440 55810 2.679169e-03           linear     2 -0.1138782478        NA
+#> 181   c03440 55810 2.679169e-03           linear     2 -0.1138782478        NA
+#> 183   c03526 56019 2.223268e-04      exponential     3 -1.2492729382        NA
+#> 184   c03540 56053 3.430925e-03           linear     2  0.1965028128        NA
+#> 186   c03544 56063 6.386500e-03      exponential     3 -0.0014175944        NA
+#> 188   c03571 56127 9.413418e-03 log-Gauss-probit     4  0.5983299493  4.168006
+#> 193   c03661 56344 7.587641e-03 log-Gauss-probit     4  0.6923539914  3.041593
+#> 196   c03724 56499 4.297972e-05 log-Gauss-probit     4  0.5840913112 12.278610
+#> 198   c03760 56585 9.777594e-03           linear     2 -0.1351427617        NA
+#> 202   c03784 56645 5.006652e-03 log-Gauss-probit     4  0.6898227977  9.654095
+#> 228   c04342 58826 1.308910e-04     Gauss-probit     4  7.1974259415  7.723356
+#> 233   c04434 59217 7.874407e-03     Gauss-probit     5  3.9082976255  2.896934
+#> 235   c04513 59551 9.612303e-03 log-Gauss-probit     4  0.7506662658 11.849601
+#> 238   c04553 59682 2.052935e-04      exponential     3 -0.0065668916        NA
+#> 243   c04613 59817 2.581335e-03     Gauss-probit     4  3.0320225840 11.908364
+#> 245   c04619 59830 8.483282e-03      exponential     3  0.0232807480        NA
+#> 246   c04619 59830 8.483282e-03      exponential     3  0.0232807480        NA
+#> 252   c04647 59892 1.704160e-03           linear     2  0.0934490851        NA
+#> 253   c04655 59910 4.758216e-05 log-Gauss-probit     4  0.7297683681 11.552853
+#> 256   c04683 59973 5.823021e-04      exponential     3  0.8026136129        NA
+#> 266   c04883 60416 7.479393e-03      exponential     3  1.7011616772        NA
+#> 275   c05081 60856 1.998628e-04      exponential     3  0.0440643594        NA
+#> 276   c05100 60898 4.685588e-05      exponential     3  1.6262517332        NA
+#> 291   c05326   247 4.812259e-03           linear     2 -0.1628213963        NA
+#> 293   c05358   382 7.443184e-03      exponential     3  0.0209061611        NA
+#> 301   c05581  1323 4.187799e-03           linear     2  0.1169616348        NA
+#> 305   c05641  1567 2.764636e-03      exponential     3 -0.0008701043        NA
+#> 306   c05645  1576 7.113588e-04           linear     2 -0.1348525089        NA
+#> 312   c05903  2148 4.374165e-03 log-Gauss-probit     4  0.7532079225 12.168583
+#> 327   c06059  2495 1.623735e-03      exponential     3  0.9866188485        NA
+#> 338   c06208  2970 8.742721e-04           linear     2  0.1440100625        NA
+#> 341   c06313  3413 6.508671e-04     Gauss-probit     4  2.5239792304  6.359865
+#> 344   c06518  3887 4.434225e-04      exponential     3  1.2826794141        NA
+#> 346   c06548  3976 1.118557e-04           linear     2  0.2267279513        NA
+#> 354   c06762  4630 1.129124e-03      exponential     3  0.0257922735        NA
+#> 361   c06881  4900 9.898720e-04      exponential     3  0.0003893310        NA
+#> 364   c06943  5037 4.856986e-04           linear     2  0.1205146652        NA
+#> 370   c07072  5328 9.285630e-04      exponential     3  1.7509076084        NA
+#> 372   c07118  5428 1.069214e-06     Gauss-probit     4  3.2010176397 13.816221
+#> 375   c07206  5768 1.331320e-04      exponential     3  0.0115070482        NA
+#> 389   c07529  7138 7.515694e-04      exponential     3  0.0281112604        NA
+#> 399   c07859  8092 1.007072e-03     Gauss-probit     4  2.1459634733  7.693951
+#> 405   c08131  8701 1.673911e-03           linear     2  0.1826551851        NA
+#> 408   c08241  8948 1.777483e-04     Gauss-probit     4  4.3060858426 12.750947
+#> 419   c08466  9451 1.593456e-04      exponential     3  0.0008887870        NA
+#> 430   c08762 10368 1.641885e-03      exponential     3  0.0030933767        NA
+#> 445   c09125 11677 1.569172e-03      exponential     3  0.8284745591        NA
+#> 458   c09562 12942 4.373374e-03      exponential     3 -0.0021611489        NA
+#> 460   c09598 13030 2.362131e-03           linear     2 -0.2586441199        NA
+#> 475   c10057 14495 3.390469e-03      exponential     3  0.0241537891        NA
+#> 476   c10066 14533 1.347692e-03      exponential     3 -0.9389331704        NA
+#> 488   c10238 15302 1.228501e-03      exponential     3 -1.7937748737        NA
+#> 490   c10269 15440 7.296658e-05      exponential     3  1.5924749054        NA
+#> 492   c10302 15585 4.225116e-03      exponential     3  0.0066174702        NA
+#> 494   c10311 15626 1.016928e-03 log-Gauss-probit     4  0.7845650593  3.521660
+#> 499   c10413 16075 3.498590e-04           linear     2  0.1135548342        NA
+#> 501   c10499 16461 1.256216e-07     Gauss-probit     4  2.0625479766 11.831280
+#> 513   c10934 17597 5.753046e-03      exponential     3  0.0078914200        NA
+#> 519   c11233 18523 4.606893e-03      exponential     3  0.0193438159        NA
+#> 534   c11906 20969 9.654346e-04     Gauss-probit     4  2.2924767928 11.794843
+#> 540   c12260 22081 8.245828e-06      exponential     3  0.1353700658        NA
+#> 549   c12576 23487 9.267247e-03 log-Gauss-probit     4  1.0213517059  4.443206
+#> 551   c12705 23819 9.933717e-03      exponential     3 -1.7515673870        NA
+#> 552   c12781 24007 1.047802e-03           linear     2  0.4825734514        NA
+#> 553   c12927 24362 7.217499e-04           linear     2  0.3109087577        NA
+#> 554   c13186 25095 5.598806e-03      exponential     3 -0.0003355018        NA
+#> 567   c13542 26650 7.852988e-04      exponential     3  0.0026006455        NA
+#> 571   c13596 26891 2.014638e-03     Gauss-probit     4  2.0943452876  2.661827
+#> 577   c13825 27530 7.036682e-03     Gauss-probit     4  2.3751722909  6.820887
+#> 579   c14005 27954 6.155794e-03           linear     2  0.4216192438        NA
+#> 586   c14431 29501 2.619248e-03 log-Gauss-probit     4  0.7955319244  5.947486
+#> 587   c14431 29501 2.619248e-03 log-Gauss-probit     4  0.7955319244  5.947486
+#> 593   c15572 33143 7.075275e-03      exponential     3  0.0464367552        NA
+#> 597   c15942 34598 4.718990e-05      exponential     3 -0.0445067510        NA
+#> 604   c16973 37787 2.825599e-04     Gauss-probit     4  8.3191178064 -4.668448
+#> 608   c17497 39284 3.028115e-04      exponential     3 -0.0023128307        NA
+#> 610   c17517 39327 2.461490e-03      exponential     3  0.0005997141        NA
+#> 611   c17694 39843 2.019227e-05      exponential     3 -1.8263643423        NA
+#> 614   c17823 40393 6.238172e-04      exponential     3  0.0006779690        NA
+#> 620   c18315 42046 3.162528e-03      exponential     3  0.0037074842        NA
+#> 630   c19738 46332 6.573236e-03      exponential     3 -0.0002344367        NA
+#> 641   c21327 51498 7.255831e-06      exponential     3  1.4896819388        NA
+#> 645   c21452 51752 7.810285e-07      exponential     3  1.4272338376        NA
+#>             d          e          f      SDres      typology trend        y0
+#> 1    7.343571         NA         NA 0.12454183         L.dec   dec  7.343571
+#> 2    5.941896 -1.6479584         NA 0.12604568  E.dec.convex   dec  5.941896
+#> 5    7.859109         NA         NA 0.05203245         L.dec   dec  7.859109
+#> 6    7.859109         NA         NA 0.05203245         L.dec   dec  7.859109
+#> 7    7.859109         NA         NA 0.05203245         L.dec   dec  7.859109
+#> 8    6.857909 -0.3213163         NA 0.23376392  E.dec.convex   dec  6.857909
+#> 9    6.209286 -0.3230281         NA 0.28968463  E.dec.convex   dec  6.209286
+#> 10   7.288883  1.3087220 -0.1436781 0.07085857         lGP.U     U  7.288883
+#> 11   6.868523 -0.6254549         NA 0.15031166  E.dec.convex   dec  6.868523
+#> 12   7.558481 -0.2649798         NA 0.15353807  E.dec.convex   dec  7.558481
+#> 13   6.467466         NA         NA 0.05769085         L.dec   dec  6.467466
+#> 14   5.738302         NA         NA 0.11726837         L.dec   dec  5.738302
+#> 16   5.330171         NA         NA 0.18706049         L.inc   inc  5.330171
+#> 17   5.330171         NA         NA 0.18706049         L.inc   inc  5.330171
+#> 18   4.968475  2.0243885         NA 0.14303183  E.inc.convex   inc  4.968475
+#> 19   4.968475  2.0243885         NA 0.14303183  E.inc.convex   inc  4.968475
+#> 20   4.968475  2.0243885         NA 0.14303183  E.inc.convex   inc  4.968475
+#> 22   4.835774  1.4069463  0.2455556 0.10615565       GP.bell  bell  4.867514
+#> 23   4.835774  1.4069463  0.2455556 0.10615565       GP.bell  bell  4.867514
+#> 25   5.402328  3.3895616         NA 0.06744390 E.dec.concave   dec  5.402328
+#> 26   4.917345  3.2236437  0.4530573 0.21991569      lGP.bell  bell  4.917345
+#> 27   4.917345  3.2236437  0.4530573 0.21991569      lGP.bell  bell  4.917345
+#> 28   4.917345  3.2236437  0.4530573 0.21991569      lGP.bell  bell  4.917345
+#> 29   4.917345  3.2236437  0.4530573 0.21991569      lGP.bell  bell  4.917345
+#> 30   4.917345  3.2236437  0.4530573 0.21991569      lGP.bell  bell  4.917345
+#> 31   5.975143  0.5875851 -0.6980909 0.26535797          GP.U     U  5.328111
+#> 32   5.975143  0.5875851 -0.6980909 0.26535797          GP.U     U  5.328111
+#> 33   5.975143  0.5875851 -0.6980909 0.26535797          GP.U     U  5.328111
+#> 34   5.975143  0.5875851 -0.6980909 0.26535797          GP.U     U  5.328111
+#> 35   5.607846 -1.2203359         NA 0.20417365 E.inc.concave   inc  5.607846
+#> 36   5.607846 -1.2203359         NA 0.20417365 E.inc.concave   inc  5.607846
+#> 37   5.607846 -1.2203359         NA 0.20417365 E.inc.concave   inc  5.607846
+#> 39   5.607846 -1.2203359         NA 0.20417365 E.inc.concave   inc  5.607846
+#> 40   5.607846 -1.2203359         NA 0.20417365 E.inc.concave   inc  5.607846
+#> 41   5.607846 -1.2203359         NA 0.20417365 E.inc.concave   inc  5.607846
+#> 42   5.607846 -1.2203359         NA 0.20417365 E.inc.concave   inc  5.607846
+#> 43   5.607846 -1.2203359         NA 0.20417365 E.inc.concave   inc  5.607846
+#> 44   4.469882  1.8678530  0.8450245 0.12256991       GP.bell  bell  5.081883
+#> 46   7.018764  1.9509846         NA 0.05587260 E.dec.concave   dec  7.018764
+#> 47   7.018764  1.9509846         NA 0.05587260 E.dec.concave   dec  7.018764
+#> 48   4.491695 -1.7031497         NA 0.18517809 E.inc.concave   inc  4.491695
+#> 49   4.491695 -1.7031497         NA 0.18517809 E.inc.concave   inc  4.491695
+#> 50   4.491695 -1.7031497         NA 0.18517809 E.inc.concave   inc  4.491695
+#> 51   4.491695 -1.7031497         NA 0.18517809 E.inc.concave   inc  4.491695
+#> 52   5.215709 -1.5647018         NA 0.23592637 E.inc.concave   inc  5.215709
+#> 53   5.215709 -1.5647018         NA 0.23592637 E.inc.concave   inc  5.215709
+#> 54   5.215709 -1.5647018         NA 0.23592637 E.inc.concave   inc  5.215709
+#> 55   5.215709 -1.5647018         NA 0.23592637 E.inc.concave   inc  5.215709
+#> 56   5.215709 -1.5647018         NA 0.23592637 E.inc.concave   inc  5.215709
+#> 57   5.215709 -1.5647018         NA 0.23592637 E.inc.concave   inc  5.215709
+#> 58   5.055577  2.6269663 -0.6208164 0.12476292          GP.U     U  4.707014
+#> 59   5.513855         NA         NA 0.11224716         L.dec   dec  5.513855
+#> 60   5.513855         NA         NA 0.11224716         L.dec   dec  5.513855
+#> 61   4.689787  1.0923496 -0.4146272 0.17573194         lGP.U     U  4.689787
+#> 62   4.689787  1.0923496 -0.4146272 0.17573194         lGP.U     U  4.689787
+#> 63   4.689787  1.0923496 -0.4146272 0.17573194         lGP.U     U  4.689787
+#> 64   4.689787  1.0923496 -0.4146272 0.17573194         lGP.U     U  4.689787
+#> 65   4.689787  1.0923496 -0.4146272 0.17573194         lGP.U     U  4.689787
+#> 67   6.070523 -1.1113399         NA 0.14811681 E.inc.concave   inc  6.070523
+#> 68   6.070523 -1.1113399         NA 0.14811681 E.inc.concave   inc  6.070523
+#> 69   6.070523 -1.1113399         NA 0.14811681 E.inc.concave   inc  6.070523
+#> 70   6.070523 -1.1113399         NA 0.14811681 E.inc.concave   inc  6.070523
+#> 71   6.489151  1.5921459         NA 0.17066885 E.dec.concave   dec  6.489151
+#> 72   6.489151  1.5921459         NA 0.17066885 E.dec.concave   dec  6.489151
+#> 73   6.489151  1.5921459         NA 0.17066885 E.dec.concave   dec  6.489151
+#> 75   4.862842  1.3892912  0.7365937 0.14844069       GP.bell  bell  5.525316
+#> 76   4.862842  1.3892912  0.7365937 0.14844069       GP.bell  bell  5.525316
+#> 77   4.862842  1.3892912  0.7365937 0.14844069       GP.bell  bell  5.525316
+#> 79   5.216540  1.9279453  0.8281597 0.22659347       GP.bell  bell  5.817903
+#> 80   5.216540  1.9279453  0.8281597 0.22659347       GP.bell  bell  5.817903
+#> 81   5.908317  1.3702809 -0.6148327 0.16888946          GP.U     U  5.436867
+#> 82   5.908317  1.3702809 -0.6148327 0.16888946          GP.U     U  5.436867
+#> 83   5.908317  1.3702809 -0.6148327 0.16888946          GP.U     U  5.436867
+#> 84   5.908317  1.3702809 -0.6148327 0.16888946          GP.U     U  5.436867
+#> 86  12.428212 -2.1982296         NA 0.28684892  E.dec.convex   dec 12.428212
+#> 87  12.411870 -2.4052289         NA 0.28115971  E.dec.convex   dec 12.411870
+#> 103  7.236270 -2.3752014         NA 0.30192346 E.inc.concave   inc  7.236270
+#> 116  9.300591  1.9823323         NA 0.31949144 E.dec.concave   dec  9.300591
+#> 121 13.082606  5.0536325         NA 0.21425367 E.dec.concave   dec 13.082606
+#> 123  3.681397  2.5679456  7.7390108 0.55445078       GP.bell  bell 10.238924
+#> 125 10.764018         NA         NA 0.23146795         L.inc   inc 10.764018
+#> 131  3.159101  1.7419187  3.3237027 0.41149782       GP.bell  bell  5.859022
+#> 134 11.894336  2.4191926 -1.3218368 0.24812481          GP.U     U 11.083641
+#> 150  5.662624         NA         NA 0.32569343         L.inc   inc  5.662624
+#> 157  8.068158 -1.5870424         NA 0.57855035 E.inc.concave   inc  8.068158
+#> 161 11.596818  1.8275480 -0.8682280 0.29736729          GP.U     U 10.992074
+#> 169  8.329304         NA         NA 0.31094519         L.inc   inc  8.329304
+#> 172  9.111936         NA         NA 0.84138808         L.dec   dec  9.111936
+#> 178 10.205586  2.8555099  2.3244195 0.41255116       GP.bell  bell 11.551851
+#> 180 13.959092         NA         NA 0.26918435         L.dec   dec 13.959092
+#> 181 13.959092         NA         NA 0.26918435         L.dec   dec 13.959092
+#> 183  6.736177 -0.6498650         NA 0.38185313 E.inc.concave   inc  6.736177
+#> 184  6.408554         NA         NA 0.52767310         L.inc   inc  6.408554
+#> 186  8.901037  1.0237053         NA 0.37429011 E.dec.concave   dec  8.901037
+#> 188  4.168006  2.3167014  1.3407136 0.64489184      lGP.bell  bell  4.168006
+#> 193  3.041593  1.8809478  1.7942520 0.87754767      lGP.bell  bell  3.041593
+#> 196 12.278610  1.7372724 -2.0216456 0.53171016         lGP.U     U 12.278610
+#> 198 10.350443         NA         NA 0.39026969         L.dec   dec 10.350443
+#> 202  9.654095  1.9560222 -2.1370159 1.14939830         lGP.U     U  9.654095
+#> 228  7.723356  2.5397977  5.2069816 0.18596550       GP.bell  bell 12.616033
+#> 233 -2.630433  0.0000000  3.7693124 0.45467691       GP.bell  bell  3.902563
+#> 235 11.849601  1.9585039  0.8349853 0.42763624      lGP.bell  bell 11.849601
+#> 238 15.751380  1.2089428         NA 0.43153316 E.dec.concave   dec 15.751380
+#> 243 11.908364  2.7394740  1.2475547 0.17108221       GP.bell  bell 12.737821
+#> 245  8.309831  1.7832021         NA 0.47444618  E.inc.convex   inc  8.309831
+#> 246  8.309831  1.7832021         NA 0.47444618  E.inc.convex   inc  8.309831
+#> 252 17.926717         NA         NA 0.19130163         L.inc   inc 17.926717
+#> 253 11.552853  1.7586717  0.9857557 0.27811862      lGP.bell  bell 11.552853
+#> 256 11.273898 -2.4815554         NA 0.24110024  E.dec.convex   dec 11.273898
+#> 266  5.055152 -0.5889109         NA 0.72440497  E.dec.convex   dec  5.055152
+#> 275 11.097343  2.0754574         NA 0.27234802  E.inc.convex   inc 11.097343
+#> 276  6.963048 -2.0722462         NA 0.44005180  E.dec.convex   dec  6.963048
+#> 291  4.628540         NA         NA 0.44374643         L.dec   dec  4.628540
+#> 293  9.824353  1.9682607         NA 0.21543421  E.inc.convex   inc  9.824353
+#> 301 12.582904         NA         NA 0.28459726         L.inc   inc 12.582904
+#> 305 12.978673  0.9062525         NA 0.48389149 E.dec.concave   dec 12.978673
+#> 306 12.920552         NA         NA 0.29030980         L.dec   dec 12.920552
+#> 312 12.168583  2.0515078  0.7474307 0.31596860      lGP.bell  bell 12.168583
+#> 327  4.946831 -0.7537935         NA 0.38646039  E.dec.convex   dec  4.946831
+#> 338 10.397791         NA         NA 0.31334720         L.inc   inc 10.397791
+#> 341  6.359865  2.1273579 -4.1079331 1.11545022          GP.U     U  3.480083
+#> 344 10.429183 -2.6796044         NA 0.37877170  E.dec.convex   dec 10.429183
+#> 346  9.672700         NA         NA 0.45436857         L.inc   inc  9.672700
+#> 354  5.609934  1.8216559         NA 0.32521096  E.inc.convex   inc  5.609934
+#> 361  9.377940  0.8420820         NA 0.38873834  E.inc.convex   inc  9.377940
+#> 364 10.014326         NA         NA 0.27962037         L.inc   inc 10.014326
+#> 370  6.118400 -2.3714972         NA 0.59801495  E.dec.convex   dec  6.118400
+#> 372 13.816221  1.9596785 -3.2185534 0.39523662          GP.U     U 11.147673
+#> 375 11.805578  1.3537714         NA 0.50658959  E.inc.convex   inc 11.805578
+#> 389  5.114821  1.4084038         NA 1.09855421  E.inc.convex   inc  5.114821
+#> 399  7.693951  1.5471002  0.6661478 0.19149575       GP.bell  bell  8.207650
+#> 405  4.872178         NA         NA 0.43574679         L.inc   inc  4.872178
+#> 408 12.750947  2.2781947 -2.6699053 0.24834756          GP.U     U 10.429737
+#> 419  8.322289  0.8805994         NA 0.48194682  E.inc.convex   inc  8.322289
+#> 430  7.540803  1.2173378         NA 0.27550558  E.inc.convex   inc  7.540803
+#> 445 12.928749 -1.3776799         NA 0.29718879  E.dec.convex   dec 12.928749
+#> 458  9.916022  1.0820381         NA 0.43570777 E.dec.concave   dec  9.916022
+#> 460  6.195518         NA         NA 0.64907510         L.dec   dec  6.195518
+#> 475 12.738419  1.6671166         NA 0.51466168  E.inc.convex   inc 12.738419
+#> 476  7.627804 -2.0128076         NA 0.32054437 E.inc.concave   inc  7.627804
+#> 488  4.475119 -1.3700499         NA 0.65855748 E.inc.concave   inc  4.475119
+#> 490  8.307995 -2.3133165         NA 0.42499412  E.dec.convex   dec  8.307995
+#> 492 10.373727  1.3213539         NA 0.46734668  E.inc.convex   inc 10.373727
+#> 494  3.521660  1.5925756  1.6525193 0.71149572      lGP.bell  bell  3.521660
+#> 499  8.667552         NA         NA 0.23785120         L.inc   inc  8.667552
+#> 501 11.831280  2.0127634 -2.1716042 0.35429372          GP.U     U 10.482349
+#> 513  2.856807  1.2403251         NA 0.72920067  E.inc.convex   inc  2.856807
+#> 519 11.872955  1.6928649         NA 0.36955986  E.inc.convex   inc 11.872955
+#> 534 11.794843  1.8803822 -1.7229567 0.53837776          GP.U     U 10.564068
+#> 540  4.828430  2.0830008         NA 0.73289707  E.inc.convex   inc  4.828430
+#> 549  4.443206  1.5956017 -2.0801672 1.01087060         lGP.U     U  4.443206
+#> 551  3.922000 -1.4167347         NA 0.80658748 E.inc.concave   inc  3.922000
+#> 552  2.983728         NA         NA 1.23243335         L.inc   inc  2.983728
+#> 553  3.293896         NA         NA 0.78506590         L.inc   inc  3.293896
+#> 554  4.782034  0.7862608         NA 0.62138156 E.dec.concave   dec  4.782034
+#> 567  4.100345  0.9665863         NA 0.83033880  E.inc.convex   inc  4.100345
+#> 571  2.661827  1.8081921  1.5558322 0.59126123       GP.bell  bell  3.733593
+#> 577  6.820887  2.2045847 -1.9822962 0.65642859          GP.U     U  5.532363
+#> 579  2.353068         NA         NA 1.29727813         L.inc   inc  2.353068
+#> 586  5.947486  2.1464196 -1.2818324 0.48811443         lGP.U     U  5.947486
+#> 587  5.947486  2.1464196 -1.2818324 0.48811443         lGP.U     U  5.947486
+#> 593  2.709461  1.8595387         NA 0.73835019  E.inc.convex   inc  2.709461
+#> 597  5.266716  1.7742492         NA 0.45397783 E.dec.concave   dec  5.266716
+#> 604 -4.668448  2.7306565 14.1086676 0.29870979       GP.bell  bell  8.700290
+#> 608  7.176469  1.0238480         NA 0.42350852 E.dec.concave   dec  7.176469
+#> 610  2.783684  0.8429907         NA 0.60237813  E.inc.convex   inc  2.783684
+#> 611  8.797682 -1.8935670         NA 0.47334309 E.inc.concave   inc  8.797682
+#> 614  9.580443  0.9456406         NA 0.19945603  E.inc.convex   inc  9.580443
+#> 620  2.604185  1.0531930         NA 0.75747748  E.inc.convex   inc  2.604185
+#> 630  8.262534  0.7222172         NA 0.96123411 E.dec.concave   dec  8.262534
+#> 641 13.349535 -1.8926198         NA 0.34219661  E.dec.convex   dec 13.349535
+#> 645 12.344658 -2.4650317         NA 0.25729560  E.dec.convex   dec 12.344658
+#>        yrange maxychange   xextrem   yextrem   BMD.zSD   BMR.zSD BMD.xfold
+#> 1   0.4346034  0.4346034        NA        NA 2.2237393  7.219029        NA
+#> 2   0.4556672  0.4556672        NA        NA 0.5279668  5.815850        NA
+#> 5   0.3498078  0.3498078        NA        NA 1.1542677  7.807077        NA
+#> 6   0.3498078  0.3498078        NA        NA 1.1542677  7.807077        NA
+#> 7   0.3498078  0.3498078        NA        NA 1.1542677  7.807077        NA
+#> 8   0.6010677  0.6010677        NA        NA 0.1582542  6.624146        NA
+#> 9   0.6721023  0.6721023        NA        NA 0.1821546  5.919602 0.8318574
+#> 10  0.1912790  0.1912790 1.4588204  7.097604 0.7315304  7.218025        NA
+#> 11  0.4520636  0.4520636        NA        NA 0.2528186  6.718211        NA
+#> 12  0.4392508  0.4392508        NA        NA 0.1139635  7.404943        NA
+#> 13  0.1503987  0.1503987        NA        NA 2.9766289  6.409775        NA
+#> 14  0.4491366  0.4491366        NA        NA 2.0261156  5.621033        NA
+#> 16  0.4771993  0.4771993        NA        NA 3.0418937  5.517232        NA
+#> 17  0.4771993  0.4771993        NA        NA 3.0418937  5.517232        NA
+#> 18  0.3520280  0.3520280        NA        NA 5.9997652  5.111507        NA
+#> 19  0.3520280  0.3520280        NA        NA 5.9997652  5.111507        NA
+#> 20  0.3520280  0.3520280        NA        NA 5.9997652  5.111507        NA
+#> 22  0.2455556  0.2138158 1.4069463  5.081330 0.6597819  4.973670        NA
+#> 23  0.2455556  0.2138158 1.4069463  5.081330 0.6597819  4.973670        NA
+#> 25  0.2833937  0.2833937        NA        NA 3.8465968  5.334884        NA
+#> 26  0.4530573  0.4530573 3.2236437  5.370402 1.5389057  5.137260        NA
+#> 27  0.4530573  0.4530573 3.2236437  5.370402 1.5389057  5.137260        NA
+#> 28  0.4530573  0.4530573 3.2236437  5.370402 1.5389057  5.137260        NA
+#> 29  0.4530573  0.4530573 3.2236437  5.370402 1.5389057  5.137260        NA
+#> 30  0.4530573  0.4530573 3.2236437  5.370402 1.5389057  5.137260        NA
+#> 31  0.6980825  0.6470232 0.5875851  5.277052 2.2442671  5.593469 3.4561250
+#> 32  0.6980825  0.6470232 0.5875851  5.277052 2.2442671  5.593469 3.4561250
+#> 33  0.6980825  0.6470232 0.5875851  5.277052 2.2442671  5.593469 3.4561250
+#> 34  0.6980825  0.6470232 0.5875851  5.277052 2.2442671  5.593469 3.4561250
+#> 35  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 36  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 37  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 39  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 40  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 41  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 42  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 43  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 44  0.8109383  0.5779147 1.8678530  5.314907 0.6370853  5.204453 6.6295891
+#> 46  0.2284144  0.2284144        NA        NA 5.1225625  6.962891        NA
+#> 47  0.2284144  0.2284144        NA        NA 5.1225625  6.962891        NA
+#> 48  0.3629299  0.3629299        NA        NA 1.1972137  4.676873        NA
+#> 49  0.3629299  0.3629299        NA        NA 1.1972137  4.676873        NA
+#> 50  0.3629299  0.3629299        NA        NA 1.1972137  4.676873        NA
+#> 51  0.3629299  0.3629299        NA        NA 1.1972137  4.676873        NA
+#> 52  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 53  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 54  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 55  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 56  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 57  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 58  0.5522909  0.2800374 2.6269663  4.434761 0.8261462  4.582251        NA
+#> 59  0.3939227  0.3939227        NA        NA 2.2111898  5.401608        NA
+#> 60  0.3939227  0.3939227        NA        NA 2.2111898  5.401608        NA
+#> 61  0.4981938  0.3405782 1.0482802  4.349209 0.7805309  4.514055        NA
+#> 62  0.4981938  0.3405782 1.0482802  4.349209 0.7805309  4.514055        NA
+#> 63  0.4981938  0.3405782 1.0482802  4.349209 0.7805309  4.514055        NA
+#> 64  0.4981938  0.3405782 1.0482802  4.349209 0.7805309  4.514055        NA
+#> 65  0.4981938  0.3405782 1.0482802  4.349209 0.7805309  4.514055        NA
+#> 67  0.2683749  0.2683749        NA        NA 0.8908528  6.218640        NA
+#> 68  0.2683749  0.2683749        NA        NA 0.8908528  6.218640        NA
+#> 69  0.2683749  0.2683749        NA        NA 0.8908528  6.218640        NA
+#> 70  0.2683749  0.2683749        NA        NA 0.8908528  6.218640        NA
+#> 71  0.5966741  0.5966741        NA        NA 5.7972864  6.318483        NA
+#> 72  0.5966741  0.5966741        NA        NA 5.7972864  6.318483        NA
+#> 73  0.5966741  0.5966741        NA        NA 5.7972864  6.318483        NA
+#> 75  0.6573939  0.5832748 1.3892912  5.599435 3.9480418  5.376875 7.2728900
+#> 76  0.6573939  0.5832748 1.3892912  5.599435 3.9480418  5.376875 7.2728900
+#> 77  0.6573939  0.5832748 1.3892912  5.599435 3.9480418  5.376875 7.2728900
+#> 79  0.7838623  0.5570660 1.9279453  6.044699 1.8746151  6.044497        NA
+#> 80  0.7838623  0.5570660 1.9279453  6.044699 1.8746151  6.044497        NA
+#> 81  0.6129220  0.4695398 1.3702809  5.293484 3.6094654  5.605756        NA
+#> 82  0.6129220  0.4695398 1.3702809  5.293484 3.6094654  5.605756        NA
+#> 83  0.6129220  0.4695398 1.3702809  5.293484 3.6094654  5.605756        NA
+#> 84  0.6129220  0.4695398 1.3702809  5.293484 3.6094654  5.605756        NA
+#> 86  1.4260064  1.4260064        NA        NA 0.4667565 12.141363 3.8804658
+#> 87  1.3187707  1.3187707        NA        NA 0.5356979 12.130711 5.1282913
+#> 103 0.7254029  0.7254029        NA        NA 1.1767628  7.538193 6.5436013
+#> 116 0.6953599  0.6953599        NA        NA 5.1699097  8.981100        NA
+#> 121 1.2471032  1.2471032        NA        NA 1.9341638 12.868353        NA
+#> 123 2.6271853  1.4457016 2.5679456 11.420407 0.7339797 10.793374 1.6629870
+#> 125 0.5298971  0.5298971        NA        NA 2.8965322 10.995486        NA
+#> 131 2.6773137  2.0535315 1.7419187  6.482804 0.7603447  6.270519 1.3328628
+#> 134 1.0214920  0.5111417 2.4191926 10.572500 0.7894809 10.835516        NA
+#> 150 1.0445220  1.0445220        NA        NA 2.0676187  5.988317 3.5948366
+#> 157 1.6606248  1.6606248        NA        NA 0.6668007  8.646709 1.0329475
+#> 161 0.7968439  0.5333591 1.8275480 10.728590 4.9242758 11.289442        NA
+#> 169 1.4213819  1.4213819        NA        NA 1.4506148  8.640249 3.8857687
+#> 172 2.4354311  2.4354311        NA        NA 2.2908652  8.270548 2.4809261
+#> 178 1.4297124  0.9781543 2.8555099 12.530005 0.8151722 11.964402        NA
+#> 180 0.7551267  0.7551267        NA        NA 2.3637907 13.689907        NA
+#> 181 0.7551267  0.7551267        NA        NA 2.3637907 13.689907        NA
+#> 183 1.2492267  1.2492267        NA        NA 0.2370668  7.118030 0.5035207
+#> 184 1.3030102  1.3030102        NA        NA 2.6853208  6.936227 3.2613039
+#> 186 0.9204590  0.9204590        NA        NA 5.7121222  8.526747 6.5967242
+#> 188 1.3407136  1.3407136 2.3167014  5.508719 1.1232833  4.812898 0.9282272
+#> 193 1.7942520  1.7942520 1.8809478  4.835845 0.8218053  3.919141 0.5103535
+#> 196 2.0216456  2.0216456 1.7372724 10.256965 0.6687799 11.746900 0.9695193
+#> 198 0.8961317  0.8961317        NA        NA 2.8878327  9.960173        NA
+#> 202 2.1370159  2.1370159 1.9560222  7.517079 0.9072409  8.504697 0.8197933
+#> 228 0.7767741  0.4624698 2.5397977 12.930338 0.9318105 12.801999        NA
+#> 233 0.9872534  0.6272225 2.2864089  4.529785 1.0599593  4.357240 0.8573274
+#> 235 0.8349853  0.8349853 1.9585039 12.684587 0.8218319 12.277238        NA
+#> 238 1.5763081  1.5763081        NA        NA 5.0780515 15.319847 6.6301060
+#> 243 0.7000964  0.4180970 2.7394740 13.155918 0.7253125 12.908904        NA
+#> 245 0.9360331  0.9360331        NA        NA 5.4609223  8.784277 6.4241875
+#> 246 0.9360331  0.9360331        NA        NA 5.4609223  8.784277 6.4241875
+#> 252 0.6196609  0.6196609        NA        NA 2.0471215 18.118018        NA
+#> 253 0.9857557  0.9857557 1.7586717 12.538608 0.5508093 11.830971        NA
+#> 256 0.7471482  0.7471482        NA        NA 0.8865055 11.032798        NA
+#> 266 1.7011398  1.7011398        NA        NA 0.3267449  4.330747 0.2076643
+#> 275 1.0315095  1.0315095        NA        NA 4.0915465 11.369691        NA
+#> 276 1.5599561  1.5599561        NA        NA 0.6538412  6.522996 1.1581900
+#> 291 1.0796687  1.0796687        NA        NA 2.7253570  4.184793 2.8427097
+#> 293 0.5863849  0.5863849        NA        NA 4.7734831 10.039788        NA
+#> 301 0.7755726  0.7755726        NA        NA 2.4332531 12.867502        NA
+#> 305 1.3091568  1.3091568        NA        NA 5.7300529 12.494781 6.6231563
+#> 306 0.8942070  0.8942070        NA        NA 2.1527950 12.630242        NA
+#> 312 0.7474307  0.7474307 2.0515078 12.916014 0.7635263 12.484552        NA
+#> 327 0.9864697  0.9864697        NA        NA 0.3747033  4.560371 0.5245918
+#> 338 0.9549307  0.9549307        NA        NA 2.1758702 10.711139        NA
+#> 341 3.2718424  2.0436913 2.1273579  2.251932 1.5320368  2.364633 0.3746104
+#> 344 1.1746841  1.1746841        NA        NA 0.9378058 10.050411 4.4938667
+#> 346 1.5034330  1.5034330        NA        NA 2.0040254 10.127068 4.2662140
+#> 354 0.9567759  0.9567759        NA        NA 4.7558343  5.935145 5.6919180
+#> 361 1.0233370  1.0233370        NA        NA 5.8164566  9.766679 6.5575207
+#> 364 0.7991327  0.7991327        NA        NA 2.3202186 10.293947        NA
+#> 370 1.6440213  1.6440213        NA        NA 0.9909542  5.520385 1.0195641
+#> 372 2.1088211  1.5588160 1.9596785 10.597668 0.9547622 10.752436 5.8228192
+#> 375 1.5309438  1.5309438        NA        NA 5.1540813 12.312167 6.2821526
+#> 389 3.0879871  3.0879871        NA        NA 5.1982036  6.213375 4.1613342
+#> 399 0.6258898  0.4734413 1.5471002  8.360099 4.1335653  8.016154        NA
+#> 405 1.2111865  1.2111865        NA        NA 2.3856251  5.307925 2.6674183
+#> 408 1.0680948  0.7193997 2.2781947 10.081042 1.0862987 10.181390        NA
+#> 419 1.6551785  1.6551785        NA        NA 5.5456395  8.804236 6.0260053
+#> 430 0.7148534  0.7148534        NA        NA 5.4786411  7.816309        NA
+#> 445 0.8217456  0.8217456        NA        NA 0.6120840 12.631560        NA
+#> 458 0.9890126  0.9890126        NA        NA 5.7470070  9.480314        NA
+#> 460 1.7150692  1.7150692        NA        NA 2.5095297  5.546443 2.3953832
+#> 475 1.2652916  1.2652916        NA        NA 5.1762835 13.253081        NA
+#> 476 0.9041080  0.9041080        NA        NA 0.8406026  7.948348 3.3682176
+#> 488 1.7795910  1.7795910        NA        NA 0.6267952  5.133676 0.3931901
+#> 490 1.5018619  1.5018619        NA        NA 0.7181485  7.883001 1.7061269
+#> 492 0.9936782  0.9936782        NA        NA 5.6440554 10.841074        NA
+#> 494 1.6525193  1.6525193 1.5925756  5.174180 0.5751369  4.233156 0.4008074
+#> 499 0.7529821  0.7529821        NA        NA 2.0945933  8.905403        NA
+#> 501 1.9945506  1.1718772 2.0127634  9.659675 0.5750563 10.128055 6.1142017
+#> 513 1.6477686  1.6477686        NA        NA 5.6272766  3.586008 4.4854464
+#> 519 0.9527003  0.9527003        NA        NA 5.0802181 12.242515        NA
+#> 534 1.5216846  1.0295037 1.8803822 10.071887 4.9758852 11.102445        NA
+#> 540 3.1308885  3.1308885        NA        NA 3.8712302  5.561327 3.1637050
+#> 549 2.0801672  2.0801672 1.5956017  2.363039 0.4677758  3.432336 0.2651867
+#> 551 1.7353224  1.7353224        NA        NA 0.8742707  4.728587 0.3591303
+#> 552 3.1999446  3.1999446        NA        NA 2.5538772  4.216161 0.6182950
+#> 553 2.0616360  2.0616360        NA        NA 2.5250685  4.078962 1.0594414
+#> 554 1.5426292  1.5426292        NA        NA 5.9163079  4.160652 5.7105061
+#> 567 2.4773277  2.4773277        NA        NA 5.5764311  4.930684 4.8975036
+#> 571 1.4460633  0.9619972 1.8081921  4.217660 5.0186649  3.142332 1.0034930
+#> 577 1.6331559  0.9393843 2.2045847  4.838591 1.7413609  4.875934 1.2937236
+#> 579 2.7957572  2.7957572        NA        NA 3.0768950  3.650346 0.5581026
+#> 586 1.2818324  1.2818324 2.1464196  4.665653 0.7105856  5.459371 0.8008469
+#> 587 1.2818324  1.2818324 2.1464196  4.665653 0.7105856  5.459371 0.8008469
+#> 593 1.5961529  1.5961529        NA        NA 5.2575129  3.447811 3.5740658
+#> 597 1.8241896  1.8241896        NA        NA 4.2864651  4.812738 4.5279917
+#> 604 1.4684527  0.7399295 2.7306565  9.440219 0.6335929  8.998999        NA
+#> 608 1.5003885  1.5003885        NA        NA 5.3399279  6.752960 5.8776276
+#> 610 1.5629901  1.5629901        NA        NA 5.8277486  3.386062 5.1779858
+#> 611 1.7713152  1.7713152        NA        NA 0.5680459  9.271025 1.2444712
+#> 614 0.7519149  0.7519149        NA        NA 5.3784638  9.779899        NA
+#> 620 2.0074095  2.0074095        NA        NA 5.6077502  3.361662 4.4929978
+#> 630 2.2773688  2.2773688        NA        NA 6.0081475  7.301299 5.8988929
+#> 641 1.4448595  1.4448595        NA        NA 0.4939544 13.007338 4.2861144
+#> 645 1.3303544  1.3303544        NA        NA 0.4900168 12.087363 4.9350083
+#>     BMR.xfold BMD.zSD.lower BMD.zSD.upper BMD.xfold.lower BMD.xfold.upper
+#> 1    6.609214    0.97850954     4.0686985             Inf             Inf
+#> 2    5.347706    0.20008806     1.1095586             Inf             Inf
+#> 5    7.073198    0.75185882     1.4649978             Inf             Inf
+#> 6    7.073198    0.75185882     1.4649978             Inf             Inf
+#> 7    7.073198    0.75185882     1.4649978             Inf             Inf
+#> 8    6.172119    0.05543773     0.6804425      0.56115437             Inf
+#> 9    5.588358    0.08095270     0.7936032      0.32929317             Inf
+#> 10   8.017772    0.42468408     1.0520363             Inf             Inf
+#> 11   6.181671    0.07579775     0.7005182             Inf             Inf
+#> 12   6.802633    0.03694799     0.4209217             Inf             Inf
+#> 13   5.820719    1.67433198     5.3037292             Inf             Inf
+#> 14   5.164472    1.25236329     2.8522870      7.56375893             Inf
+#> 16   5.863188    1.32631865     6.0595553      5.92523484             Inf
+#> 17   5.863188    1.32631865     6.0595553      5.92523484             Inf
+#> 18   5.465323    2.76071129     7.1933590      7.67906625             Inf
+#> 19   5.465323    2.76071129     7.1933590      7.67906625             Inf
+#> 20   5.465323    2.76071129     7.1933590      7.67906625             Inf
+#> 22   4.380763    0.36442365     2.2863213             Inf             Inf
+#> 23   4.380763    0.36442365     2.2863213             Inf             Inf
+#> 25   4.862095    1.87728956     5.7928776             Inf             Inf
+#> 26   4.425610    0.63687870     2.6421628      1.60732079             Inf
+#> 27   4.425610    0.63687870     2.6421628      1.60732079             Inf
+#> 28   4.425610    0.63687870     2.6421628      1.60732079             Inf
+#> 29   4.425610    0.63687870     2.6421628      1.60732079             Inf
+#> 30   4.425610    0.63687870     2.6421628      1.60732079             Inf
+#> 31   5.860923    0.37773418     3.4329037      2.12091124             Inf
+#> 32   5.860923    0.37773418     3.4329037      2.12091124             Inf
+#> 33   5.860923    0.37773418     3.4329037      2.12091124             Inf
+#> 34   5.860923    0.37773418     3.4329037      2.12091124             Inf
+#> 35   6.168631    0.24887531     4.0820798      2.79173759             Inf
+#> 36   6.168631    0.24887531     4.0820798      2.79173759             Inf
+#> 37   6.168631    0.24887531     4.0820798      2.79173759             Inf
+#> 39   6.168631    0.24887531     4.0820798      2.79173759             Inf
+#> 40   6.168631    0.24887531     4.0820798      2.79173759             Inf
+#> 41   6.168631    0.24887531     4.0820798      2.79173759             Inf
+#> 42   6.168631    0.24887531     4.0820798      2.79173759             Inf
+#> 43   6.168631    0.24887531     4.0820798      2.79173759             Inf
+#> 44   4.573695    0.32686514     3.1332891      5.73891269             Inf
+#> 46   6.316887    2.43380228     6.3223929             Inf             Inf
+#> 47   6.316887    2.43380228     6.3223929             Inf             Inf
+#> 48   4.940865    0.35799216     4.2882933      2.32048362             Inf
+#> 49   4.940865    0.35799216     4.2882933      2.32048362             Inf
+#> 50   4.940865    0.35799216     4.2882933      2.32048362             Inf
+#> 51   4.940865    0.35799216     4.2882933      2.32048362             Inf
+#> 52   5.737279    0.30086446     3.1833272      1.30741047             Inf
+#> 53   5.737279    0.30086446     3.1833272      1.30741047             Inf
+#> 54   5.737279    0.30086446     3.1833272      1.30741047             Inf
+#> 55   5.737279    0.30086446     3.1833272      1.30741047             Inf
+#> 56   5.737279    0.30086446     3.1833272      1.30741047             Inf
+#> 57   5.737279    0.30086446     3.1833272      1.30741047             Inf
+#> 58   5.177716    0.46124416     1.4873687             Inf             Inf
+#> 59   4.962470    1.03576992     3.6179409             Inf             Inf
+#> 60   4.962470    1.03576992     3.6179409             Inf             Inf
+#> 61   5.158766    0.48406738     1.2370211      0.80809797             Inf
+#> 62   5.158766    0.48406738     1.2370211      0.80809797             Inf
+#> 63   5.158766    0.48406738     1.2370211      0.80809797             Inf
+#> 64   5.158766    0.48406738     1.2370211      0.80809797             Inf
+#> 65   5.158766    0.48406738     1.2370211      0.80809797             Inf
+#> 67   6.677576    0.26644454     4.2871164             Inf             Inf
+#> 68   6.677576    0.26644454     4.2871164             Inf             Inf
+#> 69   6.677576    0.26644454     4.2871164             Inf             Inf
+#> 70   6.677576    0.26644454     4.2871164             Inf             Inf
+#> 71   5.840236    3.09334793     6.6162300      7.32335336             Inf
+#> 72   5.840236    3.09334793     6.6162300      7.32335336             Inf
+#> 73   5.840236    3.09334793     6.6162300      7.32335336             Inf
+#> 75   4.972785    0.63064808     4.7996149      5.94571062             Inf
+#> 76   4.972785    0.63064808     4.7996149      5.94571062             Inf
+#> 77   4.972785    0.63064808     4.7996149      5.94571062             Inf
+#> 79   5.236113    0.52106128     5.9739107      5.91975161             Inf
+#> 80   5.236113    0.52106128     5.9739107      5.91975161             Inf
+#> 81   5.980553    0.42901273     4.3080978      5.24829289             Inf
+#> 82   5.980553    0.42901273     4.3080978      5.24829289             Inf
+#> 83   5.980553    0.42901273     4.3080978      5.24829289             Inf
+#> 84   5.980553    0.42901273     4.3080978      5.24829289             Inf
+#> 86  11.185391    0.24296501     0.8254193      2.32365503             Inf
+#> 87  11.170683    0.28244583     0.9252443      2.78927718             Inf
+#> 103  7.959897    0.46760570     2.8942164      1.94401632             Inf
+#> 116  8.370532    2.62074447     6.1892385      6.39907958             Inf
+#> 121 11.774346    1.07799896     3.2324908      6.13410907             Inf
+#> 123 11.262816    0.39650460     1.0210325      0.93588481       6.2063487
+#> 125 11.840420    1.64980574     4.7578654             Inf             Inf
+#> 131  6.444924    0.37828212     3.9147635      0.64172080       4.6921648
+#> 134 12.192005    0.45119793     1.3369379             Inf             Inf
+#> 150  6.228886    1.30775683     3.0619063      2.63321348       5.1889529
+#> 157  8.874974    0.27525816     1.6705374      0.44800424       2.7783783
+#> 161 12.091282    0.60384236     5.6978525             Inf             Inf
+#> 169  9.162234    0.96799087     1.9783744      3.14745914       5.1690481
+#> 172  8.200742    1.50525257     3.4011695      1.95515289       3.7737373
+#> 178 10.396666    0.53046359     1.1464625      1.68379792             Inf
+#> 180 12.563182    1.54875481     3.5028687             Inf             Inf
+#> 181 12.563182    1.54875481     3.5028687             Inf             Inf
+#> 183  7.409795    0.08183997     0.5980861      0.19125061       1.6257035
+#> 184  7.049409    1.75885065     4.3783442      2.22896204       5.6185328
+#> 186  8.010933    2.93461899     6.0719877      5.69970451             Inf
+#> 188  4.584806    0.50278548     1.8172104      0.39883826       1.5901895
+#> 193  3.345752    0.35654678     1.4592305      0.16656157       1.1565046
+#> 196 11.050749    0.43301683     0.8971572      0.74039512       1.2380754
+#> 198  9.315398    1.73688931     5.1197523      5.38884008             Inf
+#> 202  8.688686    0.35183367     1.7316828      0.36262819       1.4953577
+#> 228 11.354430    0.48380870     1.5400128             Inf             Inf
+#> 233  4.292819    0.40044672     6.5720202      0.37251622       5.9756156
+#> 235 10.664641    0.31820753     1.5828158      1.30158571             Inf
+#> 238 14.176242    2.74132244     5.6217506      6.05963970             Inf
+#> 243 11.464039    0.45259236     0.9852054             Inf             Inf
+#> 245  9.140814    2.60802191     6.3443547      4.77393169             Inf
+#> 246  9.140814    2.60802191     6.3443547      4.77393169             Inf
+#> 252 19.719388    1.32526215     3.0171899             Inf             Inf
+#> 253 10.397567    0.27487668     0.8684603      1.20202041             Inf
+#> 256 10.146508    0.34554032     1.8031346             Inf             Inf
+#> 266  4.549637    0.11229115     1.1562790      0.08920198       0.6082146
+#> 275 12.207078    2.02820057     5.2593819      6.17057748             Inf
+#> 276  6.266743    0.27957255     1.4053942      0.62385724       2.4264491
+#> 291  4.165686    1.61304816     4.7440724      2.05493380       4.8155223
+#> 293 10.806789    2.28426943     5.7598313             Inf             Inf
+#> 301 13.841195    1.57349911     3.9836203             Inf             Inf
+#> 305 11.680806    2.74748436     5.9480926      5.95909053             Inf
+#> 306 11.628496    1.31584676     3.3142276             Inf             Inf
+#> 312 10.951725    0.32210163     1.4464539             Inf             Inf
+#> 327  4.452148    0.11967646     1.0401929      0.19534852       1.6577848
+#> 338 11.437571    1.50483906     3.0487558      5.43599051             Inf
+#> 341  3.132075    0.55429742     5.7718558      0.24775913       0.9522847
+#> 344  9.386265    0.41050756     2.0533236      2.06051125             Inf
+#> 346 10.639970    1.12797148     3.0911075      3.10061531       6.0301429
+#> 354  6.170927    2.27138538     5.7358531      3.72920786       6.3344473
+#> 361 10.315734    2.77164549     6.0800988      5.52360080             Inf
+#> 364 11.015759    1.35631407     3.9482498      6.11649532             Inf
+#> 370  5.506560    0.38959091     2.2272543      0.50373257       2.2560210
+#> 372 12.262440    0.43168938     4.3245839      5.06418512             Inf
+#> 375 12.986136    2.72596759     5.7854763      5.14744071             Inf
+#> 389  5.626303    2.38471036     5.6950050      1.25212089       5.0100759
+#> 399  7.386885    0.58678810     4.9024458             Inf             Inf
+#> 405  5.359396    1.48802589     3.7982782      1.85410611       4.4410965
+#> 408 11.472711    0.49209232     4.7797975             Inf             Inf
+#> 419  9.154518    3.01643160     5.7582422      4.45466791       6.2076045
+#> 430  8.294884    3.11003882     5.9115909      5.95974847             Inf
+#> 445 11.635874    0.24885181     1.7730190             Inf             Inf
+#> 458  8.924420    2.95397705     6.1224920      5.86209386             Inf
+#> 460  5.575966    1.51555559     4.1284671      1.76309457       3.8398589
+#> 475 14.012261    2.57284026     6.0635216      5.59601377             Inf
+#> 476  8.390585    0.35181993     1.9120592      1.37283122             Inf
+#> 488  4.922630    0.20461711     1.6845815      0.13994566       1.2568975
+#> 490  7.477196    0.32356830     1.4338426      0.97175675       3.0973018
+#> 492 11.411100    2.93033518     6.1810802      5.55823991             Inf
+#> 494  3.873826    0.18220941     1.0969609      0.09169953       0.8486895
+#> 499  9.534307    1.36558810     3.0277098      5.76250310             Inf
+#> 501 11.530584    0.33731937     0.9197975      1.50805897             Inf
+#> 513  3.142488    2.82669704     6.1106136      1.28010249       5.2509376
+#> 519 13.060251    2.75999567     5.7929246      6.33809779             Inf
+#> 534 11.620474    0.57587075     5.6502320      1.73266615             Inf
+#> 540  5.311273    2.09802632     5.1109137      1.45839343       4.7290176
+#> 549  3.998886    0.05399315     1.2442471      0.01432065       0.6768693
+#> 551  4.314200    0.27996824     2.9680621      0.12373376       1.4896918
+#> 552  3.282101    1.41586955     4.2784519      0.34784795       1.0906435
+#> 553  3.623286    1.47301680     4.2390445      0.68741986       1.8230891
+#> 554  4.303831    3.07905725     6.0763029      2.72472787       5.8528389
+#> 567  4.510380    3.04662568     5.8599969      1.79850499       5.3875293
+#> 571  4.106953    0.64467381     5.9696696      0.44860443       4.9243516
+#> 577  4.979126    0.65520412     6.2161646      0.68872614       5.5777863
+#> 579  2.588375    1.71979781     5.8334366      0.29269724       1.3384842
+#> 586  5.352737    0.31331655     1.2981207      0.45448294       1.4204213
+#> 587  5.352737    0.31331655     1.2981207      0.45448294       1.4204213
+#> 593  2.980407    2.37205969     6.2112758      1.06163514       5.0651393
+#> 597  4.740045    2.16859102     5.3652514      2.72959715       5.5368126
+#> 604  7.830261    0.38533255     0.8633687      1.66508242             Inf
+#> 608  6.458822    2.75629900     5.7006541      4.24574070       6.1784483
+#> 610  3.062052    3.04378438     6.0023852      1.53742008       5.4386620
+#> 611  9.677450    0.25304437     1.2327338      0.63096978       2.7434432
+#> 614 10.538488    3.21741886     5.6953260      6.60129169             Inf
+#> 620  2.864603    2.80741209     6.0552893      1.04401193       5.0611838
+#> 630  7.436280    2.99251277     6.0940883      2.95949542       5.9721761
+#> 641 12.014582    0.23273791     0.8898776      2.22713522             Inf
+#> 645 11.110192    0.27124408     0.8292255      2.91506706             Inf
+#>     nboot.successful                                  path_class
+#> 1               1000                            Lipid metabolism
+#> 2                957                            Lipid metabolism
+#> 5               1000 Biosynthesis of other secondary metabolites
+#> 6               1000                          Membrane transport
+#> 7               1000                         Signal transduction
+#> 8                648                            Lipid metabolism
+#> 9                620                            Lipid metabolism
+#> 10               872                            Lipid metabolism
+#> 11               909                            Lipid metabolism
+#> 12               565                            Lipid metabolism
+#> 13              1000                            Lipid metabolism
+#> 14              1000                            Lipid metabolism
+#> 16              1000                          Membrane transport
+#> 17              1000                         Signal transduction
+#> 18               718                       Amino acid metabolism
+#> 19               718 Biosynthesis of other secondary metabolites
+#> 20               718                                 Translation
+#> 22               975                          Membrane transport
+#> 23               975                         Signal transduction
+#> 25               938                          Membrane transport
+#> 26               962                       Amino acid metabolism
+#> 27               962             Metabolism of other amino acids
+#> 28               962 Biosynthesis of other secondary metabolites
+#> 29               962                                 Translation
+#> 30               962                          Membrane transport
+#> 31               979                       Amino acid metabolism
+#> 32               979 Biosynthesis of other secondary metabolites
+#> 33               979                                 Translation
+#> 34               979                          Membrane transport
+#> 35               851                       Amino acid metabolism
+#> 36               851             Metabolism of other amino acids
+#> 37               851                            Lipid metabolism
+#> 39               851                           Energy metabolism
+#> 40               851                                 Translation
+#> 41               851 Biosynthesis of other secondary metabolites
+#> 42               851                          Membrane transport
+#> 43               851                         Signal transduction
+#> 44              1000                       Amino acid metabolism
+#> 46               859                           Energy metabolism
+#> 47               859                         Signal transduction
+#> 48               833                       Amino acid metabolism
+#> 49               833             Metabolism of other amino acids
+#> 50               833 Biosynthesis of other secondary metabolites
+#> 51               833                          Membrane transport
+#> 52               890                       Amino acid metabolism
+#> 53               890             Metabolism of other amino acids
+#> 54               890                           Energy metabolism
+#> 55               890                                 Translation
+#> 56               890                          Membrane transport
+#> 57               890                         Signal transduction
+#> 58               940                       Amino acid metabolism
+#> 59              1000                            Lipid metabolism
+#> 60              1000                       Amino acid metabolism
+#> 61               635                       Amino acid metabolism
+#> 62               635             Metabolism of other amino acids
+#> 63               635 Biosynthesis of other secondary metabolites
+#> 64               635                                 Translation
+#> 65               635                          Membrane transport
+#> 67               820                       Amino acid metabolism
+#> 68               820             Metabolism of other amino acids
+#> 69               820 Biosynthesis of other secondary metabolites
+#> 70               820                          Membrane transport
+#> 71               722                           Energy metabolism
+#> 72               722                          Membrane transport
+#> 73               722                         Signal transduction
+#> 75               953                       Amino acid metabolism
+#> 76               953                            Lipid metabolism
+#> 77               953                           Energy metabolism
+#> 79               962                       Amino acid metabolism
+#> 80               962                         Signal transduction
+#> 81               998                       Amino acid metabolism
+#> 82               998             Metabolism of other amino acids
+#> 83               998                                 Translation
+#> 84               998                          Membrane transport
+#> 86               497                       Nucleotide metabolism
+#> 87               495                       Nucleotide metabolism
+#> 103              443             Metabolism of other amino acids
+#> 116              353                       Nucleotide metabolism
+#> 121              483                       Nucleotide metabolism
+#> 123              304                          Membrane transport
+#> 125              500                       Nucleotide metabolism
+#> 131              483             Metabolism of other amino acids
+#> 134              405             Metabolism of other amino acids
+#> 150              500             Metabolism of other amino acids
+#> 157              487                          Membrane transport
+#> 161              439    Metabolism of terpenoids and polyketides
+#> 169              500                       Nucleotide metabolism
+#> 172              500             Metabolism of other amino acids
+#> 178              336                       Nucleotide metabolism
+#> 180              500             Metabolism of other amino acids
+#> 181              500                       Nucleotide metabolism
+#> 183              478                       Nucleotide metabolism
+#> 184              500             Metabolism of other amino acids
+#> 186              295                       Nucleotide metabolism
+#> 188              482    Metabolism of terpenoids and polyketides
+#> 193              483                          Membrane transport
+#> 196              498                    Transport and catabolism
+#> 198              500    Metabolism of terpenoids and polyketides
+#> 202              476             Metabolism of other amino acids
+#> 228              261                       Nucleotide metabolism
+#> 233              415             Metabolism of other amino acids
+#> 235              480                       Nucleotide metabolism
+#> 238              336             Metabolism of other amino acids
+#> 243              333                    Transport and catabolism
+#> 245              315                       Nucleotide metabolism
+#> 246              315             Metabolism of other amino acids
+#> 252              500    Metabolism of terpenoids and polyketides
+#> 253              499                       Nucleotide metabolism
+#> 256              479                          Membrane transport
+#> 266              446    Metabolism of terpenoids and polyketides
+#> 275              454    Metabolism of terpenoids and polyketides
+#> 276              491    Metabolism of terpenoids and polyketides
+#> 291              500    Metabolism of terpenoids and polyketides
+#> 293              377    Metabolism of terpenoids and polyketides
+#> 301              500             Metabolism of other amino acids
+#> 305              275    Metabolism of terpenoids and polyketides
+#> 306              500             Metabolism of other amino acids
+#> 312              491                    Transport and catabolism
+#> 327              474                       Nucleotide metabolism
+#> 338              500    Metabolism of terpenoids and polyketides
+#> 341              403                    Transport and catabolism
+#> 344              469                       Nucleotide metabolism
+#> 346              500             Metabolism of other amino acids
+#> 354              385                       Nucleotide metabolism
+#> 361              291                       Nucleotide metabolism
+#> 364              500                       Nucleotide metabolism
+#> 370              465                    Transport and catabolism
+#> 372              406             Metabolism of other amino acids
+#> 375              330                    Transport and catabolism
+#> 389              345             Metabolism of other amino acids
+#> 399              466                    Transport and catabolism
+#> 405              500    Metabolism of terpenoids and polyketides
+#> 408              303             Metabolism of other amino acids
+#> 419              266                    Transport and catabolism
+#> 430              317                          Membrane transport
+#> 445              485             Metabolism of other amino acids
+#> 458              282                    Transport and catabolism
+#> 460              500                          Membrane transport
+#> 475              366                    Transport and catabolism
+#> 476              473             Metabolism of other amino acids
+#> 488              484             Metabolism of other amino acids
+#> 490              490                          Membrane transport
+#> 492              306                    Transport and catabolism
+#> 494              492                          Membrane transport
+#> 499              500             Metabolism of other amino acids
+#> 501              499             Metabolism of other amino acids
+#> 513              309                          Membrane transport
+#> 519              360                          Membrane transport
+#> 534              434             Metabolism of other amino acids
+#> 540              461             Metabolism of other amino acids
+#> 549              483    Metabolism of terpenoids and polyketides
+#> 551              464                          Membrane transport
+#> 552              500                    Transport and catabolism
+#> 553              500    Metabolism of terpenoids and polyketides
+#> 554              266                       Nucleotide metabolism
+#> 567              268                    Transport and catabolism
+#> 571              448                       Nucleotide metabolism
+#> 577              371                       Nucleotide metabolism
+#> 579              500                          Membrane transport
+#> 586              493                    Transport and catabolism
+#> 587              493                          Membrane transport
+#> 593              343             Metabolism of other amino acids
+#> 597              440                       Nucleotide metabolism
+#> 604              250                       Nucleotide metabolism
+#> 608              301                       Nucleotide metabolism
+#> 610              280                       Nucleotide metabolism
+#> 611              494    Metabolism of terpenoids and polyketides
+#> 614              283             Metabolism of other amino acids
+#> 620              312                       Nucleotide metabolism
+#> 630              264                       Nucleotide metabolism
+#> 641              496                       Nucleotide metabolism
+#> 645              497                       Nucleotide metabolism
+#>     molecular.level
+#> 1       metabolites
+#> 2       metabolites
+#> 5       metabolites
+#> 6       metabolites
+#> 7       metabolites
+#> 8       metabolites
+#> 9       metabolites
+#> 10      metabolites
+#> 11      metabolites
+#> 12      metabolites
+#> 13      metabolites
+#> 14      metabolites
+#> 16      metabolites
+#> 17      metabolites
+#> 18      metabolites
+#> 19      metabolites
+#> 20      metabolites
+#> 22      metabolites
+#> 23      metabolites
+#> 25      metabolites
+#> 26      metabolites
+#> 27      metabolites
+#> 28      metabolites
+#> 29      metabolites
+#> 30      metabolites
+#> 31      metabolites
+#> 32      metabolites
+#> 33      metabolites
+#> 34      metabolites
+#> 35      metabolites
+#> 36      metabolites
+#> 37      metabolites
+#> 39      metabolites
+#> 40      metabolites
+#> 41      metabolites
+#> 42      metabolites
+#> 43      metabolites
+#> 44      metabolites
+#> 46      metabolites
+#> 47      metabolites
+#> 48      metabolites
+#> 49      metabolites
+#> 50      metabolites
+#> 51      metabolites
+#> 52      metabolites
+#> 53      metabolites
+#> 54      metabolites
+#> 55      metabolites
+#> 56      metabolites
+#> 57      metabolites
+#> 58      metabolites
+#> 59      metabolites
+#> 60      metabolites
+#> 61      metabolites
+#> 62      metabolites
+#> 63      metabolites
+#> 64      metabolites
+#> 65      metabolites
+#> 67      metabolites
+#> 68      metabolites
+#> 69      metabolites
+#> 70      metabolites
+#> 71      metabolites
+#> 72      metabolites
+#> 73      metabolites
+#> 75      metabolites
+#> 76      metabolites
+#> 77      metabolites
+#> 79      metabolites
+#> 80      metabolites
+#> 81      metabolites
+#> 82      metabolites
+#> 83      metabolites
+#> 84      metabolites
+#> 86          contigs
+#> 87          contigs
+#> 103         contigs
+#> 116         contigs
+#> 121         contigs
+#> 123         contigs
+#> 125         contigs
+#> 131         contigs
+#> 134         contigs
+#> 150         contigs
+#> 157         contigs
+#> 161         contigs
+#> 169         contigs
+#> 172         contigs
+#> 178         contigs
+#> 180         contigs
+#> 181         contigs
+#> 183         contigs
+#> 184         contigs
+#> 186         contigs
+#> 188         contigs
+#> 193         contigs
+#> 196         contigs
+#> 198         contigs
+#> 202         contigs
+#> 228         contigs
+#> 233         contigs
+#> 235         contigs
+#> 238         contigs
+#> 243         contigs
+#> 245         contigs
+#> 246         contigs
+#> 252         contigs
+#> 253         contigs
+#> 256         contigs
+#> 266         contigs
+#> 275         contigs
+#> 276         contigs
+#> 291         contigs
+#> 293         contigs
+#> 301         contigs
+#> 305         contigs
+#> 306         contigs
+#> 312         contigs
+#> 327         contigs
+#> 338         contigs
+#> 341         contigs
+#> 344         contigs
+#> 346         contigs
+#> 354         contigs
+#> 361         contigs
+#> 364         contigs
+#> 370         contigs
+#> 372         contigs
+#> 375         contigs
+#> 389         contigs
+#> 399         contigs
+#> 405         contigs
+#> 408         contigs
+#> 419         contigs
+#> 430         contigs
+#> 445         contigs
+#> 458         contigs
+#> 460         contigs
+#> 475         contigs
+#> 476         contigs
+#> 488         contigs
+#> 490         contigs
+#> 492         contigs
+#> 494         contigs
+#> 499         contigs
+#> 501         contigs
+#> 513         contigs
+#> 519         contigs
+#> 534         contigs
+#> 540         contigs
+#> 549         contigs
+#> 551         contigs
+#> 552         contigs
+#> 553         contigs
+#> 554         contigs
+#> 567         contigs
+#> 571         contigs
+#> 577         contigs
+#> 579         contigs
+#> 586         contigs
+#> 587         contigs
+#> 593         contigs
+#> 597         contigs
+#> 604         contigs
+#> 608         contigs
+#> 610         contigs
+#> 611         contigs
+#> 614         contigs
+#> 620         contigs
+#> 630         contigs
+#> 641         contigs
+#> 645         contigs
+extendedres.3
+#>           id  irow    adjpvalue            model nbpar             b          c
+#> 1   NAP47_51    46 7.158246e-04           linear     2 -5.600559e-02         NA
+#> 2      NAP_2     2 6.232579e-05      exponential     3  4.598124e-01         NA
+#> 5     NAP_30    28 1.028343e-05           linear     2 -4.507832e-02         NA
+#> 6     NAP_30    28 1.028343e-05           linear     2 -4.507832e-02         NA
+#> 7     NAP_30    28 1.028343e-05           linear     2 -4.507832e-02         NA
+#> 8     NAP_38    34 1.885047e-03      exponential     3  6.010677e-01         NA
+#> 9     NAP_42    38 4.160193e-03      exponential     3  6.721023e-01         NA
+#> 10    NAP_52    47 3.920169e-02 log-Gauss-probit     5  4.500859e-01  7.2020026
+#> 11    NAP_54    49 3.767103e-04      exponential     3  4.520654e-01         NA
+#> 12    NAP_56    51 1.489919e-03      exponential     3  4.392508e-01         NA
+#> 13    NAP_58    53 2.834198e-02           linear     2 -1.938127e-02         NA
+#> 14    NAP_73    67 3.767103e-04           linear     2 -5.787842e-02         NA
+#> 16    NP_121   197 9.889460e-03           linear     2  6.149475e-02         NA
+#> 17    NP_121   197 9.889460e-03           linear     2  6.149475e-02         NA
+#> 18    NP_129   204 7.286216e-03      exponential     3  7.786029e-03         NA
+#> 19    NP_129   204 7.286216e-03      exponential     3  7.786029e-03         NA
+#> 20    NP_129   204 7.286216e-03      exponential     3  7.786029e-03         NA
+#> 22    NP_140   214 8.550044e-03     Gauss-probit     4  6.955281e-01  4.8357744
+#> 23    NP_140   214 8.550044e-03     Gauss-probit     4  6.955281e-01  4.8357744
+#> 25    NP_147   221 1.061967e-03      exponential     3 -3.195388e-02         NA
+#> 26     NP_33   113 5.599308e-02 log-Gauss-probit     4  6.150170e-01  4.9173448
+#> 27     NP_33   113 5.599308e-02 log-Gauss-probit     4  6.150170e-01  4.9173448
+#> 28     NP_33   113 5.599308e-02 log-Gauss-probit     4  6.150170e-01  4.9173448
+#> 29     NP_33   113 5.599308e-02 log-Gauss-probit     4  6.150170e-01  4.9173448
+#> 30     NP_33   113 5.599308e-02 log-Gauss-probit     4  6.150170e-01  4.9173448
+#> 31     NP_35   115 3.238559e-03     Gauss-probit     4  1.507579e+00  5.9751431
+#> 32     NP_35   115 3.238559e-03     Gauss-probit     4  1.507579e+00  5.9751431
+#> 33     NP_35   115 3.238559e-03     Gauss-probit     4  1.507579e+00  5.9751431
+#> 34     NP_35   115 3.238559e-03     Gauss-probit     4  1.507579e+00  5.9751431
+#> 35     NP_43   123 1.055895e-02      exponential     3 -3.967360e-01         NA
+#> 36     NP_43   123 1.055895e-02      exponential     3 -3.967360e-01         NA
+#> 37     NP_43   123 1.055895e-02      exponential     3 -3.967360e-01         NA
+#> 39     NP_43   123 1.055895e-02      exponential     3 -3.967360e-01         NA
+#> 40     NP_43   123 1.055895e-02      exponential     3 -3.967360e-01         NA
+#> 41     NP_43   123 1.055895e-02      exponential     3 -3.967360e-01         NA
+#> 42     NP_43   123 1.055895e-02      exponential     3 -3.967360e-01         NA
+#> 43     NP_43   123 1.055895e-02      exponential     3 -3.967360e-01         NA
+#> 44     NP_55   135 1.119380e-06     Gauss-probit     4  2.325273e+00  4.4698821
+#> 46     NP_56   136 5.289310e-03      exponential     3 -4.360528e-03         NA
+#> 47     NP_56   136 5.289310e-03      exponential     3 -4.360528e-03         NA
+#> 48     NP_59   139 1.293440e-02      exponential     3 -3.667815e-01         NA
+#> 49     NP_59   139 1.293440e-02      exponential     3 -3.667815e-01         NA
+#> 50     NP_59   139 1.293440e-02      exponential     3 -3.667815e-01         NA
+#> 51     NP_59   139 1.293440e-02      exponential     3 -3.667815e-01         NA
+#> 52     NP_60   140 6.939560e-03      exponential     3 -5.150005e-01         NA
+#> 53     NP_60   140 6.939560e-03      exponential     3 -5.150005e-01         NA
+#> 54     NP_60   140 6.939560e-03      exponential     3 -5.150005e-01         NA
+#> 55     NP_60   140 6.939560e-03      exponential     3 -5.150005e-01         NA
+#> 56     NP_60   140 6.939560e-03      exponential     3 -5.150005e-01         NA
+#> 57     NP_60   140 6.939560e-03      exponential     3 -5.150005e-01         NA
+#> 58     NP_68   147 3.449660e-04     Gauss-probit     4  2.444950e+00  5.0555770
+#> 59     NP_69   148 1.156302e-03           linear     2 -5.076324e-02         NA
+#> 60     NP_69   148 1.156302e-03           linear     2 -5.076324e-02         NA
+#> 61     NP_74   153 7.029527e-02 log-Gauss-probit     5  2.715410e-01  4.8474027
+#> 62     NP_74   153 7.029527e-02 log-Gauss-probit     5  2.715410e-01  4.8474027
+#> 63     NP_74   153 7.029527e-02 log-Gauss-probit     5  2.715410e-01  4.8474027
+#> 64     NP_74   153 7.029527e-02 log-Gauss-probit     5  2.715410e-01  4.8474027
+#> 65     NP_74   153 7.029527e-02 log-Gauss-probit     5  2.715410e-01  4.8474027
+#> 67     NP_90   168 3.072572e-02      exponential     3 -2.686242e-01         NA
+#> 68     NP_90   168 3.072572e-02      exponential     3 -2.686242e-01         NA
+#> 69     NP_90   168 3.072572e-02      exponential     3 -2.686242e-01         NA
+#> 70     NP_90   168 3.072572e-02      exponential     3 -2.686242e-01         NA
+#> 71     NP_92   170 2.278810e-03      exponential     3 -4.595689e-03         NA
+#> 72     NP_92   170 2.278810e-03      exponential     3 -4.595689e-03         NA
+#> 73     NP_92   170 2.278810e-03      exponential     3 -4.595689e-03         NA
+#> 75     NP_94   172 1.798752e-05     Gauss-probit     4  3.016576e+00  4.8628416
+#> 76     NP_94   172 1.798752e-05     Gauss-probit     4  3.016576e+00  4.8628416
+#> 77     NP_94   172 1.798752e-05     Gauss-probit     4  3.016576e+00  4.8628416
+#> 79     NP_96   174 5.128859e-04     Gauss-probit     4  2.409906e+00  5.2165398
+#> 80     NP_96   174 5.128859e-04     Gauss-probit     4  2.409906e+00  5.2165398
+#> 81     NP_98   176 1.544866e-04     Gauss-probit     4  1.880325e+00  5.9083172
+#> 82     NP_98   176 1.544866e-04     Gauss-probit     4  1.880325e+00  5.9083172
+#> 83     NP_98   176 1.544866e-04     Gauss-probit     4  1.880325e+00  5.9083172
+#> 84     NP_98   176 1.544866e-04     Gauss-probit     4  1.880325e+00  5.9083172
+#> 85    c00134  2802 2.762369e-04           linear     2 -2.179358e-01         NA
+#> 86    c00276 39331 9.401685e-07      exponential     3  1.499436e+00         NA
+#> 87    c00281 41217 2.894669e-06      exponential     3  1.408172e+00         NA
+#> 88    c00322 52577 1.875371e-03      exponential     3  1.805394e-03         NA
+#> 91    c00398 54508 1.668205e-05           linear     2 -1.405762e-01         NA
+#> 95    c00628 61115 5.388575e-07      exponential     3  4.923794e-02         NA
+#> 99    c00847  5295 9.884514e-03           linear     2 -1.266449e-01         NA
+#> 102   c00941  7809 4.335219e-03           linear     2 -7.650138e-02         NA
+#> 103   c00973  8280 6.803372e-03      exponential     3 -7.727847e-01         NA
+#> 104   c00973  8280 6.803372e-03      exponential     3 -7.727847e-01         NA
+#> 106   c01041  9614 2.607961e-04      exponential     3  1.528981e+00         NA
+#> 109   c01117 12251 2.634664e-03           linear     2  1.543520e-01         NA
+#> 110   c01133 12630 4.922435e-03     Gauss-probit     4  2.075770e+00  9.8438541
+#> 111   c01155 13129 6.385399e-03     Gauss-probit     4  1.840019e+00  6.1917399
+#> 115   c01250 16689 1.585374e-05           linear     2  4.316514e-01         NA
+#> 116   c01318 18587 9.761656e-03      exponential     3 -2.541336e-02         NA
+#> 117   c01370 20546 2.292186e-03           linear     2  9.464515e-02         NA
+#> 120   c01438 22651 1.939187e-04     Gauss-probit     4  1.764551e+00 10.9277844
+#> 121   c01442 22830 8.398538e-07      exponential     3 -4.594974e-01         NA
+#> 122   c01447 23029 4.281444e-10      exponential     3 -1.254855e+00         NA
+#> 123   c01449 23118 3.283441e-05     Gauss-probit     4  4.461301e+00  3.6813967
+#> 125   c01613 28185 5.354723e-03           linear     2  7.991209e-02         NA
+#> 127   c01616 28258 1.619046e-06      exponential     3  3.240702e-02         NA
+#> 128   c01629 28787 2.064119e-03     Gauss-probit     5  4.505403e+00 14.4444824
+#> 129   c01643 29361 6.042318e-05      exponential     3  1.083425e-03         NA
+#> 131   c01645 29447 4.923790e-08     Gauss-probit     4  2.701659e+00  3.1591011
+#> 132   c01645 29447 4.923790e-08     Gauss-probit     4  2.701659e+00  3.1591011
+#> 133   c01739 32213 2.428740e-04 log-Gauss-probit     4  7.597910e-01  8.6772914
+#> 134   c01924 38335 2.843216e-04     Gauss-probit     4  2.446537e+00 11.8943363
+#> 137   c01952 39007 6.650930e-03      exponential     3  1.162982e-04         NA
+#> 140   c02004 40603 1.872409e-03           linear     2  9.583803e-02         NA
+#> 141   c02010 40836 3.289575e-06     Gauss-probit     4  2.473829e+00 11.5666888
+#> 142   c02083 42840 3.959555e-04           linear     2 -1.362122e-01         NA
+#> 143   c02160 45443 1.197938e-07      exponential     3  4.291368e-01         NA
+#> 147   c02486 52753 2.171026e-05      exponential     3 -6.980028e-03         NA
+#> 148   c02572 52958 4.595821e-03           linear     2  1.555437e-01         NA
+#> 149   c02651 53192 2.080403e-04      exponential     3  4.499442e-02         NA
+#> 150   c02837 53881 7.971049e-04           linear     2  1.575210e-01         NA
+#> 152   c02877 53976 2.432349e-03           linear     2 -1.413708e-01         NA
+#> 156   c02955 54166 8.455883e-03           linear     2  2.166378e-01         NA
+#> 157   c02964 54187 3.684145e-04      exponential     3 -1.686471e+00         NA
+#> 158   c03046 54476 2.875687e-05           linear     2 -2.051304e-01         NA
+#> 161   c03088 54664 3.084821e-03     Gauss-probit     4  2.148866e+00 11.5968176
+#> 164   c03134 54867 5.690878e-04     Gauss-probit     4  2.175505e+00 15.6410941
+#> 165   c03146 54920 1.245703e-05           linear     2 -4.288489e-01         NA
+#> 166   c03147 54922 4.186163e-03 log-Gauss-probit     5  7.895259e-01  8.1665963
+#> 167   c03150 54936 3.566795e-04           linear     2  1.084285e-01         NA
+#> 169   c03232 55298 2.548714e-06           linear     2  2.143541e-01         NA
+#> 170   c03258 55367 4.473786e-04     Gauss-probit     4  1.798037e+00  8.9781782
+#> 171   c03284 55434 1.365366e-03           linear     2 -3.672796e-01         NA
+#> 172   c03284 55434 1.365366e-03           linear     2 -3.672796e-01         NA
+#> 174   c03319 55519 1.104637e-04     Gauss-probit     4  2.837930e+00 10.6370079
+#> 178   c03358 55610 1.361311e-03     Gauss-probit     4  2.732236e+00 10.2055856
+#> 179   c03392 55694 7.499082e-05           linear     2 -1.334615e-01         NA
+#> 180   c03440 55810 2.679169e-03           linear     2 -1.138782e-01         NA
+#> 181   c03440 55810 2.679169e-03           linear     2 -1.138782e-01         NA
+#> 183   c03526 56019 2.223268e-04      exponential     3 -1.249273e+00         NA
+#> 184   c03540 56053 3.430925e-03           linear     2  1.965028e-01         NA
+#> 185   c03540 56053 3.430925e-03           linear     2  1.965028e-01         NA
+#> 186   c03544 56063 6.386500e-03      exponential     3 -1.417594e-03         NA
+#> 188   c03571 56127 9.413418e-03 log-Gauss-probit     4  5.983299e-01  4.1680058
+#> 190   c03586 56164 3.854715e-03     Gauss-probit     4  2.552963e+00 11.4923353
+#> 193   c03661 56344 7.587641e-03 log-Gauss-probit     4  6.923540e-01  3.0415932
+#> 196   c03724 56499 4.297972e-05 log-Gauss-probit     4  5.840913e-01 12.2786104
+#> 197   c03745 56548 9.243140e-03           linear     2 -1.172201e-01         NA
+#> 198   c03760 56585 9.777594e-03           linear     2 -1.351428e-01         NA
+#> 199   c03761 56586 4.702449e-03           linear     2  1.262182e-01         NA
+#> 200   c03761 56586 4.702449e-03           linear     2  1.262182e-01         NA
+#> 201   c03784 56645 5.006652e-03 log-Gauss-probit     4  6.898228e-01  9.6540953
+#> 202   c03784 56645 5.006652e-03 log-Gauss-probit     4  6.898228e-01  9.6540953
+#> 203   c03784 56645 5.006652e-03 log-Gauss-probit     4  6.898228e-01  9.6540953
+#> 205   c03801 56685 2.570986e-03 log-Gauss-probit     4  9.764227e-01 13.7221921
+#> 207   c03925 57063 5.381358e-04     Gauss-probit     5  3.210268e+00  2.3821872
+#> 208   c03931 57089 2.851070e-03     Gauss-probit     4  6.126334e+00  0.7526332
+#> 211   c03948 57165 6.052153e-03 log-Gauss-probit     4  7.690806e-01 11.6144651
+#> 214   c03950 57172 5.750220e-03 log-Gauss-probit     4  8.114609e-01  7.7688166
+#> 215   c03979 57294 3.113834e-03      exponential     3 -4.177525e-03         NA
+#> 217   c04048 57585 3.263192e-03           linear     2 -1.211670e-01         NA
+#> 218   c04049 57589 4.043602e-04 log-Gauss-probit     4  7.902587e-01 13.3308965
+#> 220   c04113 57859 1.165972e-04           linear     2  3.130549e-01         NA
+#> 221   c04117 57876 3.652581e-04     Gauss-probit     5  6.914901e+00 15.3546350
+#> 222   c04129 57927 2.456812e-03           linear     2 -1.106194e-01         NA
+#> 225   c04240 58395 2.561139e-03      exponential     3 -1.404086e-03         NA
+#> 228   c04342 58826 1.308910e-04     Gauss-probit     4  7.197426e+00  7.7233560
+#> 229   c04391 59033 3.624150e-04           linear     2 -1.363145e-01         NA
+#> 232   c04434 59217 7.874407e-03     Gauss-probit     5  3.908298e+00  2.8969340
+#> 233   c04434 59217 7.874407e-03     Gauss-probit     5  3.908298e+00  2.8969340
+#> 235   c04513 59551 9.612303e-03 log-Gauss-probit     4  7.506663e-01 11.8496013
+#> 236   c04527 59607 1.222252e-03      exponential     3  4.226728e-04         NA
+#> 237   c04553 59682 2.052935e-04      exponential     3 -6.566892e-03         NA
+#> 238   c04553 59682 2.052935e-04      exponential     3 -6.566892e-03         NA
+#> 240   c04553 59682 2.052935e-04      exponential     3 -6.566892e-03         NA
+#> 242   c04609 59807 6.407706e-03           linear     2  2.392413e-01         NA
+#> 243   c04613 59817 2.581335e-03     Gauss-probit     4  3.032023e+00 11.9083638
+#> 245   c04619 59830 8.483282e-03      exponential     3  2.328075e-02         NA
+#> 246   c04619 59830 8.483282e-03      exponential     3  2.328075e-02         NA
+#> 248   c04625 59843 3.759793e-03           linear     2  1.791830e-01         NA
+#> 251   c04647 59892 1.704160e-03           linear     2  9.344909e-02         NA
+#> 252   c04647 59892 1.704160e-03           linear     2  9.344909e-02         NA
+#> 253   c04655 59910 4.758216e-05 log-Gauss-probit     4  7.297684e-01 11.5528527
+#> 255   c04667 59936 7.175098e-04      exponential     3  3.727143e-03         NA
+#> 256   c04683 59973 5.823021e-04      exponential     3  8.026136e-01         NA
+#> 257   c04702 60014 1.150256e-05      exponential     3 -8.958404e-04         NA
+#> 259   c04721 60057 1.935071e-03           linear     2  8.621251e-02         NA
+#> 260   c04785 60199 2.947658e-03      exponential     3  1.554432e+00         NA
+#> 263   c04803 60240 8.645920e-03           linear     2  1.054475e-01         NA
+#> 265   c04841 60324 1.209154e-05           linear     2  1.327705e-01         NA
+#> 266   c04883 60416 7.479393e-03      exponential     3  1.701162e+00         NA
+#> 270   c04981 60634 1.604178e-03     Gauss-probit     5  6.073747e+00 15.5258805
+#> 272   c04990 60654 1.290312e-03           linear     2  2.168492e-01         NA
+#> 274   c05067 60825 3.429820e-03      exponential     3  4.733132e-01         NA
+#> 275   c05081 60856 1.998628e-04      exponential     3  4.406436e-02         NA
+#> 276   c05100 60898 4.685588e-05      exponential     3  1.626252e+00         NA
+#> 277   c05122 60947 5.831294e-03           linear     2  1.017186e-01         NA
+#> 279   c05183 61177 7.470683e-05      exponential     3 -6.029337e-03         NA
+#> 280   c05186 61192 9.977277e-06      exponential     3 -7.710575e-03         NA
+#> 282   c05207 61277 4.276674e-03      exponential     3  1.045991e+00         NA
+#> 285   c05269    10 9.270577e-05     Gauss-probit     4  2.656350e+00  9.3830167
+#> 286   c05284    73 3.841471e-03           linear     2  2.319088e-01         NA
+#> 287   c05305   159 1.899100e-03           linear     2 -1.337043e-01         NA
+#> 288   c05305   159 1.899100e-03           linear     2 -1.337043e-01         NA
+#> 291   c05326   247 4.812259e-03           linear     2 -1.628214e-01         NA
+#> 293   c05358   382 7.443184e-03      exponential     3  2.090616e-02         NA
+#> 295   c05377   463 9.290871e-03           linear     2 -9.062729e-02         NA
+#> 296   c05385   497 5.701646e-05      exponential     3 -1.697255e-01         NA
+#> 297   c05401   565 9.242438e-03           linear     2 -8.645475e-02         NA
+#> 298   c05401   565 9.242438e-03           linear     2 -8.645475e-02         NA
+#> 299   c05417   633 9.280962e-05      exponential     3 -3.112237e-03         NA
+#> 301   c05581  1323 4.187799e-03           linear     2  1.169616e-01         NA
+#> 303   c05589  1360 8.134238e-03           linear     2 -6.289437e-02         NA
+#> 305   c05641  1567 2.764636e-03      exponential     3 -8.701043e-04         NA
+#> 306   c05645  1576 7.113588e-04           linear     2 -1.348525e-01         NA
+#> 307   c05645  1576 7.113588e-04           linear     2 -1.348525e-01         NA
+#> 308   c05698  1694 3.957047e-04     Gauss-probit     4  1.079324e+00  7.5677415
+#> 312   c05903  2148 4.374165e-03 log-Gauss-probit     4  7.532079e-01 12.1685832
+#> 314   c05923  2195 1.058132e-05      exponential     3 -2.107493e+00         NA
+#> 317   c05946  2245 7.079721e-03     Gauss-probit     4  2.368354e+00 11.2206087
+#> 320   c05970  2298 2.347871e-03     Gauss-probit     5  3.471728e+00  3.6603885
+#> 321   c05970  2298 2.347871e-03     Gauss-probit     5  3.471728e+00  3.6603885
+#> 322   c05996  2356 3.511114e-04      exponential     3  7.501887e-01         NA
+#> 327   c06059  2495 1.623735e-03      exponential     3  9.866188e-01         NA
+#> 328   c06077  2535 2.710065e-04      exponential     3  3.802400e-02         NA
+#> 330   c06085  2553 1.680296e-05      exponential     3 -2.430678e-03         NA
+#> 331   c06133  2659 8.340750e-07           linear     2  1.581037e-01         NA
+#> 332   c06133  2659 8.340750e-07           linear     2  1.581037e-01         NA
+#> 333   c06142  2694 3.174858e-04     Gauss-probit     4  1.565882e+00  7.7633888
+#> 336   c06164  2784 2.112917e-04     Gauss-probit     5  3.551701e+00  6.6100833
+#> 338   c06208  2970 8.742721e-04           linear     2  1.440101e-01         NA
+#> 339   c06258  3180 3.342031e-03 log-Gauss-probit     4  7.135024e-01  2.8818475
+#> 340   c06303  3372 1.986352e-04     Gauss-probit     4  2.664174e+00  5.4338860
+#> 341   c06313  3413 6.508671e-04     Gauss-probit     4  2.523979e+00  6.3598648
+#> 342   c06429  3686 7.498489e-03           linear     2  2.843827e-01         NA
+#> 343   c06440  3711 4.047233e-03     Gauss-probit     4  1.930519e+00 11.5544508
+#> 344   c06518  3887 4.434225e-04      exponential     3  1.282679e+00         NA
+#> 346   c06548  3976 1.118557e-04           linear     2  2.267280e-01         NA
+#> 350   c06637  4352 4.977792e-04      exponential     3  2.940553e-02         NA
+#> 354   c06762  4630 1.129124e-03      exponential     3  2.579227e-02         NA
+#> 357   c06876  4888 7.528161e-08      exponential     3  8.665206e-02         NA
+#> 358   c06880  4897 2.817783e-08      exponential     3 -1.170819e-01         NA
+#> 360   c06880  4897 2.817783e-08      exponential     3 -1.170819e-01         NA
+#> 361   c06881  4900 9.898720e-04      exponential     3  3.893310e-04         NA
+#> 362   c06884  4906 9.612303e-03 log-Gauss-probit     4  6.237164e-01 11.5919778
+#> 364   c06943  5037 4.856986e-04           linear     2  1.205147e-01         NA
+#> 365   c06962  5080 9.268299e-03           linear     2 -7.266508e-02         NA
+#> 368   c07027  5226 4.204526e-05      exponential     3 -1.818945e-02         NA
+#> 370   c07072  5328 9.285630e-04      exponential     3  1.750908e+00         NA
+#> 372   c07118  5428 1.069214e-06     Gauss-probit     4  3.201018e+00 13.8162214
+#> 375   c07206  5768 1.331320e-04      exponential     3  1.150705e-02         NA
+#> 376   c07232  5877 3.268967e-03           linear     2 -1.649789e-01         NA
+#> 378   c07259  5994 8.634188e-03      exponential     3 -2.238603e-03         NA
+#> 379   c07261  6000 9.973687e-03      exponential     3 -6.624269e-01         NA
+#> 380   c07263  6010 6.171276e-03      exponential     3 -3.039276e-04         NA
+#> 384   c07386  6531 6.587401e-09      exponential     3  1.261410e+00         NA
+#> 386   c07492  6981 1.040808e-03           linear     2  8.280517e-02         NA
+#> 387   c07492  6981 1.040808e-03           linear     2  8.280517e-02         NA
+#> 389   c07529  7138 7.515694e-04      exponential     3  2.811126e-02         NA
+#> 391   c07550  7226 3.659885e-03           linear     2 -1.065091e-01         NA
+#> 394   c07703  7740 5.335570e-05      exponential     3 -9.916504e-02         NA
+#> 395   c07715  7768 1.877882e-09      exponential     3  2.083659e-01         NA
+#> 397   c07797  7953 9.102023e-03     Gauss-probit     5  5.456328e+00 11.4303586
+#> 399   c07859  8092 1.007072e-03     Gauss-probit     4  2.145963e+00  7.6939508
+#> 401   c07957  8310 1.752806e-04     Gauss-probit     4  2.462513e+00  8.3205953
+#> 404   c08065  8553 3.401488e-04      exponential     3 -1.628308e-02         NA
+#> 405   c08131  8701 1.673911e-03           linear     2  1.826552e-01         NA
+#> 408   c08241  8948 1.777483e-04     Gauss-probit     4  4.306086e+00 12.7509474
+#> 409   c08251  8970 3.556009e-07      exponential     3  3.107220e-01         NA
+#> 410   c08284  9045 9.182573e-05      exponential     3 -6.347284e-03         NA
+#> 411   c08296  9071 6.435369e-04     Gauss-probit     4  1.769636e+00 14.5173033
+#> 414   c08408  9323 1.435436e-03           linear     2 -1.328818e-01         NA
+#> 416   c08437  9388 2.774965e-03     Gauss-probit     4  2.500577e+00 15.2527459
+#> 419   c08466  9451 1.593456e-04      exponential     3  8.887870e-04         NA
+#> 420   c08470  9462 9.083535e-04      exponential     3  2.790157e-03         NA
+#> 422   c08630  9820 1.427514e-05           linear     2  5.428566e-01         NA
+#> 427   c08733 10248 3.326616e-05     Gauss-probit     4  3.137538e+00  9.9736456
+#> 428   c08733 10248 3.326616e-05     Gauss-probit     4  3.137538e+00  9.9736456
+#> 430   c08762 10368 1.641885e-03      exponential     3  3.093377e-03         NA
+#> 433   c08806 10557 2.319865e-04      exponential     3 -1.396020e-03         NA
+#> 437   c08946 11149 1.361378e-03           linear     2 -1.268688e-01         NA
+#> 439   c08979 11300 3.707499e-03      exponential     3  1.744083e-03         NA
+#> 441   c08979 11300 3.707499e-03      exponential     3  1.744083e-03         NA
+#> 443   c09104 11625 8.299711e-04           linear     2  2.921985e-01         NA
+#> 445   c09125 11677 1.569172e-03      exponential     3  8.284746e-01         NA
+#> 447   c09171 11859 6.956216e-04      exponential     3  4.862071e-03         NA
+#> 450   c09314 12339 1.109864e-06           linear     2 -1.887393e-01         NA
+#> 453   c09437 12639 3.571289e-04     Gauss-probit     4  1.928769e+00 11.2188707
+#> 454   c09437 12639 3.571289e-04     Gauss-probit     4  1.928769e+00 11.2188707
+#> 457   c09562 12942 4.373374e-03      exponential     3 -2.161149e-03         NA
+#> 458   c09562 12942 4.373374e-03      exponential     3 -2.161149e-03         NA
+#> 460   c09598 13030 2.362131e-03           linear     2 -2.586441e-01         NA
+#> 461   c09599 13034 5.092176e-03           linear     2  9.794904e-02         NA
+#> 464   c09662 13187 7.680486e-03           linear     2 -1.015681e-01         NA
+#> 465   c09664 13193 4.054480e-04      exponential     3  3.206674e-02         NA
+#> 466   c09667 13199 4.349398e-03      exponential     3 -3.552147e-02         NA
+#> 467   c09730 13354 2.336694e-03      exponential     3 -7.259535e-04         NA
+#> 468   c09850 13648 2.372640e-05      exponential     3 -9.250649e-05         NA
+#> 469   c09874 13707 9.527637e-03 log-Gauss-probit     4  6.223239e-01  6.1391526
+#> 470   c09918 13875 8.329706e-03           linear     2  7.343326e-02         NA
+#> 471   c09971 14113 5.839468e-03      exponential     3 -3.989293e-02         NA
+#> 473   c10039 14416 8.764282e-04           linear     2  2.073703e-01         NA
+#> 475   c10057 14495 3.390469e-03      exponential     3  2.415379e-02         NA
+#> 476   c10066 14533 1.347692e-03      exponential     3 -9.389332e-01         NA
+#> 479   c10088 14635 3.780459e-03           linear     2 -8.624646e-02         NA
+#> 480   c10088 14635 3.780459e-03           linear     2 -8.624646e-02         NA
+#> 481   c10125 14799 1.608679e-03     Gauss-probit     4  2.867974e+00 11.7480225
+#> 482   c10155 14932 5.257232e-06      exponential     3  2.863366e-01         NA
+#> 483   c10163 14967 4.667371e-03           linear     2  1.195824e-01         NA
+#> 486   c10229 15259 6.113675e-04     Gauss-probit     4  2.711076e+00 12.5673623
+#> 488   c10238 15302 1.228501e-03      exponential     3 -1.793775e+00         NA
+#> 490   c10269 15440 7.296658e-05      exponential     3  1.592475e+00         NA
+#> 491   c10269 15440 7.296658e-05      exponential     3  1.592475e+00         NA
+#> 492   c10302 15585 4.225116e-03      exponential     3  6.617470e-03         NA
+#> 493   c10304 15596 2.269389e-03           linear     2 -1.056212e-01         NA
+#> 494   c10311 15626 1.016928e-03 log-Gauss-probit     4  7.845651e-01  3.5216604
+#> 495   c10345 15778 3.099644e-03 log-Gauss-probit     4  8.904332e-01 11.1141357
+#> 496   c10386 15957 3.625125e-03           linear     2  2.199089e-01         NA
+#> 498   c10413 16075 3.498590e-04           linear     2  1.135548e-01         NA
+#> 499   c10413 16075 3.498590e-04           linear     2  1.135548e-01         NA
+#> 500   c10419 16107 4.121617e-03     Gauss-probit     4  5.137237e+00  8.8683481
+#> 501   c10499 16461 1.256216e-07     Gauss-probit     4  2.062548e+00 11.8312797
+#> 502   c10511 16512 7.145948e-03           linear     2  1.747655e-01         NA
+#> 504   c10532 16606 7.887575e-04      exponential     3  8.633562e-02         NA
+#> 505   c10607 16795 2.129357e-04     Gauss-probit     4  2.821383e+00 14.3133366
+#> 509   c10754 17155 5.833637e-04      exponential     3 -2.995883e-04         NA
+#> 513   c10934 17597 5.753046e-03      exponential     3  7.891420e-03         NA
+#> 514   c10934 17597 5.753046e-03      exponential     3  7.891420e-03         NA
+#> 515   c10976 17699 8.637145e-03           linear     2  2.195307e-01         NA
+#> 517   c11168 18235 1.949306e-03      exponential     3  2.214326e-03         NA
+#> 518   c11210 18416 7.958846e-04 log-Gauss-probit     4  1.054030e+00  7.7051920
+#> 519   c11233 18523 4.606893e-03      exponential     3  1.934382e-02         NA
+#> 520   c11334 18970 8.791723e-04      exponential     3  1.020052e-02         NA
+#> 521   c11382 19182 4.750777e-03     Gauss-probit     4  1.103583e+00  3.2368169
+#> 522   c11397 19250 3.445348e-03      exponential     3  2.401132e-04         NA
+#> 523   c11456 19511 3.753562e-09      exponential     3 -1.853928e-01         NA
+#> 525   c11462 19537 9.770964e-03 log-Gauss-probit     4  7.191494e-01  3.3180250
+#> 526   c11480 19620 5.163659e-03           linear     2  1.902326e-01         NA
+#> 527   c11530 19841 8.558466e-03 log-Gauss-probit     4  1.099263e+00  5.8568962
+#> 528   c11558 19962 5.915481e-04           linear     2  1.224014e-01         NA
+#> 531   c11630 20284 5.955893e-06      exponential     3 -3.666783e-03         NA
+#> 534   c11906 20969 9.654346e-04     Gauss-probit     4  2.292477e+00 11.7948434
+#> 535   c11942 21057 4.470344e-03      exponential     3  1.593425e-03         NA
+#> 540   c12260 22081 8.245828e-06      exponential     3  1.353701e-01         NA
+#> 542   c12281 22175 4.161221e-03 log-Gauss-probit     4  6.948815e-01  4.9989594
+#> 543   c12403 22716 3.760750e-03     Gauss-probit     4  2.214023e+00 14.5772553
+#> 544   c12506 23173 7.671714e-05      exponential     3 -2.509837e-03         NA
+#> 546   c12544 23346 1.722105e-03           linear     2  1.861575e-01         NA
+#> 547   c12572 23468 6.773752e-04      exponential     3  1.083771e-02         NA
+#> 549   c12576 23487 9.267247e-03 log-Gauss-probit     4  1.021352e+00  4.4432065
+#> 551   c12705 23819 9.933717e-03      exponential     3 -1.751567e+00         NA
+#> 552   c12781 24007 1.047802e-03           linear     2  4.825735e-01         NA
+#> 553   c12927 24362 7.217499e-04           linear     2  3.109088e-01         NA
+#> 554   c13186 25095 5.598806e-03      exponential     3 -3.355018e-04         NA
+#> 556   c13243 25350 9.139692e-03      exponential     3 -6.088131e-01         NA
+#> 558   c13270 25470 5.267827e-03           linear     2  1.432054e-01         NA
+#> 559   c13277 25500 2.669356e-04     Gauss-probit     4  2.594431e+00 10.6317327
+#> 561   c13297 25589 4.131109e-04      exponential     3 -6.832444e-03         NA
+#> 562   c13297 25589 4.131109e-04      exponential     3 -6.832444e-03         NA
+#> 565   c13517 26538 8.227406e-04      exponential     3  7.571071e-01         NA
+#> 566   c13525 26574 3.237246e-03      exponential     3 -1.128907e+00         NA
+#> 567   c13542 26650 7.852988e-04      exponential     3  2.600645e-03         NA
+#> 569   c13574 26794 1.921858e-03           linear     2  2.317066e-01         NA
+#> 571   c13596 26891 2.014638e-03     Gauss-probit     4  2.094345e+00  2.6618273
+#> 572   c13598 26896 4.965270e-06           linear     2  2.958897e-01         NA
+#> 573   c13605 26931 1.210717e-03           linear     2  1.951699e-01         NA
+#> 574   c13674 27161 2.365368e-03      exponential     3 -6.072924e-01         NA
+#> 575   c13764 27378 4.475730e-03      exponential     3  5.093825e-03         NA
+#> 577   c13825 27530 7.036682e-03     Gauss-probit     4  2.375172e+00  6.8208872
+#> 579   c14005 27954 6.155794e-03           linear     2  4.216192e-01         NA
+#> 580   c14005 27954 6.155794e-03           linear     2  4.216192e-01         NA
+#> 581   c14237 28676 1.538888e-04 log-Gauss-probit     4  7.541007e-01  7.8537519
+#> 583   c14363 29213 1.557209e-05      exponential     3  2.253639e-02         NA
+#> 585   c14423 29467 4.543972e-03      exponential     3 -1.604455e-02         NA
+#> 586   c14431 29501 2.619248e-03 log-Gauss-probit     4  7.955319e-01  5.9474858
+#> 587   c14431 29501 2.619248e-03 log-Gauss-probit     4  7.955319e-01  5.9474858
+#> 588   c14618 30291 2.083712e-03     Gauss-probit     5  3.713824e+00 16.5075720
+#> 590   c15068 31336 1.093408e-04           linear     2  5.374968e-01         NA
+#> 591   c15455 32647 2.235788e-06      exponential     3  9.915016e-03         NA
+#> 593   c15572 33143 7.075275e-03      exponential     3  4.643676e-02         NA
+#> 595   c15719 33766 3.883724e-04           linear     2 -1.905828e-01         NA
+#> 596   c15843 34290 1.405103e-05     Gauss-probit     4  3.067016e+00  2.6582772
+#> 597   c15942 34598 4.718990e-05      exponential     3 -4.450675e-02         NA
+#> 598   c15975 34674 3.356863e-03      exponential     3 -8.170672e-01         NA
+#> 599   c15975 34674 3.356863e-03      exponential     3 -8.170672e-01         NA
+#> 603   c16742 36804 2.781433e-04           linear     2  3.848784e-01         NA
+#> 604   c16973 37787 2.825599e-04     Gauss-probit     4  8.319118e+00 -4.6684484
+#> 606   c17138 38478 7.921107e-04           linear     2  1.967745e-01         NA
+#> 608   c17497 39284 3.028115e-04      exponential     3 -2.312831e-03         NA
+#> 610   c17517 39327 2.461490e-03      exponential     3  5.997141e-04         NA
+#> 611   c17694 39843 2.019227e-05      exponential     3 -1.826364e+00         NA
+#> 612   c17823 40393 6.238172e-04      exponential     3  6.779690e-04         NA
+#> 614   c17823 40393 6.238172e-04      exponential     3  6.779690e-04         NA
+#> 615   c17823 40393 6.238172e-04      exponential     3  6.779690e-04         NA
+#> 616   c18178 41738 1.357329e-03           linear     2  1.677462e-01         NA
+#> 617   c18301 42015 1.848281e-06      exponential     3  1.568251e-01         NA
+#> 618   c18306 42025 7.861070e-04     Gauss-probit     4  1.686325e+00  6.0977853
+#> 619   c18306 42025 7.861070e-04     Gauss-probit     4  1.686325e+00  6.0977853
+#> 620   c18315 42046 3.162528e-03      exponential     3  3.707484e-03         NA
+#> 623   c18540 42550 4.541751e-03 log-Gauss-probit     5  2.314017e-01  3.5945632
+#> 624   c18686 42975 4.956775e-03           linear     2  3.126935e-01         NA
+#> 626   c18794 43434 3.967972e-04      exponential     3  1.595602e-01         NA
+#> 630   c19738 46332 6.573236e-03      exponential     3 -2.344367e-04         NA
+#> 631   c20526 48892 1.461304e-06      exponential     3 -3.976049e-02         NA
+#> 634   c20668 49255 2.423243e-04           linear     2  2.041387e-01         NA
+#> 641   c21327 51498 7.255831e-06      exponential     3  1.489682e+00         NA
+#> 642   c21366 51578 5.125046e-03      exponential     3 -6.140642e-01         NA
+#> 643   c21438 51724 9.104359e-03           linear     2  1.122721e-01         NA
+#> 644   c21442 51732 7.480590e-05      exponential     3  4.885340e-04         NA
+#> 645   c21452 51752 7.810285e-07      exponential     3  1.427234e+00         NA
+#> 646   c21521 51888 5.591900e-05      exponential     3  4.662577e-04         NA
+#>              d          e           f      SDres      typology trend        y0
+#> 1    7.3435706         NA          NA 0.12454183         L.dec   dec  7.343571
+#> 2    5.9418958 -1.6479584          NA 0.12604568  E.dec.convex   dec  5.941896
+#> 5    7.8591094         NA          NA 0.05203245         L.dec   dec  7.859109
+#> 6    7.8591094         NA          NA 0.05203245         L.dec   dec  7.859109
+#> 7    7.8591094         NA          NA 0.05203245         L.dec   dec  7.859109
+#> 8    6.8579095 -0.3213163          NA 0.23376392  E.dec.convex   dec  6.857909
+#> 9    6.2092863 -0.3230281          NA 0.28968463  E.dec.convex   dec  6.209286
+#> 10   7.2888833  1.3087220  -0.1436781 0.07085857         lGP.U     U  7.288883
+#> 11   6.8685231 -0.6254549          NA 0.15031166  E.dec.convex   dec  6.868523
+#> 12   7.5584812 -0.2649798          NA 0.15353807  E.dec.convex   dec  7.558481
+#> 13   6.4674657         NA          NA 0.05769085         L.dec   dec  6.467466
+#> 14   5.7383018         NA          NA 0.11726837         L.dec   dec  5.738302
+#> 16   5.3301711         NA          NA 0.18706049         L.inc   inc  5.330171
+#> 17   5.3301711         NA          NA 0.18706049         L.inc   inc  5.330171
+#> 18   4.9684754  2.0243885          NA 0.14303183  E.inc.convex   inc  4.968475
+#> 19   4.9684754  2.0243885          NA 0.14303183  E.inc.convex   inc  4.968475
+#> 20   4.9684754  2.0243885          NA 0.14303183  E.inc.convex   inc  4.968475
+#> 22   4.8357744  1.4069463   0.2455556 0.10615565       GP.bell  bell  4.867514
+#> 23   4.8357744  1.4069463   0.2455556 0.10615565       GP.bell  bell  4.867514
+#> 25   5.4023281  3.3895616          NA 0.06744390 E.dec.concave   dec  5.402328
+#> 26   4.9173448  3.2236437   0.4530573 0.21991569      lGP.bell  bell  4.917345
+#> 27   4.9173448  3.2236437   0.4530573 0.21991569      lGP.bell  bell  4.917345
+#> 28   4.9173448  3.2236437   0.4530573 0.21991569      lGP.bell  bell  4.917345
+#> 29   4.9173448  3.2236437   0.4530573 0.21991569      lGP.bell  bell  4.917345
+#> 30   4.9173448  3.2236437   0.4530573 0.21991569      lGP.bell  bell  4.917345
+#> 31   5.9751431  0.5875851  -0.6980909 0.26535797          GP.U     U  5.328111
+#> 32   5.9751431  0.5875851  -0.6980909 0.26535797          GP.U     U  5.328111
+#> 33   5.9751431  0.5875851  -0.6980909 0.26535797          GP.U     U  5.328111
+#> 34   5.9751431  0.5875851  -0.6980909 0.26535797          GP.U     U  5.328111
+#> 35   5.6078463 -1.2203359          NA 0.20417365 E.inc.concave   inc  5.607846
+#> 36   5.6078463 -1.2203359          NA 0.20417365 E.inc.concave   inc  5.607846
+#> 37   5.6078463 -1.2203359          NA 0.20417365 E.inc.concave   inc  5.607846
+#> 39   5.6078463 -1.2203359          NA 0.20417365 E.inc.concave   inc  5.607846
+#> 40   5.6078463 -1.2203359          NA 0.20417365 E.inc.concave   inc  5.607846
+#> 41   5.6078463 -1.2203359          NA 0.20417365 E.inc.concave   inc  5.607846
+#> 42   5.6078463 -1.2203359          NA 0.20417365 E.inc.concave   inc  5.607846
+#> 43   5.6078463 -1.2203359          NA 0.20417365 E.inc.concave   inc  5.607846
+#> 44   4.4698821  1.8678530   0.8450245 0.12256991       GP.bell  bell  5.081883
+#> 46   7.0187638  1.9509846          NA 0.05587260 E.dec.concave   dec  7.018764
+#> 47   7.0187638  1.9509846          NA 0.05587260 E.dec.concave   dec  7.018764
+#> 48   4.4916953 -1.7031497          NA 0.18517809 E.inc.concave   inc  4.491695
+#> 49   4.4916953 -1.7031497          NA 0.18517809 E.inc.concave   inc  4.491695
+#> 50   4.4916953 -1.7031497          NA 0.18517809 E.inc.concave   inc  4.491695
+#> 51   4.4916953 -1.7031497          NA 0.18517809 E.inc.concave   inc  4.491695
+#> 52   5.2157086 -1.5647018          NA 0.23592637 E.inc.concave   inc  5.215709
+#> 53   5.2157086 -1.5647018          NA 0.23592637 E.inc.concave   inc  5.215709
+#> 54   5.2157086 -1.5647018          NA 0.23592637 E.inc.concave   inc  5.215709
+#> 55   5.2157086 -1.5647018          NA 0.23592637 E.inc.concave   inc  5.215709
+#> 56   5.2157086 -1.5647018          NA 0.23592637 E.inc.concave   inc  5.215709
+#> 57   5.2157086 -1.5647018          NA 0.23592637 E.inc.concave   inc  5.215709
+#> 58   5.0555770  2.6269663  -0.6208164 0.12476292          GP.U     U  4.707014
+#> 59   5.5138551         NA          NA 0.11224716         L.dec   dec  5.513855
+#> 60   5.5138551         NA          NA 0.11224716         L.dec   dec  5.513855
+#> 61   4.6897871  1.0923496  -0.4146272 0.17573194         lGP.U     U  4.689787
+#> 62   4.6897871  1.0923496  -0.4146272 0.17573194         lGP.U     U  4.689787
+#> 63   4.6897871  1.0923496  -0.4146272 0.17573194         lGP.U     U  4.689787
+#> 64   4.6897871  1.0923496  -0.4146272 0.17573194         lGP.U     U  4.689787
+#> 65   4.6897871  1.0923496  -0.4146272 0.17573194         lGP.U     U  4.689787
+#> 67   6.0705233 -1.1113399          NA 0.14811681 E.inc.concave   inc  6.070523
+#> 68   6.0705233 -1.1113399          NA 0.14811681 E.inc.concave   inc  6.070523
+#> 69   6.0705233 -1.1113399          NA 0.14811681 E.inc.concave   inc  6.070523
+#> 70   6.0705233 -1.1113399          NA 0.14811681 E.inc.concave   inc  6.070523
+#> 71   6.4891514  1.5921459          NA 0.17066885 E.dec.concave   dec  6.489151
+#> 72   6.4891514  1.5921459          NA 0.17066885 E.dec.concave   dec  6.489151
+#> 73   6.4891514  1.5921459          NA 0.17066885 E.dec.concave   dec  6.489151
+#> 75   4.8628416  1.3892912   0.7365937 0.14844069       GP.bell  bell  5.525316
+#> 76   4.8628416  1.3892912   0.7365937 0.14844069       GP.bell  bell  5.525316
+#> 77   4.8628416  1.3892912   0.7365937 0.14844069       GP.bell  bell  5.525316
+#> 79   5.2165398  1.9279453   0.8281597 0.22659347       GP.bell  bell  5.817903
+#> 80   5.2165398  1.9279453   0.8281597 0.22659347       GP.bell  bell  5.817903
+#> 81   5.9083172  1.3702809  -0.6148327 0.16888946          GP.U     U  5.436867
+#> 82   5.9083172  1.3702809  -0.6148327 0.16888946          GP.U     U  5.436867
+#> 83   5.9083172  1.3702809  -0.6148327 0.16888946          GP.U     U  5.436867
+#> 84   5.9083172  1.3702809  -0.6148327 0.16888946          GP.U     U  5.436867
+#> 85  10.8510453         NA          NA 0.41695413         L.dec   dec 10.851045
+#> 86  12.4282123 -2.1982296          NA 0.28684892  E.dec.convex   dec 12.428212
+#> 87  12.4118704 -2.4052289          NA 0.28115971  E.dec.convex   dec 12.411870
+#> 88  16.4105357  1.1527615          NA 0.14530179  E.inc.convex   inc 16.410536
+#> 91  12.9488316         NA          NA 0.20667778         L.dec   dec 12.948832
+#> 95  15.7725900  1.8964701          NA 0.31543564  E.inc.convex   inc 15.772590
+#> 99  14.6496706         NA          NA 0.37973174         L.dec   dec 14.649671
+#> 102  9.3913476         NA          NA 0.18766848         L.dec   dec  9.391348
+#> 103  7.2362696 -2.3752014          NA 0.30192346 E.inc.concave   inc  7.236270
+#> 104  7.2362696 -2.3752014          NA 0.30192346 E.inc.concave   inc  7.236270
+#> 106  7.3442837 -1.3800379          NA 0.50872456  E.dec.convex   dec  7.344284
+#> 109 15.1021881         NA          NA 0.37952774         L.inc   inc 15.102188
+#> 110  9.8438541  3.1688140   1.4586502 0.27599070       GP.bell  bell 10.298744
+#> 111  6.1917399  2.6438900  -2.1169700 0.72076613          GP.U     U  5.437714
+#> 115 12.3018744         NA          NA 0.78665664         L.inc   inc 12.301874
+#> 116  9.3005915  1.9823323          NA 0.31949144 E.dec.concave   dec  9.300591
+#> 117 17.3249844         NA          NA 0.20275495         L.inc   inc 17.324984
+#> 120 10.9277844  1.5194196  -2.4264132 0.80589796          GP.U     U  9.253000
+#> 121 13.0826064  5.0536325          NA 0.21425367 E.dec.concave   dec 13.082606
+#> 122 14.4649621  6.7164464          NA 0.21109707 E.dec.concave   dec 14.464962
+#> 123  3.6813967  2.5679456   7.7390108 0.55445078       GP.bell  bell 10.238924
+#> 125 10.7640181         NA          NA 0.23146795         L.inc   inc 10.764018
+#> 127 15.1467650  1.8613086          NA 0.20825290  E.inc.convex   inc 15.146765
+#> 128 11.2906700  4.5827956  -3.3708994 0.30754041          GP.U     U  9.768606
+#> 129 11.9235370  0.9067940          NA 0.44761261  E.inc.convex   inc 11.923537
+#> 131  3.1591011  1.7419187   3.3237027 0.41149782       GP.bell  bell  5.859022
+#> 132  3.1591011  1.7419187   3.3237027 0.41149782       GP.bell  bell  5.859022
+#> 133  8.6772914  1.7108205  -1.8696263 0.67001839         lGP.U     U  8.677291
+#> 134 11.8943363  2.4191926  -1.3218368 0.24812481          GP.U     U 11.083641
+#> 137 12.4524972  0.7590944          NA 0.28188470  E.inc.convex   inc 12.452497
+#> 140 11.2948498         NA          NA 0.20469339         L.inc   inc 11.294850
+#> 141 11.5666888  1.5731637  -1.1211951 0.19687033          GP.U     U 10.650748
+#> 142 10.6115156         NA          NA 0.27493541         L.dec   dec 10.611516
+#> 143  7.5281155  3.3691745          NA 0.40223575  E.inc.convex   inc  7.528115
+#> 147 17.8604532  1.2635774          NA 0.29022358 E.dec.concave   dec 17.860453
+#> 148 14.7000111         NA          NA 0.44007932         L.inc   inc 14.700011
+#> 149  7.8301186  1.8307946          NA 0.52494332  E.inc.convex   inc  7.830119
+#> 150  5.6626237         NA          NA 0.32569343         L.inc   inc  5.662624
+#> 152 12.5354341         NA          NA 0.38516458         L.dec   dec 12.535434
+#> 156  4.2547569         NA          NA 0.61055166         L.inc   inc  4.254757
+#> 157  8.0681583 -1.5870424          NA 0.57855035 E.inc.concave   inc  8.068158
+#> 158 12.3485193         NA          NA 0.33573498         L.dec   dec 12.348519
+#> 161 11.5968176  1.8275480  -0.8682280 0.29736729          GP.U     U 10.992074
+#> 164 15.6410941  2.4622535  -1.0424723 0.22568934          GP.U     U 15.091678
+#> 165 10.5084377         NA          NA 0.64924704         L.dec   dec 10.508438
+#> 166 11.7426152  5.4773692   1.4580135 0.29410154      lGP.bell  bell 11.742615
+#> 167 10.9445611         NA          NA 0.20700446         L.inc   inc 10.944561
+#> 169  8.3293039         NA          NA 0.31094519         L.inc   inc  8.329304
+#> 170  8.9781782  2.1869740   1.3093175 0.39364195       GP.bell  bell  9.603054
+#> 171  9.1119357         NA          NA 0.84138808         L.dec   dec  9.111936
+#> 172  9.1119357         NA          NA 0.84138808         L.dec   dec  9.111936
+#> 174 10.6370079  2.4022793  -4.0922462 0.73206856          GP.U     U  7.777009
+#> 178 10.2055856  2.8555099   2.3244195 0.41255116       GP.bell  bell 11.551851
+#> 179 13.2867883         NA          NA 0.23525867         L.dec   dec 13.286788
+#> 180 13.9590916         NA          NA 0.26918435         L.dec   dec 13.959092
+#> 181 13.9590916         NA          NA 0.26918435         L.dec   dec 13.959092
+#> 183  6.7361771 -0.6498650          NA 0.38185313 E.inc.concave   inc  6.736177
+#> 184  6.4085538         NA          NA 0.52767310         L.inc   inc  6.408554
+#> 185  6.4085538         NA          NA 0.52767310         L.inc   inc  6.408554
+#> 186  8.9010369  1.0237053          NA 0.37429011 E.dec.concave   dec  8.901037
+#> 188  4.1680058  2.3167014   1.3407136 0.64489184      lGP.bell  bell  4.168006
+#> 190 11.4923353  2.5819255   1.4610375 0.34283417       GP.bell  bell 12.368447
+#> 193  3.0415932  1.8809478   1.7942520 0.87754767      lGP.bell  bell  3.041593
+#> 196 12.2786104  1.7372724  -2.0216456 0.53171016         lGP.U     U 12.278610
+#> 197  8.8178134         NA          NA 0.36412409         L.dec   dec  8.817813
+#> 198 10.3504426         NA          NA 0.39026969         L.dec   dec 10.350443
+#> 199 10.2773638         NA          NA 0.38834605         L.inc   inc 10.277364
+#> 200 10.2773638         NA          NA 0.38834605         L.inc   inc 10.277364
+#> 201  9.6540953  1.9560222  -2.1370159 1.14939830         lGP.U     U  9.654095
+#> 202  9.6540953  1.9560222  -2.1370159 1.14939830         lGP.U     U  9.654095
+#> 203  9.6540953  1.9560222  -2.1370159 1.14939830         lGP.U     U  9.654095
+#> 205 13.7221921  2.8275360  -0.5902918 0.20207860         lGP.U     U 13.722192
+#> 207 -5.1882517  0.0000000   4.6027866 0.51206355       GP.bell  bell  3.199754
+#> 208  0.7526332  2.5547012   8.4153150 0.55821268       GP.bell  bell  8.467177
+#> 211 11.6144651  2.6085834  -0.6474606 0.24250502         lGP.U     U 11.614465
+#> 214  7.7688166  2.5959623  -1.7181058 0.70975203         lGP.U     U  7.768817
+#> 215 12.6184168  1.0550836          NA 0.85708282 E.dec.concave   dec 12.618417
+#> 217 10.6857590         NA          NA 0.31873117         L.dec   dec 10.685759
+#> 218 13.3308965  2.0807712  -2.0437685 0.67930675         lGP.U     U 13.330896
+#> 220  4.3278401         NA          NA 0.64244947         L.inc   inc  4.327840
+#> 221 23.8696589  0.0000000  -8.8575210 0.31200738          GP.U     U 10.754626
+#> 222 11.3869012         NA          NA 0.25848359         L.dec   dec 11.386901
+#> 225 11.7554052  1.1188963          NA 0.13641264 E.dec.concave   dec 11.755405
+#> 228  7.7233560  2.5397977   5.2069816 0.18596550       GP.bell  bell 12.616033
+#> 229 10.8961840         NA          NA 0.27093544         L.dec   dec 10.896184
+#> 232 -2.6304333  0.0000000   3.7693124 0.45467691       GP.bell  bell  3.902563
+#> 233 -2.6304333  0.0000000   3.7693124 0.45467691       GP.bell  bell  3.902563
+#> 235 11.8496013  1.9585039   0.8349853 0.42763624      lGP.bell  bell 11.849601
+#> 236 10.9187587  0.8633870          NA 0.30698381  E.inc.convex   inc 10.918759
+#> 237 15.7513805  1.2089428          NA 0.43153316 E.dec.concave   dec 15.751380
+#> 238 15.7513805  1.2089428          NA 0.43153316 E.dec.concave   dec 15.751380
+#> 240 15.7513805  1.2089428          NA 0.43153316 E.dec.concave   dec 15.751380
+#> 242  5.6176186         NA          NA 0.71745130         L.inc   inc  5.617619
+#> 243 11.9083638  2.7394740   1.2475547 0.17108221       GP.bell  bell 12.737821
+#> 245  8.3098306  1.7832021          NA 0.47444618  E.inc.convex   inc  8.309831
+#> 246  8.3098306  1.7832021          NA 0.47444618  E.inc.convex   inc  8.309831
+#> 248  6.9999200         NA          NA 0.48572253         L.inc   inc  6.999920
+#> 251 17.9267166         NA          NA 0.19130163         L.inc   inc 17.926717
+#> 252 17.9267166         NA          NA 0.19130163         L.inc   inc 17.926717
+#> 253 11.5528527  1.7586717   0.9857557 0.27811862      lGP.bell  bell 11.552853
+#> 255  4.1240469  0.9672252          NA 1.22904641  E.inc.convex   inc  4.124047
+#> 256 11.2738979 -2.4815554          NA 0.24110024  E.dec.convex   dec 11.273898
+#> 257 11.1766179  0.9162819          NA 0.22747339 E.dec.concave   dec 11.176618
+#> 259 10.9147353         NA          NA 0.16490391         L.inc   inc 10.914735
+#> 260  6.4933089 -1.5366759          NA 0.65031263  E.dec.convex   dec  6.493309
+#> 263 10.5032644         NA          NA 0.29248928         L.inc   inc 10.503264
+#> 265  9.5564865         NA          NA 0.18002511         L.inc   inc  9.556486
+#> 266  5.0551521 -0.5889109          NA 0.72440497  E.dec.convex   dec  5.055152
+#> 270 29.7823352  0.0000000 -13.8372731 0.77132816          GP.U     U  8.816835
+#> 272  5.1502968         NA          NA 0.49677570         L.inc   inc  5.150297
+#> 274 13.0468298 -2.5200214          NA 0.13144425  E.dec.convex   dec 13.046830
+#> 275 11.0973433  2.0754574          NA 0.27234802  E.inc.convex   inc 11.097343
+#> 276  6.9630481 -2.0722462          NA 0.44005180  E.dec.convex   dec  6.963048
+#> 277  9.0129913         NA          NA 0.28336282         L.inc   inc  9.012991
+#> 279  6.6904034  1.2899867          NA 0.25309746 E.dec.concave   dec  6.690403
+#> 280  9.2723423  1.2974934          NA 0.27951792 E.dec.concave   dec  9.272342
+#> 282 13.4155278 -2.2148393          NA 0.40243907  E.dec.convex   dec 13.415528
+#> 285  9.3830167  1.9563733  -1.1542378 0.23896903          GP.U     U  8.502959
+#> 286  3.6770965         NA          NA 0.64907732         L.inc   inc  3.677097
+#> 287  8.2045728         NA          NA 0.33406887         L.dec   dec  8.204573
+#> 288  8.2045728         NA          NA 0.33406887         L.dec   dec  8.204573
+#> 291  4.6285396         NA          NA 0.44374643         L.dec   dec  4.628540
+#> 293  9.8243533  1.9682607          NA 0.21543421  E.inc.convex   inc  9.824353
+#> 295  8.0476185         NA          NA 0.25867705         L.dec   dec  8.047618
+#> 296 12.4697768  3.3599518          NA 0.26868859 E.dec.concave   dec 12.469777
+#> 297 11.1166216         NA          NA 0.24109408         L.dec   dec 11.116622
+#> 298 11.1166216         NA          NA 0.24109408         L.dec   dec 11.116622
+#> 299  8.8001787  1.0569847          NA 0.44895951 E.dec.concave   dec  8.800179
+#> 301 12.5829044         NA          NA 0.28459726         L.inc   inc 12.582904
+#> 303  9.8420421         NA          NA 0.14724997         L.dec   dec  9.842042
+#> 305 12.9786729  0.9062525          NA 0.48389149 E.dec.concave   dec 12.978673
+#> 306 12.9205516         NA          NA 0.29030980         L.dec   dec 12.920552
+#> 307 12.9205516         NA          NA 0.29030980         L.dec   dec 12.920552
+#> 308  7.5677415  0.9950738  -0.7564927 0.23626721          GP.U     U  7.073164
+#> 312 12.1685832  2.0515078   0.7474307 0.31596860      lGP.bell  bell 12.168583
+#> 314  8.8258814 -2.6181633          NA 0.49728328 E.inc.concave   inc  8.825881
+#> 317 11.2206087  2.3761712  -1.7174779 0.56239213          GP.U     U 10.182344
+#> 320  6.0844002  3.8714820   2.6450452 0.50826185       GP.bell  bell  7.183840
+#> 321  6.0844002  3.8714820   2.6450452 0.50826185       GP.bell  bell  7.183840
+#> 322  9.8322505 -1.0676294          NA 0.23732470  E.dec.convex   dec  9.832250
+#> 327  4.9468313 -0.7537935          NA 0.38646039  E.dec.convex   dec  4.946831
+#> 328  7.4334490  1.8152385          NA 0.44755458  E.inc.convex   inc  7.433449
+#> 330 10.2727203  1.0777063          NA 0.24051502 E.dec.concave   dec 10.272720
+#> 331  9.5975067         NA          NA 0.18071219         L.inc   inc  9.597507
+#> 332  9.5975067         NA          NA 0.18071219         L.inc   inc  9.597507
+#> 333  7.7633888  0.2414632   0.9158559 0.31711928       GP.bell  bell  8.668420
+#> 336 25.8775428  0.0000000 -11.8133493 1.05863155          GP.U     U  4.430464
+#> 338 10.3977914         NA          NA 0.31334720         L.inc   inc 10.397791
+#> 339  2.8818475  1.4831086   0.9310508 0.41140105      lGP.bell  bell  2.881847
+#> 340  5.4338860  2.2028885   1.3974511 0.27541245       GP.bell  bell  6.426716
+#> 341  6.3598648  2.1273579  -4.1079331 1.11545022          GP.U     U  3.480083
+#> 342  2.5445734         NA          NA 0.88166215         L.inc   inc  2.544573
+#> 343 11.5544508  2.3238072  -0.7635036 0.23894341          GP.U     U 11.184472
+#> 344 10.4291831 -2.6796044          NA 0.37877170  E.dec.convex   dec 10.429183
+#> 346  9.6726997         NA          NA 0.45436857         L.inc   inc  9.672700
+#> 350  5.5944775  1.7426689          NA 0.51295133  E.inc.convex   inc  5.594478
+#> 354  5.6099340  1.8216559          NA 0.32521096  E.inc.convex   inc  5.609934
+#> 357  7.4650252  1.7793179          NA 0.55020692  E.inc.convex   inc  7.465025
+#> 358  7.1131979  2.2776491          NA 0.30554731 E.dec.concave   dec  7.113198
+#> 360  7.1131979  2.2776491          NA 0.30554731 E.dec.concave   dec  7.113198
+#> 361  9.3779405  0.8420820          NA 0.38873834  E.inc.convex   inc  9.377940
+#> 362 11.5919778  2.1014401  -1.3549521 0.53260300         lGP.U     U 11.591978
+#> 364 10.0143263         NA          NA 0.27962037         L.inc   inc 10.014326
+#> 365 17.9024313         NA          NA 0.17878483         L.dec   dec 17.902431
+#> 368 13.9040590  1.3987102          NA 0.44692567 E.dec.concave   dec 13.904059
+#> 370  6.1183998 -2.3714972          NA 0.59801495  E.dec.convex   dec  6.118400
+#> 372 13.8162214  1.9596785  -3.2185534 0.39523662          GP.U     U 11.147673
+#> 375 11.8055777  1.3537714          NA 0.50658959  E.inc.convex   inc 11.805578
+#> 376  7.3479036         NA          NA 0.43229217         L.dec   dec  7.347904
+#> 378 13.3150381  1.2295545          NA 0.21279936 E.dec.concave   dec 13.315038
+#> 379  9.1311118 -2.2535099          NA 0.26268812 E.inc.concave   inc  9.131112
+#> 380 10.5378650  0.8143290          NA 0.45401830 E.dec.concave   dec 10.537865
+#> 384  6.3162507  5.0891995          NA 0.46725727  E.inc.convex   inc  6.316251
+#> 386 10.0567043         NA          NA 0.16441109         L.inc   inc 10.056704
+#> 387 10.0567043         NA          NA 0.16441109         L.inc   inc 10.056704
+#> 389  5.1148212  1.4084038          NA 1.09855421  E.inc.convex   inc  5.114821
+#> 391  8.3714801         NA          NA 0.25820328         L.dec   dec  8.371480
+#> 394  9.4154096  3.0079390          NA 0.20173024 E.dec.concave   dec  9.415410
+#> 395 10.3811233  3.1733712          NA 0.13779241  E.inc.convex   inc 10.381123
+#> 397 23.7778473  0.0000000 -10.9292695 0.88531156          GP.U     U  6.674833
+#> 399  7.6939508  1.5471002   0.6661478 0.19149575       GP.bell  bell  8.207650
+#> 401  8.3205953  2.3566612   1.6122935 0.35325412       GP.bell  bell  9.340510
+#> 404 13.0053551  1.6480345          NA 0.24599239 E.dec.concave   dec 13.005355
+#> 405  4.8721779         NA          NA 0.43574679         L.inc   inc  4.872178
+#> 408 12.7509474  2.2781947  -2.6699053 0.24834756          GP.U     U 10.429737
+#> 409  8.9310280  3.3853270          NA 0.34811954  E.inc.convex   inc  8.931028
+#> 410 10.8334321  1.3088554          NA 0.28990436 E.dec.concave   dec 10.833432
+#> 411 14.5173033  1.8299680  -2.9355534 1.00890423          GP.U     U 12.797480
+#> 414  8.2742116         NA          NA 0.31619541         L.dec   dec  8.274212
+#> 416 15.2527459  2.3845901  -1.0454945 0.25908843          GP.U     U 14.589230
+#> 419  8.3222889  0.8805994          NA 0.48194682  E.inc.convex   inc  8.322289
+#> 420  8.4387577  1.1156241          NA 0.37889392  E.inc.convex   inc  8.438758
+#> 422  3.9580970         NA          NA 0.87902801         L.inc   inc  3.958097
+#> 427  9.9736456  2.3940384  -4.7016243 0.59130862          GP.U     U  6.459487
+#> 428  9.9736456  2.3940384  -4.7016243 0.59130862          GP.U     U  6.459487
+#> 430  7.5408033  1.2173378          NA 0.27550558  E.inc.convex   inc  7.540803
+#> 433 11.7688844  1.0415715          NA 0.21113446 E.dec.concave   dec 11.768884
+#> 437  7.6097461         NA          NA 0.30468219         L.dec   dec  7.609746
+#> 439  3.4938885  0.8961284          NA 0.99563693  E.inc.convex   inc  3.493888
+#> 441  3.4938885  0.8961284          NA 0.99563693  E.inc.convex   inc  3.493888
+#> 443  7.8034297         NA          NA 0.65170810         L.inc   inc  7.803430
+#> 445 12.9287491 -1.3776799          NA 0.29718879  E.dec.convex   dec 12.928749
+#> 447  9.8736895  1.1503631          NA 0.61355815  E.inc.convex   inc  9.873690
+#> 450 11.4665408         NA          NA 0.24072663         L.dec   dec 11.466541
+#> 453 11.2188707  1.9158332   0.6101410 0.15859610       GP.bell  bell 11.591422
+#> 454 11.2188707  1.9158332   0.6101410 0.15859610       GP.bell  bell 11.591422
+#> 457  9.9160221  1.0820381          NA 0.43570777 E.dec.concave   dec  9.916022
+#> 458  9.9160221  1.0820381          NA 0.43570777 E.dec.concave   dec  9.916022
+#> 460  6.1955178         NA          NA 0.64907510         L.dec   dec  6.195518
+#> 461 11.5983183         NA          NA 0.24519679         L.inc   inc 11.598318
+#> 464 11.5369318         NA          NA 0.28696334         L.dec   dec 11.536932
+#> 465  7.6420694  1.9968840          NA 0.29198344  E.inc.convex   inc  7.642069
+#> 466 13.6080352  2.3215767          NA 0.23573761 E.dec.concave   dec 13.608035
+#> 467 11.5233287  0.8734262          NA 0.54421378 E.dec.concave   dec 11.523329
+#> 468  8.8190315  0.7225067          NA 0.17256242 E.dec.concave   dec  8.819032
+#> 469  6.1391526  3.1550982  -1.2353559 0.46567636         lGP.U     U  6.139153
+#> 470 15.5969330         NA          NA 0.18311723         L.inc   inc 15.596933
+#> 471  7.1664552  1.8676771          NA 0.53449306 E.dec.concave   dec  7.166455
+#> 473 14.2054782         NA          NA 0.46399131         L.inc   inc 14.205478
+#> 475 12.7384191  1.6671166          NA 0.51466168  E.inc.convex   inc 12.738419
+#> 476  7.6278041 -2.0128076          NA 0.32054437 E.inc.concave   inc  7.627804
+#> 479 18.4632294         NA          NA 0.20247498         L.dec   dec 18.463229
+#> 480 18.4632294         NA          NA 0.20247498         L.dec   dec 18.463229
+#> 481 11.7480225  2.3988301  -1.6451186 0.34020978          GP.U     U 10.588494
+#> 482  5.8879508  3.3358199          NA 0.44022250  E.inc.convex   inc  5.887951
+#> 483  9.3907657         NA          NA 0.35251384         L.inc   inc  9.390766
+#> 486 12.5673623  2.0444975  -2.6933806 0.70145770          GP.U     U 10.540594
+#> 488  4.4751185 -1.3700499          NA 0.65855748 E.inc.concave   inc  4.475119
+#> 490  8.3079954 -2.3133165          NA 0.42499412  E.dec.convex   dec  8.307995
+#> 491  8.3079954 -2.3133165          NA 0.42499412  E.dec.convex   dec  8.307995
+#> 492 10.3737271  1.3213539          NA 0.46734668  E.inc.convex   inc 10.373727
+#> 493 16.8203565         NA          NA 0.24465590         L.dec   dec 16.820356
+#> 494  3.5216604  1.5925756   1.6525193 0.71149572      lGP.bell  bell  3.521660
+#> 495 11.1141357  3.0740721  -0.5950246 0.20511033         lGP.U     U 11.114136
+#> 496  6.9911665         NA          NA 0.68942828         L.inc   inc  6.991166
+#> 498  8.6675517         NA          NA 0.23785120         L.inc   inc  8.667552
+#> 499  8.6675517         NA          NA 0.23785120         L.inc   inc  8.667552
+#> 500  8.8683481  2.2554363  -6.3717984 0.76503106          GP.U     U  3.081979
+#> 501 11.8312797  2.0127634  -2.1716042 0.35429372          GP.U     U 10.482349
+#> 502  6.9247347         NA          NA 0.53935448         L.inc   inc  6.924735
+#> 504  5.1107369  2.3273524          NA 0.49190939  E.inc.convex   inc  5.110737
+#> 505 14.3133366  2.0401909  -2.2874180 0.47711867          GP.U     U 12.552174
+#> 509 11.6564745  0.8059689          NA 0.34163752 E.dec.concave   dec 11.656474
+#> 513  2.8568072  1.2403251          NA 0.72920067  E.inc.convex   inc  2.856807
+#> 514  2.8568072  1.2403251          NA 0.72920067  E.inc.convex   inc  2.856807
+#> 515  3.7375623         NA          NA 0.66526211         L.inc   inc  3.737562
+#> 517  4.4669724  0.9312615          NA 1.17808168  E.inc.convex   inc  4.466972
+#> 518  7.7051920  2.7907400  -1.3259250 0.46062229         lGP.U     U  7.705192
+#> 519 11.8729554  1.6928649          NA 0.36955986  E.inc.convex   inc 11.872955
+#> 520  5.0903345  1.5288013          NA 0.24985468  E.inc.convex   inc  5.090334
+#> 521  3.2368169  1.7099772   1.2535246 0.47283855       GP.bell  bell  3.614205
+#> 522 11.2851985  0.7767753          NA 0.58488759  E.inc.convex   inc 11.285199
+#> 523 11.1769600  2.5412298          NA 0.24873284 E.dec.concave   dec 11.176960
+#> 525  3.3180250  1.2611850   0.8999648 0.48348498      lGP.bell  bell  3.318025
+#> 526  2.9577864         NA          NA 0.54268515         L.inc   inc  2.957786
+#> 527  5.8568962  1.4500622  -1.9460898 0.98274605         lGP.U     U  5.856896
+#> 528 10.1316456         NA          NA 0.28742947         L.inc   inc 10.131646
+#> 531  6.8771861  0.9719432          NA 0.65133666 E.dec.concave   dec  6.877186
+#> 534 11.7948434  1.8803822  -1.7229567 0.53837776          GP.U     U 10.564068
+#> 535  6.6915012  0.9153870          NA 0.99255522  E.inc.convex   inc  6.691501
+#> 540  4.8284296  2.0830008          NA 0.73289707  E.inc.convex   inc  4.828430
+#> 542  4.9989594  1.5821319  -1.2090070 0.51207828         lGP.U     U  4.998959
+#> 543 14.5772553  2.2981412  -1.5915164 0.53119435          GP.U     U 13.648609
+#> 544 12.2812084  1.0480454          NA 0.31467644 E.dec.concave   dec 12.281208
+#> 546  2.4794339         NA          NA 0.52220615         L.inc   inc  2.479434
+#> 547  2.6824742  1.2062259          NA 0.82653462  E.inc.convex   inc  2.682474
+#> 549  4.4432065  1.5956017  -2.0801672 1.01087060         lGP.U     U  4.443206
+#> 551  3.9219997 -1.4167347          NA 0.80658748 E.inc.concave   inc  3.922000
+#> 552  2.9837278         NA          NA 1.23243335         L.inc   inc  2.983728
+#> 553  3.2938960         NA          NA 0.78506590         L.inc   inc  3.293896
+#> 554  4.7820339  0.7862608          NA 0.62138156 E.dec.concave   dec  4.782034
+#> 556  8.9741606 -0.8263232          NA 0.28582133 E.inc.concave   inc  8.974161
+#> 558  6.9317875         NA          NA 0.37680979         L.inc   inc  6.931787
+#> 559 10.6317327  1.8611164  -1.6585672 0.40393199          GP.U     U  9.349429
+#> 561  6.2030766  1.3022662          NA 0.31243642 E.dec.concave   dec  6.203077
+#> 562  6.2030766  1.3022662          NA 0.31243642 E.dec.concave   dec  6.203077
+#> 565  8.8032367 -2.4187724          NA 0.22248510  E.dec.convex   dec  8.803237
+#> 566  6.2678143 -1.4799430          NA 0.46551188 E.inc.concave   inc  6.267814
+#> 567  4.1003451  0.9665863          NA 0.83033880  E.inc.convex   inc  4.100345
+#> 569  5.2877014         NA          NA 0.65093913         L.inc   inc  5.287701
+#> 571  2.6618273  1.8081921   1.5558322 0.59126123       GP.bell  bell  3.733593
+#> 572  4.9407625         NA          NA 0.47588238         L.inc   inc  4.940763
+#> 573 11.7181620         NA          NA 0.49107177         L.inc   inc 11.718162
+#> 574  6.8551980 -0.3848874          NA 0.24733881 E.inc.concave   inc  6.855198
+#> 575  6.0290060  1.1910100          NA 0.60886000  E.inc.convex   inc  6.029006
+#> 577  6.8208872  2.2045847  -1.9822962 0.65642859          GP.U     U  5.532363
+#> 579  2.3530681         NA          NA 1.29727813         L.inc   inc  2.353068
+#> 580  2.3530681         NA          NA 1.29727813         L.inc   inc  2.353068
+#> 581  7.8537519  3.5301455  -1.0908882 0.28620983         lGP.U     U  7.853752
+#> 583 16.1210861  1.6875592          NA 0.25581662  E.inc.convex   inc 16.121086
+#> 585  6.9329387  1.5675702          NA 0.50617193 E.dec.concave   dec  6.932939
+#> 586  5.9474858  2.1464196  -1.2818324 0.48811443         lGP.U     U  5.947486
+#> 587  5.9474858  2.1464196  -1.2818324 0.48811443         lGP.U     U  5.947486
+#> 588 12.9839302  5.0595658  -2.4186880 0.32894425          GP.U     U 12.332673
+#> 590 11.8293086         NA          NA 1.20927918         L.inc   inc 11.829309
+#> 591  8.0048304  1.2968103          NA 0.33827142  E.inc.convex   inc  8.004830
+#> 593  2.7094606  1.8595387          NA 0.73835019  E.inc.convex   inc  2.709461
+#> 595  7.5037249         NA          NA 0.40049288         L.dec   dec  7.503725
+#> 596  2.6582772  2.6722696   4.3931116 0.45650946       GP.bell  bell  5.663831
+#> 597  5.2667162  1.7742492          NA 0.45397783 E.dec.concave   dec  5.266716
+#> 598  8.2084258 -2.0754915          NA 0.30806244 E.inc.concave   inc  8.208426
+#> 599  8.2084258 -2.0754915          NA 0.30806244 E.inc.concave   inc  8.208426
+#> 603  3.3517045         NA          NA 0.78185445         L.inc   inc  3.351704
+#> 604 -4.6684484  2.7306565  14.1086676 0.29870979       GP.bell  bell  8.700290
+#> 606 15.0002172         NA          NA 0.53837112         L.inc   inc 15.000217
+#> 608  7.1764685  1.0238480          NA 0.42350852 E.dec.concave   dec  7.176469
+#> 610  2.7836841  0.8429907          NA 0.60237813  E.inc.convex   inc  2.783684
+#> 611  8.7976822 -1.8935670          NA 0.47334309 E.inc.concave   inc  8.797682
+#> 612  9.5804433  0.9456406          NA 0.19945603  E.inc.convex   inc  9.580443
+#> 614  9.5804433  0.9456406          NA 0.19945603  E.inc.convex   inc  9.580443
+#> 615  9.5804433  0.9456406          NA 0.19945603  E.inc.convex   inc  9.580443
+#> 616  5.1115295         NA          NA 0.40444003         L.inc   inc  5.111529
+#> 617  8.3996060  3.2698204          NA 0.21379500  E.inc.convex   inc  8.399606
+#> 618  6.0977853  2.1816572  -3.1142421 1.03760938          GP.U     U  4.749125
+#> 619  6.0977853  2.1816572  -3.1142421 1.03760938          GP.U     U  4.749125
+#> 620  2.6041848  1.0531930          NA 0.75747748  E.inc.convex   inc  2.604185
+#> 623  2.7776193  1.5555118   1.7762050 0.50391975      lGP.bell  bell  2.777619
+#> 624  5.3838933         NA          NA 0.89586768         L.inc   inc  5.383893
+#> 626  5.0070495  2.6958540          NA 0.52415863  E.inc.convex   inc  5.007050
+#> 630  8.2625336  0.7222172          NA 0.96123411 E.dec.concave   dec  8.262534
+#> 631 11.8824074  1.7807252          NA 0.31764055 E.dec.concave   dec 11.882407
+#> 634  6.5549589         NA          NA 0.44384894         L.inc   inc  6.554959
+#> 641 13.3495350 -1.8926198          NA 0.34219661  E.dec.convex   dec 13.349535
+#> 642 15.6634034 -2.0276704          NA 0.22497205 E.inc.concave   inc 15.663403
+#> 643 17.0456861         NA          NA 0.30817653         L.inc   inc 17.045686
+#> 644 15.5325419  0.9010627          NA 0.14782250  E.inc.convex   inc 15.532542
+#> 645 12.3446582 -2.4650317          NA 0.25729560  E.dec.convex   dec 12.344658
+#> 646 15.7385354  0.8902771          NA 0.15980885  E.inc.convex   inc 15.738535
+#>        yrange maxychange   xextrem   yextrem   BMD.zSD   BMR.zSD BMD.xfold
+#> 1   0.4346034  0.4346034        NA        NA 2.2237393  7.219029        NA
+#> 2   0.4556672  0.4556672        NA        NA 0.5279668  5.815850        NA
+#> 5   0.3498078  0.3498078        NA        NA 1.1542677  7.807077        NA
+#> 6   0.3498078  0.3498078        NA        NA 1.1542677  7.807077        NA
+#> 7   0.3498078  0.3498078        NA        NA 1.1542677  7.807077        NA
+#> 8   0.6010677  0.6010677        NA        NA 0.1582542  6.624146        NA
+#> 9   0.6721023  0.6721023        NA        NA 0.1821546  5.919602 0.8318574
+#> 10  0.1912790  0.1912790 1.4588204  7.097604 0.7315304  7.218025        NA
+#> 11  0.4520636  0.4520636        NA        NA 0.2528186  6.718211        NA
+#> 12  0.4392508  0.4392508        NA        NA 0.1139635  7.404943        NA
+#> 13  0.1503987  0.1503987        NA        NA 2.9766289  6.409775        NA
+#> 14  0.4491366  0.4491366        NA        NA 2.0261156  5.621033        NA
+#> 16  0.4771993  0.4771993        NA        NA 3.0418937  5.517232        NA
+#> 17  0.4771993  0.4771993        NA        NA 3.0418937  5.517232        NA
+#> 18  0.3520280  0.3520280        NA        NA 5.9997652  5.111507        NA
+#> 19  0.3520280  0.3520280        NA        NA 5.9997652  5.111507        NA
+#> 20  0.3520280  0.3520280        NA        NA 5.9997652  5.111507        NA
+#> 22  0.2455556  0.2138158 1.4069463  5.081330 0.6597819  4.973670        NA
+#> 23  0.2455556  0.2138158 1.4069463  5.081330 0.6597819  4.973670        NA
+#> 25  0.2833937  0.2833937        NA        NA 3.8465968  5.334884        NA
+#> 26  0.4530573  0.4530573 3.2236437  5.370402 1.5389057  5.137260        NA
+#> 27  0.4530573  0.4530573 3.2236437  5.370402 1.5389057  5.137260        NA
+#> 28  0.4530573  0.4530573 3.2236437  5.370402 1.5389057  5.137260        NA
+#> 29  0.4530573  0.4530573 3.2236437  5.370402 1.5389057  5.137260        NA
+#> 30  0.4530573  0.4530573 3.2236437  5.370402 1.5389057  5.137260        NA
+#> 31  0.6980825  0.6470232 0.5875851  5.277052 2.2442671  5.593469 3.4561250
+#> 32  0.6980825  0.6470232 0.5875851  5.277052 2.2442671  5.593469 3.4561250
+#> 33  0.6980825  0.6470232 0.5875851  5.277052 2.2442671  5.593469 3.4561250
+#> 34  0.6980825  0.6470232 0.5875851  5.277052 2.2442671  5.593469 3.4561250
+#> 35  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 36  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 37  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 39  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 40  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 41  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 42  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 43  0.3960491  0.3960491        NA        NA 0.8821213  5.812020        NA
+#> 44  0.8109383  0.5779147 1.8678530  5.314907 0.6370853  5.204453 6.6295891
+#> 46  0.2284144  0.2284144        NA        NA 5.1225625  6.962891        NA
+#> 47  0.2284144  0.2284144        NA        NA 5.1225625  6.962891        NA
+#> 48  0.3629299  0.3629299        NA        NA 1.1972137  4.676873        NA
+#> 49  0.3629299  0.3629299        NA        NA 1.1972137  4.676873        NA
+#> 50  0.3629299  0.3629299        NA        NA 1.1972137  4.676873        NA
+#> 51  0.3629299  0.3629299        NA        NA 1.1972137  4.676873        NA
+#> 52  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 53  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 54  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 55  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 56  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 57  0.5113868  0.5113868        NA        NA 0.9586777  5.451635        NA
+#> 58  0.5522909  0.2800374 2.6269663  4.434761 0.8261462  4.582251        NA
+#> 59  0.3939227  0.3939227        NA        NA 2.2111898  5.401608        NA
+#> 60  0.3939227  0.3939227        NA        NA 2.2111898  5.401608        NA
+#> 61  0.4981938  0.3405782 1.0482802  4.349209 0.7805309  4.514055        NA
+#> 62  0.4981938  0.3405782 1.0482802  4.349209 0.7805309  4.514055        NA
+#> 63  0.4981938  0.3405782 1.0482802  4.349209 0.7805309  4.514055        NA
+#> 64  0.4981938  0.3405782 1.0482802  4.349209 0.7805309  4.514055        NA
+#> 65  0.4981938  0.3405782 1.0482802  4.349209 0.7805309  4.514055        NA
+#> 67  0.2683749  0.2683749        NA        NA 0.8908528  6.218640        NA
+#> 68  0.2683749  0.2683749        NA        NA 0.8908528  6.218640        NA
+#> 69  0.2683749  0.2683749        NA        NA 0.8908528  6.218640        NA
+#> 70  0.2683749  0.2683749        NA        NA 0.8908528  6.218640        NA
+#> 71  0.5966741  0.5966741        NA        NA 5.7972864  6.318483        NA
+#> 72  0.5966741  0.5966741        NA        NA 5.7972864  6.318483        NA
+#> 73  0.5966741  0.5966741        NA        NA 5.7972864  6.318483        NA
+#> 75  0.6573939  0.5832748 1.3892912  5.599435 3.9480418  5.376875 7.2728900
+#> 76  0.6573939  0.5832748 1.3892912  5.599435 3.9480418  5.376875 7.2728900
+#> 77  0.6573939  0.5832748 1.3892912  5.599435 3.9480418  5.376875 7.2728900
+#> 79  0.7838623  0.5570660 1.9279453  6.044699 1.8746151  6.044497        NA
+#> 80  0.7838623  0.5570660 1.9279453  6.044699 1.8746151  6.044497        NA
+#> 81  0.6129220  0.4695398 1.3702809  5.293484 3.6094654  5.605756        NA
+#> 82  0.6129220  0.4695398 1.3702809  5.293484 3.6094654  5.605756        NA
+#> 83  0.6129220  0.4695398 1.3702809  5.293484 3.6094654  5.605756        NA
+#> 84  0.6129220  0.4695398 1.3702809  5.293484 3.6094654  5.605756        NA
+#> 85  1.4451322  1.4451322        NA        NA 1.9131972 10.434091 4.9790105
+#> 86  1.4260064  1.4260064        NA        NA 0.4667565 12.141363 3.8804658
+#> 87  1.3187707  1.3187707        NA        NA 0.5356979 12.130711 5.1282913
+#> 88  0.5667240  0.5667240        NA        NA 5.0725915 16.555837        NA
+#> 91  0.9321607  0.9321607        NA        NA 1.4702189 12.742154        NA
+#> 95  1.5755952  1.5755952        NA        NA 3.7973745 16.088026        NA
+#> 99  0.8397821  0.8397821        NA        NA 2.9983980 14.269939        NA
+#> 102 0.5072807  0.5072807        NA        NA 2.4531384  9.203679        NA
+#> 103 0.7254029  0.7254029        NA        NA 1.1767628  7.538193 6.5436013
+#> 104 0.7254029  0.7254029        NA        NA 1.1767628  7.538193 6.5436013
+#> 106 1.5164596  1.5164596        NA        NA 0.5582910  6.835559 0.9033421
+#> 109 1.0235083  1.0235083        NA        NA 2.4588452 15.481716        NA
+#> 110 1.0956824  1.0037607 3.1688140 11.302504 0.7285396 10.574734        NA
+#> 111 1.9146107  1.3629446 2.6438900  4.074770 1.0793925  4.716948 0.8236293
+#> 115 2.8622806  2.8622806        NA        NA 1.8224349 13.088531 2.8499557
+#> 116 0.6953599  0.6953599        NA        NA 5.1699097  8.981100        NA
+#> 117 0.6275920  0.6275920        NA        NA 2.1422646 17.527739        NA
+#> 120 2.3898736  1.6382451 1.5194196  8.501371 4.0482830 10.058898 4.2241830
+#> 121 1.2471032  1.2471032        NA        NA 1.9341638 12.868353        NA
+#> 122 2.1130749  2.1130749        NA        NA 1.0443056 14.253865 5.1497136
+#> 123 2.6271853  1.4457016 2.5679456 11.420407 0.7339797 10.793374 1.6629870
+#> 125 0.5298971  0.5298971        NA        NA 2.8965322 10.995486        NA
+#> 127 1.1100339  1.1100339        NA        NA 3.7319420 15.355018        NA
+#> 128 1.1159414  0.6118908 2.9011529  9.264556 1.2030629  9.461066        NA
+#> 129 1.6230068  1.6230068        NA        NA 5.4645388 12.371150 6.3516074
+#> 131 2.6773137  2.0535315 1.7419187  6.482804 0.7603447  6.270519 1.3328628
+#> 132 2.6773137  2.0535315 1.7419187  6.482804 0.7603447  6.270519 1.3328628
+#> 133 1.8696263  1.8696263 1.7108205  6.807665 0.5760685  8.007273 0.6673274
+#> 134 1.0214920  0.5111417 2.4191926 10.572500 0.7894809 10.835516        NA
+#> 137 0.7231739  0.7231739        NA        NA 5.9160090 12.734382        NA
+#> 140 0.6355020  0.6355020        NA        NA 2.1358264 11.499543        NA
+#> 141 0.9825269  0.7772726 1.5731637 10.445494 1.2700689 10.453878        NA
+#> 142 0.9032233  0.9032233        NA        NA 2.0184340 10.336580        NA
+#> 143 2.6423399  2.6423399        NA        NA 2.2280425  7.930351 3.4134579
+#> 147 1.3202534  1.3202534        NA        NA 4.7401393 17.570230        NA
+#> 148 1.0314101  1.0314101        NA        NA 2.8292974 15.140090        NA
+#> 149 1.6382243  1.6382243        NA        NA 4.6483666  8.355062 5.3321567
+#> 150 1.0445220  1.0445220        NA        NA 2.0676187  5.988317 3.5948366
+#> 152 0.9374300  0.9374300        NA        NA 2.7244982 12.150270        NA
+#> 156 1.4365255  1.4365255        NA        NA 2.8183056  4.865309 1.9639952
+#> 157 1.6606248  1.6606248        NA        NA 0.6668007  8.646709 1.0329475
+#> 158 1.3602197  1.3602197        NA        NA 1.6366905 12.012784 6.0198387
+#> 161 0.7968439  0.5333591 1.8275480 10.728590 4.9242758 11.289442        NA
+#> 164 0.8762376  0.4930563 2.4622535 14.598622 0.7873949 14.865989        NA
+#> 165 2.8436971  2.8436971        NA        NA 1.5139296  9.859191 2.4503823
+#> 166 1.0312987  0.7141166 2.5296882 12.059797 2.0821730 12.036717        NA
+#> 167 0.7189896  0.7189896        NA        NA 1.9091328 11.151566        NA
+#> 169 1.4213819  1.4213819        NA        NA 1.4506148  8.640249 3.8857687
+#> 170 1.2475819  0.6844412 2.1869740 10.287496 0.9126300  9.996696        NA
+#> 171 2.4354311  2.4354311        NA        NA 2.2908652  8.270548 2.4809261
+#> 172 2.4354311  2.4354311        NA        NA 2.2908652  8.270548 2.4809261
+#> 174 2.7438223  1.5115754 2.4022793  6.544762 0.9531756  7.044940 1.0251183
+#> 178 1.4297124  0.9781543 2.8555099 12.530005 0.8151722 11.964402        NA
+#> 179 0.8849830  0.8849830        NA        NA 1.7627459 13.051530        NA
+#> 180 0.7551267  0.7551267        NA        NA 2.3637907 13.689907        NA
+#> 181 0.7551267  0.7551267        NA        NA 2.3637907 13.689907        NA
+#> 183 1.2492267  1.2492267        NA        NA 0.2370668  7.118030 0.5035207
+#> 184 1.3030102  1.3030102        NA        NA 2.6853208  6.936227 3.2613039
+#> 185 1.3030102  1.3030102        NA        NA 2.6853208  6.936227 3.2613039
+#> 186 0.9204590  0.9204590        NA        NA 5.7121222  8.526747 6.5967242
+#> 188 1.3407136  1.3407136 2.3167014  5.508719 1.1232833  4.812898 0.9282272
+#> 190 1.0456724  0.5849261 2.5819255 12.953373 1.0452152 12.711281        NA
+#> 193 1.7942520  1.7942520 1.8809478  4.835845 0.8218053  3.919141 0.5103535
+#> 196 2.0216456  2.0216456 1.7372724 10.256965 0.6687799 11.746900 0.9695193
+#> 197 0.7772864  0.7772864        NA        NA 3.1063283  8.453689        NA
+#> 198 0.8961317  0.8961317        NA        NA 2.8878327  9.960173        NA
+#> 199 0.8369527  0.8369527        NA        NA 3.0767840 10.665710        NA
+#> 200 0.8369527  0.8369527        NA        NA 3.0767840 10.665710        NA
+#> 201 2.1370159  2.1370159 1.9560222  7.517079 0.9072409  8.504697 0.8197933
+#> 202 2.1370159  2.1370159 1.9560222  7.517079 0.9072409  8.504697 0.8197933
+#> 203 2.1370159  2.1370159 1.9560222  7.517079 0.9072409  8.504697 0.8197933
+#> 205 0.5902918  0.5902918 2.8275360 13.131900 0.6768404 13.520114        NA
+#> 207 1.3762816  0.9567808 2.1064523  4.156535 0.6470138  3.711818 0.3740702
+#> 208 1.6710504  0.9702795 2.5547012  9.167948 1.4222300  9.025390 6.4602636
+#> 211 0.6474606  0.6474606 2.6085834 10.967005 0.8877879 11.371960        NA
+#> 214 1.7181058  1.7181058 2.5959623  6.050711 0.8824251  7.059065 0.9338753
+#> 215 2.2364894  2.2364894        NA        NA 5.6222008 11.761334 6.0286569
+#> 217 0.8034587  0.8034587        NA        NA 2.6305103 10.367028        NA
+#> 218 2.0437685  2.0437685 2.0807712 11.287128 0.6438946 12.651590 1.0021942
+#> 220 2.0758668  2.0758668        NA        NA 2.0521944  4.970290 1.3824542
+#> 221 1.0880222  0.6435345 2.6519769 10.111091 0.7392714 10.442619        NA
+#> 222 0.7335175  0.7335175        NA        NA 2.3366923 11.128418        NA
+#> 225 0.5248384  0.5248384        NA        NA 5.1318609 11.618993        NA
+#> 228 0.7767741  0.4624698 2.5397977 12.930338 0.9318105 12.801999        NA
+#> 229 0.9039016  0.9039016        NA        NA 1.9875757 10.625249        NA
+#> 232 0.9872534  0.6272225 2.2864089  4.529785 1.0599593  4.357240 0.8573274
+#> 233 0.9872534  0.6272225 2.2864089  4.529785 1.0599593  4.357240 0.8573274
+#> 235 0.8349853  0.8349853 1.9585039 12.684587 0.8218319 12.277238        NA
+#> 236 0.9147026  0.9147026        NA        NA 5.6891398 11.225742        NA
+#> 237 1.5763081  1.5763081        NA        NA 5.0780515 15.319847 6.6301060
+#> 238 1.5763081  1.5763081        NA        NA 5.0780515 15.319847 6.6301060
+#> 240 1.5763081  1.5763081        NA        NA 5.0780515 15.319847 6.6301060
+#> 242 1.5864088  1.5864088        NA        NA 2.9988610  6.335070 2.3480977
+#> 243 0.7000964  0.4180970 2.7394740 13.155918 0.7253125 12.908904        NA
+#> 245 0.9360331  0.9360331        NA        NA 5.4609223  8.784277 6.4241875
+#> 246 0.9360331  0.9360331        NA        NA 5.4609223  8.784277 6.4241875
+#> 248 1.1881624  1.1881624        NA        NA 2.7107625  7.485642 3.9065761
+#> 251 0.6196609  0.6196609        NA        NA 2.0471215 18.118018        NA
+#> 252 0.6196609  0.6196609        NA        NA 2.0471215 18.118018        NA
+#> 253 0.9857557  0.9857557 1.7586717 12.538608 0.5508093 11.830971        NA
+#> 255 3.5343401  3.5343401        NA        NA 5.6112409  5.353093 4.5608152
+#> 256 0.7471482  0.7471482        NA        NA 0.8865055 11.032798        NA
+#> 257 1.2440698  1.2440698        NA        NA 5.0770781 10.949145 6.5328956
+#> 259 0.5716752  0.5716752        NA        NA 1.9127607 11.079639        NA
+#> 260 1.5336580  1.5336580        NA        NA 0.8327309  5.842996 0.8310632
+#> 263 0.6992226  0.6992226        NA        NA 2.7737899 10.795754        NA
+#> 265 0.8804012  0.8804012        NA        NA 1.3559120  9.736512        NA
+#> 266 1.7011398  1.7011398        NA        NA 0.3267449  4.330747 0.2076643
+#> 270 2.1967634  1.1526784 2.4964781  7.664156 1.0466404  8.045507 1.2705901
+#> 272 1.4379270  1.4379270        NA        NA 2.2908810  5.647073 2.3750592
+#> 274 0.4392427  0.4392427        NA        NA 0.8198382 12.915386        NA
+#> 275 1.0315095  1.0315095        NA        NA 4.0915465 11.369691        NA
+#> 276 1.5599561  1.5599561        NA        NA 0.6538412  6.522996 1.1581900
+#> 277 0.6744958  0.6744958        NA        NA 2.7857533  9.296354        NA
+#> 279 1.0236475  1.0236475        NA        NA 4.8512276  6.437306 6.0863878
+#> 280 1.2704995  1.2704995        NA        NA 4.6939228  8.992824 6.2252369
+#> 282 0.9935949  0.9935949        NA        NA 1.0757865 13.013089        NA
+#> 285 0.9088697  0.6346895 1.9563733  8.228779 1.2951527  8.263990        NA
+#> 286 1.5377875  1.5377875        NA        NA 2.7988468  4.326174 1.5855784
+#> 287 0.8865933  0.8865933        NA        NA 2.4985646  7.870504 6.1363560
+#> 288 0.8865933  0.8865933        NA        NA 2.4985646  7.870504 6.1363560
+#> 291 1.0796687  1.0796687        NA        NA 2.7253570  4.184793 2.8427097
+#> 293 0.5863849  0.5863849        NA        NA 4.7734831 10.039788        NA
+#> 295 0.6009495  0.6009495        NA        NA 2.8542954  7.788941        NA
+#> 296 1.0516373  1.0516373        NA        NA 3.1885322 12.201088        NA
+#> 297 0.5732814  0.5732814        NA        NA 2.7886737 10.875528        NA
+#> 298 0.5732814  0.5732814        NA        NA 2.7886737 10.875528        NA
+#> 299 1.6474111  1.6474111        NA        NA 5.2621976  8.351219 5.9699880
+#> 301 0.7755726  0.7755726        NA        NA 2.4332531 12.867502        NA
+#> 303 0.4170526  0.4170526        NA        NA 2.3412265  9.694792        NA
+#> 305 1.3091568  1.3091568        NA        NA 5.7300529 12.494781 6.6231563
+#> 306 0.8942070  0.8942070        NA        NA 2.1527950 12.630242        NA
+#> 307 0.8942070  0.8942070        NA        NA 2.1527950 12.630242        NA
+#> 308 0.7564918  0.4945771 0.9950738  6.811249 0.7116013  6.836896        NA
+#> 312 0.7474307  0.7474307 2.0515078 12.916014 0.7635263 12.484552        NA
+#> 314 1.9400638  1.9400638        NA        NA 0.7046383  9.323165 1.4207090
+#> 317 1.3754663  0.6962531 2.3761712  9.503131 1.4872255  9.619952        NA
+#> 320 1.5861301  1.0776961 2.6022023  7.692274 2.5611897  7.692102 6.0661427
+#> 321 1.5861301  1.0776961 2.6022023  7.692274 2.5611897  7.692102 6.0661427
+#> 322 0.7486829  0.7486829        NA        NA 0.4060345  9.594926        NA
+#> 327 0.9864697  0.9864697        NA        NA 0.3747033  4.560371 0.5245918
+#> 328 1.4292787  1.4292787        NA        NA 4.6236368  7.881004 5.4871571
+#> 330 1.1401586  1.1401586        NA        NA 4.9624796 10.032205 6.5188896
+#> 331 1.0483855  1.0483855        NA        NA 1.1429980  9.778219 6.0703879
+#> 332 1.0483855  1.0483855        NA        NA 1.1429980  9.778219 6.0703879
+#> 333 0.9156340  0.9048096 0.2414632  8.679245 1.7158581  8.351301 4.1888113
+#> 336 3.1244464  2.4160958 2.3109888  2.014368 0.5585263  3.371832 0.2148246
+#> 338 0.9549307  0.9549307        NA        NA 2.1758702 10.711139        NA
+#> 339 0.9310508  0.9310508 1.4831086  3.812898 0.5958514  3.293249 0.4972954
+#> 340 1.0463324  0.6417115 2.2028885  6.831337 1.0293193  6.702129        NA
+#> 341 3.2718424  2.0436913 2.1273579  2.251932 1.5320368  2.364633 0.3746104
+#> 342 1.8857419  1.8857419        NA        NA 3.1002661  3.426236 0.8947707
+#> 343 0.7001329  0.3935249 2.3238072 10.790947 1.0252456 10.945529        NA
+#> 344 1.1746841  1.1746841        NA        NA 0.9378058 10.050411 4.4938667
+#> 346 1.5034330  1.5034330        NA        NA 2.0040254 10.127068 4.2662140
+#> 350 1.2917549  1.2917549        NA        NA 5.0794294  6.107429 5.2227689
+#> 354 0.9567759  0.9567759        NA        NA 4.7558343  5.935145 5.6919180
+#> 357 3.5130625  3.5130625        NA        NA 3.5491119  8.015232 4.0271629
+#> 358 2.0350385  2.0350385        NA        NA 2.9236395  6.807651 4.4565040
+#> 360 2.0350385  2.0350385        NA        NA 2.9236395  6.807651 4.4565040
+#> 361 1.0233370  1.0233370        NA        NA 5.8164566  9.766679 6.5575207
+#> 362 1.3549521  1.3549521 2.1014401 10.237026 0.8960631 11.059375 1.4831675
+#> 364 0.7991327  0.7991327        NA        NA 2.3202186 10.293947        NA
+#> 365 0.4818421  0.4818421        NA        NA 2.4603955 17.723646        NA
+#> 368 2.0649632  2.0649632        NA        NA 4.5338399 13.457133 6.0836994
+#> 370 1.6440213  1.6440213        NA        NA 0.9909542  5.520385 1.0195641
+#> 372 2.1088211  1.5588160 1.9596785 10.597668 0.9547622 10.752436 5.8228192
+#> 375 1.5309438  1.5309438        NA        NA 5.1540813 12.312167 6.2821526
+#> 376 1.0939749  1.0939749        NA        NA 2.6202881  6.915611 4.4538453
+#> 378 0.4899501  0.4899501        NA        NA 5.6128703 13.102239        NA
+#> 379 0.6274954  0.6274954        NA        NA 1.1382454  9.393800        NA
+#> 380 1.0448656  1.0448656        NA        NA 5.9525599 10.083847        NA
+#> 384 3.3807780  3.3807780        NA        NA 1.6037111  6.783508 2.0659663
+#> 386 0.5490811  0.5490811        NA        NA 1.9855173 10.221115        NA
+#> 387 0.5490811  0.5490811        NA        NA 1.9855173 10.221115        NA
+#> 389 3.0879871  3.0879871        NA        NA 5.1982036  6.213375 4.1613342
+#> 391 0.7062619  0.7062619        NA        NA 2.4242366  8.113277        NA
+#> 394 0.7998367  0.7998367        NA        NA 3.3387424  9.213679        NA
+#> 395 1.4755404  1.4755404        NA        NA 1.6108049 10.518916 5.6764686
+#> 397 2.0091568  1.0916682 2.4592236  5.583165 1.3712891  5.789522 0.9112142
+#> 399 0.6258898  0.4734413 1.5471002  8.360099 4.1335653  8.016154        NA
+#> 401 1.2548501  0.6624716 2.3566612  9.932889 0.9613178  9.693764        NA
+#> 404 0.8939560  0.8939560        NA        NA 4.5803310 12.759363        NA
+#> 405 1.2111865  1.2111865        NA        NA 2.3856251  5.307925 2.6674183
+#> 408 1.0680948  0.7193997 2.2781947 10.081042 1.0862987 10.181390        NA
+#> 409 1.8924337  1.8924337        NA        NA 2.5443588  9.279148 4.5849528
+#> 410 1.0002044  1.0002044        NA        NA 5.0301698 10.543528        NA
+#> 411 2.8615248  1.6457951 1.8299680 11.581750 1.1535189 11.788575 5.2775387
+#> 414 0.8811392  0.8811392        NA        NA 2.3795238  7.958016 6.2267455
+#> 416 0.7982567  0.4162785 2.3845901 14.207251 1.1340646 14.330141        NA
+#> 419 1.6551785  1.6551785        NA        NA 5.5456395  8.804236 6.0260053
+#> 420 1.0612794  1.0612794        NA        NA 5.4871921  8.817652 6.3760243
+#> 422 3.5996821  3.5996821        NA        NA 1.6192638  4.837125 0.7291239
+#> 427 2.8125159  1.6250497 2.3940384  5.272021 0.7601546  5.868179 0.8418771
+#> 428 2.8125159  1.6250497 2.3940384  5.272021 0.7601546  5.868179 0.8418771
+#> 430 0.7148534  0.7148534        NA        NA 5.4786411  7.816309        NA
+#> 433 0.8109830  0.8109830        NA        NA 5.2343760 11.557750        NA
+#> 437 0.8412667  0.8412667        NA        NA 2.4015542  7.305064 5.9981247
+#> 439 2.8504330  2.8504330        NA        NA 5.6894334  4.489525 4.7539040
+#> 441 2.8504330  2.8504330        NA        NA 5.6894334  4.489525 4.7539040
+#> 443 1.9375683  1.9375683        NA        NA 2.2303608  8.455138 2.6705919
+#> 445 0.8217456  0.8217456        NA        NA 0.6120840 12.631560        NA
+#> 447 1.5447062  1.5447062        NA        NA 5.5743185 10.487248 6.1181961
+#> 450 1.2515303  1.2515303        NA        NA 1.2754451 11.225814 6.0753329
+#> 453 0.5794020  0.3418123 1.9158332 11.829012 0.9001452 11.750018        NA
+#> 454 0.5794020  0.3418123 1.9158332 11.829012 0.9001452 11.750018        NA
+#> 457 0.9890126  0.9890126        NA        NA 5.7470070  9.480314        NA
+#> 458 0.9890126  0.9890126        NA        NA 5.7470070  9.480314        NA
+#> 460 1.7150692  1.7150692        NA        NA 2.5095297  5.546443 2.3953832
+#> 461 0.6495001  0.6495001        NA        NA 2.5033097 11.843515        NA
+#> 464 0.6734981  0.6734981        NA        NA 2.8253294 11.249968        NA
+#> 465 0.8555082  0.8555082        NA        NA 4.6189505  7.934053 6.4142382
+#> 466 0.5824151  0.5824151        NA        NA 4.7196194 13.372298        NA
+#> 467 1.4382279  1.4382279        NA        NA 5.7829063 10.979115 6.4375378
+#> 468 0.8953279  0.8953279        NA        NA 5.4417552  8.646469 6.6200856
+#> 469 1.2353559  1.2353559 3.1550982  4.903797 1.3227556  5.673476 1.5114489
+#> 470 0.4869360  0.4869360        NA        NA 2.4936551 15.780050        NA
+#> 471 1.3494676  1.3494676        NA        NA 4.9812861  6.631962 5.4957409
+#> 473 1.3750723  1.3750723        NA        NA 2.2375015 14.669470        NA
+#> 475 1.2652916  1.2652916        NA        NA 5.1762835 13.253081        NA
+#> 476 0.9041080  0.9041080        NA        NA 0.8406026  7.948348 3.3682176
+#> 479 0.5719003  0.5719003        NA        NA 2.3476324 18.260754        NA
+#> 480 0.5719003  0.5719003        NA        NA 2.3476324 18.260754        NA
+#> 481 1.0913351  0.6057451 2.3988301 10.102904 1.1650959 10.248284        NA
+#> 482 1.8038011  1.8038011        NA        NA 3.1061545  6.328173 3.7267989
+#> 483 0.7929511  0.7929511        NA        NA 2.9478731  9.743279        NA
+#> 486 2.0494969  1.3828849 2.0444975  9.873982 5.2731825 11.242051 5.9137826
+#> 488 1.7795910  1.7795910        NA        NA 0.6267952  5.133676 0.3931901
+#> 490 1.5018619  1.5018619        NA        NA 0.7181485  7.883001 1.7061269
+#> 491 1.5018619  1.5018619        NA        NA 0.7181485  7.883001 1.7061269
+#> 492 0.9936782  0.9936782        NA        NA 5.6440554 10.841074        NA
+#> 493 0.7003740  0.7003740        NA        NA 2.3163527 16.575701        NA
+#> 494 1.6525193  1.6525193 1.5925756  5.174180 0.5751369  4.233156 0.4008074
+#> 495 0.5950246  0.5950246 3.0740721 10.519111 0.8381449 10.909025        NA
+#> 496 1.4582159  1.4582159        NA        NA 3.1350631  7.680595 3.1791194
+#> 498 0.7529821  0.7529821        NA        NA 2.0945933  8.905403        NA
+#> 499 0.7529821  0.7529821        NA        NA 2.0945933  8.905403        NA
+#> 500 1.9384481  1.3530192 2.2554363  2.496550 5.8011356  3.847010 0.7231269
+#> 501 1.9945506  1.1718772 2.0127634  9.659675 0.5750563 10.128055 6.1142017
+#> 502 1.1588701  1.1588701        NA        NA 3.0861609  7.464089 3.9623005
+#> 504 1.4049630  1.4049630        NA        NA 4.4260549  5.602646 4.5019378
+#> 505 1.6786893  1.1524342 2.0401909 12.025919 1.4522317 12.075055        NA
+#> 509 1.1207480  1.1207480        NA        NA 5.6739990 11.314837        NA
+#> 513 1.6477686  1.6477686        NA        NA 5.6272766  3.586008 4.4854464
+#> 514 1.6477686  1.6477686        NA        NA 5.6272766  3.586008 4.4854464
+#> 515 1.4557079  1.4557079        NA        NA 3.0303834  4.402824 1.7025240
+#> 517 2.7369191  2.7369191        NA        NA 5.8469929  5.645054 4.9467474
+#> 518 1.3259250  1.3259250 2.7907400  6.379267 0.6026376  7.244570 0.9306075
+#> 519 0.9527003  0.9527003        NA        NA 5.0802181 12.242515        NA
+#> 520 0.7702132  0.7702132        NA        NA 4.9509541  5.340189 6.0080600
+#> 521 1.2534643  0.8761367 1.7099772  4.490342 0.7375741  4.087043 0.5751990
+#> 522 1.2238207  1.2238207        NA        NA 6.0576628 11.870086 6.5680391
+#> 523 2.3341764  2.3341764        NA        NA 2.1622238 10.928227 4.9554389
+#> 525 0.8999648  0.8999648 1.2611850  4.217990 0.5657408  3.801510 0.4566400
+#> 526 1.2614322  1.2614322        NA        NA 2.8527457  3.500472 1.5548265
+#> 527 1.9460898  1.9460898 1.4500622  3.910806 0.4011651  4.874150 0.2639840
+#> 528 0.8116440  0.8116440        NA        NA 2.3482523 10.419075        NA
+#> 531 3.3631722  3.3631722        NA        NA 5.0398424  6.225849 5.0923826
+#> 534 1.5216846  1.0295037 1.8803822 10.071887 4.9758852 11.102445        NA
+#> 535 2.2285391  2.2285391        NA        NA 5.8914318  7.684056 5.5312271
+#> 540 3.1308885  3.1308885        NA        NA 3.8712302  5.561327 3.1637050
+#> 542 1.2090070  1.2090070 1.5821319  3.789952 0.6363127  4.486881 0.6282973
+#> 543 1.3570049  0.6941344 2.2981412 12.985739 1.3780037 13.117415        NA
+#> 544 1.4017054  1.4017054        NA        NA 5.0717760 11.966532 6.4927085
+#> 546 1.2344106  1.2344106        NA        NA 2.8051842  3.001640 1.3319009
+#> 547 2.6339438  2.6339438        NA        NA 5.2437498  3.509009 3.9184068
+#> 549 2.0801672  2.0801672 1.5956017  2.363039 0.4677758  3.432336 0.2651867
+#> 551 1.7353224  1.7353224        NA        NA 0.8742707  4.728587 0.3591303
+#> 552 3.1999446  3.1999446        NA        NA 2.5538772  4.216161 0.6182950
+#> 553 2.0616360  2.0616360        NA        NA 2.5250685  4.078962 1.0594414
+#> 554 1.5426292  1.5426292        NA        NA 5.9163079  4.160652 5.7105061
+#> 556 0.6086139  0.6086139        NA        NA 0.5237934  9.259982        NA
+#> 558 0.9495953  0.9495953        NA        NA 2.6312532  7.308597 4.8404495
+#> 559 1.3525467  0.9762831 1.8611164  8.973165 4.7863633  9.753361 6.4487178
+#> 561 1.1047895  1.1047895        NA        NA 5.0063684  5.890640 5.8855757
+#> 562 1.1047895  1.1047895        NA        NA 5.0063684  5.890640 5.8855757
+#> 565 0.7082924  0.7082924        NA        NA 0.8415993  8.580752        NA
+#> 566 1.1161200  1.1161200        NA        NA 0.7867886  6.733326 1.1989832
+#> 567 2.4773277  2.4773277        NA        NA 5.5764311  4.930684 4.8975036
+#> 569 1.5364463  1.5364463        NA        NA 2.8093253  5.938641 2.2820679
+#> 571 1.4460633  0.9619972 1.8081921  4.217660 5.0186649  3.142332 1.0034930
+#> 572 1.9620447  1.9620447        NA        NA 1.6083100  5.416645 1.6697987
+#> 573 1.2941718  1.2941718        NA        NA 2.5161241 12.209234 6.0040817
+#> 574 0.6072923  0.6072923        NA        NA 0.2013097  7.102537        NA
+#> 575 1.3284196  1.3284196        NA        NA 5.7071899  6.637866 5.6955727
+#> 577 1.6331559  0.9393843 2.2045847  4.838591 1.7413609  4.875934 1.2937236
+#> 579 2.7957572  2.7957572        NA        NA 3.0768950  3.650346 0.5581026
+#> 580 2.7957572  2.7957572        NA        NA 3.0768950  3.650346 0.5581026
+#> 581 1.0908882  1.0908882 3.5301455  6.762864 1.0281330  7.567542 1.9155915
+#> 583 1.1239704  1.1239704        NA        NA 4.2421167 16.376903        NA
+#> 585 1.0866179  1.0866179        NA        NA 5.4593968  6.426767 5.9394660
+#> 586 1.2818324  1.2818324 2.1464196  4.665653 0.7105856  5.459371 0.8008469
+#> 587 1.2818324  1.2818324 2.1464196  4.665653 0.7105856  5.459371 0.8008469
+#> 588 1.1820174  0.7790280 2.9011092 11.929683 1.8336510 12.003729        NA
+#> 590 3.5641413  3.5641413        NA        NA 2.2498351 13.038588 2.2008147
+#> 591 1.6381642  1.6381642        NA        NA 4.6149428  8.343102 5.7104719
+#> 593 1.5961529  1.5961529        NA        NA 5.2575129  3.447811 3.5740658
+#> 595 1.2637546  1.2637546        NA        NA 2.1014113  7.103232 3.9372516
+#> 596 2.4832543  1.3875575 2.6722696  7.051389 0.5554829  6.120341 0.6992043
+#> 597 1.8241896  1.8241896        NA        NA 4.2864651  4.812738 4.5279917
+#> 598 0.7835917  0.7835917        NA        NA 0.9822553  8.516488        NA
+#> 599 0.7835917  0.7835917        NA        NA 0.9822553  8.516488        NA
+#> 603 2.5521288  2.5521288        NA        NA 2.0314323  4.133559 0.8708476
+#> 604 1.4684527  0.7399295 2.7306565  9.440219 0.6335929  8.998999        NA
+#> 606 1.3048116  1.3048116        NA        NA 2.7359803 15.538588        NA
+#> 608 1.5003885  1.5003885        NA        NA 5.3399279  6.752960 5.8776276
+#> 610 1.5629901  1.5629901        NA        NA 5.8277486  3.386062 5.1779858
+#> 611 1.7713152  1.7713152        NA        NA 0.5680459  9.271025 1.2444712
+#> 612 0.7519149  0.7519149        NA        NA 5.3784638  9.779899        NA
+#> 614 0.7519149  0.7519149        NA        NA 5.3784638  9.779899        NA
+#> 615 0.7519149  0.7519149        NA        NA 5.3784638  9.779899        NA
+#> 616 1.1123253  1.1123253        NA        NA 2.4110229  5.515970 3.0471797
+#> 617 1.0347975  1.0347975        NA        NA 2.8121975  8.613401 6.0472213
+#> 618 3.0183770  1.7655821 2.1816572  2.983543 0.9510929  3.711516 0.4370000
+#> 619 3.0183770  1.7655821 2.1816572  2.983543 0.9510929  3.711516 0.4370000
+#> 620 2.0074095  2.0074095        NA        NA 5.6077502  3.361662 4.4929978
+#> 623 2.2144941  2.2144941 1.6229804  4.992113 1.0642503  3.281539 0.9871425
+#> 624 2.0734706  2.0734706        NA        NA 2.8650025  6.279761 1.7217797
+#> 626 1.7075076  1.7075076        NA        NA 3.9228053  5.531208 3.8287058
+#> 630 2.2773688  2.2773688        NA        NA 6.0081475  7.301299 5.8988929
+#> 631 1.6071190  1.6071190        NA        NA 3.9104454 11.564767 6.1083670
+#> 634 1.3536434  1.3536434        NA        NA 2.1742522  6.998808 3.2110326
+#> 641 1.4448595  1.4448595        NA        NA 0.4939544 13.007338 4.2861144
+#> 642 0.5907318  0.5907318        NA        NA 0.9251921 15.888375        NA
+#> 643 0.7444761  0.7444761        NA        NA 2.7449083 17.353863        NA
+#> 644 0.7667073  0.7667073        NA        NA 5.1501661 15.680364        NA
+#> 645 1.3303544  1.3303544        NA        NA 0.4900168 12.087363 4.9350083
+#> 646 0.8000254  0.8000254        NA        NA 5.1991367 15.898344        NA
+#>     BMR.xfold BMD.zSD.lower BMD.zSD.upper BMD.xfold.lower BMD.xfold.upper
+#> 1    6.609214    0.97850954     4.0686985             Inf             Inf
+#> 2    5.347706    0.20008806     1.1095586             Inf             Inf
+#> 5    7.073198    0.75185882     1.4649978             Inf             Inf
+#> 6    7.073198    0.75185882     1.4649978             Inf             Inf
+#> 7    7.073198    0.75185882     1.4649978             Inf             Inf
+#> 8    6.172119    0.05543773     0.6804425     0.561154372             Inf
+#> 9    5.588358    0.08095270     0.7936032     0.329293169             Inf
+#> 10   8.017772    0.42468408     1.0520363             Inf             Inf
+#> 11   6.181671    0.07579775     0.7005182             Inf             Inf
+#> 12   6.802633    0.03694799     0.4209217             Inf             Inf
+#> 13   5.820719    1.67433198     5.3037292             Inf             Inf
+#> 14   5.164472    1.25236329     2.8522870     7.563758934             Inf
+#> 16   5.863188    1.32631865     6.0595553     5.925234838             Inf
+#> 17   5.863188    1.32631865     6.0595553     5.925234838             Inf
+#> 18   5.465323    2.76071129     7.1933590     7.679066254             Inf
+#> 19   5.465323    2.76071129     7.1933590     7.679066254             Inf
+#> 20   5.465323    2.76071129     7.1933590     7.679066254             Inf
+#> 22   4.380763    0.36442365     2.2863213             Inf             Inf
+#> 23   4.380763    0.36442365     2.2863213             Inf             Inf
+#> 25   4.862095    1.87728956     5.7928776             Inf             Inf
+#> 26   4.425610    0.63687870     2.6421628     1.607320792             Inf
+#> 27   4.425610    0.63687870     2.6421628     1.607320792             Inf
+#> 28   4.425610    0.63687870     2.6421628     1.607320792             Inf
+#> 29   4.425610    0.63687870     2.6421628     1.607320792             Inf
+#> 30   4.425610    0.63687870     2.6421628     1.607320792             Inf
+#> 31   5.860923    0.37773418     3.4329037     2.120911243             Inf
+#> 32   5.860923    0.37773418     3.4329037     2.120911243             Inf
+#> 33   5.860923    0.37773418     3.4329037     2.120911243             Inf
+#> 34   5.860923    0.37773418     3.4329037     2.120911243             Inf
+#> 35   6.168631    0.24887531     4.0820798     2.791737594             Inf
+#> 36   6.168631    0.24887531     4.0820798     2.791737594             Inf
+#> 37   6.168631    0.24887531     4.0820798     2.791737594             Inf
+#> 39   6.168631    0.24887531     4.0820798     2.791737594             Inf
+#> 40   6.168631    0.24887531     4.0820798     2.791737594             Inf
+#> 41   6.168631    0.24887531     4.0820798     2.791737594             Inf
+#> 42   6.168631    0.24887531     4.0820798     2.791737594             Inf
+#> 43   6.168631    0.24887531     4.0820798     2.791737594             Inf
+#> 44   4.573695    0.32686514     3.1332891     5.738912687             Inf
+#> 46   6.316887    2.43380228     6.3223929             Inf             Inf
+#> 47   6.316887    2.43380228     6.3223929             Inf             Inf
+#> 48   4.940865    0.35799216     4.2882933     2.320483615             Inf
+#> 49   4.940865    0.35799216     4.2882933     2.320483615             Inf
+#> 50   4.940865    0.35799216     4.2882933     2.320483615             Inf
+#> 51   4.940865    0.35799216     4.2882933     2.320483615             Inf
+#> 52   5.737279    0.30086446     3.1833272     1.307410467             Inf
+#> 53   5.737279    0.30086446     3.1833272     1.307410467             Inf
+#> 54   5.737279    0.30086446     3.1833272     1.307410467             Inf
+#> 55   5.737279    0.30086446     3.1833272     1.307410467             Inf
+#> 56   5.737279    0.30086446     3.1833272     1.307410467             Inf
+#> 57   5.737279    0.30086446     3.1833272     1.307410467             Inf
+#> 58   5.177716    0.46124416     1.4873687             Inf             Inf
+#> 59   4.962470    1.03576992     3.6179409             Inf             Inf
+#> 60   4.962470    1.03576992     3.6179409             Inf             Inf
+#> 61   5.158766    0.48406738     1.2370211     0.808097974             Inf
+#> 62   5.158766    0.48406738     1.2370211     0.808097974             Inf
+#> 63   5.158766    0.48406738     1.2370211     0.808097974             Inf
+#> 64   5.158766    0.48406738     1.2370211     0.808097974             Inf
+#> 65   5.158766    0.48406738     1.2370211     0.808097974             Inf
+#> 67   6.677576    0.26644454     4.2871164             Inf             Inf
+#> 68   6.677576    0.26644454     4.2871164             Inf             Inf
+#> 69   6.677576    0.26644454     4.2871164             Inf             Inf
+#> 70   6.677576    0.26644454     4.2871164             Inf             Inf
+#> 71   5.840236    3.09334793     6.6162300     7.323353364             Inf
+#> 72   5.840236    3.09334793     6.6162300     7.323353364             Inf
+#> 73   5.840236    3.09334793     6.6162300     7.323353364             Inf
+#> 75   4.972785    0.63064808     4.7996149     5.945710618             Inf
+#> 76   4.972785    0.63064808     4.7996149     5.945710618             Inf
+#> 77   4.972785    0.63064808     4.7996149     5.945710618             Inf
+#> 79   5.236113    0.52106128     5.9739107     5.919751612             Inf
+#> 80   5.236113    0.52106128     5.9739107     5.919751612             Inf
+#> 81   5.980553    0.42901273     4.3080978     5.248292886             Inf
+#> 82   5.980553    0.42901273     4.3080978     5.248292886             Inf
+#> 83   5.980553    0.42901273     4.3080978     5.248292886             Inf
+#> 84   5.980553    0.42901273     4.3080978     5.248292886             Inf
+#> 85   9.765941    1.25476148     2.7589141     3.944767854             Inf
+#> 86  11.185391    0.24296501     0.8254193     2.323655028             Inf
+#> 87  11.170683    0.28244583     0.9252443     2.789277177             Inf
+#> 88  18.051589    2.64963205     5.5727686             Inf             Inf
+#> 91  11.653948    1.04939875     1.9503267             Inf             Inf
+#> 95  17.349849    1.99350628     5.0456881     6.137589248             Inf
+#> 99  13.184704    1.71972684     5.2546852             Inf             Inf
+#> 102  8.452213    1.52079518     3.8197300             Inf             Inf
+#> 103  7.959897    0.46760570     2.8942164     1.944016318             Inf
+#> 104  7.959897    0.46760570     2.8942164     1.944016318             Inf
+#> 106  6.609855    0.21744945     1.5471627     0.428071765       2.5957963
+#> 109 16.612407    1.54015368     3.7311047             Inf             Inf
+#> 110  9.268869    0.37327629     1.2105842     1.951273142             Inf
+#> 111  4.893943    0.66647676     1.8535634     0.596011289       1.4002372
+#> 115 13.532062    1.25523264     2.4785285     2.184471756       4.1050629
+#> 116  8.370532    2.62074447     6.1892385     6.399079578             Inf
+#> 117 19.057483    1.33538267     3.2723752             Inf             Inf
+#> 120 10.178300    0.49685136     4.8689356     0.720186659       5.3855908
+#> 121 11.774346    1.07799896     3.2324908     6.134109074             Inf
+#> 122 13.018466    0.65089363     1.4477020     4.613686534       5.6633468
+#> 123 11.262816    0.39650460     1.0210325     0.935884812       6.2063487
+#> 125 11.840420    1.64980574     4.7578654             Inf             Inf
+#> 127 16.661441    2.10623596     4.9747503             Inf             Inf
+#> 128 10.745467    0.45072040     4.9073419     5.535135720             Inf
+#> 129 13.115891    2.95611239     5.6794781     5.141147897       6.5072131
+#> 131  6.444924    0.37828212     3.9147635     0.641720795       4.6921648
+#> 132  6.444924    0.37828212     3.9147635     0.641720795       4.6921648
+#> 133  7.809562    0.28329273     0.9217664     0.371304357       1.0567280
+#> 134 12.192005    0.45119793     1.3369379             Inf             Inf
+#> 137 13.697747    2.88540036     6.0230168             Inf             Inf
+#> 140 12.424335    1.39985045     3.1165736             Inf             Inf
+#> 141 11.715823    0.46705147     4.3039298             Inf             Inf
+#> 142  9.550364    1.05386556     3.3648968     5.999140808             Inf
+#> 143  8.280927    1.21655973     3.4294082     2.333290039       4.5329127
+#> 147 16.074408    2.74155251     5.3503657             Inf             Inf
+#> 148 16.170012    1.72942685     4.9473537     6.574719043             Inf
+#> 149  8.613130    2.33640966     5.5962017     3.329265202       6.0213409
+#> 150  6.228886    1.30775683     3.0619063     2.633213483       5.1889529
+#> 152 11.281891    1.68457955     4.6751632     6.392129679             Inf
+#> 156  4.680233    1.62293691     5.9759268     1.316830682       3.9749306
+#> 157  8.874974    0.27525816     1.6705374     0.448004236       2.7783783
+#> 158 11.113667    1.07953096     2.3571861     4.876575034             Inf
+#> 161 12.091282    0.60384236     5.6978525             Inf             Inf
+#> 164 16.600846    0.48326750     1.0560307             Inf             Inf
+#> 165  9.457594    1.02570209     1.9393894     2.006597935       3.1213521
+#> 166 10.568354    0.76647179     5.2718059             Inf             Inf
+#> 167 12.039017    1.17918063     2.7286462             Inf             Inf
+#> 169  9.162234    0.96799087     1.9783744     3.147459144       5.1690481
+#> 170  8.642749    0.50907354     5.1415268     1.604331864             Inf
+#> 171  8.200742    1.50525257     3.4011695     1.955152886       3.7737373
+#> 172  8.200742    1.50525257     3.4011695     1.955152886       3.7737373
+#> 174  6.999308    0.53075189     4.6854038     0.666553386       5.0930986
+#> 178 10.396666    0.53046359     1.1464625     1.683797922             Inf
+#> 179 11.958109    1.14853940     2.4913773             Inf             Inf
+#> 180 12.563182    1.54875481     3.5028687             Inf             Inf
+#> 181 12.563182    1.54875481     3.5028687             Inf             Inf
+#> 183  7.409795    0.08183997     0.5980861     0.191250605       1.6257035
+#> 184  7.049409    1.75885065     4.3783442     2.228962042       5.6185328
+#> 185  7.049409    1.75885065     4.3783442     2.228962042       5.6185328
+#> 186  8.010933    2.93461899     6.0719877     5.699704509             Inf
+#> 188  4.584806    0.50278548     1.8172104     0.398838259       1.5901895
+#> 190 11.131602    0.58190671     1.6479060             Inf             Inf
+#> 193  3.345752    0.35654678     1.4592305     0.166561570       1.1565046
+#> 196 11.050749    0.43301683     0.8971572     0.740395116       1.2380754
+#> 197  7.936032    1.74049030     5.8493362     5.058661772             Inf
+#> 198  9.315398    1.73688931     5.1197523     5.388840084             Inf
+#> 199 11.305100    1.60498652     5.3246257     5.203053760             Inf
+#> 200 11.305100    1.60498652     5.3246257     5.203053760             Inf
+#> 201  8.688686    0.35183367     1.7316828     0.362628186       1.4953577
+#> 202  8.688686    0.35183367     1.7316828     0.362628186       1.4953577
+#> 203  8.688686    0.35183367     1.7316828     0.362628186       1.4953577
+#> 205 15.094411    0.22352954     1.1815352             Inf             Inf
+#> 207  3.519730    0.29910845     1.8306631     0.199774284       1.4325785
+#> 208  7.620460    0.57763293     5.4940389     1.085545152             Inf
+#> 211 12.775912    0.41079211     1.5942930             Inf             Inf
+#> 214  6.991935    0.36258894     1.5883451     0.452166289       1.6600473
+#> 215 11.356575    2.93270043     5.9633443     4.127378018       6.3349736
+#> 217  9.617183    1.66564175     4.0856814     6.348263101             Inf
+#> 218 11.997807    0.32329297     1.0469995     0.647250519       1.6091792
+#> 220  4.760624    1.37853596     3.1602333     1.011869465       2.2765836
+#> 221 11.830089    0.31337952     1.3891586             Inf             Inf
+#> 222 10.248211    1.43903732     3.7180841             Inf             Inf
+#> 225 10.579865    2.77040545     5.6067950             Inf             Inf
+#> 228 11.354430    0.48380870     1.5400128             Inf             Inf
+#> 229  9.806566    1.26495795     3.0819744     6.038177033             Inf
+#> 232  4.292819    0.40044672     6.5720202     0.372516223       5.9756156
+#> 233  4.292819    0.40044672     6.5720202     0.372516223       5.9756156
+#> 235 10.664641    0.31820753     1.5828158     1.301585711             Inf
+#> 236 12.010635    2.82937876     5.8296064     6.441719601             Inf
+#> 237 14.176242    2.74132244     5.6217506     6.059639702             Inf
+#> 238 14.176242    2.74132244     5.6217506     6.059639702             Inf
+#> 240 14.176242    2.74132244     5.6217506     6.059639702             Inf
+#> 242  6.179380    1.79369036     5.2099565     1.536556109       4.4694075
+#> 243 11.464039    0.45259236     0.9852054             Inf             Inf
+#> 245  9.140814    2.60802191     6.3443547     4.773931693             Inf
+#> 246  9.140814    2.60802191     6.3443547     4.773931693             Inf
+#> 248  7.699912    1.67808514     5.1396151     2.700837923             Inf
+#> 251 19.719388    1.32526215     3.0171899             Inf             Inf
+#> 252 19.719388    1.32526215     3.0171899             Inf             Inf
+#> 253 10.397567    0.27487668     0.8684603     1.202020409             Inf
+#> 255  4.536452    3.02720467     5.8125246     1.185965587       4.9408312
+#> 256 10.146508    0.34554032     1.8031346             Inf             Inf
+#> 257 10.058956    3.07025121     5.3715482     6.218567131             Inf
+#> 259 12.006209    1.26617938     2.6694875             Inf             Inf
+#> 260  5.843978    0.30500837     2.5122396     0.378730892       2.5190324
+#> 263 11.553591    1.79186086     4.7606571             Inf             Inf
+#> 265 10.512135    1.00581659     1.7217125     5.981752578             Inf
+#> 266  4.549637    0.11229115     1.1562790     0.089201977       0.6082146
+#> 270  7.935151    0.36344217     4.8271636     0.571262850       6.0547691
+#> 272  5.665327    1.54004500     3.3695645     1.714682866       3.6378978
+#> 274 11.742147    0.33666389     1.6530558             Inf             Inf
+#> 275 12.207078    2.02820057     5.2593819     6.170577485             Inf
+#> 276  6.266743    0.27957255     1.4053942     0.623857241       2.4264491
+#> 277  9.914290    1.67314034     4.8813673     6.260515221             Inf
+#> 279  6.021363    2.57101943     5.4991451     5.108155638       6.3704832
+#> 280  8.345108    2.69574649     5.3067808     5.531666056       6.4733040
+#> 282 12.073975    0.40904089     2.6783910     5.386193008             Inf
+#> 285  9.353255    0.52323314     5.1004381     6.448319399             Inf
+#> 286  4.044806    1.57343097     4.8340198     1.004095616       2.8864003
+#> 287  7.384116    1.60569926     3.5771123     4.539553747             Inf
+#> 288  7.384116    1.60569926     3.5771123     4.539553747             Inf
+#> 291  4.165686    1.61304816     4.7440724     2.054933805       4.8155223
+#> 293 10.806789    2.28426943     5.7598313             Inf             Inf
+#> 295  7.242857    1.83136398     4.8498220     6.283356411             Inf
+#> 296 11.222799    1.61923981     4.8209580     6.446861410             Inf
+#> 297 10.004959    1.75515628     4.9422872             Inf             Inf
+#> 298 10.004959    1.75515628     4.9422872             Inf             Inf
+#> 299  7.920161    2.73919695     5.6174409     4.537291440       6.2201378
+#> 301 13.841195    1.57349911     3.9836203             Inf             Inf
+#> 303  8.857838    1.45426811     3.6196180             Inf             Inf
+#> 305 11.680806    2.74748436     5.9480926     5.959090533             Inf
+#> 306 11.628496    1.31584676     3.3142276             Inf             Inf
+#> 307 11.628496    1.31584676     3.3142276             Inf             Inf
+#> 308  7.780480    0.29506317     3.0199956     4.254602701             Inf
+#> 312 10.951725    0.32210163     1.4464539             Inf             Inf
+#> 314  9.708470    0.31620212     1.3244315     0.720852189       2.8039243
+#> 317 11.200578    0.68145620     6.3611319     1.486068665             Inf
+#> 320  6.465456    0.51980328     5.7343561     0.917012370       6.5546099
+#> 321  6.465456    0.51980328     5.7343561     0.917012370       6.5546099
+#> 322  8.849025    0.14938717     1.0207350             Inf             Inf
+#> 327  4.452148    0.11967646     1.0401929     0.195348516       1.6577848
+#> 328  8.176794    2.15278536     5.5732310     3.537939516       6.1536307
+#> 330  9.245448    2.89498554     5.3843413     6.133839112             Inf
+#> 331 10.557257    0.77715707     1.4762641     5.166992021             Inf
+#> 332 10.557257    0.77715707     1.4762641     5.166992021             Inf
+#> 333  7.801578    0.93447304     2.7014552     2.315744699             Inf
+#> 336  3.987417    0.29731794     1.3828385     0.151027996       0.7370402
+#> 338 11.437571    1.50483906     3.0487558     5.435990512             Inf
+#> 339  3.170032    0.18131969     1.0088612     0.144550692       0.9361412
+#> 340  5.784045    0.52312717     5.1958248     1.581893139             Inf
+#> 341  3.132075    0.55429742     5.7718558     0.247759130       0.9522847
+#> 342  2.799031    1.79473176     5.9520232     0.518304035       1.9018699
+#> 343 12.302919    0.55519755     5.6084166             Inf             Inf
+#> 344  9.386265    0.41050756     2.0533236     2.060511247             Inf
+#> 346 10.639970    1.12797148     3.0911075     3.100615311       6.0301429
+#> 350  6.153925    2.53621646     5.9795879     2.919533786       6.0579747
+#> 354  6.170927    2.27138538     5.7358531     3.729207860       6.3344473
+#> 357  8.211528    2.17027304     4.7299005     2.748717002       5.1089096
+#> 358  6.401878    1.70642374     4.3812001     3.592866018       5.4785532
+#> 360  6.401878    1.70642374     4.3812001     3.592866018       5.4785532
+#> 361 10.315734    2.77164549     6.0800988     5.523600805             Inf
+#> 362 10.432780    0.42488885     1.3612369     0.950713483             Inf
+#> 364 11.015759    1.35631407     3.9482498     6.116495321             Inf
+#> 365 16.112188    1.51507954     3.7087226             Inf             Inf
+#> 368 12.513653    2.68685892     5.2631287     5.372229614       6.3760247
+#> 370  5.506560    0.38959091     2.2272543     0.503732566       2.2560210
+#> 372 12.262440    0.43168938     4.3245839     5.064185119             Inf
+#> 375 12.986136    2.72596759     5.7854763     5.147440713             Inf
+#> 376  6.613113    1.67497503     4.2608419     3.230241717             Inf
+#> 378 11.983534    2.80885642     6.0493796             Inf             Inf
+#> 379 10.044223    0.39958196     2.7913521             Inf             Inf
+#> 380  9.484078    3.19121913     6.0330978     5.757855434             Inf
+#> 384  6.947876    0.83900191     2.4495022     1.324503954       3.0764073
+#> 386 11.062375    1.39139459     2.7623036             Inf             Inf
+#> 387 11.062375    1.39139459     2.7623036             Inf             Inf
+#> 389  5.626303    2.38471036     5.6950050     1.252120890       5.0100759
+#> 391  7.534332    1.43162683     3.9766076     5.881437620             Inf
+#> 394  8.473869    1.59053072     4.8455224     6.493876912             Inf
+#> 395 11.419236    0.91299791     2.4019524     5.236758636       6.0300079
+#> 397  6.007350    0.47269962     6.1399990     0.441645392       1.9386531
+#> 399  7.386885    0.58678810     4.9024458             Inf             Inf
+#> 401  8.406459    0.41247948     1.9597416     1.808817338             Inf
+#> 404 11.704820    2.30323194     5.5256078             Inf             Inf
+#> 405  5.359396    1.48802589     3.7982782     1.854106107       4.4410965
+#> 408 11.472711    0.49209232     4.7797975             Inf             Inf
+#> 409  9.824131    1.37232930     4.1176062     3.397031389       5.6597211
+#> 410  9.750089    2.67782583     5.6571666     6.277773208             Inf
+#> 411 14.077228    0.55214614     5.2737085     0.835070682             Inf
+#> 414  7.446790    1.54644313     3.7563391     4.675890098             Inf
+#> 416 16.048153    0.57103992     5.7120187             Inf             Inf
+#> 419  9.154518    3.01643160     5.7582422     4.454667912       6.2076045
+#> 420  9.282633    2.59941851     5.8239482     4.994810496             Inf
+#> 422  4.353907    1.08136166     2.2450742     0.537628909       1.0784105
+#> 427  5.813539    0.44049003     1.2312424     0.600531494       1.3655704
+#> 428  5.813539    0.44049003     1.2312424     0.600531494       1.3655704
+#> 430  8.294884    3.11003882     5.9115909     5.959748471             Inf
+#> 433 10.591996    2.95429136     5.5813685             Inf             Inf
+#> 437  6.848772    1.53954471     3.7611556     4.431727423             Inf
+#> 439  3.843277    2.73897612     5.8700482     1.077465424       5.0228002
+#> 441  3.843277    2.73897612     5.8700482     1.077465424       5.0228002
+#> 443  8.583773    1.55012771     3.4384422     2.006763926       4.3319657
+#> 445 11.635874    0.24885181     1.7730190             Inf             Inf
+#> 447 10.861058    2.67167471     6.0475253     4.118430525       6.5466679
+#> 450 10.319887    0.89713656     1.6364676     5.143636334             Inf
+#> 453 10.432280    0.49291097     4.8114751             Inf             Inf
+#> 454 10.432280    0.49291097     4.8114751             Inf             Inf
+#> 457  8.924420    2.95397705     6.1224920     5.862093858             Inf
+#> 458  8.924420    2.95397705     6.1224920     5.862093858             Inf
+#> 460  5.575966    1.51555559     4.1284671     1.763094570       3.8398589
+#> 461 12.758150    1.49781631     4.2006366             Inf             Inf
+#> 464 10.383239    1.67750256     5.1249891             Inf             Inf
+#> 465  8.406276    2.26344376     5.5834726     5.190863194             Inf
+#> 466 12.247232    2.47216394     5.8384901             Inf             Inf
+#> 467 10.370996    2.98412616     5.8970326     5.436215750             Inf
+#> 468  7.937128    3.14646412     5.5666368     6.350040973             Inf
+#> 469  5.525237    0.67558337     2.1715428     0.883026937       2.2991852
+#> 470 17.156626    1.53615953     4.1273934             Inf             Inf
+#> 471  6.449810    2.44381942     5.9263373     3.362335705       6.2025526
+#> 473 15.626026    1.37851705     3.3887887     4.957730063             Inf
+#> 475 14.012261    2.57284026     6.0635216     5.596013765             Inf
+#> 476  8.390585    0.35181993     1.9120592     1.372831217             Inf
+#> 479 16.616906    1.55051252     3.5295052             Inf             Inf
+#> 480 16.616906    1.55051252     3.5295052             Inf             Inf
+#> 481 11.647343    0.59290513     5.3000812             Inf             Inf
+#> 482  6.476746    1.49174316     4.6941363     2.091069038       5.2154405
+#> 483 10.329842    1.75332519     5.0613449     5.435643045             Inf
+#> 486 11.594653    0.62508123     5.7068993     1.327086711             Inf
+#> 488  4.922630    0.20461711     1.6845815     0.139945658       1.2568975
+#> 490  7.477196    0.32356830     1.4338426     0.971756751       3.0973018
+#> 491  7.477196    0.32356830     1.4338426     0.971756751       3.0973018
+#> 492 11.411100    2.93033518     6.1810802     5.558239912             Inf
+#> 493 15.138321    1.51510806     3.7392715             Inf             Inf
+#> 494  3.873826    0.18220941     1.0969609     0.091699534       0.8486895
+#> 495 12.225549    0.37518670     1.5715812             Inf             Inf
+#> 496  7.690283    1.92555525     5.6517887     2.146849617       6.0728723
+#> 498  9.534307    1.36558810     3.0277098     5.762503096             Inf
+#> 499  9.534307    1.36558810     3.0277098     5.762503096             Inf
+#> 500  2.773781    0.65667378     6.2902176     0.373623234       3.3879709
+#> 501 11.530584    0.33731937     0.9197975     1.508058972             Inf
+#> 502  7.617208    1.89109990     5.3403262     2.591205923             Inf
+#> 504  5.621811    2.21981342     5.6568219     2.434121632       5.6965397
+#> 505 13.807391    0.56359317     5.2624212     5.795155090             Inf
+#> 509 10.490827    3.02457964     5.8110892     6.145402448             Inf
+#> 513  3.142488    2.82669704     6.1106136     1.280102495       5.2509376
+#> 514  3.142488    2.82669704     6.1106136     1.280102495       5.2509376
+#> 515  4.111318    1.69251190     5.7986233     1.068040105       3.3844872
+#> 517  4.913670    2.50987504     6.1097889     1.020668794       5.2178549
+#> 518  6.934673    0.18681863     1.2570076     0.472633948       1.7840523
+#> 519 13.060251    2.75999567     5.7929246     6.338097788             Inf
+#> 520  5.599368    2.23211655     5.7085379     4.411957201       6.4752810
+#> 521  3.975625    0.46888113     3.5368956     0.412540372       2.2564088
+#> 522 12.413718    3.13307067     6.1573656     5.357729276             Inf
+#> 523 10.059264    1.30750373     3.0842068     4.408059421       5.4651710
+#> 525  3.649828    0.07147828     1.0011930     0.048498052       0.8778772
+#> 526  3.253565    1.66602930     4.7801024     1.004363597       2.7209529
+#> 527  5.271207    0.01267481     1.1158721     0.007461455       0.7837629
+#> 528 11.144810    1.49647165     3.5311407     6.064214526             Inf
+#> 531  6.189467    3.29076592     5.3622969     3.470973856       5.4352797
+#> 534 11.620474    0.57587075     5.6502320     1.732666151             Inf
+#> 535  7.360651    3.25243304     6.1717262     2.147243007       5.7371913
+#> 540  5.311273    2.09802632     5.1109137     1.458393435       4.7290176
+#> 542  4.499063    0.23982321     0.9989047     0.284675115       1.0044222
+#> 543 15.013470    0.65235594     6.4260092     6.453090944             Inf
+#> 544 11.053088    2.83893468     5.4797507     6.000722553             Inf
+#> 546  2.727377    1.63856489     5.0203541     0.849091855       2.7034316
+#> 547  2.950722    2.72792323     5.7943095     0.996722114       4.8068402
+#> 549  3.998886    0.05399315     1.2442471     0.014320654       0.6768693
+#> 551  4.314200    0.27996824     2.9680621     0.123733758       1.4896918
+#> 552  3.282101    1.41586955     4.2784519     0.347847946       1.0906435
+#> 553  3.623286    1.47301680     4.2390445     0.687419859       1.8230891
+#> 554  4.303831    3.07905725     6.0763029     2.724727869       5.8528389
+#> 556  9.871577    0.16711640     2.2687004     3.193289198             Inf
+#> 558  7.624966    1.63151673     4.5223468     3.363446161             Inf
+#> 559 10.284372    0.59329962     5.2313257     5.176477559             Inf
+#> 561  5.582769    2.66774103     5.5482430     4.568013933       6.2629489
+#> 562  5.582769    2.66774103     5.5482430     4.568013933       6.2629489
+#> 565  7.922913    0.35369329     1.9728850     5.976877847             Inf
+#> 566  6.894596    0.27440127     2.3879979     0.444798465       4.1009270
+#> 567  4.510380    3.04662568     5.8599969     1.798504986       5.3875293
+#> 569  5.816472    1.52421746     4.8285511     1.473564631       3.9997281
+#> 571  4.106953    0.64467381     5.9696696     0.448604431       4.9243516
+#> 572  5.434839    1.14264286     2.0822884     1.309733690       2.2514858
+#> 573 12.889978    1.48412235     4.3165892     4.269357714             Inf
+#> 574  7.540718    0.07897595     0.5722466     0.563141265             Inf
+#> 575  6.631907    2.89367417     6.1680412     3.315818503       6.2557758
+#> 577  4.979126    0.65520412     6.2161646     0.688726137       5.5777863
+#> 579  2.588375    1.71979781     5.8334366     0.292697242       1.3384842
+#> 580  2.588375    1.71979781     5.8334366     0.292697242       1.3384842
+#> 581  7.068377    0.58618031     1.5088144     1.409797613       2.6648659
+#> 583 17.733195    2.39865845     5.2992829             Inf             Inf
+#> 585  6.239645    2.80289650     6.1722055     3.950276091             Inf
+#> 586  5.352737    0.31331655     1.2981207     0.454482941       1.4204213
+#> 587  5.352737    0.31331655     1.2981207     0.454482941       1.4204213
+#> 588 13.565940    0.45906313     4.8255941             Inf             Inf
+#> 590 13.012239    1.42463855     3.5561543     1.534388758       3.5978054
+#> 591  8.805313    2.83479706     5.2682879     4.675475928       6.0753703
+#> 593  2.980407    2.37205969     6.2112758     1.061635135       5.0651393
+#> 595  6.753352    1.23459866     3.1105371     3.053248092       5.6494469
+#> 596  6.230214    0.34643538     0.7061183     0.537200768       1.0041140
+#> 597  4.740045    2.16859102     5.3652514     2.729597152       5.5368126
+#> 598  9.029268    0.38133494     2.3607272     1.910081924             Inf
+#> 599  9.029268    0.38133494     2.3607272     1.910081924             Inf
+#> 603  3.686875    1.29618555     3.0446474     0.632688925       1.4249475
+#> 604  7.830261    0.38533255     0.8633687     1.665082423             Inf
+#> 606 16.500239    1.43708766     4.9137897     5.328617842             Inf
+#> 608  6.458822    2.75629900     5.7006541     4.245740698       6.1784483
+#> 610  3.062052    3.04378438     6.0023852     1.537420079       5.4386620
+#> 611  9.677450    0.25304437     1.2327338     0.630969777       2.7434432
+#> 612 10.538488    3.21741886     5.6953260     6.601291694             Inf
+#> 614 10.538488    3.21741886     5.6953260     6.601291694             Inf
+#> 615 10.538488    3.21741886     5.6953260     6.601291694             Inf
+#> 616  5.622682    1.54405416     3.9836789     2.208028998       5.2513390
+#> 617  9.239567    1.42731619     4.4521191     5.208723101             Inf
+#> 618  4.274213    0.56990952     5.7413732     0.323578135       0.7493740
+#> 619  4.274213    0.56990952     5.7413732     0.323578135       0.7493740
+#> 620  2.864603    2.80741209     6.0552893     1.044011927       5.0611838
+#> 623  3.055381    0.60165852     1.1093746     0.524417704       1.0267987
+#> 624  5.922283    1.71616519     5.0135594     1.113832033       3.2169318
+#> 626  5.507754    1.98395938     5.4333538     1.954210759       5.5281589
+#> 630  7.436280    2.99251277     6.0940883     2.959495418       5.9721761
+#> 631 10.694167    2.10569740     5.1906991     5.449552006       6.5326155
+#> 634  7.210455    1.25345804     3.2662254     2.404386300       4.8405299
+#> 641 12.014582    0.23273791     0.8898776     2.227135223             Inf
+#> 642 17.229744    0.36546453     2.4410258             Inf             Inf
+#> 643 18.750255    1.63965480     4.8149657             Inf             Inf
+#> 644 17.085796    3.03104811     5.4289920             Inf             Inf
+#> 645 11.110192    0.27124408     0.8292255     2.915067056             Inf
+#> 646 17.312389    2.97458678     5.4604316             Inf             Inf
+#>     nboot.successful                                  path_class
+#> 1               1000                            Lipid metabolism
+#> 2                957                            Lipid metabolism
+#> 5               1000 Biosynthesis of other secondary metabolites
+#> 6               1000                          Membrane transport
+#> 7               1000                         Signal transduction
+#> 8                648                            Lipid metabolism
+#> 9                620                            Lipid metabolism
+#> 10               872                            Lipid metabolism
+#> 11               909                            Lipid metabolism
+#> 12               565                            Lipid metabolism
+#> 13              1000                            Lipid metabolism
+#> 14              1000                            Lipid metabolism
+#> 16              1000                          Membrane transport
+#> 17              1000                         Signal transduction
+#> 18               718                       Amino acid metabolism
+#> 19               718 Biosynthesis of other secondary metabolites
+#> 20               718                                 Translation
+#> 22               975                          Membrane transport
+#> 23               975                         Signal transduction
+#> 25               938                          Membrane transport
+#> 26               962                       Amino acid metabolism
+#> 27               962             Metabolism of other amino acids
+#> 28               962 Biosynthesis of other secondary metabolites
+#> 29               962                                 Translation
+#> 30               962                          Membrane transport
+#> 31               979                       Amino acid metabolism
+#> 32               979 Biosynthesis of other secondary metabolites
+#> 33               979                                 Translation
+#> 34               979                          Membrane transport
+#> 35               851                       Amino acid metabolism
+#> 36               851             Metabolism of other amino acids
+#> 37               851                            Lipid metabolism
+#> 39               851                           Energy metabolism
+#> 40               851                                 Translation
+#> 41               851 Biosynthesis of other secondary metabolites
+#> 42               851                          Membrane transport
+#> 43               851                         Signal transduction
+#> 44              1000                       Amino acid metabolism
+#> 46               859                           Energy metabolism
+#> 47               859                         Signal transduction
+#> 48               833                       Amino acid metabolism
+#> 49               833             Metabolism of other amino acids
+#> 50               833 Biosynthesis of other secondary metabolites
+#> 51               833                          Membrane transport
+#> 52               890                       Amino acid metabolism
+#> 53               890             Metabolism of other amino acids
+#> 54               890                           Energy metabolism
+#> 55               890                                 Translation
+#> 56               890                          Membrane transport
+#> 57               890                         Signal transduction
+#> 58               940                       Amino acid metabolism
+#> 59              1000                            Lipid metabolism
+#> 60              1000                       Amino acid metabolism
+#> 61               635                       Amino acid metabolism
+#> 62               635             Metabolism of other amino acids
+#> 63               635 Biosynthesis of other secondary metabolites
+#> 64               635                                 Translation
+#> 65               635                          Membrane transport
+#> 67               820                       Amino acid metabolism
+#> 68               820             Metabolism of other amino acids
+#> 69               820 Biosynthesis of other secondary metabolites
+#> 70               820                          Membrane transport
+#> 71               722                           Energy metabolism
+#> 72               722                          Membrane transport
+#> 73               722                         Signal transduction
+#> 75               953                       Amino acid metabolism
+#> 76               953                            Lipid metabolism
+#> 77               953                           Energy metabolism
+#> 79               962                       Amino acid metabolism
+#> 80               962                         Signal transduction
+#> 81               998                       Amino acid metabolism
+#> 82               998             Metabolism of other amino acids
+#> 83               998                                 Translation
+#> 84               998                          Membrane transport
+#> 85               500                           Energy metabolism
+#> 86               497                       Nucleotide metabolism
+#> 87               495                       Nucleotide metabolism
+#> 88               332                                 Translation
+#> 91               500                           Energy metabolism
+#> 95               469                                 Translation
+#> 99               500                       Amino acid metabolism
+#> 102              500                            Lipid metabolism
+#> 103              443             Metabolism of other amino acids
+#> 104              443                       Amino acid metabolism
+#> 106              491                                 Translation
+#> 109              500                           Energy metabolism
+#> 110              417                            Lipid metabolism
+#> 111              395                            Lipid metabolism
+#> 115              500                           Energy metabolism
+#> 116              353                       Nucleotide metabolism
+#> 117              500                                 Translation
+#> 120              492                                 Translation
+#> 121              483                       Nucleotide metabolism
+#> 122              498                           Energy metabolism
+#> 123              304                          Membrane transport
+#> 125              500                       Nucleotide metabolism
+#> 127              481                                 Translation
+#> 128              291                       Amino acid metabolism
+#> 129              279                         Signal transduction
+#> 131              483             Metabolism of other amino acids
+#> 132              483                       Amino acid metabolism
+#> 133              497                                 Translation
+#> 134              405             Metabolism of other amino acids
+#> 137              253                       Amino acid metabolism
+#> 140              500                                 Translation
+#> 141              481                            Lipid metabolism
+#> 142              500                       Amino acid metabolism
+#> 143              499                                 Translation
+#> 147              363                       Amino acid metabolism
+#> 148              500                                 Translation
+#> 149              393                       Amino acid metabolism
+#> 150              500             Metabolism of other amino acids
+#> 152              500                                 Translation
+#> 156              500                            Lipid metabolism
+#> 157              487                          Membrane transport
+#> 158              500                       Amino acid metabolism
+#> 161              439    Metabolism of terpenoids and polyketides
+#> 164              423                           Energy metabolism
+#> 165              500                           Energy metabolism
+#> 166              261                         Signal transduction
+#> 167              500                                 Translation
+#> 169              500                       Nucleotide metabolism
+#> 170              466                         Signal transduction
+#> 171              500                       Amino acid metabolism
+#> 172              500             Metabolism of other amino acids
+#> 174              359                                 Translation
+#> 178              336                       Nucleotide metabolism
+#> 179              500                                 Translation
+#> 180              500             Metabolism of other amino acids
+#> 181              500                       Nucleotide metabolism
+#> 183              478                       Nucleotide metabolism
+#> 184              500             Metabolism of other amino acids
+#> 185              500                       Amino acid metabolism
+#> 186              295                       Nucleotide metabolism
+#> 188              482    Metabolism of terpenoids and polyketides
+#> 190              344                                 Translation
+#> 193              483                          Membrane transport
+#> 196              498                    Transport and catabolism
+#> 197              500                           Energy metabolism
+#> 198              500    Metabolism of terpenoids and polyketides
+#> 199              500                       Amino acid metabolism
+#> 200              500                           Energy metabolism
+#> 201              476                           Energy metabolism
+#> 202              476             Metabolism of other amino acids
+#> 203              476                       Amino acid metabolism
+#> 205              496                            Lipid metabolism
+#> 207              479                           Energy metabolism
+#> 208              260                       Amino acid metabolism
+#> 211              493                                 Translation
+#> 214              494                                 Translation
+#> 215              305                           Energy metabolism
+#> 217              500                           Energy metabolism
+#> 218              497                            Lipid metabolism
+#> 220              500                           Energy metabolism
+#> 221              279                                 Translation
+#> 222              500                            Lipid metabolism
+#> 225              317                                 Translation
+#> 228              261                       Nucleotide metabolism
+#> 229              500                       Amino acid metabolism
+#> 232              415                       Amino acid metabolism
+#> 233              415             Metabolism of other amino acids
+#> 235              480                       Nucleotide metabolism
+#> 236              251                            Lipid metabolism
+#> 237              336                       Amino acid metabolism
+#> 238              336             Metabolism of other amino acids
+#> 240              336                           Energy metabolism
+#> 242              500                         Signal transduction
+#> 243              333                    Transport and catabolism
+#> 245              315                       Nucleotide metabolism
+#> 246              315             Metabolism of other amino acids
+#> 248              500                                 Translation
+#> 251              500                           Energy metabolism
+#> 252              500    Metabolism of terpenoids and polyketides
+#> 253              499                       Nucleotide metabolism
+#> 255              275                            Lipid metabolism
+#> 256              479                          Membrane transport
+#> 257              293                            Lipid metabolism
+#> 259              500                            Lipid metabolism
+#> 260              473                                 Translation
+#> 263              500                       Amino acid metabolism
+#> 265              500                            Lipid metabolism
+#> 266              446    Metabolism of terpenoids and polyketides
+#> 270              303                                 Translation
+#> 272              500                           Energy metabolism
+#> 274              468                           Energy metabolism
+#> 275              454    Metabolism of terpenoids and polyketides
+#> 276              491    Metabolism of terpenoids and polyketides
+#> 277              500                           Energy metabolism
+#> 279              370                       Amino acid metabolism
+#> 280              376                       Amino acid metabolism
+#> 282              441                            Lipid metabolism
+#> 285              415                                 Translation
+#> 286              500                                 Translation
+#> 287              500                           Energy metabolism
+#> 288              500                       Amino acid metabolism
+#> 291              500    Metabolism of terpenoids and polyketides
+#> 293              377    Metabolism of terpenoids and polyketides
+#> 295              500                                 Translation
+#> 296              483                            Lipid metabolism
+#> 297              500                         Signal transduction
+#> 298              500                            Lipid metabolism
+#> 299              326                       Amino acid metabolism
+#> 301              500             Metabolism of other amino acids
+#> 303              500                                 Translation
+#> 305              275    Metabolism of terpenoids and polyketides
+#> 306              500             Metabolism of other amino acids
+#> 307              500                       Amino acid metabolism
+#> 308              498                       Amino acid metabolism
+#> 312              491                    Transport and catabolism
+#> 314              497                       Amino acid metabolism
+#> 317              360                            Lipid metabolism
+#> 320              297                           Energy metabolism
+#> 321              297                       Amino acid metabolism
+#> 322              483                           Energy metabolism
+#> 327              474                       Nucleotide metabolism
+#> 328              414                       Amino acid metabolism
+#> 330              335                       Amino acid metabolism
+#> 331              500                            Lipid metabolism
+#> 332              500                         Signal transduction
+#> 333              494                            Lipid metabolism
+#> 336              464                                 Translation
+#> 338              500    Metabolism of terpenoids and polyketides
+#> 339              488                                 Translation
+#> 340              388                                 Translation
+#> 341              403                    Transport and catabolism
+#> 342              500                         Signal transduction
+#> 343              439                       Amino acid metabolism
+#> 344              469                       Nucleotide metabolism
+#> 346              500             Metabolism of other amino acids
+#> 350              371                       Amino acid metabolism
+#> 354              385                       Nucleotide metabolism
+#> 357              476                            Lipid metabolism
+#> 358              499                            Lipid metabolism
+#> 360              499                       Amino acid metabolism
+#> 361              291                       Nucleotide metabolism
+#> 362              487                            Lipid metabolism
+#> 364              500                       Nucleotide metabolism
+#> 365              500                           Energy metabolism
+#> 368              399                           Energy metabolism
+#> 370              465                    Transport and catabolism
+#> 372              406             Metabolism of other amino acids
+#> 375              330                    Transport and catabolism
+#> 376              500                                 Translation
+#> 378              318                            Lipid metabolism
+#> 379              436                       Amino acid metabolism
+#> 380              252                           Energy metabolism
+#> 384              490                                 Translation
+#> 386              500                       Amino acid metabolism
+#> 387              500                           Energy metabolism
+#> 389              345             Metabolism of other amino acids
+#> 391              500                            Lipid metabolism
+#> 394              475                                 Translation
+#> 395              500                       Amino acid metabolism
+#> 397              300                                 Translation
+#> 399              466                    Transport and catabolism
+#> 401              413                           Energy metabolism
+#> 404              396                            Lipid metabolism
+#> 405              500    Metabolism of terpenoids and polyketides
+#> 408              303             Metabolism of other amino acids
+#> 409              497                       Amino acid metabolism
+#> 410              352                                 Translation
+#> 411              480                           Energy metabolism
+#> 414              500                           Energy metabolism
+#> 416              385                            Lipid metabolism
+#> 419              266                    Transport and catabolism
+#> 420              303                                 Translation
+#> 422              500                           Energy metabolism
+#> 427              336                            Lipid metabolism
+#> 428              336                       Amino acid metabolism
+#> 430              317                          Membrane transport
+#> 433              311                           Energy metabolism
+#> 437              500                                 Translation
+#> 439              261                       Amino acid metabolism
+#> 441              261                            Lipid metabolism
+#> 443              500                            Lipid metabolism
+#> 445              485             Metabolism of other amino acids
+#> 447              291                                 Translation
+#> 450              500                           Energy metabolism
+#> 453              486                                 Translation
+#> 454              486                         Signal transduction
+#> 457              282                         Signal transduction
+#> 458              282                    Transport and catabolism
+#> 460              500                          Membrane transport
+#> 461              500                                 Translation
+#> 464              500                            Lipid metabolism
+#> 465              420                       Amino acid metabolism
+#> 466              375                           Energy metabolism
+#> 467              298                           Energy metabolism
+#> 468              265                                 Translation
+#> 469              489                                 Translation
+#> 470              500                                 Translation
+#> 471              377                           Energy metabolism
+#> 473              500                                 Translation
+#> 475              366                    Transport and catabolism
+#> 476              473             Metabolism of other amino acids
+#> 479              500                           Energy metabolism
+#> 480              500                         Signal transduction
+#> 481              336                            Lipid metabolism
+#> 482              488                                 Translation
+#> 483              500                                 Translation
+#> 486              384                                 Translation
+#> 488              484             Metabolism of other amino acids
+#> 490              490                          Membrane transport
+#> 491              490                           Energy metabolism
+#> 492              306                    Transport and catabolism
+#> 493              500                           Energy metabolism
+#> 494              492                          Membrane transport
+#> 495              493                            Lipid metabolism
+#> 496              500                                 Translation
+#> 498              500                       Amino acid metabolism
+#> 499              500             Metabolism of other amino acids
+#> 500              271                                 Translation
+#> 501              499             Metabolism of other amino acids
+#> 502              500                                 Translation
+#> 504              431                           Energy metabolism
+#> 505              385                                 Translation
+#> 509              276                       Amino acid metabolism
+#> 513              309                          Membrane transport
+#> 514              309                         Signal transduction
+#> 515              500                                 Translation
+#> 517              289                       Amino acid metabolism
+#> 518              498                                 Translation
+#> 519              360                          Membrane transport
+#> 520              366                           Energy metabolism
+#> 521              497                                 Translation
+#> 522              256                           Energy metabolism
+#> 523              500                           Energy metabolism
+#> 525              472                                 Translation
+#> 526              500                                 Translation
+#> 527              461                                 Translation
+#> 528              500                                 Translation
+#> 531              334                            Lipid metabolism
+#> 534              434             Metabolism of other amino acids
+#> 535              293                       Amino acid metabolism
+#> 540              461             Metabolism of other amino acids
+#> 542              490                                 Translation
+#> 543              405                           Energy metabolism
+#> 544              332                           Energy metabolism
+#> 546              500                            Lipid metabolism
+#> 547              351                            Lipid metabolism
+#> 549              483    Metabolism of terpenoids and polyketides
+#> 551              464                          Membrane transport
+#> 552              500                    Transport and catabolism
+#> 553              500    Metabolism of terpenoids and polyketides
+#> 554              266                       Nucleotide metabolism
+#> 556              456                           Energy metabolism
+#> 558              500                       Amino acid metabolism
+#> 559              423                                 Translation
+#> 561              357                            Lipid metabolism
+#> 562              357                       Amino acid metabolism
+#> 565              481                                 Translation
+#> 566              470                       Amino acid metabolism
+#> 567              268                    Transport and catabolism
+#> 569              500                            Lipid metabolism
+#> 571              448                       Nucleotide metabolism
+#> 572              500                                 Translation
+#> 573              500                            Lipid metabolism
+#> 574              391                            Lipid metabolism
+#> 575              301                       Amino acid metabolism
+#> 577              371                       Nucleotide metabolism
+#> 579              500                          Membrane transport
+#> 580              500                         Signal transduction
+#> 581              500                                 Translation
+#> 583              433                                 Translation
+#> 585              324                       Amino acid metabolism
+#> 586              493                    Transport and catabolism
+#> 587              493                          Membrane transport
+#> 588              275                                 Translation
+#> 590              500                           Energy metabolism
+#> 591              368                       Amino acid metabolism
+#> 593              343             Metabolism of other amino acids
+#> 595              500                       Amino acid metabolism
+#> 596              332                           Energy metabolism
+#> 597              440                       Nucleotide metabolism
+#> 598              452                         Signal transduction
+#> 599              452                            Lipid metabolism
+#> 603              500                            Lipid metabolism
+#> 604              250                       Nucleotide metabolism
+#> 606              500                           Energy metabolism
+#> 608              301                       Nucleotide metabolism
+#> 610              280                       Nucleotide metabolism
+#> 611              494    Metabolism of terpenoids and polyketides
+#> 612              283                            Lipid metabolism
+#> 614              283             Metabolism of other amino acids
+#> 615              283                       Amino acid metabolism
+#> 616              500                       Amino acid metabolism
+#> 617              491                            Lipid metabolism
+#> 618              461                            Lipid metabolism
+#> 619              461                       Amino acid metabolism
+#> 620              312                       Nucleotide metabolism
+#> 623              251                            Lipid metabolism
+#> 624              500                           Energy metabolism
+#> 626              462                            Lipid metabolism
+#> 630              264                       Nucleotide metabolism
+#> 631              460                       Amino acid metabolism
+#> 634              500                       Amino acid metabolism
+#> 641              496                       Nucleotide metabolism
+#> 642              450                                 Translation
+#> 643              500                                 Translation
+#> 644              296                                 Translation
+#> 645              497                       Nucleotide metabolism
+#> 646              305                                 Translation
+#>     molecular.level
+#> 1       metabolites
+#> 2       metabolites
+#> 5       metabolites
+#> 6       metabolites
+#> 7       metabolites
+#> 8       metabolites
+#> 9       metabolites
+#> 10      metabolites
+#> 11      metabolites
+#> 12      metabolites
+#> 13      metabolites
+#> 14      metabolites
+#> 16      metabolites
+#> 17      metabolites
+#> 18      metabolites
+#> 19      metabolites
+#> 20      metabolites
+#> 22      metabolites
+#> 23      metabolites
+#> 25      metabolites
+#> 26      metabolites
+#> 27      metabolites
+#> 28      metabolites
+#> 29      metabolites
+#> 30      metabolites
+#> 31      metabolites
+#> 32      metabolites
+#> 33      metabolites
+#> 34      metabolites
+#> 35      metabolites
+#> 36      metabolites
+#> 37      metabolites
+#> 39      metabolites
+#> 40      metabolites
+#> 41      metabolites
+#> 42      metabolites
+#> 43      metabolites
+#> 44      metabolites
+#> 46      metabolites
+#> 47      metabolites
+#> 48      metabolites
+#> 49      metabolites
+#> 50      metabolites
+#> 51      metabolites
+#> 52      metabolites
+#> 53      metabolites
+#> 54      metabolites
+#> 55      metabolites
+#> 56      metabolites
+#> 57      metabolites
+#> 58      metabolites
+#> 59      metabolites
+#> 60      metabolites
+#> 61      metabolites
+#> 62      metabolites
+#> 63      metabolites
+#> 64      metabolites
+#> 65      metabolites
+#> 67      metabolites
+#> 68      metabolites
+#> 69      metabolites
+#> 70      metabolites
+#> 71      metabolites
+#> 72      metabolites
+#> 73      metabolites
+#> 75      metabolites
+#> 76      metabolites
+#> 77      metabolites
+#> 79      metabolites
+#> 80      metabolites
+#> 81      metabolites
+#> 82      metabolites
+#> 83      metabolites
+#> 84      metabolites
+#> 85          contigs
+#> 86          contigs
+#> 87          contigs
+#> 88          contigs
+#> 91          contigs
+#> 95          contigs
+#> 99          contigs
+#> 102         contigs
+#> 103         contigs
+#> 104         contigs
+#> 106         contigs
+#> 109         contigs
+#> 110         contigs
+#> 111         contigs
+#> 115         contigs
+#> 116         contigs
+#> 117         contigs
+#> 120         contigs
+#> 121         contigs
+#> 122         contigs
+#> 123         contigs
+#> 125         contigs
+#> 127         contigs
+#> 128         contigs
+#> 129         contigs
+#> 131         contigs
+#> 132         contigs
+#> 133         contigs
+#> 134         contigs
+#> 137         contigs
+#> 140         contigs
+#> 141         contigs
+#> 142         contigs
+#> 143         contigs
+#> 147         contigs
+#> 148         contigs
+#> 149         contigs
+#> 150         contigs
+#> 152         contigs
+#> 156         contigs
+#> 157         contigs
+#> 158         contigs
+#> 161         contigs
+#> 164         contigs
+#> 165         contigs
+#> 166         contigs
+#> 167         contigs
+#> 169         contigs
+#> 170         contigs
+#> 171         contigs
+#> 172         contigs
+#> 174         contigs
+#> 178         contigs
+#> 179         contigs
+#> 180         contigs
+#> 181         contigs
+#> 183         contigs
+#> 184         contigs
+#> 185         contigs
+#> 186         contigs
+#> 188         contigs
+#> 190         contigs
+#> 193         contigs
+#> 196         contigs
+#> 197         contigs
+#> 198         contigs
+#> 199         contigs
+#> 200         contigs
+#> 201         contigs
+#> 202         contigs
+#> 203         contigs
+#> 205         contigs
+#> 207         contigs
+#> 208         contigs
+#> 211         contigs
+#> 214         contigs
+#> 215         contigs
+#> 217         contigs
+#> 218         contigs
+#> 220         contigs
+#> 221         contigs
+#> 222         contigs
+#> 225         contigs
+#> 228         contigs
+#> 229         contigs
+#> 232         contigs
+#> 233         contigs
+#> 235         contigs
+#> 236         contigs
+#> 237         contigs
+#> 238         contigs
+#> 240         contigs
+#> 242         contigs
+#> 243         contigs
+#> 245         contigs
+#> 246         contigs
+#> 248         contigs
+#> 251         contigs
+#> 252         contigs
+#> 253         contigs
+#> 255         contigs
+#> 256         contigs
+#> 257         contigs
+#> 259         contigs
+#> 260         contigs
+#> 263         contigs
+#> 265         contigs
+#> 266         contigs
+#> 270         contigs
+#> 272         contigs
+#> 274         contigs
+#> 275         contigs
+#> 276         contigs
+#> 277         contigs
+#> 279         contigs
+#> 280         contigs
+#> 282         contigs
+#> 285         contigs
+#> 286         contigs
+#> 287         contigs
+#> 288         contigs
+#> 291         contigs
+#> 293         contigs
+#> 295         contigs
+#> 296         contigs
+#> 297         contigs
+#> 298         contigs
+#> 299         contigs
+#> 301         contigs
+#> 303         contigs
+#> 305         contigs
+#> 306         contigs
+#> 307         contigs
+#> 308         contigs
+#> 312         contigs
+#> 314         contigs
+#> 317         contigs
+#> 320         contigs
+#> 321         contigs
+#> 322         contigs
+#> 327         contigs
+#> 328         contigs
+#> 330         contigs
+#> 331         contigs
+#> 332         contigs
+#> 333         contigs
+#> 336         contigs
+#> 338         contigs
+#> 339         contigs
+#> 340         contigs
+#> 341         contigs
+#> 342         contigs
+#> 343         contigs
+#> 344         contigs
+#> 346         contigs
+#> 350         contigs
+#> 354         contigs
+#> 357         contigs
+#> 358         contigs
+#> 360         contigs
+#> 361         contigs
+#> 362         contigs
+#> 364         contigs
+#> 365         contigs
+#> 368         contigs
+#> 370         contigs
+#> 372         contigs
+#> 375         contigs
+#> 376         contigs
+#> 378         contigs
+#> 379         contigs
+#> 380         contigs
+#> 384         contigs
+#> 386         contigs
+#> 387         contigs
+#> 389         contigs
+#> 391         contigs
+#> 394         contigs
+#> 395         contigs
+#> 397         contigs
+#> 399         contigs
+#> 401         contigs
+#> 404         contigs
+#> 405         contigs
+#> 408         contigs
+#> 409         contigs
+#> 410         contigs
+#> 411         contigs
+#> 414         contigs
+#> 416         contigs
+#> 419         contigs
+#> 420         contigs
+#> 422         contigs
+#> 427         contigs
+#> 428         contigs
+#> 430         contigs
+#> 433         contigs
+#> 437         contigs
+#> 439         contigs
+#> 441         contigs
+#> 443         contigs
+#> 445         contigs
+#> 447         contigs
+#> 450         contigs
+#> 453         contigs
+#> 454         contigs
+#> 457         contigs
+#> 458         contigs
+#> 460         contigs
+#> 461         contigs
+#> 464         contigs
+#> 465         contigs
+#> 466         contigs
+#> 467         contigs
+#> 468         contigs
+#> 469         contigs
+#> 470         contigs
+#> 471         contigs
+#> 473         contigs
+#> 475         contigs
+#> 476         contigs
+#> 479         contigs
+#> 480         contigs
+#> 481         contigs
+#> 482         contigs
+#> 483         contigs
+#> 486         contigs
+#> 488         contigs
+#> 490         contigs
+#> 491         contigs
+#> 492         contigs
+#> 493         contigs
+#> 494         contigs
+#> 495         contigs
+#> 496         contigs
+#> 498         contigs
+#> 499         contigs
+#> 500         contigs
+#> 501         contigs
+#> 502         contigs
+#> 504         contigs
+#> 505         contigs
+#> 509         contigs
+#> 513         contigs
+#> 514         contigs
+#> 515         contigs
+#> 517         contigs
+#> 518         contigs
+#> 519         contigs
+#> 520         contigs
+#> 521         contigs
+#> 522         contigs
+#> 523         contigs
+#> 525         contigs
+#> 526         contigs
+#> 527         contigs
+#> 528         contigs
+#> 531         contigs
+#> 534         contigs
+#> 535         contigs
+#> 540         contigs
+#> 542         contigs
+#> 543         contigs
+#> 544         contigs
+#> 546         contigs
+#> 547         contigs
+#> 549         contigs
+#> 551         contigs
+#> 552         contigs
+#> 553         contigs
+#> 554         contigs
+#> 556         contigs
+#> 558         contigs
+#> 559         contigs
+#> 561         contigs
+#> 562         contigs
+#> 565         contigs
+#> 566         contigs
+#> 567         contigs
+#> 569         contigs
+#> 571         contigs
+#> 572         contigs
+#> 573         contigs
+#> 574         contigs
+#> 575         contigs
+#> 577         contigs
+#> 579         contigs
+#> 580         contigs
+#> 581         contigs
+#> 583         contigs
+#> 585         contigs
+#> 586         contigs
+#> 587         contigs
+#> 588         contigs
+#> 590         contigs
+#> 591         contigs
+#> 593         contigs
+#> 595         contigs
+#> 596         contigs
+#> 597         contigs
+#> 598         contigs
+#> 599         contigs
+#> 603         contigs
+#> 604         contigs
+#> 606         contigs
+#> 608         contigs
+#> 610         contigs
+#> 611         contigs
+#> 612         contigs
+#> 614         contigs
+#> 615         contigs
+#> 616         contigs
+#> 617         contigs
+#> 618         contigs
+#> 619         contigs
+#> 620         contigs
+#> 623         contigs
+#> 624         contigs
+#> 626         contigs
+#> 630         contigs
+#> 631         contigs
+#> 634         contigs
+#> 641         contigs
+#> 642         contigs
+#> 643         contigs
+#> 644         contigs
+#> 645         contigs
+#> 646         contigs
+sensitivityplot(extendedres.3, BMDtype = "zSD",
+                group = "path_class", colorby = "molecular.level",
+                BMDsummary = "first.quartile")
+
+
+
+# }
+```
