@@ -82,7 +82,7 @@ The two shiny apps (`DRomics-shiny` and `DRomicsInterpreter-shiny`) that work wi
     - https://biosphere.france-bioinformatique.fr/catalogue/appliance/176/ for DRomics-shiny
     - https://biosphere.france-bioinformatique.fr/catalogue/appliance/209/ for DRomicsInterpreter-shiny
 - locally in your R session doing:
-  - `install.packages(c("shiny", "shinyBS", "shinycssloaders", "shinyjs", "shinyWidgets", "sortable"))`
+  - `install.packages(c("shiny", "shinyBS", "shinycssloaders", "shinyjs", "shinyWidgets", "sortable", "plotly"))`
   - `shiny::runApp(system.file("DRomics-shiny", package = "DRomics"))`
   - `shiny::runApp(system.file("DRomicsInterpreter-shiny", package = "DRomics"))`
 
