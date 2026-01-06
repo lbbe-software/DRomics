@@ -145,12 +145,21 @@ work with DRomics are available :
   - `shiny::runApp(system.file("DRomics-shiny", package = "DRomics"))`
   - `shiny::runApp(system.file("DRomicsInterpreter-shiny", package = "DRomics"))`
 
-These shiny apps are runing with the development version of DRomics.
+These shiny apps are runing with the development version of `DRomics`.
+
+These two interactive shiny applications provide an intuitive entry
+point to `DRomics` and allow users to explore the core dose–response
+analysis workflow implemented in the package. They are designed to help
+users become familiar with the main features without requiring advanced
+R programming skills. To facilitate extended use and support
+reproducible research, the last tab of each application displays the R
+code used to perform the analysis, which can be reused and adapted to
+the user’s own data.
 
 ## Authors & Contacts
 
 If you have any need that is not yet covered, any feedback on the
-package / Shiny app, or any training needs, feel free to email us at
+package / shiny app, or any training needs, feel free to email us at
 <dromics@univ-lyon1.fr> .
 
 Issues can be reported on
@@ -165,7 +174,7 @@ Issues can be reported on
 
 ## Citation
 
-If you use Dromics, you should cite:  
+If you use `DRomics`, you should cite:  
 
 Delignette-Muller ML, Siberchicot A, Larras F, Billoir E (2023).
 *DRomics, a workflow to exploit dose-response omics data in

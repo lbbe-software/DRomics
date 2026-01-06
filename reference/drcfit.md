@@ -455,7 +455,7 @@ plot(f)
 # save all plots to pdf using plotfit2pdf()
 plotfit2pdf(f, path2figs = tempdir())
 #> 
-#> Figures are stored in /tmp/Rtmp8DxNS7.
+#> Figures are stored in /tmp/RtmplMhzEj.
 #> Warning: log-10 transformation introduced infinite values.
 #> Warning: log-10 transformation introduced infinite values.
 #> Warning: log-10 transformation introduced infinite values.
@@ -494,7 +494,7 @@ plotfit2pdf(f, path2figs = tempdir())
 plotfit2pdf(f, plot.type = "fitted_residuals", 
   nrowperpage = 9, ncolperpage = 6, path2figs = tempdir())
 #> 
-#> Figures are stored in /tmp/Rtmp8DxNS7.
+#> Figures are stored in /tmp/RtmplMhzEj.
 #> agg_record_1132112511 
 #>                     2 
 

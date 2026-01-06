@@ -70,10 +70,10 @@
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
 <span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>  <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span>ask <span class="op">=</span> <span class="cn">FALSE</span>, update <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span>ask <span class="op">=</span> <span class="cn">FALSE</span>, update <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"limma"</span>, <span class="st">"DESeq2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"limma"</span>, <span class="st">"DESeq2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The stable version of <code>DRomics</code> can be installed from CRAN using:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"DRomics"</span><span class="op">)</span></span></code></pre></div>
@@ -126,12 +126,13 @@
 </ul>
 </li>
 </ul>
-<p>These shiny apps are runing with the development version of DRomics.</p>
+<p>These shiny apps are runing with the development version of <code>DRomics</code>.</p>
+<p>These two interactive shiny applications provide an intuitive entry point to <code>DRomics</code> and allow users to explore the core dose–response analysis workflow implemented in the package. They are designed to help users become familiar with the main features without requiring advanced R programming skills. To facilitate extended use and support reproducible research, the last tab of each application displays the R code used to perform the analysis, which can be reused and adapted to the user’s own data.</p>
 </div>
 <div class="section level2">
 <h2 id="authors--contacts">Authors &amp; Contacts<a class="anchor" aria-label="anchor" href="#authors--contacts"></a>
 </h2>
-<p>If you have any need that is not yet covered, any feedback on the package / Shiny app, or any training needs, feel free to email us at <a href="mailto:dromics@univ-lyon1.fr" class="email">dromics@univ-lyon1.fr</a> .</p>
+<p>If you have any need that is not yet covered, any feedback on the package / shiny app, or any training needs, feel free to email us at <a href="mailto:dromics@univ-lyon1.fr" class="email">dromics@univ-lyon1.fr</a> .</p>
 <p>Issues can be reported on <a href="https://github.com/lbbe-software/DRomics/issues" class="external-link uri">https://github.com/lbbe-software/DRomics/issues</a> .</p>
 <ul>
 <li>Elise Billoir: <a href="mailto:elise.billoir@univ-lorraine.fr" class="email">elise.billoir@univ-lorraine.fr</a>
@@ -149,7 +150,7 @@
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<p>If you use Dromics, you should cite: <br></p>
+<p>If you use <code>DRomics</code>, you should cite: <br></p>
 <p>Delignette-Muller ML, Siberchicot A, Larras F, Billoir E (2023). <em>DRomics, a workflow to exploit dose-response omics data in ecotoxicology</em>. Peer Community Journal. <a href="https://peercommunityjournal.org/articles/10.24072/pcjournal.325/" target="_blank" class="external-link">https://peercommunityjournal.org/articles/10.24072/pcjournal.325/</a></p>
 <p>Larras F, Billoir E, Baillard V, Siberchicot A, Scholz S, Wubet T, Tarkka M, Schmitt-Jansen M and Delignette-Muller ML (2018). <em>DRomics : a turnkey tool to support the use of the dose-response framework for omics data in ecological risk assessment</em>. Environmental Science &amp; Technology. <a href="https://pubs.acs.org/doi/10.1021/acs.est.8b04752" target="_blank" class="external-link">https://pubs.acs.org/doi/10.1021/acs.est.8b04752</a> You can find this article at: <a href="https://hal.science/hal-02309919" target="_blank" class="external-link">https://hal.science/hal-02309919</a></p>
 <p>You can also look at the following citation for a complete example of use: <br> Larras F, Billoir E, Scholz S, Tarkka M, Wubet T, Delignette-Muller ML, Schmitt-Jansen M (2020). <em>A multi-omics concentration-response framework uncovers novel understanding of triclosan effects in the chlorophyte Scenedesmus vacuolatus</em>. Journal of Hazardous Materials. <a href="https://doi.org/10.1016/j.jhazmat.2020.122727." target="_blank" class="external-link"></a><a href="https://doi.org/10.1016/j.jhazmat.2020.122727" class="external-link uri">https://doi.org/10.1016/j.jhazmat.2020.122727</a>.</p>
