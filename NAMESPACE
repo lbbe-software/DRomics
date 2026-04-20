@@ -66,4 +66,3 @@ export(selectgroups)
 export(bmdfilter)
 export(PCAdataplot)
 export(formatdata4DRomics)
-
