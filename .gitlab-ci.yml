@@ -1,13 +1,13 @@
+# The Docker image that will be used to build your app
 image: rocker/tidyverse
-
-create-pages: 
-  script:
-    - echo "deployment"
-    - Rscript -e 'install.packages(c("knitr", "remotes", "rmarkdown", "pkgdown", "quarto", "knitr"))'
-    - Rscript -e 'remotes::install_local(upgrade = "never")'
-    - Rscript -e 'pkgdown::build_site(quiet = FALSE)'
-    - mkdir public
-    - cp -r docs/* public
-  pages: true  
+create-pages:
+  pages:
+    # The folder that contains the files to be exposed at the Page URL
+    publish: public
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    # This ensures that only pushes to the default branch will trigger
+    # a pages deploy
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  # Functions that should be executed before the build script is run
+  before_script:
+    - deployment
