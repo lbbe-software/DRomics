@@ -5,6 +5,8 @@ drcfitplot.pdf
 README.md
 ^\.github$
 share
-_pkgdown.yml
+^_pkgdown\.yml$
+^.gitlab-ci\.yml$
 .lintr
 ^codemeta\.json$
+gitp.sh
