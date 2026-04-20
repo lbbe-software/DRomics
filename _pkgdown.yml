@@ -1,3 +1,5 @@
+url: https://drgarden.pages.in2p3.fr/DRomics/
+
 template:
   bootstrap: 5
   bootswatch: flatly
@@ -10,8 +12,9 @@ bslib:
 
 navbar:
   structure:
-    left:  [intro, reference, articles, tutorials, news]
-    right: [search, github]
+    left:  [intro, reference, articles]
+    right: [search]
     
 toc:
-  depth: 4  
+  depth: 4
+  

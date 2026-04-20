@@ -1,0 +1,13 @@
+image: rocker/tidyverse
+
+create-pages: 
+  script:
+    - echo "deployment"
+    - Rscript -e 'install.packages(c("knitr", "remotes", "rmarkdown", "pkgdown", "quarto", "knitr"))'
+    - Rscript -e 'remotes::install_local(upgrade = "never")'
+    - Rscript -e 'pkgdown::build_site(quiet = FALSE)'
+    - mkdir public
+    - cp -r docs/* public
+  pages: true  
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
