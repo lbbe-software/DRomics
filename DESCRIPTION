@@ -38,6 +38,5 @@ License: GPL (>= 2)
 VignetteBuilder: knitr
 BuildVignettes: true
 Encoding: UTF-8
-URL: https://lbbe.univ-lyon1.fr/fr/dromics, https://drgarden.pages.in2p3.fr/DRing/
+URL: https://drgarden.pages.in2p3.fr/DRing/
 Contact: Marie-Laure Delignette-Muller <marielaure.delignettemuller@vetagro-sup.fr>
-BugReports: https://github.com/lbbe-software/DRomics/issues
