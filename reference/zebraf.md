@@ -23,8 +23,10 @@ for the batch of each sample.
 
 See <https://github.com/zhangyuqing/ComBat-seq> for indication of use of
 the ComBat_seq function of the sva package for batch effect correction
-and [`formatdata4DRomics`](formatdata4DRomics.md) a function that can be
-used to format those data before use of the DRomics workflow.
+and
+[`formatdata4DRomics`](https://drgarden.pages.in2p3.fr/DRomics/reference/formatdata4DRomics.md)
+a function that can be used to format those data before use of the
+DRomics workflow.
 
 ## Source
 

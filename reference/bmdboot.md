@@ -101,15 +101,16 @@ obtained by fitting the model on each of the resampled data sets. If the
 fitting procedure fails to converge in more than tol\*100% of the cases,
 NA values are given for the confidence interval. Otherwise, bootstraped
 BMD are computed from bootstrapped parameter estimates using the same
-method as in [`bmdcalc`](bmdcalc.md). Confidence intervals on BMD are
-then computed using percentiles of the bootstrapped BMDs. For example 95
-percent confidence intervals are computed using 2.5 and 97.5 percentiles
-of the bootstrapped BMDs. In cases where the bootstrapped BMD cannot be
-estimated as not reached at the highest tested dose or not reachable due
-to model asymptotes, it was given an infinite value `Inf`, so as to
-enable the computation of the lower limit of the BMD confidence interval
-if a sufficient number of bootstrapped BMD values were estimated to
-finite values.
+method as in
+[`bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md).
+Confidence intervals on BMD are then computed using percentiles of the
+bootstrapped BMDs. For example 95 percent confidence intervals are
+computed using 2.5 and 97.5 percentiles of the bootstrapped BMDs. In
+cases where the bootstrapped BMD cannot be estimated as not reached at
+the highest tested dose or not reachable due to model asymptotes, it was
+given an infinite value `Inf`, so as to enable the computation of the
+lower limit of the BMD confidence interval if a sufficient number of
+bootstrapped BMD values were estimated to finite values.
 
 ## Value
 
@@ -164,8 +165,9 @@ components:
 
 ## See also
 
-See [`bmdcalc`](bmdcalc.md) for details about the computation of
-benchmark doses.
+See
+[`bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md)
+for details about the computation of benchmark doses.
 
 ## References
 

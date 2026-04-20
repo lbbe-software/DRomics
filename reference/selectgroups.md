@@ -80,15 +80,21 @@ for the chosen BMD (of `BMDtype`) before performing the the selection.
 
 a dataframe corresponding to a subset of extendedres given in input,
 that can be used for further exploration using for example
-[`bmdplot`](bmdplot.md),
-[`bmdplotwithgradient`](bmdplotwithgradient.md),
-[`trendplot`](trendplot.md) and [`sensitivityplot`](sensitivityplot.md).
+[`bmdplot`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdplot.md),
+[`bmdplotwithgradient`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdplotwithgradient.md),
+[`trendplot`](https://drgarden.pages.in2p3.fr/DRomics/reference/trendplot.md)
+and
+[`sensitivityplot`](https://drgarden.pages.in2p3.fr/DRomics/reference/sensitivityplot.md).
 
 ## See also
 
-See [`bmdfilter`](bmdfilter.md), [`bmdplot`](bmdplot.md),
-[`bmdplotwithgradient`](bmdplotwithgradient.md),
-[`trendplot`](trendplot.md) and [`sensitivityplot`](sensitivityplot.md).
+See
+[`bmdfilter`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdfilter.md),
+[`bmdplot`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdplot.md),
+[`bmdplotwithgradient`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdplotwithgradient.md),
+[`trendplot`](https://drgarden.pages.in2p3.fr/DRomics/reference/trendplot.md)
+and
+[`sensitivityplot`](https://drgarden.pages.in2p3.fr/DRomics/reference/sensitivityplot.md).
 
 ## Author
 

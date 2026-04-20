@@ -36,13 +36,11 @@
 <li><a class="dropdown-item" href="../articles/DRomics_vignette.html">Overview of the DRomics package</a></li>
   </ul>
 </li>
-<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/lbbe-software/DRomics/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -61,7 +59,7 @@
 Delignette-Muller, Aurélie Siberchicot, Elise Billoir, Floriane
 Larras</h4>
             
-            <h4 data-toc-skip class="date">2026-01-06</h4>
+            <h4 data-toc-skip class="date">2026-04-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/lbbe-software/DRomics/blob/master/vignettes/DRomics_vignette.Rmd" class="external-link"><code>vignettes/DRomics_vignette.Rmd</code></a></small>
       <div class="d-none name"><code>DRomics_vignette.Rmd</code></div>
@@ -808,7 +806,7 @@ comparison of the three proposed methods on an example.</p>
 <strong>VennDiagram</strong>, to compare the selection of items obtained
 using two different methods, as in the following example.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">VennDiagram</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/uclahs-cds/package-VennDiagram" class="external-link">VennDiagram</a></span><span class="op">)</span></span>
 <span><span class="va">s_lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/itemselect.html">itemselect</a></span><span class="op">(</span><span class="va">o.microarray</span>, select.method <span class="op">=</span> <span class="st">"linear"</span>, FDR <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
 <span><span class="va">index_quad</span> <span class="op">&lt;-</span> <span class="va">s_quad</span><span class="op">$</span><span class="va">selectindex</span></span>
 <span><span class="va">index_lin</span> <span class="op">&lt;-</span> <span class="va">s_lin</span><span class="op">$</span><span class="va">selectindex</span></span>
@@ -818,7 +816,7 @@ using two different methods, as in the following example.</p>
 <span>                   category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"quadratic trend test"</span>, <span class="st">"linear trend test"</span><span class="op">)</span>,</span>
 <span>                   cat.col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyan3"</span>, <span class="st">"darkorange1"</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"black"</span><span class="op">)</span>, </span>
 <span>                   fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyan3"</span>, <span class="st">"darkorange1"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="st">"blank"</span>, cat.pos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">11</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DRomics_vignette_files/figure-html/ch19-1.png" class="r-plt" alt="" width="672"></p>
+<p><img src="DRomics_vignette_files/figure-html/ch19-1.png" class="r-plt" alt="" width="672"><img src="DRomics_vignette_files/figure-html/ch19-2.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="step3">Step 3: fit of dose-response models, choice of the best fit for each

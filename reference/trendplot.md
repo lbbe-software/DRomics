@@ -50,8 +50,10 @@ a ggplot object.
 
 ## See also
 
-See [`bmdplotwithgradient`](bmdplotwithgradient.md) and
-[`curvesplot`](curvesplot.md).
+See
+[`bmdplotwithgradient`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdplotwithgradient.md)
+and
+[`curvesplot`](https://drgarden.pages.in2p3.fr/DRomics/reference/curvesplot.md).
 
 ## Author
 

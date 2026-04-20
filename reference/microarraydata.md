@@ -149,10 +149,12 @@ replicate before and after normalization.
 See [`read.table`](https://rdrr.io/r/utils/read.table.html) the function
 used to import data,
 [`normalizeBetweenArrays`](https://rdrr.io/pkg/limma/man/normalizebetweenarrays.html)
-for details about the normalization and [`RNAseqdata`](RNAseqdata.md),
-[`continuousomicdata`](metabolomicdata.md) and
-[`continuousanchoringdata`](continuousanchoringdata.md) for other types
-of data.
+for details about the normalization and
+[`RNAseqdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/RNAseqdata.md),
+[`continuousomicdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/metabolomicdata.md)
+and
+[`continuousanchoringdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/continuousanchoringdata.md)
+for other types of data.
 
 ## References
 

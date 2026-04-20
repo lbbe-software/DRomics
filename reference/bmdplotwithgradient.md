@@ -49,7 +49,8 @@ bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
 
   Optional maximal dose/concentration for definition of the x range (can
   be defined as `max(f$omicdata$dose)` with `f` the output of
-  [`drcfit()`](drcfit.md) for example).
+  [`drcfit()`](https://drgarden.pages.in2p3.fr/DRomics/reference/drcfit.md)
+  for example).
 
 - y0shift:
 
@@ -132,16 +133,16 @@ bmdplotwithgradient(extendedres, BMDtype = c("zSD", "xfold"),
 ## Details
 
 BMD values are plotted as an ECDF plot, as with
-[`plot.bmdcalc`](bmdcalc.md) using "ecdf" as plottype. In addition is
-plotted an horizontal color gradient for each item coding for the signal
-level at each dose (or concentration). The optional use of columns to
-code for shape and/or facets for each item is particularly intended to
-give a view of all the dose-response per group (e.g. metabolic
-pathways). Those groups must be coded in a column of extendedres. In
-case where one item is allocated to more than one group during the
-annotation process, the line of this item must be replicated in
-extendedres as many times as the number of annotation groups in which it
-was allocated.
+[`plot.bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md)
+using "ecdf" as plottype. In addition is plotted an horizontal color
+gradient for each item coding for the signal level at each dose (or
+concentration). The optional use of columns to code for shape and/or
+facets for each item is particularly intended to give a view of all the
+dose-response per group (e.g. metabolic pathways). Those groups must be
+coded in a column of extendedres. In case where one item is allocated to
+more than one group during the annotation process, the line of this item
+must be replicated in extendedres as many times as the number of
+annotation groups in which it was allocated.
 
 For each item of the extended dataframe, the name of the model (column
 `model`) and the values of the parameters (columns `b`, `c`, `d`, `e`,
@@ -154,7 +155,10 @@ a ggplot object.
 
 ## See also
 
-See [`plot.bmdcalc`](bmdcalc.md) and [`plot.bmdboot`](bmdboot.md).
+See
+[`plot.bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md)
+and
+[`plot.bmdboot`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdboot.md).
 
 ## Author
 

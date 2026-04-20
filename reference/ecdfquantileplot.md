@@ -42,8 +42,8 @@ metabolic pathway) using function
 ECDF plot. In this ECDF plot of quantiles each point is sized according
 to the number of items in the corresponding group (e.g. metabolic
 pathway). We recommend the use of the new function
-[`sensitivityplot`](sensitivityplot.md) that may be more convenient and
-that offers more options.
+[`sensitivityplot`](https://drgarden.pages.in2p3.fr/DRomics/reference/sensitivityplot.md)
+that may be more convenient and that offers more options.
 
 ## Value
 
@@ -52,7 +52,7 @@ a ggplot object.
 ## See also
 
 See [`quantile`](https://rdrr.io/r/stats/quantile.html) and
-[`sensitivityplot`](sensitivityplot.md).
+[`sensitivityplot`](https://drgarden.pages.in2p3.fr/DRomics/reference/sensitivityplot.md).
 
 ## Author
 

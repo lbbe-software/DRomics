@@ -40,8 +40,8 @@ curvesplot(extendedres, xmin, xmax, y0shift = TRUE, scaling = TRUE,
 
   Maximal dose/concentration for definition of the x range (can be
   defined as `max(f$omicdata$dose)` with `f` the output of
-  [`drcfit()`](drcfit.md)). If not defined, a value just above the
-  maximum BMD values is taken.
+  [`drcfit()`](https://drgarden.pages.in2p3.fr/DRomics/reference/drcfit.md)).
+  If not defined, a value just above the maximum BMD values is taken.
 
 - y0shift:
 
@@ -135,7 +135,8 @@ a ggplot object.
 
 ## See also
 
-See [`plot.bmdboot`](bmdboot.md).
+See
+[`plot.bmdboot`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdboot.md).
 
 ## Author
 

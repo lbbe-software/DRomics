@@ -123,9 +123,12 @@ dose or concentration and replicate.
 ## See also
 
 See [`read.table`](https://rdrr.io/r/utils/read.table.html) the function
-used to import data, and [`microarraydata`](microarraydata.md),
-[`RNAseqdata`](RNAseqdata.md) and
-[`continuousomicdata`](metabolomicdata.md) for other types of data.
+used to import data, and
+[`microarraydata`](https://drgarden.pages.in2p3.fr/DRomics/reference/microarraydata.md),
+[`RNAseqdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/RNAseqdata.md)
+and
+[`continuousomicdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/metabolomicdata.md)
+for other types of data.
 
 ## Author
 

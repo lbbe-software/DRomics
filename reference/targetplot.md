@@ -35,7 +35,8 @@ a ggplot object.
 
 ## See also
 
-See [`plot.drcfit`](drcfit.md).
+See
+[`plot.drcfit`](https://drgarden.pages.in2p3.fr/DRomics/reference/drcfit.md).
 
 ## Author
 

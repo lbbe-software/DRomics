@@ -84,8 +84,9 @@ plot(x, BMDtype = c("zSD", "xfold"),
 
 The two types of benchmark doses (BMD) proposed by the EFSA (2017) were
 computed for each responsive item using the best fit dose-reponse model
-previously obtained using the [`drcfit`](drcfit.md) function (see Larras
-et al. 2018 for details):
+previously obtained using the
+[`drcfit`](https://drgarden.pages.in2p3.fr/DRomics/reference/drcfit.md)
+function (see Larras et al. 2018 for details):
 
 - the BMD-zSD defined as the dose at which the response is reaching y0
   +/- z \* SD, with y0 the level at the control given by the

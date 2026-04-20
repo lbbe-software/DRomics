@@ -23,17 +23,19 @@ bmdplot(extendedres, BMDtype = c("zSD", "xfold"),
 
 - extendedres:
 
-  the dataframe of results provided by [`plot.bmdcalc`](bmdcalc.md) or
-  [`plot.bmdboot`](bmdboot.md) (`res`) or a subset of this data frame
-  (selected lines). This dataframe can be extended with additional
-  columns coming for example from the functional annotation of items,
-  and some lines can be replicated if their corresponding item has more
-  than one annotation. This dataframe must at least contain the column
-  giving the BMD values (`BMD.zSD` or `BMD.xfold` depending of chosen
-  BMDtype), identification of each curve (`id`), and if `add.CI` is
-  TRUE, the columns `BMD.zSD.lower`, `BMD.zSD.upper` or
-  `BMD.xfold.lower`, `BMD.xfold.upper` depending of the argument
-  `BMDtype`.
+  the dataframe of results provided by
+  [`plot.bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md)
+  or
+  [`plot.bmdboot`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdboot.md)
+  (`res`) or a subset of this data frame (selected lines). This
+  dataframe can be extended with additional columns coming for example
+  from the functional annotation of items, and some lines can be
+  replicated if their corresponding item has more than one annotation.
+  This dataframe must at least contain the column giving the BMD values
+  (`BMD.zSD` or `BMD.xfold` depending of chosen BMDtype), identification
+  of each curve (`id`), and if `add.CI` is TRUE, the columns
+  `BMD.zSD.lower`, `BMD.zSD.upper` or `BMD.xfold.lower`,
+  `BMD.xfold.upper` depending of the argument `BMDtype`.
 
 - BMDtype:
 
@@ -106,15 +108,15 @@ bmdplot(extendedres, BMDtype = c("zSD", "xfold"),
 ## Details
 
 BMD values are plotted as an ECDF plot, as with
-[`plot.bmdcalc`](bmdcalc.md) using `"ecdf"` as `plottype` with
-confidence intervals on each BMD value and/or labels of items if
-requested. The optional use of columns to code for shape and/or facets
-for each item is particularly intended to give a view of all the
-dose-response per group (e.g. metabolic pathways). Those groups must be
-coded in a column of `extendedres`. In case where one item is allocated
-to more than one group during the annotation process, the line of this
-item must be replicated in `extendedres` as many times as the number of
-annotation groups in which it was allocated.
+[`plot.bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md)
+using `"ecdf"` as `plottype` with confidence intervals on each BMD value
+and/or labels of items if requested. The optional use of columns to code
+for shape and/or facets for each item is particularly intended to give a
+view of all the dose-response per group (e.g. metabolic pathways). Those
+groups must be coded in a column of `extendedres`. In case where one
+item is allocated to more than one group during the annotation process,
+the line of this item must be replicated in `extendedres` as many times
+as the number of annotation groups in which it was allocated.
 
 ## Value
 
@@ -122,8 +124,11 @@ a ggplot object.
 
 ## See also
 
-See [`plot.bmdcalc`](bmdcalc.md), [`plot.bmdboot`](bmdboot.md) and
-[`ecdfplotwithCI`](ecdfplotwithCI.md).
+See
+[`plot.bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md),
+[`plot.bmdboot`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdboot.md)
+and
+[`ecdfplotwithCI`](https://drgarden.pages.in2p3.fr/DRomics/reference/ecdfplotwithCI.md).
 
 ## Author
 

@@ -163,10 +163,12 @@ before and after normalization and tranformation.
 See [`read.table`](https://rdrr.io/r/utils/read.table.html) the function
 used to import data, [`rlog`](https://rdrr.io/pkg/DESeq2/man/rlog.html)
 and [`vst`](https://rdrr.io/pkg/DESeq2/man/vst.html) for details about
-the transformation methods and [`microarraydata`](microarraydata.md),
-[`continuousomicdata`](metabolomicdata.md) and
-[`continuousanchoringdata`](continuousanchoringdata.md) for other types
-of data.
+the transformation methods and
+[`microarraydata`](https://drgarden.pages.in2p3.fr/DRomics/reference/microarraydata.md),
+[`continuousomicdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/metabolomicdata.md)
+and
+[`continuousanchoringdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/continuousanchoringdata.md)
+for other types of data.
 
 ## References
 

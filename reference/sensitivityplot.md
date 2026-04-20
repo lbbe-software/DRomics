@@ -94,7 +94,8 @@ a ggplot object.
 
 ## See also
 
-See [`ecdfquantileplot`](ecdfquantileplot.md).
+See
+[`ecdfquantileplot`](https://drgarden.pages.in2p3.fr/DRomics/reference/ecdfquantileplot.md).
 
 ## Author
 

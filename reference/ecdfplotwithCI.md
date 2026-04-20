@@ -66,7 +66,8 @@ a ggplot object.
 
 ## See also
 
-See [`plot.bmdboot`](bmdboot.md).
+See
+[`plot.bmdboot`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdboot.md).
 
 ## Author
 

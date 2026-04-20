@@ -16,8 +16,11 @@ bmdfilter(res,
 
 - res:
 
-  The dataframe of results provided by [`bmdboot`](bmdboot.md) or
-  [`bmdcalc`](bmdcalc.md) (`res`) or a subset of this data frame.
+  The dataframe of results provided by
+  [`bmdboot`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdboot.md)
+  or
+  [`bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md)
+  (`res`) or a subset of this data frame.
 
   Even if this function is intended to be used just after the
   calculation of BMD values, before the biological annotation, it can
@@ -62,8 +65,9 @@ retaining items only if the BMD confidence interval is within the range
 of tested/observed doses (using `"CIfinite"`), or less restrictive
 (using `"BMDIdefined"`) requiring that the BMD point estimate only must
 be defined within the range of tested/observed doses (let us recall that
-in the [`bmdcalc`](bmdcalc.md) output, if it is not the case the BMD is
-coded `NA`).
+in the
+[`bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md)
+output, if it is not the case the BMD is coded `NA`).
 
 We propose an option `"none"` only in case, in the future, we add other
 filters not based on the BMD.
@@ -75,8 +79,11 @@ used for biological annotation and further exploration.
 
 ## See also
 
-See [`selectgroups`](selectgroups.md), [`bmdboot`](bmdboot.md) and
-[`bmdcalc`](bmdcalc.md).
+See
+[`selectgroups`](https://drgarden.pages.in2p3.fr/DRomics/reference/selectgroups.md),
+[`bmdboot`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdboot.md)
+and
+[`bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md).
 
 ## Author
 

@@ -18,10 +18,12 @@ formatdata4DRomics(signalmatrix, dose, samplenames)
   each sample. The row names of this matrix will be taken to identify
   the items. Depending of the type of measured signal, look at the help
   of the corresponding importation function especially to check that you
-  use the good scale of data [`RNAseqdata`](RNAseqdata.md),
-  [`microarraydata`](microarraydata.md),
-  [`continuousomicdata`](metabolomicdata.md) and
-  [`continuousanchoringdata`](continuousanchoringdata.md).
+  use the good scale of data
+  [`RNAseqdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/RNAseqdata.md),
+  [`microarraydata`](https://drgarden.pages.in2p3.fr/DRomics/reference/microarraydata.md),
+  [`continuousomicdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/metabolomicdata.md)
+  and
+  [`continuousanchoringdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/continuousanchoringdata.md).
 
 - dose:
 
@@ -37,17 +39,21 @@ formatdata4DRomics(signalmatrix, dose, samplenames)
 
 an R object that corresponds to a dataframe that can be passed as input
 in the first argument of the data importation functions
-[`RNAseqdata`](RNAseqdata.md), [`microarraydata`](microarraydata.md),
-[`continuousomicdata`](metabolomicdata.md) or
-[`continuousanchoringdata`](continuousanchoringdata.md).
+[`RNAseqdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/RNAseqdata.md),
+[`microarraydata`](https://drgarden.pages.in2p3.fr/DRomics/reference/microarraydata.md),
+[`continuousomicdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/metabolomicdata.md)
+or
+[`continuousanchoringdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/continuousanchoringdata.md).
 
 ## See also
 
-See [`RNAseqdata`](RNAseqdata.md),
-[`microarraydata`](microarraydata.md),
-[`continuousomicdata`](metabolomicdata.md) and
-[`continuousanchoringdata`](continuousanchoringdata.md) especially for
-specification of the required scale of data in each case.
+See
+[`RNAseqdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/RNAseqdata.md),
+[`microarraydata`](https://drgarden.pages.in2p3.fr/DRomics/reference/microarraydata.md),
+[`continuousomicdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/metabolomicdata.md)
+and
+[`continuousanchoringdata`](https://drgarden.pages.in2p3.fr/DRomics/reference/continuousanchoringdata.md)
+especially for specification of the required scale of data in each case.
 
 ## Author
 

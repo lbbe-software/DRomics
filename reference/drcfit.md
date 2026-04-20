@@ -129,10 +129,14 @@ plotfit2pdf(x, items,
 
   Argument that can be used to add BMD values and optionally their
   confidence intervals on a plot of type `"dose_fitted"`. To do that you
-  must previously apply [`bmdcalc`](bmdcalc.md) and optionally
-  [`bmdboot`](bmdboot.md) on `x` of class `drcfit` and then give in this
-  argument the output of [`bmdcalc`](bmdcalc.md) or
-  [`bmdboot`](bmdboot.md).
+  must previously apply
+  [`bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md)
+  and optionally
+  [`bmdboot`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdboot.md)
+  on `x` of class `drcfit` and then give in this argument the output of
+  [`bmdcalc`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md)
+  or
+  [`bmdboot`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdboot.md).
 
 - BMDtype:
 
@@ -266,8 +270,9 @@ components:
 - omicdata:
 
   The object containing all the data, as given in input of
-  [`itemselect()`](itemselect.md) which is also a component of the
-  output of [`itemselect()`](itemselect.md).
+  [`itemselect()`](https://drgarden.pages.in2p3.fr/DRomics/reference/itemselect.md)
+  which is also a component of the output of
+  [`itemselect()`](https://drgarden.pages.in2p3.fr/DRomics/reference/itemselect.md).
 
 - information.criterion:
 
@@ -310,8 +315,9 @@ components:
 ## See also
 
 See [`nls`](https://rdrr.io/r/stats/nls.html) for details about the non
-linear regression function and [`targetplot`](targetplot.md) to plot
-target items (even if non responsive or unfitted).
+linear regression function and
+[`targetplot`](https://drgarden.pages.in2p3.fr/DRomics/reference/targetplot.md)
+to plot target items (even if non responsive or unfitted).
 
 ## References
 
@@ -455,7 +461,7 @@ plot(f)
 # save all plots to pdf using plotfit2pdf()
 plotfit2pdf(f, path2figs = tempdir())
 #> 
-#> Figures are stored in /tmp/RtmplMhzEj.
+#> Figures are stored in /tmp/RtmpqBOwpZ.
 #> Warning: log-10 transformation introduced infinite values.
 #> Warning: log-10 transformation introduced infinite values.
 #> Warning: log-10 transformation introduced infinite values.
@@ -489,14 +495,14 @@ plotfit2pdf(f, path2figs = tempdir())
 #> Warning: log-10 transformation introduced infinite values.
 #> Warning: log-10 transformation introduced infinite values.
 #> Warning: log-10 transformation introduced infinite values.
-#> agg_record_1132112511 
-#>                     2 
+#> agg_record_25211e95cb75 
+#>                       2 
 plotfit2pdf(f, plot.type = "fitted_residuals", 
   nrowperpage = 9, ncolperpage = 6, path2figs = tempdir())
 #> 
-#> Figures are stored in /tmp/RtmplMhzEj.
-#> agg_record_1132112511 
-#>                     2 
+#> Figures are stored in /tmp/RtmpqBOwpZ.
+#> agg_record_25211e95cb75 
+#>                       2 
 
 # Plot of the fit of the first 12 most responsive items
 plot(f, items = 12)

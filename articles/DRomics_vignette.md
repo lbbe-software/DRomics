@@ -830,7 +830,7 @@ draw.pairwise.venn(area1 = length(index_quad), area2 = length(index_lin),
                    fill = c("cyan3", "darkorange1"), lty = "blank", cat.pos = c(1,11))
 ```
 
-![](DRomics_vignette_files/figure-html/ch19-1.png)
+![](DRomics_vignette_files/figure-html/ch19-1.png)![](DRomics_vignette_files/figure-html/ch19-2.png)
 
 ### Step 3: fit of dose-response models, choice of the best fit for each curve
 
@@ -1278,8 +1278,9 @@ estimated BMD values.
   point estimate only must be defined within the range of
   tested/observed doses.
 
-Let us recall that in the [`bmdcalc()`](../reference/bmdcalc.md) output,
-if it is not the case the BMD is coded `NA` or `NaN`.
+Let us recall that in the
+[`bmdcalc()`](https://drgarden.pages.in2p3.fr/DRomics/reference/bmdcalc.md)
+output, if it is not the case the BMD is coded `NA` or `NaN`.
 
 Below is an example of application of the different filters based on
 BMD-xfold values, chosen just to better illustrate the way filters work,
