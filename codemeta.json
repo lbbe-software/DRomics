@@ -4,9 +4,8 @@
   "identifier": "DRomics",
   "description": "Several functions are provided for dose-response (or concentration-response) characterization from omics data. 'DRomics' is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates). 'DRomics' provides functions 1) to check, normalize and or transform data, 2) to select monotonic or biphasic significantly responding items (e.g. probes, metabolites), 3) to choose the best-fit model among a predefined family of monotonic and biphasic models to describe each selected item, 4) to derive a benchmark dose or concentration and a typology of response from each fitted curve. In the available version data are supposed to be single-channel microarray data in log2, RNAseq data in raw counts, or already pretreated continuous omics data (such as metabolomic data) in log scale. In order to link responses across biological levels based on a common method, 'DRomics' also handles apical data as long as they are continuous and follow a normal distribution for each dose or concentration, with a common standard error. For further details see Delignette-Muller et al (2023) <DOI:10.24072/pcjournal.325> and Larras et al (2018) <DOI:10.1021/acs.est.8b04752>.",
   "name": "DRomics: Dose Response for Omics",
-  "relatedLink": ["https://lbbe.univ-lyon1.fr/fr/dromics", "https://CRAN.R-project.org/package=DRomics"],
-  "codeRepository": "https://github.com/lbbe-software/DRomics",
-  "issueTracker": "https://github.com/lbbe-software/DRomics/issues",
+  "relatedLink": "https://lbbe.univ-lyon1.fr/fr/dromics",
+  "codeRepository": "https://drgarden.pages.in2p3.fr/DRomics/",
   "license": "https://spdx.org/licenses/GPL-2.0",
   "version": "2.6.3",
   "programmingLanguage": {
@@ -14,7 +13,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.3 (2025-02-28)",
+  "runtimePlatform": "R version 4.5.3 (2026-03-11)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -64,8 +63,44 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
+      "identifier": "knitr",
+      "name": "knitr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "parallel",
       "name": "parallel"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "plotly",
+      "name": "plotly",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=plotly"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rmarkdown",
+      "name": "rmarkdown",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
     },
     {
       "@type": "SoftwareApplication",
@@ -141,42 +176,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "testthat",
-      "name": "testthat",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=testthat"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "knitr",
-      "name": "knitr",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=knitr"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "rmarkdown",
-      "name": "rmarkdown",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "sva",
       "name": "sva",
       "provider": {
@@ -189,30 +188,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "VennDiagram",
-      "name": "VennDiagram",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=VennDiagram"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "plotly",
-      "name": "plotly",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=plotly"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "svglite",
       "name": "svglite",
       "provider": {
@@ -222,6 +197,30 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=svglite"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "VennDiagram",
+      "name": "VennDiagram",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=VennDiagram"
     }
   ],
   "softwareRequirements": {
@@ -233,28 +232,6 @@
     },
     "2": {
       "@type": "SoftwareApplication",
-      "identifier": "limma",
-      "name": "limma",
-      "provider": {
-        "@id": "https://www.bioconductor.org",
-        "@type": "Organization",
-        "name": "Bioconductor",
-        "url": "https://www.bioconductor.org"
-      },
-      "sameAs": "https://bioconductor.org/packages/release/bioc/html/limma.html"
-    },
-    "3": {
-      "@type": "SoftwareApplication",
-      "identifier": "utils",
-      "name": "utils"
-    },
-    "4": {
-      "@type": "SoftwareApplication",
-      "identifier": "grDevices",
-      "name": "grDevices"
-    },
-    "5": {
-      "@type": "SoftwareApplication",
       "identifier": "DESeq2",
       "name": "DESeq2",
       "provider": {
@@ -265,7 +242,24 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/DESeq2.html"
     },
-    "6": {
+    "3": {
+      "@type": "SoftwareApplication",
+      "identifier": "grDevices",
+      "name": "grDevices"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
+      "identifier": "limma",
+      "name": "limma",
+      "provider": {
+        "@id": "https://www.bioconductor.org",
+        "@type": "Organization",
+        "name": "Bioconductor",
+        "url": "https://www.bioconductor.org"
+      },
+      "sameAs": "https://bioconductor.org/packages/release/bioc/html/limma.html"
+    },
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "SummarizedExperiment",
       "name": "SummarizedExperiment",
@@ -277,29 +271,12 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html"
     },
+    "6": {
+      "@type": "SoftwareApplication",
+      "identifier": "utils",
+      "name": "utils"
+    },
     "7": {
-      "@type": "SoftwareApplication",
-      "identifier": "stats",
-      "name": "stats"
-    },
-    "8": {
-      "@type": "SoftwareApplication",
-      "identifier": "graphics",
-      "name": "graphics"
-    },
-    "9": {
-      "@type": "SoftwareApplication",
-      "identifier": "ggplot2",
-      "name": "ggplot2",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
-    },
-    "10": {
       "@type": "SoftwareApplication",
       "identifier": "ggfortify",
       "name": "ggfortify",
@@ -311,7 +288,24 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggfortify"
     },
-    "11": {
+    "8": {
+      "@type": "SoftwareApplication",
+      "identifier": "ggplot2",
+      "name": "ggplot2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
+    },
+    "9": {
+      "@type": "SoftwareApplication",
+      "identifier": "graphics",
+      "name": "graphics"
+    },
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
@@ -323,9 +317,14 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rlang"
     },
+    "11": {
+      "@type": "SoftwareApplication",
+      "identifier": "stats",
+      "name": "stats"
+    },
     "SystemRequirements": null
   },
-  "fileSize": "3251.561KB",
+  "fileSize": "3251.984KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -417,9 +416,5 @@
         }
       }
     }
-  ],
-  "releaseNotes": "https://github.com/lbbe-software/DRomics/blob/main/NEWS.md",
-  "readme": "https://github.com/lbbe-software/DRomics/blob/master/README.md",
-  "contIntegration": "https://github.com/lbbe-software/DRomics/actions",
-  "developmentStatus": "https://www.repostatus.org/#active"
+  ]
 }
