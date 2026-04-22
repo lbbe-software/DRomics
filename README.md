@@ -5,7 +5,7 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/lbbe-software/DRomics/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/lbbe-software/DRomics)
 
-# DRomics: Dose Response for Omics <img src="man/figures/hexsticker.png" align="right" height:"139" />
+# DRomics: Dose Response for Omics <img src="man/figures/hexsticker.png" align="right" height="139" />
 
 
 `DRomics` is a freely available tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates to use `DRomics`).
