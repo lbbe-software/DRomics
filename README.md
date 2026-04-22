@@ -1,11 +1,12 @@
 [![CRAN_Release_Badge](https://www.r-pkg.org/badges/version-ago/DRomics)](http://cran.r-project.org/package=DRomics)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/DRomics)](https://cran.r-project.org/package=DRomics)
-[![R-CMD-check](https://github.com/lbbe-software/DRomics/workflows/R-CMD-check/badge.svg)](https://github.com/lbbe-software/DRomics/actions)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/lbbe-software/DRomics/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/lbbe-software/DRomics)
+[![SWH](https://archive.softwareheritage.org/badge/origin/https://gitlab.in2p3.fr/drgarden/DRomics)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://gitlab.in2p3.fr/drgarden/DRomics)
 
-# DRomics: Dose Response for Omics <img src="man/figures/hexsticker.png" align="right" height="139" />
+<img src="man/figures/hexsticker.png" align="right" height="139" />
+
+# DRomics: Dose Response for Omics 
 
 
 `DRomics` is a freely available tool for dose-response (or concentration-response) characterization from omics data. It is especially dedicated to omics data obtained using a typical dose-response design, favoring a great number of tested doses (or concentrations) rather than a great number of replicates (no need of replicates to use `DRomics`).
