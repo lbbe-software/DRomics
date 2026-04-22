@@ -3,7 +3,7 @@ image: rocker/tidyverse
 create-pages: 
   script:
     - echo "deployment"
-    - Rscript -e 'install.packages(c("knitr", "remotes", "rmarkdown", "pkgdown", "quarto", "knitr", "BiocManager"))'
+    - Rscript -e 'install.packages(c("knitr", "remotes", "rmarkdown", "pkgdown", "quarto", "knitr", "BiocManager", "VennDiagram"))'
     - Rscript -e 'BiocManager::install(c("DESeq2", "limma", "SummarizedExperiment", "sva"))'
     - Rscript -e 'remotes::install_local(upgrade = "never")'
     - Rscript -e 'pkgdown::build_site(quiet = FALSE)'
