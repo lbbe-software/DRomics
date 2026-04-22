@@ -2,6 +2,7 @@
 
 NEW FEATURES
 - Correction of the definition of starting values of the parameter e of the Gaussprobit model and of the Hill model. This could help the fit of those models in few cases.
+- Move the git repository of the DRomics project from GitHub to GitLab-IN2P3. Dromics is now available at https://gitlab.in2p3.fr/drgarden/DRomics
 
 BUG FIXES
 

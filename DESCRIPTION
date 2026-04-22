@@ -38,5 +38,5 @@ License: GPL (>= 2)
 VignetteBuilder: knitr
 BuildVignettes: true
 Encoding: UTF-8
-URL: https://drgarden.pages.in2p3.fr/DRomics/
+URL: https://drgarden.pages.in2p3.fr/DRomics/, https://lbbe.univ-lyon1.fr/fr/dromics
 Contact: Marie-Laure Delignette-Muller <marielaure.delignettemuller@vetagro-sup.fr>
