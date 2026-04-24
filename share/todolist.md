@@ -39,6 +39,7 @@
 1. [ ] étendre les possibilité de la fonction selectgroups en envisageant à la fois les cas où on a trop ou trop peu d'info (cf. données Japon Elise)
 1. [ ] ajouter dans les tests le script avec données négatives et sans controle (voir réponse faite à Sarah Green juillet 2025)
 1. [ ] retravailler les données initiales et les contraintes sur paramètres pour les modèles Gauss-probit et log-Gauss-probit
+1. [ ] explorer bug qui apparait parfois (rarement) dans drcfit lorsque LGauss5psucces, LGauss4psucces, Gauss5psuccess et/ou Gauss4psucces sont à NA (voir dataset Elise mail 24/04/2026)
 
 ## Shorter term
 
