@@ -2,7 +2,7 @@
 
 ## Top  priority
 
-1. [X] Retravailler les test_that (ML)
+1. [X] Revise the test_that functions (ML)
 1. [X] Change the default for log scale in each plot (fit or BMD) AND add a warning (ML and A pour mise en place warning). Dans shiny appels à bmdplot(BMD_log_transfo = TRUE), bmdplotwithgradient(BMD_log_transfo = TRUE), sensitivityplot(BMD_log_transfo = TRUE), plot.drcfit(dose_log_transfo = TRUE), plotfit2pdf(dose_log_transfo = TRUE), targetplot(dose_log_transfo = TRUE), et nouvel argument BMD_log_transfo par défaut à TRUE à gérer dans les appels à plot.bmdcalc() (et plot.bmdboot() mais pas dans shiny). 
 1. [X] Mettre l'option scaling par défaut à TRUE dans le package (comme c'est déjà fait dans l'appli shiny) et l'indiquer dans la vignette (ML - still to include in the vignette)
 1. [X] Mettre un message à l'ouverture du package (startupmessage) pour indiquer les options par défaut changées (ML - sent to Aurélie - A)
@@ -40,6 +40,8 @@
 1. [ ] ajouter dans les tests le script avec données négatives et sans controle (voir réponse faite à Sarah Green juillet 2025)
 1. [ ] retravailler les données initiales et les contraintes sur paramètres pour les modèles Gauss-probit et log-Gauss-probit
 1. [ ] explorer bug qui apparait parfois (rarement) dans drcfit lorsque LGauss5psucces, LGauss4psucces, Gauss5psuccess et/ou Gauss4psucces sont à NA (voir dataset Elise mail 24/04/2026)
+1. [ ] corriger et ajouter des testthat une fois qu'on aura changé / consolider la façon de définir les valeurs intiales
+1. [ ] Ajouter un fichier fitting procedure comme sur DRing
 
 ## Shorter term
 
