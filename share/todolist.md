@@ -43,6 +43,8 @@
 1. [ ] corriger et ajouter des testthat une fois qu'on aura changé / consolider la façon de définir les valeurs intiales
 1. [ ] Ajouter un fichier fitting procedure comme sur DRing
 1. [ ] Checker à l'import qu'il n'y a pas de doublons dans les noms des items et renvoyer un message d'erreur le cas echeant
+1. [ ] Checker à l'import qu'il n'y a pas de doses négatives et renvoyer un message d'erreur le cas échéant
+
 
 ## Shorter term
 
