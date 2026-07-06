@@ -45,6 +45,7 @@
 1. [ ] Checker à l'import qu'il n'y a pas de doublons dans les noms des items et renvoyer un message d'erreur le cas echeant
 1. [ ] Checker à l'import qu'il n'y a pas de doses négatives et renvoyer un message d'erreur le cas échéant
 1. [ ] Màj de l'URL de Hurvich 1989 (x2) dans la vignette
+1. [ ] Just commit test
 
 
 ## Shorter term
