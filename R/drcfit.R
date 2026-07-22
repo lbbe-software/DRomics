@@ -824,10 +824,8 @@ plot.drcfit <- function(x, items,
     subd <- x$fitres[inditems, ]
   } else if (is.character(items)) {
     inditems <- match(items, x$fitres$id)
-    stop(paste(inditems, collapse = " "))
     if (anyNA(inditems))
-      stop(paste(inditems, collapse = " "))
-      # stop("At least one of the chosen items was not selected as responding. You should use targetplot() in that case.")
+      stop("At least one of the chosen items was not selected as responding. You should use targetplot() in that case.")
     subd <- x$fitres[inditems, ]
   }
   subd$id <- factor(subd$id, levels = subd$id)
