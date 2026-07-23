@@ -129,23 +129,26 @@ test_that("Test of the impact of the three information criteria", {
   (fAICc <- drcfit(s_quad, information.criterion = "AICc", progressbar = TRUE))
   (fBIC <- drcfit(s_quad, information.criterion = "BIC", progressbar = TRUE))
   
-  table(fAIC$fitres$model)
-  table(fAICc$fitres$model)
-  table(fBIC$fitres$model)
+  expect_equal(as.vector(table(fAIC$fitres$model)), c(2,8,18,25,35))
+  expect_equal(as.vector(table(fAICc$fitres$model)), c(3,8,18,24,35))
+  expect_equal(as.vector(table(fBIC$fitres$model)), c(2, 22, 22, 10, 28))
   
-  table(fAIC$fitres$nbpar)
-  table(fAICc$fitres$nbpar)
-  table(fBIC$fitres$nbpar)
+  expect_equal(as.vector(table(fAIC$fitres$nbpar)), c(8, 18, 44, 18))
+  expect_equal(as.vector(table(fAICc$fitres$nbpar)), c(8, 18, 48, 14))
+  expect_equal(as.vector(table(fBIC$fitres$nbpar)), c(22, 22, 36,  4))
   
   plot(fAIC, dose_log_transfo = TRUE)
   plot(fAICc, dose_log_transfo = TRUE)
   plot(fBIC, dose_log_transfo = TRUE)
   
-  nrow(fAIC$fitres)
-  nrow(fAICc$fitres)
-  nrow(fBIC$fitres)
+  expect_equal(nrow(fAIC$fitres), 88)
+  expect_equal(nrow(fAICc$fitres), 88)
+  expect_equal(nrow(fBIC$fitres), 84)
   
   id2compare <- fBIC$fitres$id[50:70]
+  expect_equal(id2compare, c("N100662_c0_g1",  "N10789_c0_g1.2", "N103293_c0_g1","N10166_c2_g1","N102234_c0_g1","N10307_c0_g1","N108456_c0_g1", 
+                             "N110215_c0_g1",  "N108091_c0_g1","N109636_c0_g2","N1104_c1_g1","N10976_c0_g2","N10556_c0_g1.1","N10366_c0_g1",
+                             "N10916_c0_g1",  "N10959_c0_g1.1","N10111_c1_g1", "N112726_c0_g1","N11002_c2_g1","N11053_c0_g2","N10532_c0_g1"))
   plot(fAIC, items = id2compare, dose_log_transfo = TRUE)
   plot(fAICc, items = id2compare, dose_log_transfo = TRUE)
   plot(fBIC, items = id2compare, dose_log_transfo = TRUE)
