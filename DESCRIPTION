@@ -33,7 +33,8 @@ Suggests:
   sva, 
   svglite,
   testthat, 
-  VennDiagram
+  VennDiagram,
+  withr
 License: GPL (>= 2)
 VignetteBuilder: knitr
 BuildVignettes: true
