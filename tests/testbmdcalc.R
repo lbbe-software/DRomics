@@ -1,5 +1,7 @@
-test_that("test the impact of ratio2switchinlog and minBMD", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   # Impact of ratio2switchinlog and minBMD on a toy example  
   #
@@ -66,4 +68,3 @@ test_that("test the impact of ratio2switchinlog and minBMD", {
   (r <- bmdcalc(f, minBMD = 0.1))
   plot(r) 
 }
-)

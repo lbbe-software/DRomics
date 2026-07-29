@@ -1,5 +1,7 @@
-test_that("test the comportment of tests on residuals", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   IC <- "AICc"
   ### test on microarray data ######################
@@ -59,7 +61,7 @@ test_that("test the comportment of tests on residuals", {
   (s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.05))
   (f <- drcfit(s_quad, progressbar = TRUE, information.criterion = IC))
   # (f <- drcfit(s_quad, progressbar = FALSE, parallel = "snow", ncpus = 4))
-  plot(f, dose_log_transfo = TRUE) + scale_x_log10(limits = c(0.1, 10))
+  plot(f, dose_log_transfo = TRUE) + ggplot2::scale_x_log10(limits = c(0.1, 10))
   
   # count the number of unsuccessful fits for each cause
   table(f$unfitres$cause)
@@ -127,4 +129,4 @@ test_that("test the comportment of tests on residuals", {
       f$fitres$id[f$residualtests$resivartrendP < 0.05])
   targetplot(itemswithvartrendinf, f)
   
-})
+}

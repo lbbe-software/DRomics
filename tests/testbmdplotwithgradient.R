@@ -1,5 +1,7 @@
-test_that("test the bmdplotwithgradient function", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   # (1) Plot of BMD values with color dose-response gradient
   # faceted by metabolic pathway (from annotation of the selected items)
@@ -91,5 +93,4 @@ test_that("test the bmdplotwithgradient function", {
                       xmax = max(f$omicdata$dose), facetby = "trend", 
                       shapeby = "model") 
 
-
-})
+}

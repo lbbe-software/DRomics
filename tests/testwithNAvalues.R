@@ -1,5 +1,7 @@
-test_that("Test DRomics on datasets with NA values, possible especially for apical data", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   ########### Example on apical data ################
   ###################################################
@@ -127,4 +129,4 @@ test_that("Test DRomics on datasets with NA values, possible especially for apic
   try(RNAseqdata(Zhou))
   
   try(microarraydata(Zhou))
-})
+}

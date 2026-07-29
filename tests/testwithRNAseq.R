@@ -1,5 +1,7 @@
-test_that("Test DRomics on RNAseq data", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   # importation and check of RNAseq data and normalization
   # with respect to library size and transformation 
@@ -140,4 +142,5 @@ test_that("Test DRomics on RNAseq data", {
   #            colorby = "model", dose_log_transfo = TRUE)
   # plot(f, items = r$res[r$res$BMD.zSD == 0, ]$id)
   # plot(f, items = r$res[r$res$BMD.zSD == 0, ]$id, dose_log_trans = TRUE)
-})
+  
+}

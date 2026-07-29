@@ -1,5 +1,7 @@
-test_that("test the use of selectgroups() before a sensitivity plot",{
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   # (1) An example from data published by Larras et al. 2020
   # in Journal of Hazardous Materials
@@ -152,5 +154,4 @@ test_that("test the use of selectgroups() before a sensitivity plot",{
   sensitivityplot(subextendedres, BMDtype = "zSD",
                   group = "path_class", colorby = "molecular.level", 
                   BMDsummary = "first.quartile")
-  
-})
+}

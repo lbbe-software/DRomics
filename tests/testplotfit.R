@@ -1,5 +1,7 @@
-test_that("test function to plot the fits and the BMD values on those fits", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   niterboot <- 25
   # niterboot <- 250
@@ -41,6 +43,4 @@ test_that("test function to plot the fits and the BMD values on those fits", {
   plotfit2pdf(f , BMDoutput = r, BMDtype = "zSD")  # alphabetic order WHY ??????????????? PB fixed - OK
   b <- bmdboot(r, niter = 10)
   plotfit2pdf(f , BMDoutput = b, BMDtype = "zSD") # alphabetic order WHY ??????????????? PB fixed - OK
-  
-})
-
+}

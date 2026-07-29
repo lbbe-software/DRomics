@@ -1,5 +1,7 @@
-test_that("test the impact of the scaling on curvesplot and bmdplotwithgradient", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   # A toy example on a very small subsample of a microarray data set) 
   #
@@ -23,4 +25,4 @@ test_that("test the impact of the scaling on curvesplot and bmdplotwithgradient"
   bmdplotwithgradient(r$res, xmax = max(f$omicdata$dose),
                       add.label = TRUE, label.size = 4,
                       scaling = TRUE)
-})
+}

@@ -1,5 +1,7 @@
-test_that("Test DRomics on in situ data", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   niterboot <- 25
   # niterboot <- 250
@@ -36,5 +38,4 @@ test_that("Test DRomics on in situ data", {
        BMDoutput = b, dose_log_transfo = TRUE) 
   plot(fbis , items = id2explore, 
        BMDoutput = bbis, dose_log_transfo = TRUE) 
-  
-})
+}

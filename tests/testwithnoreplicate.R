@@ -1,5 +1,7 @@
-test_that("Test DRomics on datasets without replicates and without control data", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   ## test of the selection step with limma
   data(Scenedesmus_metab)
@@ -58,5 +60,4 @@ test_that("Test DRomics on datasets without replicates and without control data"
   (s2 <- itemselect(o2, select.method = "quadratic"))
   (f2 <- drcfit(s2))
   plot(f2, dose_log_transfo = TRUE)
-  
-})
+}

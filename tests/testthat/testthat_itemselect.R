@@ -22,7 +22,7 @@ test_that("itemselect works as expected on the number of selected probes",
     (s_quad0p05.m <- itemselect(o.m, select.method = "quadratic", FDR = 0.05))
     expect_equal(length(s_quad0p05.m$selectindex), 36)
     (s_quad0p05.mb <- itemselect(o.m, select.method = "quadratic", FDR = 0.05,
-                                max.ties.prop = 0.5))
+                                 max.ties.prop = 0.5))
     expect_equal(length(s_quad0p05.mb$selectindex), 40)
     datafilename.r <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
     (o.r <- RNAseqdata(datafilename.r, check = TRUE, transfo.method = "rlog"))

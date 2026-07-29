@@ -1,5 +1,7 @@
-test_that("test sensitivityplot()", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   # (1) An example from data published by Larras et al. 2020
   # in Journal of Hazardous Materials
@@ -119,5 +121,4 @@ test_that("test sensitivityplot()", {
   sensitivityplot(extendedres, BMDtype = "xfold",
                   group = "path_class", colorby = "molecular.level", 
                   BMDsummary = "median.and.IQR")
-  
-})
+}

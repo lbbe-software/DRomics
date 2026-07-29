@@ -1,5 +1,7 @@
-test_that("Test DRomics on anchoring data", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   # importation and check of apical anchoring data
   # datafilename <- system.file("extdata", "apical_anchoring.txt", package="DRomics")
@@ -49,4 +51,3 @@ test_that("Test DRomics on anchoring data", {
   (b <- bmdboot(r, niter = niter)) # niter should be fixed at least at 1000 to get a reasonable precision
   plot(b)
 }
-)

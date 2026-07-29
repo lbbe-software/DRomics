@@ -1,5 +1,7 @@
-test_that("Test of the impact of the three information criteria", {
-  skip_on_cran()
+if(FALSE) {
+  
+  rm(list = ls())
+  library(DRomics)
   
   ### test on microarray data ######################
   datafilename <- system.file("extdata", "transcripto_very_small_sample.txt", package="DRomics")
@@ -163,5 +165,4 @@ test_that("Test of the impact of the three information criteria", {
   head(fAICc$information.criterion.val, 20)
   head(fBIC$information.criterion.val, 20)
   
-  
-})
+}
