@@ -4,28 +4,32 @@ test_that("drcfit works as expected on the model results", {
   datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
   o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
   s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)
-  f <- drcfit(s_quad, progressbar = TRUE, information.criterion = "AIC")
-  tmodel <- table(f$fitres$model)
-  expect_equal(as.numeric(tmodel["Hill"]), 2)
-  expect_equal(as.numeric(tmodel["linear"]), 8)
-  expect_equal(as.numeric(tmodel["exponential"]), 26)
-  expect_equal(as.numeric(tmodel["Gauss-probit"]), 28)
-  expect_equal(as.numeric(tmodel["log-Gauss-probit"]), 4)
-  expect_equal(round(mean(f$fitres$b, na.rm = TRUE), 4), 1.5101)
-  expect_equal(round(mean(f$fitres$c, na.rm = TRUE), 4), 5.3753)
-  expect_equal(round(mean(f$fitres$d, na.rm = TRUE), 4), 9.2524)
-  expect_equal(round(mean(f$fitres$e, na.rm = TRUE), 4), 1.5637)
-  expect_equal(round(mean(f$fitres$f, na.rm = TRUE), 4), 2.6163)
-  #Select model with BIC
-  f.BIC <- drcfit(s_quad, progressbar = TRUE, information.criterion = "BIC")
+  
+  # Select model with AIC
+  f.AIC <- drcfit(s_quad, progressbar = FALSE, information.criterion = "AIC")
+  tmodel.AIC <- table(f.AIC$fitres$model)
+  expect_equal(as.numeric(tmodel.AIC["Hill"]), 2)
+  expect_equal(as.numeric(tmodel.AIC["linear"]), 8)
+  expect_equal(as.numeric(tmodel.AIC["exponential"]), 26)
+  expect_equal(as.numeric(tmodel.AIC["Gauss-probit"]), 28)
+  expect_equal(as.numeric(tmodel.AIC["log-Gauss-probit"]), 4)
+  expect_equal(round(mean(f.AIC$fitres$b, na.rm = TRUE), 4), 1.5101)
+  expect_equal(round(mean(f.AIC$fitres$c, na.rm = TRUE), 4), 5.3753)
+  expect_equal(round(mean(f.AIC$fitres$d, na.rm = TRUE), 4), 9.2524)
+  expect_equal(round(mean(f.AIC$fitres$e, na.rm = TRUE), 4), 1.5637)
+  expect_equal(round(mean(f.AIC$fitres$f, na.rm = TRUE), 4), 2.6163)
+  
+  # Select model with BIC
+  f.BIC <- drcfit(s_quad, progressbar = FALSE, information.criterion = "BIC")
   tmodel.BIC <- table(f.BIC$fitres$model)
   expect_equal(as.numeric(tmodel.BIC["Hill"]), 0)
   expect_equal(as.numeric(tmodel.BIC["linear"]), 12)
   expect_equal(as.numeric(tmodel.BIC["exponential"]), 27)
   expect_equal(as.numeric(tmodel.BIC["Gauss-probit"]), 25)
   expect_equal(as.numeric(tmodel.BIC["log-Gauss-probit"]), 4)
-  #Select model with AICc
-  f.AICc <- drcfit(s_quad, progressbar = TRUE, information.criterion = "AICc")
+  
+  # Select model with AICc
+  f.AICc <- drcfit(s_quad, progressbar = FALSE, information.criterion = "AICc")
   tmodel.AICc <- table(f.AICc$fitres$model)
   expect_equal(as.numeric(tmodel.AICc["Hill"]), 1)
   expect_equal(as.numeric(tmodel.AICc["linear"]), 9)
@@ -37,5 +41,4 @@ test_that("drcfit works as expected on the model results", {
   expect_equal(round(mean(f.AICc$fitres$d, na.rm = TRUE), 4), 9.2119)
   expect_equal(round(mean(f.AICc$fitres$e, na.rm = TRUE), 4), 1.5299)
   expect_equal(round(mean(f.AICc$fitres$f, na.rm = TRUE), 4), 2.8982)
-  
 })

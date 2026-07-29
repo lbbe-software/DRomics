@@ -1,30 +1,46 @@
 test_that("itemselect works as expected on the number of selected probes", {
   skip_on_cran()
   
+  ###### transcripto_sample.txt ######
+  ####################################
   datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
-  (o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess"))
-  (s_quad0p001 <- itemselect(o, select.method = "quadratic", FDR = 0.001))
+  o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
+  
+  s_quad0p001 <- itemselect(o, select.method = "quadratic", FDR = 0.001)
   expect_equal(length(s_quad0p001$selectindex), 80)
-  (s_quad0p05 <- itemselect(o, select.method = "quadratic", FDR = 0.05))
+  
+  s_quad0p05 <- itemselect(o, select.method = "quadratic", FDR = 0.05)
   expect_equal(length(s_quad0p05$selectindex), 302)
-  (s_lin0p001 <- itemselect(o, select.method = "linear", FDR = 0.001))
+  
+  s_lin0p001 <- itemselect(o, select.method = "linear", FDR = 0.001)
   expect_equal(length(s_lin0p001$selectindex), 15)
-  (s_lin0p05 <- itemselect(o, select.method = "linear", FDR = 0.05))
+  
+  s_lin0p05 <- itemselect(o, select.method = "linear", FDR = 0.05)
   expect_equal(length(s_lin0p05$selectindex), 99)
-  (s_ANOVA0p001 <- itemselect(o, select.method = "ANOVA", FDR = 0.001))
+  
+  s_ANOVA0p001 <- itemselect(o, select.method = "ANOVA", FDR = 0.001)
   expect_equal(length(s_ANOVA0p001$selectindex), 53)
-  (s_ANOVA0p05 <- itemselect(o, select.method = "ANOVA", FDR = 0.05))
+  
+  s_ANOVA0p05 <- itemselect(o, select.method = "ANOVA", FDR = 0.05)
   expect_equal(length(s_ANOVA0p05$selectindex), 198)
+  
+  
+  ###### metabolo_sample.txt #########
+  ####################################
   datafilename.m <- system.file("extdata", "metabolo_sample.txt", package="DRomics")
   o.m <- continuousomicdata(datafilename.m, check = TRUE)
-  (s_quad0p05.m <- itemselect(o.m, select.method = "quadratic", FDR = 0.05))
-  expect_equal(length(s_quad0p05.m$selectindex), 36)
-  (s_quad0p05.mb <- itemselect(o.m, select.method = "quadratic", FDR = 0.05,
-                               max.ties.prop = 0.5))
-  expect_equal(length(s_quad0p05.mb$selectindex), 40)
-  datafilename.r <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
-  (o.r <- RNAseqdata(datafilename.r, check = TRUE, transfo.method = "rlog"))
-  (s_quad.r <- itemselect(o.r, select.method = "quadratic", FDR = 0.05))
-  expect_equal(length(s_quad.r$selectindex), 43)
   
+  s_quad0p05.m <- itemselect(o.m, select.method = "quadratic", FDR = 0.05)
+  expect_equal(length(s_quad0p05.m$selectindex), 36)
+  
+  s_quad0p05.mb <- itemselect(o.m, select.method = "quadratic", FDR = 0.05, max.ties.prop = 0.5)
+  expect_equal(length(s_quad0p05.mb$selectindex), 40)
+  
+  
+  ###### RNAseq_sample.txt ###########
+  ####################################
+  datafilename.r <- system.file("extdata", "RNAseq_sample.txt", package="DRomics")
+  o.r <- RNAseqdata(datafilename.r, check = TRUE, transfo.method = "rlog")
+  s_quad.r <- itemselect(o.r, select.method = "quadratic", FDR = 0.05)
+  expect_equal(length(s_quad.r$selectindex), 43)
 })

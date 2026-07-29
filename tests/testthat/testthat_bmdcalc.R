@@ -4,13 +4,15 @@ test_that("bmdcalc works as expected on the BMD results", {
   datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")
   o <- microarraydata(datafilename, check = TRUE, norm.method = "cyclicloess")
   s_quad <- itemselect(o, select.method = "quadratic", FDR = 0.001)
-  f <- drcfit(s_quad, progressbar = TRUE, information.criterion = "AIC")
+  f <- drcfit(s_quad, progressbar = FALSE, information.criterion = "AIC")
+  
   r.1 <- bmdcalc(f, z = 1, x = 10)
   r.2 <- bmdcalc(f, z = 2, x = 50)
   BMD.zSD.1 <- r.1$res$BMD.zSD
   BMD.zSD.2 <- r.2$res$BMD.zSD
   BMD.xfold.1 <- r.1$res$BMD.xfold
   BMD.xfold.2 <- r.2$res$BMD.xfold
+  
   expect_equal(sum(is.nan(BMD.zSD.1)), 0)
   expect_equal(sum(is.nan(BMD.zSD.2)), 0)
   expect_equal(sum(is.nan(BMD.xfold.1)), 1)
@@ -23,5 +25,4 @@ test_that("bmdcalc works as expected on the BMD results", {
   expect_equal(round(mean(BMD.zSD.2, na.rm = TRUE), 4), 3.9974)
   expect_equal(round(mean(BMD.xfold.1, na.rm = TRUE), 4), 3.2778)
   expect_equal(round(mean(BMD.xfold.2, na.rm = TRUE), 4), 5.1575)
-  
 })
