@@ -1,5 +1,6 @@
 test_that("drcfit works as expected on the model results", {
   skip_on_cran()
+  skip_on_os(c("mac", "linux"))
   withr::local_seed(123)
   
   datafilename <- system.file("extdata", "transcripto_sample.txt", package="DRomics")

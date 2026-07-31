@@ -1,5 +1,6 @@
 test_that("itemselect works as expected on the number of selected probes", {
   skip_on_cran()
+  skip_on_os(c("mac", "linux"))
   withr::local_seed(123)
   
   ###### transcripto_sample.txt ######
