@@ -10,3 +10,4 @@ share
 .lintr
 ^codemeta\.json$
 gitp.sh
+tests/testthat/_snaps
