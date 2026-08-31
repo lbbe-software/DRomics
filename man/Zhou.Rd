@@ -2,7 +2,6 @@
 \alias{Zhou}
 \alias{Zhou_kidney_pce}
 \docType{data}
-%- Also NEED an '\alias' for EACH other topic documented here.
 
 \title{Dose-response kidney transcriptomic effect of Tetrachloroethylene in mouse}
 
@@ -14,7 +13,6 @@ including five doses plus the control.
 \usage{
 data(Zhou_kidney_pce)
 }
-%- maybe also 'usage' for other objects documented here.
 
 \format{ 
 \code{Zhou_kidney_pce} contains one row per transcript, with the first column corresponding to the identifier of each transcript, and the other columns giving the count of reads for each replicate at each dose. In the first line, after the name for the identifier column, we have the tested doses for each corresponding replicate.
@@ -24,7 +22,6 @@ data(Zhou_kidney_pce)
 Zhou, Y. H., Cichocki, J. A., Soldatow, V. Y., Scholl, E. H., Gallins, P. J., Jima, D., ... & Rusyn, I. 2017. Comparative dose-response analysis of liver and kidney transcriptomic effects of trichloroethylene and tetrachloroethylene in B6C3F1 mouse. \emph{Toxicological sciences}, \bold{160(1)}, 95-110.
 }
 
-%\references{  }
 
 \examples{
 # (1) load of data
@@ -66,4 +63,4 @@ head(r$res)
 
 }
 
-\keyword{ datasets }% at least one, from doc/KEYWORDS
+\keyword{datasets}
