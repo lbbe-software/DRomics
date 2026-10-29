@@ -40,12 +40,12 @@ The stable version of `DRomics` can be installed from CRAN using:
 install.packages("DRomics")
 ```
 
-The development version of `DRomics` can be installed from GitHub (`remotes` needed):
+The development version of `DRomics` can be installed from the GitLab hosted by IN2P3 (`pak` needed):
 ```r
-if (!requireNamespace("remotes", quietly = TRUE))
-   install.packages("remotes")
+if (!requireNamespace("pak", quietly = TRUE))
+   install.packages("pak")
    
-remotes::install_git("https://gitlab.in2p3.fr/drgarden/DRomics.git")
+pak::pak("git::https://gitlab.in2p3.fr/drgarden/DRomics.git")
 ``` 
 
 Finally load the package in your current R session with the following R command:
@@ -57,17 +57,24 @@ require("DRomics")
 ## Vignette and cheat sheet
 
 A **vignette** is attached to the `DRomics` package.
-This vignette is intended to help users to start using the `DRomics` package. It is complementary to the reference manual where you can find more details on each function of the package. The first part of this vignette (Main workflow, steps 1 to 4) could also help users of the first shiny application `DRomics-shiny`. The second part (Help for biological interpretation of `DRomics` outputs) could also help users of the second shiny application `DRomicsInterpreter-shiny`.
+This vignette is intended to help users to start using the `DRomics` package. 
+It is complementary to the reference manual where you can find more details on each function of the package. 
+The first part of this vignette (Main workflow, steps 1 to 4) could also help users of the first shiny application `DRomics-shiny`. 
+The second part (Help for biological interpretation of `DRomics` outputs) could also help users of the second shiny application `DRomicsInterpreter-shiny`.
 
 This vignette can be reached by:
 ```r
 vignette("DRomics_vignette")
 ```
 
-Note that, by default, the vignette is not installed when the package is installed through GitHub.
-The following command (rather long to execute because of the large size of the vignette) will allow you to access the vignette of the development version of the package you installed from GitHub:
+Note that, by default, the vignette is not installed when the package is installed through GitLab.
+The following commands (rather long to execute because of the large size of the vignette) will allow you to access the vignette of the development version of the package you installed from GitLab:
 ```r
-remotes::install_git("https://gitlab.in2p3.fr/drgarden/DRomics.git", build_vignettes = TRUE)
+BiocManager::install("sva")
+install.packages("VennDiagram")
+options(pkg.build_vignettes = TRUE)
+pak::pak("git::https://gitlab.in2p3.fr/drgarden/DRomics.git")
+options(pkg.build_vignettes = FALSE)
 ```
 
 A **cheat sheet** that sum up the DRomics workflow is also available.
