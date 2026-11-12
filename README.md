@@ -3,6 +3,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![SWH](https://archive.softwareheritage.org/badge/origin/https://gitlab.in2p3.fr/drgarden/DRomics)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://gitlab.in2p3.fr/drgarden/DRomics)
+[![status](https://tinyverse.netlify.app/badge/DRomics)](https://CRAN.R-project.org/package=DRomics)
 
 <img src="man/figures/hexsticker.png" align="right" height="139" />
 
